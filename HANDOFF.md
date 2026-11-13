@@ -93,7 +93,9 @@
 
 ## 7. План переезда на panbogdan.com
 
-**Статус на 13.11.2026: сайт живёт на https://panbogdan.com.** Репозиторий github.com/nashekrashe/panbogdan (публичный), Cloudflare Pages, проект `panbogdan`, ветка `main`, без команды сборки, папка вывода `site/`. Каждый пуш в `main` сразу выкатывается. `site/` собирается так: `cd build && ./build.sh && python3 mksite.py`, потом коммит. Сделаны пункты 1–4 (цены топлива с pasha.by грузятся, CORS уже есть) и sitemap/robots из 7. Импорт `#import=` на новом сайте готов, редирект со старой страницы ещё нет.
+**Статус на 13.11.2026: сайт живёт на https://panbogdan.com.** Репозиторий github.com/nashekrashe/panbogdan (публичный), Cloudflare Pages, проект `panbogdan`, ветка `main`, без команды сборки, папка вывода `site/`. Каждый пуш в `main` сразу выкатывается. `site/` собирается так: `cd build && ./build.sh && python3 mksite.py`, потом коммит. Сделаны пункты 1–4 (цены топлива с pasha.by грузятся, CORS уже есть) и sitemap/robots из 7. 14.11.2026: pasha.by/poland (страница 5595) заменена заглушкой `deploy/moved/poland-moved.html`. Она один раз переносит прогресс через `#import=` (метка `pb-moved` в localStorage pasha.by) и уводит на panbogdan.com. Сниппет №10 в Code Snippets ставит canonical на panbogdan.com. Перед заменой сделан бэкап базы в WP Staging. Старая страница лежит в `deploy/live-base.html`. Сниппет №7 (цены топлива) нужен новому сайту, не выключать. Через 2–3 месяца можно заменить заглушку на 301.
+SEO: панель Search Console для panbogdan.com подтверждена, sitemap принят 14.11. pasha.by/poland Google так и не проиндексировал. В `site/index.html` текст гайда пререндерится (`build/prerender.js`), импорт принимает только простой JSON.
+Сборка: `cd build && ./build.sh` собирает и WordPress-версию, и `site/`. Превью: ветка `staging` → staging.panbogdan.pages.dev.
 
 1. **Хостинг**: Cloudflare Pages, домен в Cloudflare. Код в репозитории на GitHub (если у пользователя есть) или прямая загрузка через панель Cloudflare. Пользователь сам логинится, Claude работает во встроенном браузере.
 2. **Самостоятельная страница**: брать за основу `dist/preview.html`, у неё уже своя шапка с `data-pl-logo`. Нужно добавить:
@@ -117,8 +119,8 @@
 
 ## 9. Открыто
 
-- Редирект с pasha.by/poland на panbogdan.com с переносом прогресса (только после «заливай»).
-- Статистика без cookies, Search Console, www.panbogdan.com (сейчас не подключён).
+- Если на panbogdan.com уже есть свой прогресс, импорт спрашивает «заменить?». Посетитель, который зашёл туда раньше, получит этот вопрос. Можно молча импортировать, если свой прогресс не менялся с умолчаний.
+- Статистика без cookies, www.panbogdan.com (сейчас не подключён).
 - В фразе шапки «Polski 50cent — fifty groszy» длинное тире.
 - Стейджинг pasha.by/enterprise (страница 5442) отстаёт: там v19. Обновлять или нет, решить при переезде.
 - В `tests/` старые t4.js и t6.js не перенесены: они под старые селекторы.
