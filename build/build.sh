@@ -8,3 +8,6 @@ node min.js
 node wrap.js
 node dopatch.js
 sha256sum ../dist/poland-wp.html | cut -c1-16
+# panbogdan.com: site/ with own fonts, meta tags and prerendered text
+python3 mksite.py
+node prerender.js ../site/index.html

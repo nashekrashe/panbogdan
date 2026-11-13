@@ -46,8 +46,11 @@ IMPORT = r"""<script>
 function clean(){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){location.hash=''}}
 try{var b=m[1].replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';
 var bin=atob(b),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
-var txt=new TextDecoder().decode(u),d=JSON.parse(txt);if(!d||typeof d!=='object')return clean();
-var own=null;try{own=localStorage.getItem(K)}catch(e){}
+if(u.length>100000)return clean();
+function ok(v,n){if(n>6)return false;var t=typeof v;if(v===null||t==='number'||t==='boolean')return true;if(t==='string')return v.length<500&&!/[<>"'`\\]/.test(v);
+if(t!=='object')return false;for(var k in v)if(Object.prototype.hasOwnProperty.call(v,k)&&(k.length>60||/[^\w.-]/.test(k)||!ok(v[k],n+1)))return false;return true}
+var txt=new TextDecoder().decode(u),d=JSON.parse(txt);if(!d||typeof d!=='object'||Array.isArray(d)||!ok(d,0))return clean();
+txt=JSON.stringify(d);var own=null;try{own=localStorage.getItem(K)}catch(e){}
 if(!own||own===txt||window.confirm('Перенести прогресс с pasha.by/poland? Текущий прогресс здесь заменится.'))localStorage.setItem(K,txt);
 }catch(e){}clean();})();
 </script>
