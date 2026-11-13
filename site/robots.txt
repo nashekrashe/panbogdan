@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://panbogdan.com/sitemap.xml

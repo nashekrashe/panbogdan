@@ -1,0 +1,10 @@
+const fs=require('fs'),crypto=require('crypto'),path=require('path');const R=p=>path.join(__dirname,'..',p);eval(fs.readFileSync(__dirname+'/patchfn.js','utf8'));
+const f=R('dist/poland-wp.min.html');const src=fs.readFileSync(f,'utf8');
+const css=src.slice(src.indexOf('<style>')+7,src.indexOf('</style>'));
+console.log('sm count',(css.match(/scroll-margin-top:64px/g)||[]).length, 'sample:', css.slice(0,160));
+const out=patch(src);
+const oc=out.slice(out.indexOf('<style>')+7,out.indexOf('</style>'));
+console.log('leftover unscoped:', (oc.match(/(^|[{},])\.pl/g)||[]).length, 'scoped:', (oc.match(/#pl-root/g)||[]).length);
+const top=out.slice(out.lastIndexOf('<script>'));console.log('amp/lt in topsync:', (top.slice(8,-9).match(/[&<]/g)||[]).length);
+fs.writeFileSync(R('dist/poland-wp.html'),out);
+console.log(out.length, crypto.createHash('sha256').update(out).digest('hex').slice(0,16));
