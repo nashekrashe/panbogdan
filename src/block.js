@@ -493,11 +493,9 @@
     '</div>';
   }
   function rTabs() {
-    var main = SECTIONS.filter(function (s) { return MOB_MAIN.indexOf(s.k) > -1; }), rest = SECTIONS.filter(function (s) { return MOB_MAIN.indexOf(s.k) < 0; });
-    return '<nav class="pb-tabs" aria-label="Разделы">' + main.map(function (s) { return navLink(s, 'pb-tab'); }).join('') +
-      '<button type="button" class="pb-tab" data-more aria-expanded="false" aria-controls="pb-more"><svg class="pb-i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Ещё</span></button></nav>' +
-      '<div class="pb-more" id="pb-more" hidden><nav aria-label="Ещё разделы">' + rest.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav></div>';
+    return '<div class="pb-more" id="pb-more" hidden><nav aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav></div>';
   }
+
   function rFoot() {
     return '<footer class="pb-foot">' +
       '<div class="pb-foot-top"><p class="pb-disc">Стараюсь дать максимально много информации, но без гарантий (как любой помогатор)</p>' +
@@ -510,8 +508,11 @@
   /* phone: the logo on top, it shrinks to an icon on scroll; the section picture sits next to it */
   function rMHead() {
     return '<header class="pb-mhead"><a class="pb-mlogo" href="' + hrefOf(SECTIONS[0]) + '"><img src="' + ILL_BASE + 'me.webp" alt="Pan Bogdan, e-помогатор" width="200" height="189" decoding="async"></a>' +
-      '<div class="pb-mill" aria-hidden="true">' + rIll(1) + '</div></header>';
+      '<b class="pb-mname" data-o="secName"></b>' +
+      '<div class="pb-mill" aria-hidden="true">' + rIll(1) + '</div>' +
+      '<button type="button" class="pb-burger" data-more aria-expanded="false" aria-controls="pb-more" aria-label="Разделы"><i></i><i></i><i></i></button></header>';
   }
+
 
 
   /* «Своё»: the home screen. Dates live only in this browser */
@@ -532,15 +533,15 @@
       '<div class="pb-home">' +
         '<div class="pb-hero" data-fitcells="300"><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', данные MSWiA</div></div>' +
         '<div class="pb-card pb-mine">' +
-          '<div class="pb-mine-h"><h2 class="pb-mine-logo" id="pl-me-h">Своё</h2><p class="pl-small pl-muted">Укажи даты: появятся твои счётчики и сравнение со средним по воеводству.</p><p class="pl-small pb-mine-p">Хранится только в этом браузере.<br>Даже ужонд не узнает.</p></div>' +
+          '<div class="pb-mine-h"><h2 class="pb-mine-logo" id="pl-me-h">Своё</h2><p class="pb-mine-d">Укажи даты: появятся твои счётчики и сравнение со средним по воеводству.</p><p class="pb-mine-p">Хранится только в этом браузере. <br>Даже ужонд не узнает.</p></div>' +
           '<div class="pl-mine">' +
             '<div class="pl-mine-row"><div class="pl-mine-t">' + ms('flight_land') + 'Приехал</div><div class="pl-fields">' + field('since', 'В Польше с', 'date', '', 'me-since') + '</div></div>' +
             ME_ROWS.map(function (r) {
               return '<div class="pl-mine-row" data-mrow="' + r.k + '"><div class="pl-mine-t">' + ms(r.ic) + r.t + '</div><div class="pl-fields">' + field(r.f, 'Подал', 'date', '', 'me-' + r.f) + field(r.g, 'Решение', 'date', '', 'me-' + r.g) + '</div></div>';
             }).join('') +
           '</div>' +
-          '<p class="pl-note" data-o="meHint"></p>' +
-          '<div class="pl-me" data-o="me" data-fitcells="160" aria-live="polite"></div>' +
+          '<p class="pl-note pb-mine-hint" data-o="meHint"></p>' +
+          '<div class="pl-me" data-o="me" data-fitcells="64" data-fitmin="40" aria-live="polite"></div>' +
         '</div>' +
       '</div>' +
       '<div class="pb-counts">' +
@@ -998,7 +999,7 @@
       var show = !!S.meAll || si >= r.min || !!S.f[r.f] || !!S.f[r.g];
       el.hidden = !show; if (!show) hidden++;
     });
-    out('meHint', hidden ? 'Поля для ВНЖ, ПМЖ и паспорта появятся по статусу в «Где ты сейчас». <button type="button" class="pl-textbtn" data-me-all>Показать все</button>' : '');
+    out('meHint', hidden ? 'Поля для ВНЖ, ПМЖ и паспорта появятся, когда выберешь этап сверху. <button type="button" class="pl-textbtn" data-me-all>Показать все</button>' : '');
   }
 
   function updateTools() {
@@ -1324,7 +1325,7 @@
   function setActive(k) {
     activeNow = k;
     $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === k) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
-    var more = $('[data-more]'); if (more) more.classList.toggle('on', MOB_MAIN.indexOf(k) < 0);
+    out('secName', secBy(k) ? secBy(k).n : '');
     var src = ILL[k] || '';
     $$('.pb-ill img, .pb-mill img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-ill') === src); });
   }
@@ -1448,7 +1449,7 @@
     if (b.hasAttribute('data-geo')) { locate(false); }
     else if (d.stage) { setStage(d.stage); }
     else if (d.opt != null) { var os = b.closest('.pb-dd').querySelector('select'); closeMenu(); os.value = d.opt; os.dispatchEvent(new Event('change', { bubbles: true })); }
-    else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
+    else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; var mh = $('.pb-mhead'); if (mh) m.style.setProperty('--mh', Math.round(mh.getBoundingClientRect().bottom) + 'px'); m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
     else if (b.hasAttribute('data-phrase')) { var t = b.querySelector('.pashaby-t'); t.classList.add('out'); setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160); }
     else if (b.hasAttribute('data-me-all')) { S.meAll = true; save(); updateMine(); }
     else if (d.legal) { S.legal = d.legal; save(); applyTabs(); }
@@ -1553,6 +1554,8 @@
     });
     document.addEventListener('mousedown', function (e) { if (!e.target.closest || !e.target.closest('.pb-dd')) closeMenu(); });
   }
+  document.addEventListener('click', function (e) { var t = e.target; if (t.closest && !t.closest('#pb-more') && !t.closest('[data-more]')) closeMore(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMore(); });
 
 
 
