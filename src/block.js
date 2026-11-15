@@ -476,14 +476,14 @@
     var st = STAGE_LBL[S.stage] || STAGE_LBL.arrive, set = meOpen();
     return '<div class="pb-top">' +
       '<div class="pb-pills">' +
-        '<label class="pb-pill">' + svgi('loc', 20) + '<span data-o="cityName">' + esc(city().n) + '</span>' + chev() +
+        '<span class="pb-dd"><label class="pb-pill">' + svgi('loc', 20) + '<span data-o="cityName">' + esc(city().n) + '</span>' + chev() +
           '<select data-city-sel id="pl-city" aria-label="Твой город" aria-describedby="pl-geo-msg"><option value="__geo">Определить по геолокации</option>' + CITY_ORDER.map(function (id) {
             return '<option value="' + id + '"' + (id === S.city ? ' selected' : '') + '>' + CITIES[id].n + '</option>';
-          }).join('') + '</select></label>' +
-        '<label class="pb-pill">' + (set ? '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>' : '<span>Где ты сейчас?</span>') + chev() +
+          }).join('') + '</select></label></span>' +
+        '<span class="pb-dd"><label class="pb-pill">' + (set ? '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>' : '<span>Где ты сейчас?</span>') + chev() +
           '<select data-stage-sel aria-label="Где ты сейчас">' + (set ? '' : '<option value="" selected disabled>Где ты сейчас?</option>') + STAGES.map(function (s) {
             return '<option value="' + s.id + '"' + (set && s.id === S.stage ? ' selected' : '') + '>' + s.n + '</option>';
-          }).join('') + '</select></label>' +
+          }).join('') + '</select></label></span>' +
       '</div>' +
       '<div class="pb-langs" role="group" aria-label="Язык"><button type="button" aria-pressed="true">РУС</button><button type="button" disabled title="Скоро">БЕЛ</button><button type="button" disabled title="Скоро">УКР</button></div>' +
       '<div class="pl-lvl"><span class="pl-lvl-t">Уровень: <b data-o="lvlName"></b></span>' +
@@ -500,14 +500,19 @@
   }
   function rFoot() {
     return '<footer class="pb-foot">' +
-      '<a class="pb-brand" href="' + hrefOf(SECTIONS[0]) + '"><img src="' + ILL_BASE + 'me.webp" alt="Pan Bogdan, e-помогатор" width="200" height="189" loading="lazy" decoding="async"></a>' +
-      '<div class="pb-foot-c"><p class="pb-disc">Стараюсь дать максимально много информации, но без гарантий (как любой помогатор). Законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</p>' +
-        '<div class="pl-acc pl-sources"><details id="pl-d-src"><summary><span class="t">Источники и даты<small>' + SOURCES.length + ' ссылок, проверено 30.10.2026</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body wide"><ul class="pl-list">' +
+      '<div class="pb-foot-top"><p class="pb-disc">Стараюсь дать максимально много информации, но без гарантий (как любой помогатор)</p>' +
+        '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span><span class="pashaby-q" aria-hidden="true">format_quote</span></button></div>' +
+      '<div class="pb-foot-c"><div class="pl-acc pl-sources"><details id="pl-d-src"><summary><span class="t">Источники и даты<small>' + SOURCES.length + ' ссылок, проверено 30.10.2026</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body wide"><ul class="pl-list">' +
           SOURCES.map(function (s) { return '<li>' + link(s[1], s[0]) + '</li>'; }).join('') + '</ul></div></details></div>' +
-        '<div class="pb-foot-row"><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div></div>' +
-      '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span><span class="pashaby-q" aria-hidden="true">format_quote</span></button>' +
+        '<div class="pb-foot-row"><span class="pl-small pl-muted">Законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</span><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div></div>' +
     '</footer>';
   }
+  /* phone: the logo on top, it shrinks to an icon on scroll; the section picture sits next to it */
+  function rMHead() {
+    return '<header class="pb-mhead"><a class="pb-mlogo" href="' + hrefOf(SECTIONS[0]) + '"><img src="' + ILL_BASE + 'me.webp" alt="Pan Bogdan, e-помогатор" width="200" height="189" decoding="async"></a>' +
+      '<div class="pb-mill" aria-hidden="true">' + rIll(1) + '</div></header>';
+  }
+
 
   /* «Своё»: the home screen. Dates live only in this browser */
   var ME_KEYS = ['since', 'filed', 'vnzhGot', 'pmzhFiled', 'staly', 'passFiled', 'passGot'];
@@ -1262,11 +1267,11 @@
     closeCal();
     var open = $$('details[open]').map(function (d) { return d.id; }).filter(Boolean);
     var y = window.scrollY;
-    root.innerHTML = '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
-      rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main></div>' + rFoot() + '</div>' + rTabs();
+    root.innerHTML = rMHead() + '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
+      rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs();
     if (open.length) $$('details').forEach(function (d) { if (d.id && open.indexOf(d.id) > -1) d.open = true; });
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases();
-    if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else route(false);
+    if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
     rendered = 1;
   }
 
@@ -1290,6 +1295,7 @@
     var sec = secBy(r.k), changed = r.k !== activeNow;
     SECTIONS.forEach(function (x) { var el = document.getElementById(x.id); if (el) el.hidden = x.k !== r.k; });
     var ft = $('.pb-foot'); if (ft) ft.hidden = r.k !== 'me';
+    if (changed && rendered) { var scn = document.getElementById(sec.id); if (scn) { scn.classList.remove('pb-enter'); void scn.offsetWidth; scn.classList.add('pb-enter'); } }
     setActive(r.k);
     if (scroll) document.title = (r.k === 'me' ? '' : sec.n + ' · ') + 'Pan Bogdan: Польша пошагово';
     setTimeout(fitCounts, 0);
@@ -1320,7 +1326,7 @@
     $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === k) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     var more = $('[data-more]'); if (more) more.classList.toggle('on', MOB_MAIN.indexOf(k) < 0);
     var src = ILL[k] || '';
-    $$('.pb-ill img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-ill') === src); });
+    $$('.pb-ill img, .pb-mill img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-ill') === src); });
   }
   function closeMore() { var m = $('#pb-more'), b = $('[data-more]'); if (m) m.hidden = true; if (b) b.setAttribute('aria-expanded', 'false'); }
   window.addEventListener('hashchange', function () { route(true); });
@@ -1339,9 +1345,9 @@
   });
   /* section pictures, pinned to the bottom of the menu column; hidden while the footer logo is in view. «Банки» borrows «Бабки» */
   var ILL_BASE = (document.querySelector('meta[name="pb-img"]') || { content: 'img/' }).content;
-  var ILL = { me: '', legal: 'legal', news: 'news', by: 'by', money: 'money', bank: 'money', kids: 'kids', home: 'home', auto: 'auto', help: 'help', dict: 'dict' };
-  function rIll() {
-    var seen = {};
+  var ILL = { me: 'me', legal: 'legal', news: 'news', by: 'by', money: 'money', bank: 'money', kids: 'kids', home: 'home', auto: 'auto', help: 'help', dict: 'dict' };
+  function rIll(noLogo) {
+    var seen = noLogo ? { me: 1 } : {};
     return Object.keys(ILL).map(function (k) { var f = ILL[k]; if (!f || seen[f]) return ''; seen[f] = 1; return '<img data-ill="' + f + '" src="' + ILL_BASE + f + '.webp" alt="" width="240" height="240" decoding="async"' + (f === 'me' ? '' : ' loading="lazy"') + '>'; }).join('');
   }
   function setStage(id) {
@@ -1441,6 +1447,7 @@
     var d = b.dataset;
     if (b.hasAttribute('data-geo')) { locate(false); }
     else if (d.stage) { setStage(d.stage); }
+    else if (d.opt != null) { var os = b.closest('.pb-dd').querySelector('select'); closeMenu(); os.value = d.opt; os.dispatchEvent(new Event('change', { bubbles: true })); }
     else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
     else if (b.hasAttribute('data-phrase')) { var t = b.querySelector('.pashaby-t'); t.classList.add('out'); setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160); }
     else if (b.hasAttribute('data-me-all')) { S.meAll = true; save(); updateMine(); }
@@ -1502,12 +1509,51 @@
 
   /* scrollspy */
   var io;
-  function spy() {
-    if (!('IntersectionObserver' in window)) return;
-    if (io) io.disconnect();
-    io = new IntersectionObserver(function (ents) { ents.forEach(function (en) { var il = $('.pb-ill'); if (il) il.classList.toggle('off', en.isIntersecting); }); });
-    var f = $('.pb-foot'); if (f) io.observe(f);
+  function spy() {}
+  /* small life: numbers on the home screen count up once, the header gets compact after a little scrolling */
+  var REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches), counted = 0;
+  function countUp() {
+    if (counted || REDUCE || !window.requestAnimationFrame || /jsdom/i.test(navigator.userAgent)) return; counted = 1;
+    $$('#pl-me .pb-hero .pl-big, #pl-me .pb-counts .pl-big').forEach(function (el) {
+      var txt = el.textContent, v = parseInt(txt.replace(/\D/g, ''), 10); if (!v || /[^\d\s  ]/.test(txt)) return;
+      var from = Math.max(Math.round(v * .6), Math.pow(10, String(v).length - 1)), t0 = 0, last = n0(from);
+      function step(t) {
+        if (!t0) t0 = t; if (el.textContent !== last) return;
+        var p = Math.min(1, (t - t0) / 1000), e = 1 - Math.pow(1 - p, 3);
+        last = p === 1 ? txt : n0(from + (v - from) * e); el.textContent = last;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      el.textContent = last; requestAnimationFrame(step);
+    });
   }
+  window.addEventListener('scroll', function () { var y = window.scrollY; if (y > 48) root.classList.add('pb-scrolled'); else if (y < 8) root.classList.remove('pb-scrolled'); }, { passive: true });
+
+  /* desktop: own menu for the two pills in the top bar; touch screens keep the native picker */
+  var FINE = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+  function closeMenu() { var m = $('.pb-menu'); if (!m) return; var l = m.parentNode.querySelector('.pb-pill'); if (l) l.classList.remove('open'); m.parentNode.removeChild(m); }
+  function openMenu(sel) {
+    var wrap = sel.closest('.pb-dd'), was = wrap && wrap.querySelector('.pb-menu'); closeMenu(); if (!wrap || was) return;
+    var m = document.createElement('div'); m.className = 'pb-menu'; m.setAttribute('role', 'listbox'); m.setAttribute('aria-label', sel.getAttribute('aria-label') || '');
+    m.innerHTML = Array.prototype.map.call(sel.options, function (o) {
+      if (o.disabled) return ''; var on = o.selected && o.value !== '__geo';
+      return '<button type="button" role="option" data-opt="' + esc(o.value) + '" aria-selected="' + on + '"' + (o.value === '__geo' ? ' class="geo"' : '') + '>' + (o.value === '__geo' ? svgi('loc', 18) : '') + '<span>' + esc(o.textContent) + '</span>' +
+        (on ? '<svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + CHECK + '"/></svg>' : '') + '</button>';
+    }).join('');
+    wrap.appendChild(m); wrap.querySelector('.pb-pill').classList.add('open');
+    var cur = m.querySelector('[aria-selected=true]') || m.firstChild; if (cur) { m.scrollTop = Math.max(0, cur.offsetTop - 96); cur.focus({ preventScroll: true }); }
+  }
+  if (FINE) {
+    root.addEventListener('mousedown', function (e) { var t = e.target; if (t.tagName === 'SELECT' && t.closest('.pb-dd')) { e.preventDefault(); openMenu(t); } });
+    root.addEventListener('keydown', function (e) {
+      var t = e.target;
+      if (t.tagName === 'SELECT' && t.closest('.pb-dd') && /^(Enter| |ArrowDown|ArrowUp)$/.test(e.key)) { e.preventDefault(); openMenu(t); return; }
+      var m = t.closest && t.closest('.pb-menu'); if (!m) return;
+      if (e.key === 'Escape' || e.key === 'Tab') { var sel = m.parentNode.querySelector('select'); closeMenu(); if (e.key === 'Escape') sel.focus(); }
+      else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); var n = e.key === 'ArrowDown' ? t.nextElementSibling : t.previousElementSibling; if (n) n.focus(); }
+    });
+    document.addEventListener('mousedown', function (e) { if (!e.target.closest || !e.target.closest('.pb-dd')) closeMenu(); });
+  }
+
 
 
   /* icon font guard: hide ligature text if the font cannot load */
