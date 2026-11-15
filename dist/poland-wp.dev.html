@@ -559,6 +559,22 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-ill img{max-width:calc(var(--side) + var(--pad) - 4px)}
 @media (max-width:1279px){.pb-mine-h{grid-template-columns:auto minmax(0,1fr)}.pb-mine-p{grid-column:1/-1;text-align:left}}
 @media (max-width:900px){.pb-top .pl-lvl{order:4;margin-left:auto}.pb-mine-h{grid-template-columns:minmax(0,1fr)}}
+/* «Беларусам»: everything open, in columns */
+.pb-cols{margin-top:36px;columns:3 300px;column-gap:clamp(24px,3vw,48px)}
+.pb-col{break-inside:avoid;display:flex;flex-direction:column;gap:12px;padding:24px 0 28px;border-top:1px solid var(--line);font-size:15px;scroll-margin-top:24px}
+.pb-col-h{display:flex;gap:12px;align-items:flex-start}
+.pb-col-h .ms{font-size:24px;color:var(--mut);margin-top:2px}
+.pb-col h3{font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.pb-col h3 small{display:block;margin-top:2px;font-size:13px;font-weight:400;color:var(--mut);letter-spacing:0}
+.pb-col .pl-note{margin-top:4px}
+.pb-ill.off img{opacity:0;transform:translateY(14px) scale(.92);filter:blur(6px)}
+.pb-screen[hidden]{display:none!important}
+.pb-main .pl-band+.pl-band{border-top:0}
+.pb-foot[hidden]{display:none!important}
+.pb-ill img{max-width:calc(var(--side) - 12px)}
+.pb-brand{width:min(200px,calc(var(--side) - 12px))}
+@media (max-width:1279px) and (min-width:901px){.pb-foot{grid-template-columns:var(--side) minmax(0,1fr)}.pb-foot .pashaby-phrase{grid-column:2;max-width:100%}}
+.pb-foot .pashaby-t{flex:0 1 auto}
 
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
@@ -695,17 +711,17 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   function svgi(k, sz) { return '<svg class="pb-i" width="' + (sz || 24) + '" height="' + (sz || 24) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[k] + '</svg>'; }
   /* screens: one per menu item; k is the short address (#legal), id the section element */
   var SECTIONS = [
-    { k: 'me', id: 'pl-me', n: 'Своё', ic: 'mine' },
-    { k: 'legal', id: 'pl-legal', n: 'Легализация', ic: 'leg' },
-    { k: 'news', id: 'pl-news', n: 'Новости', ic: 'news' },
-    { k: 'by', id: 'pl-by', n: 'Беларусам', ic: 'bel' },
-    { k: 'money', id: 'pl-money', n: 'Бабки', ic: 'money' },
-    { k: 'bank', id: 'pl-bank', n: 'Банки', ic: 'bank' },
-    { k: 'kids', id: 'pl-kids', n: 'Дети', ic: 'baby' },
-    { k: 'home', id: 'pl-home', n: 'Дом', ic: 'house' },
-    { k: 'auto', id: 'pl-auto', n: 'Авто', ic: 'car' },
-    { k: 'help', id: 'pl-help', n: 'Хелп', ic: 'help' },
-    { k: 'dict', id: 'pl-dict', n: 'Словарь', ic: 'voc' }
+    { k: 'me', p: '', id: 'pl-me', n: 'Своё', ic: 'mine' },
+    { k: 'legal', p: 'legalizacja', id: 'pl-legal', n: 'Легализация', ic: 'leg' },
+    { k: 'news', p: 'aktualnosci', id: 'pl-news', n: 'Новости', ic: 'news' },
+    { k: 'by', p: 'bialorusini', id: 'pl-by', n: 'Беларусам', ic: 'bel' },
+    { k: 'money', p: 'pieniadze', id: 'pl-money', n: 'Бабки', ic: 'money' },
+    { k: 'bank', p: 'banki', id: 'pl-bank', n: 'Банки', ic: 'bank' },
+    { k: 'kids', p: 'dzieci', id: 'pl-kids', n: 'Дети', ic: 'baby' },
+    { k: 'home', p: 'dom', id: 'pl-home', n: 'Дом', ic: 'house' },
+    { k: 'auto', p: 'auto', id: 'pl-auto', n: 'Авто', ic: 'car' },
+    { k: 'help', p: 'pomoc', id: 'pl-help', n: 'Хелп', ic: 'help' },
+    { k: 'dict', p: 'slownik', id: 'pl-dict', n: 'Словарь', ic: 'voc' }
   ];
   /* old addresses from links and bookmarks */
   var SCREEN_ALIAS = { 'pl-svoi': 'help', 'pl-life': 'help', 'pl-lyrics': 'me', 'pl-avg': 'me', 'pl-top': 'me', svoi: 'help', life: 'help' };
@@ -1032,7 +1048,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   /* ---------- shell: sidebar, top bar, phone tab bar, footer ---------- */
   var STAGE_LBL = { arrive: ['Только', 'приехал'], wait: ['Подался на', 'ВНЖ'], vnzh: ['Есть', 'ВНЖ'], pmzh: ['Есть', 'ПМЖ'], pass: ['Подался на', 'паспорт'], citizen: ['Есть', 'паспорт'] };
   function chev() { return '<svg class="pb-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>'; }
-  function navLink(s, cls) { return '<a class="' + cls + '" href="#' + s.k + '" data-nav="' + s.k + '">' + svgi(s.ic) + '<span>' + s.n + '</span></a>'; }
+  function navLink(s, cls) { return '<a class="' + cls + '" href="' + hrefOf(s) + '" data-nav="' + s.k + '">' + svgi(s.ic) + '<span>' + s.n + '</span></a>'; }
   function rSide() {
     return '<aside class="pb-side"><div class="pb-side-in"><nav class="pb-nav" aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav>' +
       '<div class="pb-ill" aria-hidden="true">' + rIll() + '</div></div></aside>';
@@ -1065,11 +1081,11 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   }
   function rFoot() {
     return '<footer class="pb-foot">' +
-      '<a class="pb-brand" href="#me"><img src="' + ILL_BASE + 'me.webp" alt="Pan Bogdan, e-помогатор" width="240" height="228" loading="lazy" decoding="async"></a>' +
+      '<a class="pb-brand" href="' + hrefOf(SECTIONS[0]) + '"><img src="' + ILL_BASE + 'me.webp" alt="Pan Bogdan, e-помогатор" width="200" height="189" loading="lazy" decoding="async"></a>' +
       '<div class="pb-foot-c"><p class="pb-disc">Стараюсь дать максимально много информации, но без гарантий (как любой помогатор). Законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</p>' +
         '<div class="pl-acc pl-sources"><details id="pl-d-src"><summary><span class="t">Источники и даты<small>' + SOURCES.length + ' ссылок, проверено 30.10.2026</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body wide"><ul class="pl-list">' +
           SOURCES.map(function (s) { return '<li>' + link(s[1], s[0]) + '</li>'; }).join('') + '</ul></div></details></div>' +
-        '<div class="pb-foot-row"><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button><span class="pl-small pl-muted">Придумал и собрал <a href="https://pasha.by/">pasha.by</a></span></div></div>' +
+        '<div class="pb-foot-row"><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div></div>' +
       '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span><span class="pashaby-q" aria-hidden="true">format_quote</span></button>' +
     '</footer>';
   }
@@ -1214,9 +1230,9 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   }
   function rBy() {
     return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
-      '<div class="pl-acc" style="margin-top:28px">' + BELARUS.map(function (b, i) {
-        return '<details id="pl-d-by' + i + '"><summary>' + ms(b.ic, 'lead-ico') + '<span class="t">' + b.t + '<small>' + b.s + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
-          b.b.map(function (p) { return '<p>' + p + '</p>'; }).join('') + srcLine(b.src) + '</div></details>';
+      '<div class="pb-cols">' + BELARUS.map(function (b, i) {
+        return '<article class="pb-col" id="pl-d-by' + i + '"><div class="pb-col-h">' + ms(b.ic, 'lead-ico') + '<h3>' + b.t + '<small>' + b.s + '</small></h3></div>' +
+          b.b.map(function (p) { return '<p>' + p + '</p>'; }).join('') + srcLine(b.src) + '</article>';
       }).join('') + '</div></section>';
   }
 
@@ -1830,57 +1846,84 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     root.innerHTML = '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
       rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main></div>' + rFoot() + '</div>' + rTabs();
     if (open.length) $$('details').forEach(function (d) { if (d.id && open.indexOf(d.id) > -1) d.open = true; });
-    renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); fitCounts();
-    if (rendered) window.scrollTo(0, y); else route();
+    renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases();
+    if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else route(false);
     rendered = 1;
   }
 
-  /* ---------- one long page: the menu scrolls to a section, the section in view lights up its menu item and its picture ---------- */
-  var activeNow = '', spyHold = 0;
+  /* ---------- screens: one per menu item. On panbogdan.com each has its own address (/legalizacja),
+     elsewhere (preview, tests) the address after # picks it. Old #pl-… links and inner ids (#pl-d-by0) still work ---------- */
+  var PATHS = !!document.querySelector('meta[name="pb-paths"]');
+  function hrefOf(s) { return PATHS ? '/' + s.p : '#' + (s.p || 'start'); }
+  var activeNow = '';
+  function secBy(k) { return SECTIONS.filter(function (x) { return x.k === k; })[0]; }
   function keyOf(h) {
-    if (!h) return null;
-    for (var i = 0; i < SECTIONS.length; i++) { if (SECTIONS[i].k === h || SECTIONS[i].id === h) return { k: SECTIONS[i].k, el: document.getElementById(SECTIONS[i].id) }; }
-    if (SCREEN_ALIAS[h]) { var al = SECTIONS.filter(function (x) { return x.k === SCREEN_ALIAS[h]; })[0]; return { k: al.k, el: document.getElementById(al.id) }; }
+    if (h == null) return null;
+    h = String(h).replace(/^[#/]+|\/+$/g, '');
+    if (!h || h === 'start' || h === 'me') return { k: 'me' };
+    for (var i = 0; i < SECTIONS.length; i++) { var x = SECTIONS[i]; if (x.p === h || x.k === h || x.id === h) return { k: x.k }; }
+    if (SCREEN_ALIAS[h]) return { k: SCREEN_ALIAS[h] };
     var el = document.getElementById(h), sec = el && el.closest && el.closest('.pb-screen');
     if (sec) { var hit = SECTIONS.filter(function (x) { return x.id === sec.id; })[0]; if (hit) return { k: hit.k, el: el }; }
     return null;
   }
-  function go(h, smooth) {
-    var r = keyOf(h); if (!r || !r.el) return false;
-    var d = r.el.tagName === 'DETAILS' ? r.el : r.el.closest('details'); if (d) d.open = true;
-    spyHold = Date.now() + (smooth ? 1200 : 600);
-    r.el.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
+  function show(r, scroll) {
+    var sec = secBy(r.k), changed = r.k !== activeNow;
+    SECTIONS.forEach(function (x) { var el = document.getElementById(x.id); if (el) el.hidden = x.k !== r.k; });
+    var ft = $('.pb-foot'); if (ft) ft.hidden = r.k !== 'me';
     setActive(r.k);
-    return true;
+    if (scroll) document.title = (r.k === 'me' ? '' : sec.n + ' · ') + 'Pan Bogdan: Польша пошагово';
+    setTimeout(fitCounts, 0);
+    if (r.el) {
+      var d = r.el.tagName === 'DETAILS' ? r.el : r.el.closest('details'); if (d) d.open = true;
+      setTimeout(function () { r.el.scrollIntoView({ block: 'start' }); }, 0);
+    } else if (scroll && changed) window.scrollTo(0, 0);
   }
-  function route() {
+  /* what the current address points at */
+  function here() {
     var h = ''; try { h = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
-    if (!h || /^import=/.test(h)) return;
-    setTimeout(function () { go(h, false); }, 0);
+    if (/^import=/.test(h)) h = '';
+    var byHash = h ? keyOf(h) : null;
+    if (PATHS) {
+      var byPath = keyOf(location.pathname) || { k: 'me' };
+      if (byHash && (byHash.el || byHash.k !== 'me')) {
+        /* an old #pl-legal link: move to /legalizacja, keep an inner anchor */
+        try { history.replaceState(null, '', hrefOf(secBy(byHash.k)) + (byHash.el ? '#' + byHash.el.id : '')); } catch (e) {}
+        return byHash;
+      }
+      return byPath;
+    }
+    return byHash || { k: 'me' };
   }
+  function route(scroll) { show(here(), scroll); }
   function setActive(k) {
-    if (k === activeNow) return; activeNow = k;
-    $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === k) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    activeNow = k;
+    $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === k) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     var more = $('[data-more]'); if (more) more.classList.toggle('on', MOB_MAIN.indexOf(k) < 0);
     var src = ILL[k] || '';
     $$('.pb-ill img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-ill') === src); });
   }
   function closeMore() { var m = $('#pb-more'), b = $('[data-more]'); if (m) m.hidden = true; if (b) b.setAttribute('aria-expanded', 'false'); }
-  window.addEventListener('hashchange', route);
+  window.addEventListener('hashchange', function () { route(true); });
+  window.addEventListener('popstate', function () { route(true); });
   root.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || !root.contains(a)) return;
-    var h = a.getAttribute('href').slice(1); if (!keyOf(h)) return;
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href]'); if (!a || !root.contains(a) || a.target) return;
+    var href = a.getAttribute('href'), r = null;
+    if (href.charAt(0) === '#') r = keyOf(href.slice(1));
+    else if (PATHS && href.charAt(0) === '/' && href.charAt(1) !== '/') r = keyOf(href);
+    if (!r) return;
     e.preventDefault(); closeMore();
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    go(h, !reduce);
-    try { history.replaceState(null, '', '#' + h); } catch (err) {}
+    var url = r.el ? (PATHS ? hrefOf(secBy(r.k)) : '') + '#' + r.el.id : hrefOf(secBy(r.k));
+    try { history.pushState(null, '', url); } catch (err) {}
+    show(r, true);
   });
-  /* section pictures, pinned to the bottom of the menu column. «Банки» has none of its own yet, it borrows «Бабки» */
+  /* section pictures, pinned to the bottom of the menu column; hidden while the footer logo is in view. «Банки» borrows «Бабки» */
   var ILL_BASE = (document.querySelector('meta[name="pb-img"]') || { content: 'img/' }).content;
-  var ILL = { me: 'me', legal: 'legal', news: 'news', by: 'by', money: 'money', bank: 'money', kids: 'kids', home: 'home', auto: 'auto', help: 'help', dict: 'dict' };
+  var ILL = { me: '', legal: 'legal', news: 'news', by: 'by', money: 'money', bank: 'money', kids: 'kids', home: 'home', auto: 'auto', help: 'help', dict: 'dict' };
   function rIll() {
     var seen = {};
-    return Object.keys(ILL).map(function (k) { var f = ILL[k]; if (seen[f]) return ''; seen[f] = 1; return '<img data-ill="' + f + '" src="' + ILL_BASE + f + '.webp" alt="" width="240" height="240" decoding="async"' + (f === 'me' ? '' : ' loading="lazy"') + '>'; }).join('');
+    return Object.keys(ILL).map(function (k) { var f = ILL[k]; if (!f || seen[f]) return ''; seen[f] = 1; return '<img data-ill="' + f + '" src="' + ILL_BASE + f + '.webp" alt="" width="240" height="240" decoding="async"' + (f === 'me' ? '' : ' loading="lazy"') + '>'; }).join('');
   }
   function setStage(id) {
     S.stage = id; S.stageSet = true; S.legal = { arrive: 'vnzh', wait: 'vnzh', vnzh: 'pmzh', pmzh: 'paszport', pass: 'paszport', citizen: 'paszport' }[id] || S.legal; save();
@@ -2041,19 +2084,12 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   /* scrollspy */
   var io;
   function spy() {
-    activeNow = ''; setActive('me');
     if (!('IntersectionObserver' in window)) return;
     if (io) io.disconnect();
-    io = new IntersectionObserver(function (ents) {
-      ents.forEach(function (en) {
-        if (!en.isIntersecting || Date.now() < spyHold) return;
-        if (en.target.classList.contains('pb-foot')) { setActive('foot'); return; }
-        var hit = SECTIONS.filter(function (x) { return x.id === en.target.id; })[0]; if (hit) setActive(hit.k);
-      });
-    }, { rootMargin: '-40% 0px -55% 0px' });
-    SECTIONS.forEach(function (x) { var el = document.getElementById(x.id); if (el) io.observe(el); });
+    io = new IntersectionObserver(function (ents) { ents.forEach(function (en) { var il = $('.pb-ill'); if (il) il.classList.toggle('off', en.isIntersecting); }); });
     var f = $('.pb-foot'); if (f) io.observe(f);
   }
+
 
   /* icon font guard: hide ligature text if the font cannot load */
   if (document.fonts && document.fonts.load) {

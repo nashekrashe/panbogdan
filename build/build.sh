@@ -10,4 +10,4 @@ node dopatch.js
 sha256sum ../dist/poland-wp.html | cut -c1-16
 # panbogdan.com: site/ with own fonts, meta tags and prerendered text
 python3 mksite.py
-node prerender.js ../site/index.html
+for f in ../site/*.html; do node prerender.js "$f"; done

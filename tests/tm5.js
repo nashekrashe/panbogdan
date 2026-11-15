@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 (async () => {
   const br = await chromium.launch(); const pg = await br.newPage({ viewport: { width: 1200, height: 900 } });
-  await pg.goto('file://'+require('path').resolve(__dirname,'../dist/preview.html')+''); await pg.waitForTimeout(500);
+  await pg.goto('file://'+require('path').resolve(__dirname,'../dist/preview.html')+'#dom'); await pg.waitForTimeout(500);
   await pg.fill('#pl-f-mInc', '12000'); await pg.fill('#pl-f-mOwn', '250000'); await pg.waitForTimeout(100);
   const g = n => pg.textContent('[data-o="' + n + '"]');
   const P = +(await g('mPrice')).replace(/\D/g, ''), L = +(await g('mPayK')).match(/Кредит ([\d\s ]+) zł/)[1].replace(/\D/g, '');

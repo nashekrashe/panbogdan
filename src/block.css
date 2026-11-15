@@ -556,3 +556,19 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-ill img{max-width:calc(var(--side) + var(--pad) - 4px)}
 @media (max-width:1279px){.pb-mine-h{grid-template-columns:auto minmax(0,1fr)}.pb-mine-p{grid-column:1/-1;text-align:left}}
 @media (max-width:900px){.pb-top .pl-lvl{order:4;margin-left:auto}.pb-mine-h{grid-template-columns:minmax(0,1fr)}}
+/* «Беларусам»: everything open, in columns */
+.pb-cols{margin-top:36px;columns:3 300px;column-gap:clamp(24px,3vw,48px)}
+.pb-col{break-inside:avoid;display:flex;flex-direction:column;gap:12px;padding:24px 0 28px;border-top:1px solid var(--line);font-size:15px;scroll-margin-top:24px}
+.pb-col-h{display:flex;gap:12px;align-items:flex-start}
+.pb-col-h .ms{font-size:24px;color:var(--mut);margin-top:2px}
+.pb-col h3{font-size:19px;font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.pb-col h3 small{display:block;margin-top:2px;font-size:13px;font-weight:400;color:var(--mut);letter-spacing:0}
+.pb-col .pl-note{margin-top:4px}
+.pb-ill.off img{opacity:0;transform:translateY(14px) scale(.92);filter:blur(6px)}
+.pb-screen[hidden]{display:none!important}
+.pb-main .pl-band+.pl-band{border-top:0}
+.pb-foot[hidden]{display:none!important}
+.pb-ill img{max-width:calc(var(--side) - 12px)}
+.pb-brand{width:min(200px,calc(var(--side) - 12px))}
+@media (max-width:1279px) and (min-width:901px){.pb-foot{grid-template-columns:var(--side) minmax(0,1fr)}.pb-foot .pashaby-phrase{grid-column:2;max-width:100%}}
+.pb-foot .pashaby-t{flex:0 1 auto}

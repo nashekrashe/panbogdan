@@ -76,6 +76,7 @@ HEAD = '''<!doctype html>
 <link rel="preload" href="/fonts/ms-rounded-sub.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/ibm-plex-sans-cyrillic-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="pb-img" content="/img/">
+<meta name="pb-paths" content="1">
 <style>
 %(f)s</style>
 %(i)s</head>
@@ -95,8 +96,32 @@ for f in ('og-share-1200x630.jpg', 'favicon-32.png', 'icon-192.png', 'apple-touc
     shutil.copy(os.path.join(ROOT, 'assets', f), os.path.join(SITE, f))
 shutil.copy(os.path.join(SITE, 'favicon-32.png'), os.path.join(SITE, 'favicon.ico'))  # browsers sniff PNG
 
+
+# one page per section: own address, title and description; prerender.js then leaves only that section's text in it
+PAGES = [
+    ('legalizacja', 'Легализация в Польше: ВНЖ, ПМЖ и паспорт по шагам', 'Карта побыту, rezydent UE и гражданство: шаги, документы, сроки по воеводствам и таймер ожидания.'),
+    ('aktualnosci', 'Что изменилось для иностранцев в Польше', 'Новые законы и правила для иностранцев в Польше с датами и источниками.'),
+    ('bialorusini', 'Беларусам в Польше', 'Паспорт истёк, банки и санкции, Karta Polaka, права и авто: то, чего нет в общих гайдах.'),
+    ('pieniadze', 'Зарплата, налоги и ZUS в Польше', 'Сколько на руки по umowa o pracę, zlecenie, dzieło и B2B, налоги, уровни ZUS и дедлайны 2026.'),
+    ('banki', 'Банки для беларусов в Польше', 'Какие банки открывают счёт беларусам и как перевести деньги из Беларуси без заморозки.'),
+    ('dzieci', 'Дети в Польше: PESEL, сад, школа, 800+', 'PESEL ребёнку, żłobek и przedszkole, школа и 800+ для иностранцев.'),
+    ('dom', 'Ипотека иностранцу в Польше: калькулятор', 'Сколько дадут на ипотеку по твоему доходу и договору, платёж, расходы на сделку и аренда.'),
+    ('auto', 'Авто в Польше: топливо, права, номера', 'Цены топлива, сколько стоит доехать, обмен прав и авто на беларусских номерах.'),
+    ('pomoc', 'Бесплатная помощь иностранцам в Польше', 'Бесплатная юрпомощь по городам, официальные сайты, первые 30 дней, врачи и польский.'),
+    ('slownik', 'Словарь ужонда: польские слова', 'Польские слова из писем ужонда и быта с переводом.'),
+]
+for slug, t, d in PAGES:
+    h = html.replace('<title>%s</title>' % TITLE, '<title>%s · Pan Bogdan</title>' % t)
+    h = h.replace('<meta name="description" content="%s">' % DESC, '<meta name="description" content="%s">' % d)
+    h = h.replace('<link rel="canonical" href="%s">' % URL, '<link rel="canonical" href="%s%s">' % (URL, slug))
+    h = h.replace('<meta property="og:url" content="%s">' % URL, '<meta property="og:url" content="%s%s">' % (URL, slug))
+    h = h.replace('<meta property="og:title" content="Польша пошагово">', '<meta property="og:title" content="%s">' % t)
+    h = h.replace('<meta property="og:description" content="%s">' % DESC, '<meta property="og:description" content="%s">' % d)
+    assert h.count(slug) >= 2, slug
+    open(os.path.join(SITE, slug + '.html'), 'w', encoding='utf-8').write(h)
+
 open(os.path.join(SITE, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n' % URL)
-open(os.path.join(SITE, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>%s</loc></url></urlset>\n' % URL)
+open(os.path.join(SITE, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join('<url><loc>%s%s</loc></url>' % (URL, p) for p in [''] + [x[0] for x in PAGES]) + '</urlset>\n')
 open(os.path.join(SITE, '_headers'), 'w').write('''/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

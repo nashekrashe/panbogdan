@@ -3,7 +3,7 @@ const { chromium, devices } = require('playwright');
   const br = await chromium.launch();
   for (const [name, opt] of [['desk', { viewport: { width: 1440, height: 900 } }], ['phone', { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: true }]]) {
     const pg = await br.newPage(opt); const errs = []; pg.on('pageerror', e => errs.push(e.message));
-    await pg.goto('file://'+require('path').resolve(__dirname,'../dist/preview.html')+''); await pg.waitForTimeout(600);
+    await pg.goto('file://'+require('path').resolve(__dirname,'../dist/preview.html')+'#dom'); await pg.waitForTimeout(600);
     const rd = () => pg.evaluate(() => { const o = n => (document.querySelector('[data-o="' + n + '"]') || {}).textContent; return { loan: o('mLoan'), loanD: o('mLoanD'), price: o('mPrice'), priceD: o('mPriceD'), payK: o('mPayK'), pay: o('mPay'), sK: o('mStressK'), s: o('mStress'), live: o('mLive'), dsti: o('mDsti'), note: o('mNote'), ph: document.querySelector('#pl-f-mInc').placeholder, net: o('net') }; });
     console.log(name, 'default (Бабки fallback):', JSON.stringify(await rd()));
     await pg.fill('#pl-f-mInc', '10000'); await pg.fill('#pl-f-mOwn', '200000'); await pg.waitForTimeout(100);
