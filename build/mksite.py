@@ -20,25 +20,14 @@ assert 'fonts.googleapis' not in html
 html = html.replace('https://cdn.jsdelivr.net/npm/air-datepicker@3.6.0/air-datepicker.js', '/vendor/air-datepicker-3.6.0.js')
 assert 'jsdelivr' not in html
 
-# 3. brand in header and footer
-html = html.replace('<header class="shell-h"><a href="https://pasha.by/" data-pl-logo>pasha.by</a></header>',
-                    '<header class="shell-h"><a href="/" data-pl-logo>Pan Bogdan</a></header>')
-html = html.replace('<footer class="shell-f"><a href="https://pasha.by/">pasha.by</a></footer>',
-                    '<footer class="shell-f"><a href="/">Pan Bogdan</a><p class="shell-by">Придумал и собрал <a href="https://pasha.by/">pasha.by</a></p></footer>')
-assert 'data-pl-logo>Pan Bogdan' in html and 'shell-by' in html
-
 FONTS = ''
 NS = {'latin': 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD',
       'latin-ext': 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF',
       'cyrillic': 'U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116',
       'cyrillic-ext': 'U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F'}
-for w in (200, 400, 700):
-    for s, r in NS.items():
-        FONTS += "@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:%d;font-display:swap;src:url(/fonts/nunito-sans-%s-%d-normal.woff2) format('woff2');unicode-range:%s}\n" % (w, s, w, r)
-for s in ('latin', 'latin-ext'):
-    FONTS += "@font-face{font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/bebas-neue-%s-400-normal.woff2) format('woff2');unicode-range:%s}\n" % (s, NS[s])
+for s in ('latin', 'latin-ext', 'cyrillic'):
+    FONTS += "@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:100 700;font-stretch:75%% 100%%;font-display:swap;src:url(/fonts/ibm-plex-sans-%s-standard-normal.woff2) format('woff2');unicode-range:%s}\n" % (s, NS[s])
 FONTS += "@font-face{font-family:'Material Symbols Rounded';font-style:normal;font-weight:300 400;font-display:block;src:url(/fonts/ms-rounded-sub.woff2) format('woff2')}\n"
-FONTS += ".shell-by{margin-top:8px;font-size:14px;color:#6b6f76}.shell-by a{font-weight:700;color:#141414}\n"
 
 # progress from pasha.by/poland: #import=<base64url(JSON)>. Runs before the guide reads localStorage
 IMPORT = r"""<script>
@@ -85,6 +74,8 @@ HEAD = '''<!doctype html>
 <meta name="twitter:image" content="%(u)sog-share-1200x630.jpg">
 <link rel="https://api.w.org/" href="https://pasha.by/wp-json/">
 <link rel="preload" href="/fonts/ms-rounded-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-cyrillic-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="pb-img" content="/img/">
 <style>
 %(f)s</style>
 %(i)s</head>
@@ -98,6 +89,7 @@ os.makedirs(os.path.join(SITE, 'fonts')); os.makedirs(os.path.join(SITE, 'vendor
 open(os.path.join(SITE, 'index.html'), 'w', encoding='utf-8').write(html)
 for f in os.listdir(os.path.join(ROOT, 'site-src')):
     shutil.copy(os.path.join(ROOT, 'site-src', f), os.path.join(SITE, 'fonts', f))
+shutil.copytree(os.path.join(ROOT, 'assets', 'ill'), os.path.join(SITE, 'img'))
 shutil.copy(os.path.join(ROOT, 'vendor', 'air-datepicker.js'), os.path.join(SITE, 'vendor', 'air-datepicker-3.6.0.js'))
 for f in ('og-share-1200x630.jpg', 'favicon-32.png', 'icon-192.png', 'apple-touch-icon-180.png'):
     shutil.copy(os.path.join(ROOT, 'assets', f), os.path.join(SITE, f))
@@ -111,6 +103,8 @@ open(os.path.join(SITE, '_headers'), 'w').write('''/*
   Permissions-Policy: camera=(), microphone=(), geolocation=(self)
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
+/img/*
+  Cache-Control: public, max-age=86400
 /vendor/*
   Cache-Control: public, max-age=31536000, immutable
 ''')

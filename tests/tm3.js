@@ -24,6 +24,6 @@ const { chromium } = require('playwright');
   const st = await pg.evaluate(() => JSON.parse(localStorage.getItem('pb-poland-v2')).f);
   console.log('stored rate', st.mRate, 'price', st.price, 'priceManual', st.priceManual, 'mInc', JSON.stringify(st.mInc));
   console.log('errors', errs);
-  await pg.locator('#pl-bank .pl-tool').first().screenshot({ path: require('path').resolve(__dirname,'../dist/mort2_desk.png') });
+  await pg.locator('#pl-home .pl-tool').first().screenshot({ path: require('path').resolve(__dirname,'../dist/mort2_desk.png') });
   await br.close();
 })();

@@ -6,7 +6,7 @@ const dom=new JSDOM('<!doctype html><head><link data-adp><script>'+adp+'</script
 const w=dom.window,$=s=>w.document.querySelector(s);
 setTimeout(()=>{
   console.log('sections', w.document.querySelectorAll('#pl-root section').length, 'date fields', w.document.querySelectorAll('[data-date]').length);
-  $('[data-stage="pmzh"]').click(); console.log('level', $('[data-o="lvlName"]').textContent, $('[data-o="lvlPct"]').textContent);
+  (s=>{const e=$('[data-stage-sel]');e.value=s;e.dispatchEvent(new w.Event('change',{bubbles:true}))})('pmzh'); console.log('level', $('[data-o="lvlName"]').textContent, $('[data-o="lvlPct"]').textContent);
   $('#pl-f-me-since').focus();
   setTimeout(()=>{ console.log('popup', !!w.document.querySelector('.air-datepicker.pashaby-adp.-active-'), 'sri in code', html.includes('NPBiBhnpeWwcn7ve8')); console.log('errors', errs); },50);
 },100);

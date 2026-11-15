@@ -111,27 +111,48 @@
   var geoBusy = false, geoErr = '';
   var DIST = { 'gdansk-warszawa': 340, 'gdansk-wroclaw': 480, 'gdansk-krakow': 590, 'warszawa-wroclaw': 345, 'warszawa-krakow': 295, 'wroclaw-krakow': 270 };
 
+  /* stroke icons from the brand set (24px grid, 1.5 stroke); colour follows the text */
+  var ICONS = {
+    "mine": "<path d=\"M12 13C14.7614 13 17 10.7614 17 8C17 5.23858 14.7614 3 12 3C9.23858 3 7 5.23858 7 8C7 10.7614 9.23858 13 12 13ZM12 13C14.1217 13 16.1566 13.8429 17.6569 15.3431C19.1571 16.8434 20 18.8783 20 21M12 13C9.87827 13 7.84344 13.8429 6.34315 15.3431C4.84285 16.8434 4 18.8783 4 21\" />",
+    "leg": "<path d=\"M12 3V21M19 8L22 16C21.1345 16.6491 20.0819 17 19 17C17.9181 17 16.8655 16.6491 16 16L19 8ZM19 8V7M3 7H4C6.79039 7 9.53789 6.31313 12 5C14.4621 6.31313 17.2096 7 20 7H21M5 8L8 16C7.13452 16.6491 6.08185 17 5 17C3.91815 17 2.86548 16.6491 2 16L5 8ZM5 8V7M7 21H17\" />",
+    "news": "<path d=\"M15 18H10M18 14H10M4 22H20C20.5304 22 21.0391 21.7893 21.4142 21.4142C21.7893 21.0391 22 20.5304 22 20V4C22 3.46957 21.7893 2.96086 21.4142 2.58579C21.0391 2.21071 20.5304 2 20 2H8C7.46957 2 6.96086 2.21071 6.58579 2.58579C6.21071 2.96086 6 3.46957 6 4V9M4 22C4.53043 22 5.03914 21.7893 5.41421 21.4142C5.78929 21.0391 6 20.5304 6 20V9M4 22C3.46957 22 2.96086 21.7893 2.58579 21.4142C2.21071 21.0391 2 20.5304 2 20V11C2 10.4696 2.21071 9.96086 2.58579 9.58579C2.96086 9.21071 3.46957 9 4 9H6M11 6H17C17.5523 6 18 6.44772 18 7V9C18 9.55228 17.5523 10 17 10H11C10.4477 10 10 9.55228 10 9V7C10 6.44772 10.4477 6 11 6Z\" />",
+    "bel": "<g> <path d=\"M1.99998 6.99999L6.99999 12M6.99999 12L12 17M6.99999 12L12 6.99999M6.99999 12L2 17M12 17L17 22M12 17L17 12M12 17L7.00001 22M17 1.99998L12 6.99999M12 6.99999L6.99999 1.99998M12 6.99999L17 12M17 12L22 17M17 12L22 6.99999\" /> <rect stroke=\"none\" x=\"12.1213\" width=\"2\" height=\"2\" rx=\"0.2\" transform=\"rotate(45 12.1213 0)\" fill=\"currentColor\"/> <rect stroke=\"none\" x=\"24.2426\" y=\"12.1213\" width=\"2\" height=\"2\" rx=\"0.2\" transform=\"rotate(135 24.2426 12.1213)\" fill=\"currentColor\"/> <rect stroke=\"none\" x=\"12.1213\" y=\"21.4142\" width=\"2\" height=\"2\" rx=\"0.2\" transform=\"rotate(45 12.1213 21.4142)\" fill=\"currentColor\"/> <rect stroke=\"none\" x=\"2.82843\" y=\"12.1213\" width=\"2\" height=\"2\" rx=\"0.2\" transform=\"rotate(135 2.82843 12.1213)\" fill=\"currentColor\"/> </g>",
+    "money": "<path d=\"M19 7V4C19 3.73478 18.8946 3.48043 18.7071 3.29289C18.5196 3.10536 18.2652 3 18 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5M19 7H5C4.46957 7 3.96086 6.78929 3.58579 6.41421C3.21071 6.03914 3 5.53043 3 5M19 7H20C20.2652 7 20.5196 7.10536 20.7071 7.29289C20.8946 7.48043 21 7.73478 21 8V12M3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H20C20.2652 21 20.5196 20.8946 20.7071 20.7071C20.8946 20.5196 21 20.2652 21 20V16M21 12H18C17.4696 12 16.9609 12.2107 16.5858 12.5858C16.2107 12.9609 16 13.4696 16 14C16 14.5304 16.2107 15.0391 16.5858 15.4142C16.9609 15.7893 17.4696 16 18 16H21M21 12C21.2652 12 21.5196 12.1054 21.7071 12.2929C21.8946 12.4804 22 12.7348 22 13V15C22 15.2652 21.8946 15.5196 21.7071 15.7071C21.5196 15.8946 21.2652 16 21 16\" />",
+    "bank": "<path d=\"M10 18V11M14 18V11M18 18V11M3 22H21M6 18V11M11.119 2.205C11.3932 2.07046 11.6946 2.0005 12 2.0005C12.3054 2.0005 12.6068 2.07046 12.881 2.205L20.721 6.051C20.8225 6.10075 20.9042 6.18344 20.9527 6.28558C21.0012 6.38772 21.0136 6.50328 20.988 6.6134C20.9623 6.72352 20.9001 6.8217 20.8115 6.89191C20.7229 6.96212 20.6131 7.00023 20.5 7H3.5C3.38702 7 3.27737 6.96174 3.18892 6.89144C3.10047 6.82115 3.03843 6.72298 3.01292 6.61292C2.9874 6.50285 2.99992 6.3874 3.04842 6.28536C3.09692 6.18332 3.17855 6.10071 3.28 6.051L11.119 2.205Z\" />",
+    "car": "<path d=\"M19 17H21C21.6 17 22 16.6 22 16V13C22 12.1 21.3 11.3 20.5 11.1C18.7 10.6 16 10 16 10C16 10 14.7 8.6 13.8 7.7C13.3 7.3 12.7 7 12 7H5C4.4 7 3.9 7.4 3.6 7.9L2.2 10.8C2.06758 11.1862 2 11.5917 2 12V16C2 16.6 2.4 17 3 17H5M19 17C19 18.1046 18.1046 19 17 19C15.8954 19 15 18.1046 15 17M19 17C19 15.8954 18.1046 15 17 15C15.8954 15 15 15.8954 15 17M5 17C5 18.1046 5.89543 19 7 19C8.10457 19 9 18.1046 9 17M5 17C5 15.8954 5.89543 15 7 15C8.10457 15 9 15.8954 9 17M9 17H15\" />",
+    "baby": "<path d=\"M10 16C10.5 16.3 11.2 16.5 12 16.5C12.8 16.5 13.5 16.3 14 16M15 12H15.01M19.38 6.813C20.0811 7.8324 20.5645 8.9854 20.8 10.2C21.1381 10.3638 21.4233 10.6195 21.6229 10.9378C21.8224 11.2562 21.9282 11.6243 21.9282 12C21.9282 12.3757 21.8224 12.7438 21.6229 13.0622C21.4233 13.3805 21.1381 13.6362 20.8 13.8C20.3683 15.8135 19.2592 17.618 17.6577 18.9125C16.0562 20.207 14.0592 20.9132 12 20.9132C9.94076 20.9132 7.94379 20.207 6.34231 18.9125C4.74083 17.618 3.63171 15.8135 3.2 13.8C2.86186 13.6362 2.57668 13.3805 2.37714 13.0622C2.17761 12.7438 2.07178 12.3757 2.07178 12C2.07178 11.6243 2.17761 11.2562 2.37714 10.9378C2.57668 10.6195 2.86186 10.3638 3.2 10.2C3.61426 8.1705 4.71589 6.34602 6.31902 5.03437C7.92216 3.72271 9.92866 3.00418 12 3C14 3 15.5 4.1 15.5 5.5C15.5 6.9 14.6 8 13.5 8C12.7 8 12 7.6 12 7M9 12H9.01\" />",
+    "house": "<path d=\"M12.681 4.23999L13.515 3.52499C13.7773 3.30167 14.1105 3.17903 14.455 3.17903C14.7995 3.17903 15.1327 3.30167 15.395 3.52499L20.485 7.88899C20.6467 8.0254 20.7766 8.19554 20.8655 8.38746C20.9545 8.57938 21.0004 8.78845 21 8.99999V15.546C21.0006 15.8523 20.9041 16.1509 20.7244 16.399C20.5448 16.6471 20.2912 16.8319 20 16.927M7.41001 20.546V16.546C7.41001 16.2808 7.51536 16.0264 7.7029 15.8389C7.89044 15.6513 8.14479 15.546 8.41001 15.546H10.41C10.6752 15.546 10.9296 15.6513 11.1171 15.8389C11.3046 16.0264 11.41 16.2808 11.41 16.546V20.546M15.485 11.889C15.6467 12.0254 15.7766 12.1955 15.8655 12.3875C15.9545 12.5794 16.0004 12.7885 16 13V19.546C16 19.9316 15.8468 20.3014 15.5741 20.5741C15.3015 20.8468 14.9316 21 14.546 21H4.36401C3.97838 21 3.60855 20.8468 3.33587 20.5741C3.06319 20.3014 2.91001 19.9316 2.91001 19.546V13C2.90961 12.7885 2.9555 12.5794 3.04447 12.3875C3.13344 12.1955 3.26332 12.0254 3.42501 11.889L8.51501 7.52499C8.7773 7.30167 9.11052 7.17903 9.45501 7.17903C9.79949 7.17903 10.1327 7.30167 10.395 7.52499L15.485 11.889Z\" />",
+    "help": "<path d=\"M12.409 5.82401L9.586 8.58601C9.21106 8.96106 9.00043 9.46968 9.00043 10C9.00043 10.5303 9.21106 11.039 9.586 11.414C9.96106 11.7889 10.4697 11.9996 11 11.9996C11.5303 11.9996 12.0389 11.7889 12.414 11.414L14.124 9.70401C14.3478 9.48011 14.6135 9.30249 14.906 9.18131C15.1985 9.06013 15.5119 8.99776 15.8285 8.99776C16.1451 8.99776 16.4585 9.06013 16.751 9.18131C17.0435 9.30249 17.3092 9.48011 17.533 9.70401L19.414 11.586C19.7889 11.9611 19.9996 12.4697 19.9996 13C19.9996 13.5303 19.7889 14.039 19.414 14.414C21 12.828 22 11.5 22 9.50001C22 8.38721 21.6624 7.30059 21.0319 6.38367C20.4013 5.46675 19.5075 4.76266 18.4684 4.36441C17.4293 3.96615 16.2938 3.89245 15.212 4.15305C14.1301 4.41365 13.1528 4.99629 12.409 5.82401ZM19.414 14.414C19.2168 14.6113 18.9826 14.7677 18.7249 14.8745C18.4672 14.9813 18.191 15.0362 17.912 15.0362C17.633 15.0362 17.3568 14.9813 17.0991 14.8745C16.8743 14.7814 16.6675 14.6505 16.4874 14.4876M12.409 5.82401C12.2981 5.92761 12.152 5.98532 12.0002 5.98551C11.8484 5.98569 11.7022 5.92834 11.591 5.82501C10.8473 4.99735 9.87002 4.41474 8.78826 4.15411C7.7065 3.89348 6.57112 3.96709 5.53208 4.36523C4.49303 4.76336 3.59917 5.46729 2.96856 6.38405C2.33794 7.30082 2.00022 8.38729 2 9.50001C2 11.8 3.5 13.5 5 15L10.535 20.362C10.718 20.5588 10.9389 20.7167 11.1843 20.8263C11.4297 20.9359 11.6947 20.9948 11.9635 20.9997C12.2322 21.0045 12.4991 20.9552 12.7484 20.8545C12.9976 20.7539 13.224 20.6041 13.414 20.414C13.6109 20.2169 13.767 19.9828 13.8733 19.7253C13.9797 19.4678 14.0342 19.1918 14.0339 18.9132C14.0335 18.6346 13.9782 18.3587 13.8712 18.1015C13.7783 17.8784 13.6481 17.673 13.4864 17.4942M13.4864 17.4942C13.4617 17.4668 13.4362 17.4401 13.41 17.414C13.4348 17.4414 13.4603 17.4682 13.4864 17.4942ZM13.4864 17.4942C13.6638 17.6709 13.8712 17.815 14.0993 17.9197C14.3609 18.0399 14.6443 18.1055 14.9321 18.1128C15.2199 18.12 15.5062 18.0686 15.7735 17.9618C16.0409 17.855 16.2837 17.6949 16.4873 17.4913C16.6909 17.2877 16.851 17.0449 16.9578 16.7775C17.0646 16.5102 17.116 16.2239 17.1087 15.9361C17.1015 15.6483 17.0358 15.3649 16.9157 15.1033C16.8105 14.874 16.6654 14.6656 16.4874 14.4876M16.4874 14.4876C16.4623 14.4625 16.4365 14.4379 16.41 14.414C16.4352 14.4392 16.461 14.4638 16.4874 14.4876Z\" />",
+    "voc": "<path d=\"M4 19.5V4.5C4 3.83696 4.26339 3.20107 4.73223 2.73223C5.20107 2.26339 5.83696 2 6.5 2H19C19.2652 2 19.5196 2.10536 19.7071 2.29289C19.8946 2.48043 20 2.73478 20 3V17M4 19.5C4 20.163 4.26339 20.7989 4.73223 21.2678C5.20107 21.7366 5.83696 22 6.5 22H19C19.2652 22 19.5196 21.8946 19.7071 21.7071C19.8946 21.5196 20 21.2652 20 21V17M4 19.5C4 18.837 4.26339 18.2011 4.73223 17.7322C5.20107 17.2634 5.83696 17 6.5 17H20M8 13L12 6L16 13M9.1 11H14.8\" />",
+    "cal": "<path d=\"M8 2V5M16 2V5M3 9H21M5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3Z\" />",
+    "loc": "<path d=\"M20 10C20 14.993 14.461 20.193 12.601 21.799C12.4277 21.9293 12.2168 21.9998 12 21.9998C11.7832 21.9998 11.5723 21.9293 11.399 21.799C9.539 20.193 4 14.993 4 10C4 7.87827 4.84285 5.84344 6.34315 4.34315C7.84344 2.84285 9.87827 2 12 2C14.1217 2 16.1566 2.84285 17.6569 4.34315C19.1571 5.84344 20 7.87827 20 10ZM15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z\" />"
+  };
+  function svgi(k, sz) { return '<svg class="pb-i" width="' + (sz || 24) + '" height="' + (sz || 24) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[k] + '</svg>'; }
+  /* screens: one per menu item; k is the short address (#legal), id the section element */
   var SECTIONS = [
-    { id: 'pl-me', n: 'Своё', ic: 'person', c: '#141414' },
-    { id: 'pl-news', n: 'Новости', ic: 'newspaper', c: '#141414' },
-    { id: 'pl-legal', n: 'Легализация', ic: 'id_card', c: 'var(--c-legal)' },
-    { id: 'pl-by', n: 'Беларусам', ic: 'language', c: '#000' },
-    { id: 'pl-money', n: 'Бабки', ic: 'payments', c: 'var(--c-money)' },
-    { id: 'pl-bank', n: 'Банки', ic: 'account_balance', c: '#141414' },
-    { id: 'pl-life', n: 'Быт', ic: 'home', c: 'var(--c-life)' },
-    { id: 'pl-auto', n: 'Авто', ic: 'directions_car', c: 'var(--c-auto)', fg: '#141414' },
-    { id: 'pl-svoi', n: 'Свои', ic: 'forum', c: 'var(--c-svoi)' },
-    { id: 'pl-dict', n: 'Словарь', ic: 'translate', c: '#141414' },
-    { id: 'pl-lyrics', n: 'Лирика', ic: 'history_edu', c: '#141414' }
+    { k: 'me', id: 'pl-me', n: 'Своё', ic: 'mine' },
+    { k: 'legal', id: 'pl-legal', n: 'Легализация', ic: 'leg' },
+    { k: 'news', id: 'pl-news', n: 'Новости', ic: 'news' },
+    { k: 'by', id: 'pl-by', n: 'Беларусам', ic: 'bel' },
+    { k: 'money', id: 'pl-money', n: 'Бабки', ic: 'money' },
+    { k: 'bank', id: 'pl-bank', n: 'Банки', ic: 'bank' },
+    { k: 'kids', id: 'pl-kids', n: 'Дети', ic: 'baby' },
+    { k: 'home', id: 'pl-home', n: 'Дом', ic: 'house' },
+    { k: 'auto', id: 'pl-auto', n: 'Авто', ic: 'car' },
+    { k: 'help', id: 'pl-help', n: 'Хелп', ic: 'help' },
+    { k: 'dict', id: 'pl-dict', n: 'Словарь', ic: 'voc' }
   ];
+  /* old addresses from links and bookmarks */
+  var SCREEN_ALIAS = { 'pl-svoi': 'help', 'pl-life': 'help', 'pl-lyrics': 'me', 'pl-avg': 'me', 'pl-top': 'me', svoi: 'help', life: 'help' };
+  var MOB_MAIN = ['me', 'legal', 'money', 'home'];
 
   var STAGES = [
-    { id: 'arrive', n: 'Только приехал', next: [['Сделай PESEL и profil zaufany: без них не подписать заявление в MOS', '#pl-life'], ['Выбери основание для ВНЖ и подай, пока виза или безвиз действуют', '#pl-legal'], ['Найди бесплатную юрпомощь своего города в разделе «Свои»', '#pl-svoi']] },
+    { id: 'arrive', n: 'Только приехал', next: [['Сделай PESEL и profil zaufany: без них не подписать заявление в MOS', '#pl-d-d30'], ['Выбери основание для ВНЖ и подай, пока виза или безвиз действуют', '#pl-legal'], ['Найди бесплатную юрпомощь своего города в разделе «Хелп»', '#help']] },
     { id: 'wait', n: 'Подал, жду', next: [['Сохрани UPO и следи за письмами: вызов на отпечатки придёт сам', '#pl-legal'], ['Посчитай, сколько ты уже ждёшь, в таймере ожидания', '#pl-legal'], ['Не уезжай из Польши без действующей карты или визы', '#pl-legal']] },
     { id: 'vnzh', n: 'Есть ВНЖ', next: [['Поставь в календарь дату окончания карты и подай заранее', '#pl-legal'], ['Начни считать выезды: для ПМЖ важен каждый день', '#pl-legal'], ['Обменяй права: беларусские действуют 6 месяцев после ВНЖ', '#pl-auto']] },
     { id: 'pmzh', n: 'Есть ПМЖ', next: [['Посчитай дату, с которой можно на гражданство', '#pl-legal'], ['Готовь доход и жильё на бумаге: их проверят', '#pl-legal'], ['Следи за законом о гражданстве: сроки хотят увеличить', '#pl-news']] },
-    { id: 'pass', n: 'Иду на паспорт', next: [['Uznanie у воеводы: 1000 zł, решение по закону за 6 месяцев', '#pl-legal'], ['Проверь, что выездов дольше 6 месяцев не было', '#pl-legal'], ['Напиши в «Свои», когда получишь: это праздник', '#pl-svoi']] },
-    { id: 'citizen', n: 'Есть паспорт', next: [['Сделай dowód osobisty: очередь та же, но теперь ты в ней как гражданин', '#pl-legal'], ['Сходи на выборы: теперь в твоих проблемах можно винить и себя', '#pl-news'], ['Помоги новеньким: теперь ты тот самый знакомый, который всё знает', '#pl-svoi']] }
+    { id: 'pass', n: 'Иду на паспорт', next: [['Uznanie у воеводы: 1000 zł, решение по закону за 6 месяцев', '#pl-legal'], ['Проверь, что выездов дольше 6 месяцев не было', '#pl-legal'], ['Расскажи своим, когда получишь: это праздник', '#help']] },
+    { id: 'citizen', n: 'Есть паспорт', next: [['Сделай dowód osobisty: очередь та же, но теперь ты в ней как гражданин', '#pl-legal'], ['Сходи на выборы: теперь в твоих проблемах можно винить и себя', '#pl-news'], ['Помоги новеньким: теперь ты тот самый знакомый, который всё знает', '#help']] }
   ];
 
   var NEWS = [
@@ -300,11 +321,11 @@
 
   var LIFE = [
     { id: 'd30', ic: 'task_alt', t: 'Первые 30 дней', s: 'Чеклист, по которому живут все новенькие', checks: [
-      ['d30_pesel', 'PESEL: в urzędzie gminy, по заявлению с основанием, бесплатно'], ['d30_bank', 'Счёт в банке (с ВНЖ или картой побыту меньше вопросов)'], ['d30_pz', 'Profil zaufany: через банк, когда есть PESEL'], ['d30_phone', 'Польский номер: prepaid регистрируют по документу'], ['d30_meld', 'Meldunek (zameldowanie): нужен для прав, travel doc и многого другого'], ['d30_nfz', 'Страховка NFZ: через работодателя или свой ZUS'], ['d30_poz', 'Deklaracja POZ: выбрать семейного врача'], ['d30_tg', 'Найти бесплатную юрпомощь своего города в разделе «Свои»']] },
+      ['d30_pesel', 'PESEL: в urzędzie gminy, по заявлению с основанием, бесплатно'], ['d30_bank', 'Счёт в банке (с ВНЖ или картой побыту меньше вопросов)'], ['d30_pz', 'Profil zaufany: через банк, когда есть PESEL'], ['d30_phone', 'Польский номер: prepaid регистрируют по документу'], ['d30_meld', 'Meldunek (zameldowanie): нужен для прав, travel doc и многого другого'], ['d30_nfz', 'Страховка NFZ: через работодателя или свой ZUS'], ['d30_poz', 'Deklaracja POZ: выбрать семейного врача'], ['d30_tg', 'Найти бесплатную юрпомощь своего города в разделе «Хелп»']] },
     { id: 'home', ic: 'apartment', t: 'Жильё', s: 'Аренда, залог, meldunek', list: ['Договор аренды только письменно, с адресом и сроком: он же подтверждение жилья для ужонда', 'Kaucja по закону не больше 12 месячных плат, при najmie okazjonalnym не больше 6. Вернуть её обязаны в течение месяца после выезда', 'Najem okazjonalny: нотариус и адрес, куда съедешь. Хозяева любят, ты подписываешь', 'Без договора нет meldunku, без meldunku сложнее с правами и документами'], u: 'https://www.infor.pl/prawo/umowy/najem-i-dzierzawy/5591797,wynajem-mieszkania-kaucja-limity-zasady-waloryzacja.html', s2: 'infor.pl' },
     { id: 'health', ic: 'health_and_safety', t: 'Здоровье', s: 'NFZ, врач, экстренные номера', list: ['Страховка NFZ появляется вместе с ZUS: работа, zlecenie или своя JDG', 'Сначала семейный врач POZ, к специалисту по направлению', 'Экстренный номер 112, работает и по-английски', 'Частная медицина часто идёт бонусом от работодателя'] },
     { id: 'kids', ic: 'child_care', t: 'Дети', s: 'PESEL, сад, школа, 800+', list: ['PESEL ребёнку делают в gmina', 'Żłobek и przedszkole: запись обычно весной, мест меньше, чем желающих', 'С 1.06.2026 800+ для иностранцев только при работе родителя, ребёнок должен учиться в Польше (кроме детей до 6 лет)'], u: 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a', s2: 'wp.pl' },
-    { id: 'lang', ic: 'school', t: 'Польский', s: 'B1 нужен для ПМЖ и паспорта', list: ['Państwowy certyfikat B1: расписание и запись на certyfikatpolski.pl', 'Бесплатные курсы бывают в центрах интеграции, см. «Свои»', 'Kurwa не уровень B1, проверено'] },
+    { id: 'lang', ic: 'school', t: 'Польский', s: 'B1 нужен для ПМЖ и паспорта', list: ['Państwowy certyfikat B1: расписание и запись на certyfikatpolski.pl', 'Бесплатные курсы бывают в центрах интеграции, см. «Хелп»', 'Kurwa не уровень B1, проверено'] },
     { id: 'money', ic: 'savings', t: 'Деньги из Беларуси', s: 'Чтобы банк не заморозил', list: ['Сохраняй документы о продаже имущества и переводах', 'Перед крупным переводом (квартира, машина) собери бумаги заранее и предупреди банк', 'Без ВНЖ в ЕС возможны ограничения карт и онлайн-банкинга'] }
   ];
 
@@ -397,11 +418,11 @@
   function roadKm(a, b) { return DIST[a + '-' + b] || DIST[b + '-' + a] || Math.round(km(CITIES[a].g, CITIES[b].g) * 1.25 / 5) * 5; }
   function sico(ic, c, fg) { return '<span class="pl-sico" style="background:' + c + ';color:' + (fg || '#fff') + '">' + ms(ic) + '</span>'; }
   function head(id, title, ic, c, fg, note) {
-    return '<div class="pl-head"><div>' + sico(ic, c, fg) + '<h2 class="pl-h2" id="' + id + '-h">' + title + '</h2></div>' + (note ? '<p class="pl-small pl-muted">' + note + '</p>' : '') + '</div>';
+    return '<div class="pl-head"><h2 class="pl-h2" id="' + id + '-h">' + title + '</h2>' + (note ? '<p class="pl-small pl-muted">' + note + '</p>' : '') + '</div>';
   }
   function box(st) {
     if (st === 'todo') return '<span class="pl-box" aria-hidden="true"></span>';
-    return '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x=".5" y=".5" width="17" height="17" rx="2.5" fill="#fd2222" stroke="#fd2222"/><path d="' + (st === 'done' ? CHECK : DASH) + '" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    return '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x=".5" y=".5" width="17" height="17" rx="2.5" fill="#1F1919" stroke="#1F1919"/><path d="' + (st === 'done' ? CHECK : DASH) + '" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
   function checks(list) {
     return '<div class="pl-checks">' + list.map(function (c) {
@@ -420,7 +441,7 @@
   function maskDmy(v) { var g = String(v || '').replace(/\D/g, '').slice(0, 8), o = g.slice(0, 2); if (g.length > 2) o += '/' + g.slice(2, 4); if (g.length > 4) o += '/' + g.slice(4); return o; }
   function dateCtl(fid, iso, attrs) {
     return '<span class="pl-date"><input class="pl-input" type="text" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="ДД/ММ/ГГГГ" id="' + fid + '" data-date ' + attrs + ' value="' + esc(isoToDmy(iso)) + '" aria-haspopup="dialog" aria-expanded="false"' + (mobileCal() ? ' readonly' : '') + '>' +
-      '<span class="pl-date-ico" aria-hidden="true">' + ms('calendar_month') + '</span></span>';
+      '<span class="pl-date-ico" aria-hidden="true">' + svgi('cal', 20) + '</span></span>';
   }
   function field(id, label, type, extra, uid) {
     var v = S.f[id] != null ? S.f[id] : '', fid = 'pl-f-' + (uid || id), fb = fallbackOf(id);
@@ -443,44 +464,55 @@
     save();
     $$('[data-f="' + k + '"]').forEach(function (x) { if (x !== el) x.value = S.f[k]; });
   }
-  function rBar() {
-    return '<div class="pl-bar"><nav class="pl-nav" aria-label="Разделы">' + SECTIONS.map(function (s) {
-      return '<a href="#' + s.id + '" data-nav="' + s.id + '"' + (s.id === 'pl-me' && !meOpen() ? ' hidden' : '') + '><span class="pl-dot" style="background:' + s.c + ';color:' + (s.fg || '#fff') + '">' + ms(s.ic) + '</span>' + s.n + '</a>';
-    }).join('') + '</nav>' +
-      '<div class="pl-lvl" title="Уровень растёт со статусом «Где ты сейчас» и отмеченными шагами"><span class="pl-lvl-t"><span class="pl-muted">Уровень</span> <b data-o="lvlName"></b></span>' +
-      '<ol class="pl-lvl-s" aria-label="Уровни">' + LEVELS.map(function (l, i) { return '<li data-lvl="' + i + '" title="' + l[1] + '"><i><b></b></i></li>'; }).join('') + '</ol>' +
-      '<b class="pl-lvl-p" data-o="lvlPct"></b></div></div>';
+  /* ---------- shell: sidebar, top bar, phone tab bar, footer ---------- */
+  var STAGE_LBL = { arrive: ['Только', 'приехал'], wait: ['Подался на', 'ВНЖ'], vnzh: ['Есть', 'ВНЖ'], pmzh: ['Есть', 'ПМЖ'], pass: ['Подался на', 'паспорт'], citizen: ['Есть', 'паспорт'] };
+  function chev() { return '<svg class="pb-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>'; }
+  function navLink(s, cls) { return '<a class="' + cls + '" href="#' + s.k + '" data-nav="' + s.k + '">' + svgi(s.ic) + '<span>' + s.n + '</span></a>'; }
+  function rSide() {
+    return '<aside class="pb-side"><div class="pb-side-in"><nav class="pb-nav" aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav>' +
+      '<div class="pb-ill" aria-hidden="true">' + rIll() + '</div></div></aside>';
   }
-
-  function rHero() {
-    return '<section class="pl-band" id="pl-top" aria-labelledby="pl-h1">' +
-      '<h1 class="sr" id="pl-h1">Польша: гайд для эмигрантов</h1>' +
-      '<div class="pl-setup" style="margin-top:0">' +
-        '<div class="pl-field"><label class="pl-eyebrow" for="pl-city">Твой город</label><div class="pl-row">' +
-          '<span class="pl-citysel"><span data-o="cityIco">' + ms(S.geo && S.geo.city === S.city ? 'my_location' : 'location_on') + '</span><select class="pl-input pl-sel" id="pl-city" data-city-sel aria-describedby="pl-geo-msg">' + CITY_ORDER.map(function (id) {
+  function rTop() {
+    var st = STAGE_LBL[S.stage] || STAGE_LBL.arrive, set = meOpen();
+    return '<div class="pb-top">' +
+      '<div class="pb-pills">' +
+        '<label class="pb-pill">' + svgi('loc', 20) + '<span data-o="cityName">' + esc(city().n) + '</span>' + chev() +
+          '<select data-city-sel id="pl-city" aria-label="Твой город" aria-describedby="pl-geo-msg"><option value="__geo">Определить по геолокации</option>' + CITY_ORDER.map(function (id) {
             return '<option value="' + id + '"' + (id === S.city ? ' selected' : '') + '>' + CITIES[id].n + '</option>';
-          }).join('') + '</select></span>' +
-          '<button type="button" class="pl-chip pl-geo" data-geo aria-describedby="pl-geo-msg">' + ms('my_location') + '<span>Рядом со мной</span></button></div>' +
-        '<p class="pl-xs pl-muted" id="pl-geo-msg" data-o="geoMsg" aria-live="polite"></p></div>' +
-        '<div class="pl-field"><span class="pl-eyebrow" id="pl-stage-l">Где ты сейчас</span><div class="pl-row" role="group" aria-labelledby="pl-stage-l">' + STAGES.map(function (s) {
-          return '<button type="button" class="pl-chip" data-stage="' + s.id + '" aria-pressed="' + (meOpen() && s.id === S.stage) + '">' + s.n + '</button>';
-        }).join('') + '</div><p class="pl-xs pl-muted" data-o="stageHint" aria-live="polite"></p></div>' +
+          }).join('') + '</select></label>' +
+        '<label class="pb-pill">' + (set ? '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>' : '<span>Где ты сейчас?</span>') + chev() +
+          '<select data-stage-sel aria-label="Где ты сейчас">' + (set ? '' : '<option value="" selected disabled>Где ты сейчас?</option>') + STAGES.map(function (s) {
+            return '<option value="' + s.id + '"' + (set && s.id === S.stage ? ' selected' : '') + '>' + s.n + '</option>';
+          }).join('') + '</select></label>' +
       '</div>' +
-      '<div class="pl-next" style="margin-top:24px" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
-      '<div class="pl-badges" aria-label="Ачивки">' + BADGES.map(function (b) {
-        return '<div class="pl-badge" data-badge="' + b.id + '"><span class="c">' + ms(b.ic) + '</span><small>' + b.t + '</small></div>';
-      }).join('') + '</div>' +
-    '</section>';
+      '<div class="pb-langs" role="group" aria-label="Язык"><button type="button" aria-pressed="true">РУС</button><button type="button" disabled title="Скоро">БЕЛ</button><button type="button" disabled title="Скоро">УКР</button></div>' +
+      '<div class="pl-lvl"><span class="pl-lvl-t">Уровень: <b data-o="lvlName"></b></span>' +
+        '<ol class="pl-lvl-s" aria-label="Уровни">' + LEVELS.map(function (l, i) { return '<li data-lvl="' + i + '" title="' + l[1] + '"><i><b></b></i></li>'; }).join('') + '</ol>' +
+        '<b class="pl-lvl-p sr" data-o="lvlPct"></b></div>' +
+      '<p class="pb-geo-msg" id="pl-geo-msg" data-o="geoMsg" aria-live="polite"></p>' +
+    '</div>';
+  }
+  function rTabs() {
+    var main = SECTIONS.filter(function (s) { return MOB_MAIN.indexOf(s.k) > -1; }), rest = SECTIONS.filter(function (s) { return MOB_MAIN.indexOf(s.k) < 0; });
+    return '<nav class="pb-tabs" aria-label="Разделы">' + main.map(function (s) { return navLink(s, 'pb-tab'); }).join('') +
+      '<button type="button" class="pb-tab" data-more aria-expanded="false" aria-controls="pb-more"><svg class="pb-i" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Ещё</span></button></nav>' +
+      '<div class="pb-more" id="pb-more" hidden><nav aria-label="Ещё разделы">' + rest.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav></div>';
+  }
+  function rFoot() {
+    return '<footer class="pb-foot">' +
+      '<a class="pb-brand" href="#me"><img src="' + ILL_BASE + 'me.webp" alt="Pan Bogdan, e-помогатор" width="240" height="228" loading="lazy" decoding="async"></a>' +
+      '<div class="pb-foot-c"><p class="pb-disc">Стараюсь дать максимально много информации, но без гарантий (как любой помогатор). Законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</p>' +
+        '<div class="pl-acc pl-sources"><details id="pl-d-src"><summary><span class="t">Источники и даты<small>' + SOURCES.length + ' ссылок, проверено 30.10.2026</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body wide"><ul class="pl-list">' +
+          SOURCES.map(function (s) { return '<li>' + link(s[1], s[0]) + '</li>'; }).join('') + '</ul></div></details></div>' +
+        '<div class="pb-foot-row"><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button><span class="pl-small pl-muted">Придумал и собрал <a href="https://pasha.by/">pasha.by</a></span></div></div>' +
+      '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span><span class="pashaby-q" aria-hidden="true">format_quote</span></button>' +
+    '</footer>';
   }
 
-  /* «Своё» opens once the visitor picks where they are (or already has dates saved) */
+  /* «Своё»: the home screen. Dates live only in this browser */
   var ME_KEYS = ['since', 'filed', 'vnzhGot', 'pmzhFiled', 'staly', 'passFiled', 'passGot'];
   function meOpen() { return !!S.stageSet || ME_KEYS.some(function (k) { return !!S.f[k]; }); }
-  function revealMe() {
-    var sec = $('#pl-me'), nv = $('[data-nav="pl-me"]');
-    if (nv) nv.hidden = false;
-    if (sec && sec.hidden) { sec.hidden = false; sec.classList.add('pl-reveal'); spy(); }
-  }
+  function revealMe() {}
   /* personal dates: arrival for everyone, the rest appears with the stage (or when filled) */
   var ME_ROWS = [
     { k: 'vnzh', t: 'ВНЖ', ic: 'id_card', min: 1, f: 'filed', g: 'vnzhGot' },
@@ -488,34 +520,45 @@
     { k: 'pass', t: 'Паспорт', ic: 'emoji_events', min: 3, f: 'passFiled', g: 'passGot' }
   ];
   function rMe() {
-    var c = city();
+    var c = city(), n = NEWS[0];
     var stat = c.by ? 'Из них около ' + c.by + ' тыс. живут в ' + c.voiv + '. ' : '';
-    return '<section class="pl-band" id="pl-me" aria-labelledby="pl-me-h"' + (meOpen() ? '' : ' hidden') + '>' + head('pl-me', 'Своё', 'person', '#141414', '#fff', 'Хранится только в этом браузере. Даже ужонд не узнает.') +
-      '<div class="pl-mine">' +
-        '<div class="pl-mine-row"><div class="pl-mine-t">' + ms('flight_land') + 'Приехал</div><div class="pl-fields">' + field('since', 'В Польше с', 'date', '', 'me-since') + '</div></div>' +
-        ME_ROWS.map(function (r) {
-          return '<div class="pl-mine-row" data-mrow="' + r.k + '"><div class="pl-mine-t">' + ms(r.ic) + r.t + '</div><div class="pl-fields">' + field(r.f, 'Подал', 'date', '', 'me-' + r.f) + field(r.g, 'Решение', 'date', '', 'me-' + r.g) + '</div></div>';
-        }).join('') +
-        '<p class="pl-note" data-o="meHint"></p>' +
+    return '<section class="pl-band pb-screen" id="pl-me" aria-labelledby="pl-h1">' +
+      '<h1 class="sr" id="pl-h1">Pan Bogdan: Польша пошагово</h1>' +
+      '<div class="pb-home">' +
+        '<div class="pb-hero" data-fitcells="300"><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', данные MSWiA</div></div>' +
+        '<div class="pb-card pb-mine">' +
+          '<div class="pb-mine-h"><h2 class="pb-mine-logo" id="pl-me-h">Своё</h2><p class="pl-small pl-muted">Укажи даты: появятся твои счётчики и сравнение со средним по воеводству.</p><p class="pl-small pb-mine-p">Хранится только в этом браузере.<br>Даже ужонд не узнает.</p></div>' +
+          '<div class="pl-mine">' +
+            '<div class="pl-mine-row"><div class="pl-mine-t">' + ms('flight_land') + 'Приехал</div><div class="pl-fields">' + field('since', 'В Польше с', 'date', '', 'me-since') + '</div></div>' +
+            ME_ROWS.map(function (r) {
+              return '<div class="pl-mine-row" data-mrow="' + r.k + '"><div class="pl-mine-t">' + ms(r.ic) + r.t + '</div><div class="pl-fields">' + field(r.f, 'Подал', 'date', '', 'me-' + r.f) + field(r.g, 'Решение', 'date', '', 'me-' + r.g) + '</div></div>';
+            }).join('') +
+          '</div>' +
+          '<p class="pl-note" data-o="meHint"></p>' +
+          '<div class="pl-me" data-o="me" data-fitcells="160" aria-live="polite"></div>' +
+        '</div>' +
       '</div>' +
-      '<div class="pl-me" data-o="me" data-fitcells="260" aria-live="polite"></div>' +
-    '</section>' +
-    '<section class="pl-band" id="pl-avg" aria-label="Польша в цифрах">' +
-      '<div class="pl-count-h"><span>Польша в цифрах: в среднем</span><span class="pl-muted" style="font-weight:400">' + c.voiv + ' · данные на ' + c.waitDate + '</span></div>' +
-      '<div class="pl-counts" data-fitcells="220">' +
-        '<div><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', данные MSWiA</div></div>' +
-        (c.pmzh ? '<div><div class="pl-big">' + n0(c.pmzh) + '</div><div class="pl-lab">дней в среднем ждут ПМЖ ' + c.loc + '</div><div class="pl-sub">По закону 6 месяцев. MSWiA</div></div>' : '') +
-        '<div><div class="pl-big">142 737</div><div class="pl-lab">беларусов с документами на пребывание в Польше</div><div class="pl-sub">UdSC, 1.02.2026. ' + stat + 'В 2025 подали ' + n0(c.apps) + ' ' + plural(c.apps, 'заявление', 'заявления', 'заявлений') + ' в ' + c.voiv + '</div></div>' +
-        '<div><div class="pl-big">2 922</div><div class="pl-lab">дня до паспорта обычным путём</div><div class="pl-sub">8 лет: 5 на временном и 3 на ПМЖ. Пока</div></div>' +
-        '<div><div class="pl-big">4 806</div><div class="pl-lab">zł brutto: минималка 2026</div><div class="pl-sub">На руки около 3 606 zł</div></div>' +
+      '<div class="pb-counts">' +
+        '<div class="pl-counts" data-fitcells="150">' +
+          (c.pmzh ? '<div><div class="pl-big">' + n0(c.pmzh) + '</div><div class="pl-lab">дней в среднем ждут ПМЖ ' + c.loc + '</div><div class="pl-sub">По закону 6 месяцев. MSWiA</div></div>' : '') +
+          '<div><div class="pl-big">142 737</div><div class="pl-lab">беларусов с документами на пребывание в Польше</div><div class="pl-sub">UdSC, 1.02.2026. ' + stat + 'В 2025 подали ' + n0(c.apps) + ' ' + plural(c.apps, 'заявление', 'заявления', 'заявлений') + ' в ' + c.voiv + '</div></div>' +
+          '<div><div class="pl-big">2 922</div><div class="pl-lab">дня до паспорта обычным путём</div><div class="pl-sub">8 лет: 5 на временном и 3 на ПМЖ. Пока</div></div>' +
+          '<div><div class="pl-big">4 806</div><div class="pl-lab">zł brutto: минималка 2026</div><div class="pl-sub">На руки около 3 606 zł</div></div>' +
+        '</div>' +
+        '<a class="pb-newscard" href="#news"><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span><span class="pb-nc-h"><b>' + n.d + '</b> <span class="pb-nc-s">' + esc(n.s) + '</span></span><span class="pb-nc-t">' + n.t + '</span></a>' +
       '</div>' +
+      '<p class="pb-asof">' + c.voiv + ' · данные на ' + c.waitDate + '</p>' +
+      '<div class="pl-next" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
+      '<div class="pl-badges" aria-label="Ачивки">' + BADGES.map(function (b) {
+        return '<div class="pl-badge" data-badge="' + b.id + '"><span class="c">' + ms(b.ic) + '</span><small>' + b.t + '</small></div>';
+      }).join('') + '</div>' +
     '</section>';
   }
 
   function rNews() {
     var first = NEWS.slice(0, 5), rest = NEWS.slice(5);
     function li(n) { return '<li><time>' + n.d + '</time><p><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span>' + n.t + ' ' + src(n.u, n.s) + '</p></li>'; }
-    return '<section class="pl-band" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Что изменилось', 'newspaper', '#141414', '#fff', 'Свежее сверху · проверено 23.10.2026') +
+    return '<section class="pl-band pb-screen" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Что изменилось', 'newspaper', '#141414', '#fff', 'Свежее сверху · проверено 23.10.2026') +
       '<ul class="pl-news">' + first.map(li).join('') + '</ul>' +
       '<div class="pl-acc" style="border-top:0"><details id="pl-d-news"><summary><span class="t" style="font-size:15px">Ещё ' + rest.length + ' ' + plural(rest.length, 'новость', 'новости', 'новостей') + '</span>' + ms('expand_more', 'chev') + '</summary><ul class="pl-news" style="margin-top:0">' + rest.map(li).join('') + '</ul></details></div>' +
     '</section>';
@@ -599,16 +642,17 @@
           (k === 'vnzh' ? rToolVnzh() : k === 'pmzh' ? (pmPath() === 'rd' || pmPath() === 'prot' ? rToolPmzh() : '') : rToolPass()) + '</div>' +
       '</div></div>';
     }).join('');
-    var by = '<section class="pl-band pl-dark" id="pl-by" aria-labelledby="pl-by-h">' +
-      '<div class="pl-head"><div>' + sico('language', '#fff', '#000') + '<h2 class="pl-h2" id="pl-by-h" style="font-size:clamp(36px,4vw,96px)">Беларусам отдельно</h2></div><p class="pl-small pl-muted">То, чего нет в общих гайдах</p></div>' +
+    return '<section class="pl-band pb-screen" id="pl-legal" aria-labelledby="pl-legal-h"><h2 class="sr" id="pl-legal-h">Легализация</h2>' +
+      '<p class="pl-small pl-muted pb-uw">Твой ужонд: <b style="color:var(--ink)" data-bind="uw"></b> · квадрат слева меняет статус шага · всё сохраняется в браузере</p>' +
+      '<div class="pl-legal-bar">' + tabs + '<label class="pl-toggle pl-mypath"><input type="checkbox" data-mypath' + (myPath() ? ' checked' : '') + '><span>Мой путь<small class="pl-xs pl-muted">пройденное по «Где ты сейчас» и датам в «Своё»</small></span></label></div>' +
+      panels + '</section>';
+  }
+  function rBy() {
+    return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
       '<div class="pl-acc" style="margin-top:28px">' + BELARUS.map(function (b, i) {
         return '<details id="pl-d-by' + i + '"><summary>' + ms(b.ic, 'lead-ico') + '<span class="t">' + b.t + '<small>' + b.s + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
           b.b.map(function (p) { return '<p>' + p + '</p>'; }).join('') + srcLine(b.src) + '</div></details>';
       }).join('') + '</div></section>';
-    return '<section class="pl-band" id="pl-legal" aria-labelledby="pl-legal-h">' + head('pl-legal', 'Легализация', 'id_card', 'var(--c-legal)', '#fff', '') +
-      '<p class="pl-small pl-muted" style="margin-top:16px">Твой ужонд: <b style="color:var(--ink)" data-bind="uw"></b> · квадрат слева меняет статус шага · всё сохраняется в браузере</p>' +
-      '<div class="pl-legal-bar">' + tabs + '<label class="pl-toggle pl-mypath"><input type="checkbox" data-mypath' + (myPath() ? ' checked' : '') + '><span>Мой путь<small class="pl-xs pl-muted">пройденное по «Где ты сейчас» и датам в «Своё»</small></span></label></div>' +
-      panels + '</section>' + by;
   }
 
   function cards(list, color, fg) {
@@ -713,12 +757,33 @@
       '<div data-w="b2b"><span class="v" data-o="dlMzp"></span><span class="k">дней до 31 января: заявка на Mały ZUS Plus</span></div>' +
       '<div data-w="b2b"><span class="v" data-o="dlForm"></span><span class="k">дней до 20 февраля: сменить форму налога на год</span></div>' +
       '<div><span class="v" data-o="dlPit"></span><span class="k">дней до 30 апреля: годовой PIT</span></div></div>';
-    return '<section class="pl-band" id="pl-money" aria-labelledby="pl-money-h">' + head('pl-money', 'Бабки', 'payments', 'var(--c-money)', '#141414', 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя.') + tabs +
+    return '<section class="pl-band pb-screen" id="pl-money" aria-labelledby="pl-money-h">' + head('pl-money', 'Бабки', 'payments', 'var(--c-money)', '#141414', 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя.') + tabs +
       '<div role="tabpanel" id="pl-cp" aria-labelledby="pl-ct-' + S.contract + '"><div class="pl-split">' + side + '<div class="pl-main">' + calc + '</div></div>' + taxes + zus + dl + '</div></section>';
   }
 
+  function lifeAcc(ids) {
+    return '<div class="pl-acc" style="margin-top:36px">' + LIFE.filter(function (l) { return ids.indexOf(l.id) > -1; }).map(function (l) {
+      var body = l.checks ? checks(l.checks) : '<ul class="pl-list">' + l.list.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>';
+      return '<details id="pl-d-' + l.id + '"' + (l.id === 'd30' || ids.length === 1 ? ' open' : '') + '><summary>' + ms(l.ic, 'lead-ico') + '<span class="t">' + l.t + '<small>' + l.s + '</small></span>' + (l.checks ? '<span class="pl-cnt" data-o="lc-' + l.id + '"></span>' : '') + ms('expand_more', 'chev') + '</summary><div class="body">' + body +
+        (l.u ? '<p class="pl-note">Источник: ' + link(l.u, l.s2) + '</p>' : '') + '</div></details>';
+    }).join('') + '</div>';
+  }
+  /* «Банки»: who is friendly to Belarusians, and money from Belarus */
   function rBank() {
-    return '<section class="pl-band" id="pl-bank" aria-labelledby="pl-bank-h">' + head('pl-bank', 'Банки', 'account_balance', '#141414', '#fff', 'Ипотека в цифрах и кто как относится к беларусам') +
+    return '<section class="pl-band pb-screen" id="pl-bank" aria-labelledby="pl-bank-h">' + head('pl-bank', 'Банки', '', '', '', 'Кто как относится к беларусам') +
+            '<p class="pl-lead" style="margin-top:8px">Насколько легко открыть счёт и пользоваться им без карты побыту. С картой побыту проще почти везде.</p>' +
+      '<ol class="pl-banks">' + BANKS.map(function (b, i) {
+        return '<li><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
+          '<span class="pl-bank-s" aria-label="Лояльность ' + b.s + ' из 3: ' + BANK_LBL[b.s] + '"><span class="pl-dots">' + [1, 2, 3].map(function (k) { return '<i' + (k <= b.s ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' + BANK_LBL[b.s] + '</span>' +
+          '<span class="pl-bank-t">' + b.t + ' <span class="pl-muted pl-xs">' + link(b.u, b.src) + ', ' + b.d + '</span></span></li>';
+      }).join('') + '</ol>' +
+      '<p class="pl-note" style="margin-top:16px">Данные 2022 года собраны до санкций 2025-го, перед походом в банк уточни. По ING и Millennium проверенных правил нет: знаешь, как там сейчас, напиши нам.</p>' +
+      tipHtml('С 24.10.2025 санкции ЕС (' + link('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041', 'регламент 2025/2041') + ') заставляют банки строже проверять беларусов без карты побыту. С отказами по TZTC в 2026 году разбираются ' + link('https://bip.brpo.gov.pl/pl/content/rpo-bialorusini-ochrona-miedzynarodowa-konta-bankowe-knf-odpowiedz-kolejne', 'омбудсмен и KNF') + '.', 1) +
+      lifeAcc(['money']) + '</section>';
+  }
+  /* «Дом»: mortgage numbers, the calculator, renting */
+  function rHome() {
+    return '<section class="pl-band pb-screen" id="pl-home" aria-labelledby="pl-home-h">' + head('pl-home', 'Дом', '', '', '', 'Ипотека в цифрах, сколько дадут и аренда') +
       '<p class="pl-lead">Средние по всей Польше, по городам официальных данных нет.</p>' +
       '<div class="pl-counts" data-fitcells="200">' +
         '<div><div class="pl-big">486 500</div><div class="pl-lab">zł: средняя ипотека</div><div class="pl-sub">BIK, сентябрь 2026. На 8,3% больше, чем год назад</div></div>' +
@@ -728,30 +793,15 @@
       '</div>' +
       '<p class="pl-note" style="margin-top:20px">Источники: ' + link('https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r', 'BIK о рынке в сентябре 2026') + ', ' + link('https://finwire.pl/artykuly/nowe-kredyty-mieszkaniowe-wrzesien-2026-nbp', 'данные NBP за сентябрь 2026') + '</p>' +
       rMort() +
-      '<h3 class="pl-h3" style="margin-top:56px">Рейтинг лояльности к беларусам</h3>' +
-      '<p class="pl-lead" style="margin-top:8px">Насколько легко открыть счёт и пользоваться им без карты побыту. С картой побыту проще почти везде.</p>' +
-      '<ol class="pl-banks">' + BANKS.map(function (b, i) {
-        return '<li><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
-          '<span class="pl-bank-s" aria-label="Лояльность ' + b.s + ' из 3: ' + BANK_LBL[b.s] + '"><span class="pl-dots">' + [1, 2, 3].map(function (k) { return '<i' + (k <= b.s ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' + BANK_LBL[b.s] + '</span>' +
-          '<span class="pl-bank-t">' + b.t + ' <span class="pl-muted pl-xs">' + link(b.u, b.src) + ', ' + b.d + '</span></span></li>';
-      }).join('') + '</ol>' +
-      '<p class="pl-note" style="margin-top:16px">Данные 2022 года собраны до санкций 2025-го, перед походом в банк уточни. По ING и Millennium проверенных правил нет: знаешь, как там сейчас, напиши в «Свои».</p>' +
-      tipHtml('С 24.10.2025 санкции ЕС (' + link('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041', 'регламент 2025/2041') + ') заставляют банки строже проверять беларусов без карты побыту. С отказами по TZTC в 2026 году разбираются ' + link('https://bip.brpo.gov.pl/pl/content/rpo-bialorusini-ochrona-miedzynarodowa-konta-bankowe-knf-odpowiedz-kolejne', 'омбудсмен и KNF') + '.', 1) +
       '<h3 class="pl-h3" style="margin-top:56px">Ипотека иностранцу</h3>' +
       '<ul class="pl-list" style="margin-top:12px">' +
         '<li>Без карты побыту ипотеку почти не дают. Временную карту принимают не все банки, и она часто должна действовать ещё 6–12 месяцев после заявки.</li>' +
         '<li>Собственный взнос обычно от 20%.</li>' +
         '<li>Дом или участок иностранцу из-за пределов ЕС покупать только с разрешением MSWiA.</li>' +
-      '</ul>' + srcLine([['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'rankomat.pl'], ['https://pawelpietras.pl/blog/kredyt-hipoteczny-dla-obcokrajowca-z-karta-czasowego-pobytu', 'pawelpietras.pl']]) + '</section>';
+      '</ul>' + srcLine([['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'rankomat.pl'], ['https://pawelpietras.pl/blog/kredyt-hipoteczny-dla-obcokrajowca-z-karta-czasowego-pobytu', 'pawelpietras.pl']]) + lifeAcc(['home']) + '</section>';
   }
-
-  function rLife() {
-    return '<section class="pl-band" id="pl-life" aria-labelledby="pl-life-h">' + head('pl-life', 'Быт', 'home', 'var(--c-life)', '#fff', 'Жильё, врачи, дети, язык и деньги') +
-      '<div class="pl-acc" style="margin-top:36px">' + LIFE.map(function (l) {
-        var body = l.checks ? checks(l.checks) : '<ul class="pl-list" style="--dotc:var(--c-life)">' + l.list.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>';
-        return '<details id="pl-d-' + l.id + '"' + (l.id === 'd30' ? ' open' : '') + '><summary>' + ms(l.ic, 'lead-ico') + '<span class="t">' + l.t + '<small>' + l.s + '</small></span>' + (l.checks ? '<span class="pl-cnt" data-o="lc-' + l.id + '"></span>' : '') + ms('expand_more', 'chev') + '</summary><div class="body">' + body +
-          (l.u ? '<p class="pl-note">Источник: ' + link(l.u, l.s2) + '</p>' : '') + '</div></details>';
-      }).join('') + '</div></section>';
+  function rKids() {
+    return '<section class="pl-band pb-screen" id="pl-kids" aria-labelledby="pl-kids-h">' + head('pl-kids', 'Дети', '', '', '', 'PESEL, сад, школа, 800+') + lifeAcc(['kids']) + '</section>';
   }
 
   function rAuto() {
@@ -760,7 +810,7 @@
       var k = roadKm(c, x);
       return '<button type="button" class="pl-chip" data-dist="' + k + '">' + CITIES[c].n + ' → ' + CITIES[x].n + ' <span class="pl-muted" style="font-weight:400">≈' + k + ' км</span></button>';
     }).join('');
-    return '<section class="pl-band pl-dark" id="pl-auto" aria-labelledby="pl-auto-h">' + head('pl-auto', 'Авто', 'directions_car', 'var(--c-auto)', '#141414', 'Топливо: средние цены по Польше, раз в неделю') +
+    return '<section class="pl-band pb-screen" id="pl-auto" aria-labelledby="pl-auto-h">' + head('pl-auto', 'Авто', 'directions_car', 'var(--c-auto)', '#141414', 'Топливо: средние цены по Польше, раз в неделю') +
       '<div class="pl-counts" data-fitcells="200" style="margin-top:40px">' + [['PB 95', 'fuelPb', 'Зарплата обновляется реже.'], ['ON · дизель', 'fuelOn', 'Дизель снова дороже бензина. Или нет. Смотри цифру.'], ['LPG', 'fuelLpg', 'Газовики смотрят на всех свысока.']].map(function (f) {
         return '<div><div class="pl-lab" style="margin:0 0 12px">' + f[0] + '</div><div class="pl-big" data-o="' + f[1] + '">—</div><div class="pl-lab">zł за литр, в среднем по Польше</div><div class="pl-sub">' + f[2] + '</div></div>';
       }).join('') + '</div>' +
@@ -782,36 +832,23 @@
     var inner = '<span class="li">' + ms(ic || x.ic || 'arrow_outward') + '</span><span class="c"><b>' + x.n + '</b><span>' + x.d + '</span><em>' + x.h + '</em></span>';
     return x.u ? '<a class="pl-link" href="' + x.u + '" target="_blank" rel="noopener">' + inner + '</a>' : '<div class="pl-link">' + inner + '</div>';
   }
-  function rSvoi() {
+  function rHelp() {
     var c = city();
     var help = (c.uwUrl ? [{ n: c.uw, d: 'Официальный сайт твоего ужонда: объявления, запись, контакты', u: c.uwUrl, h: c.uwUrl.replace('https://www.', ''), ic: 'gavel' }] : []).concat(c.help);
-    return '<section class="pl-band" id="pl-svoi" aria-labelledby="pl-svoi-h">' + head('pl-svoi', 'Свои', 'forum', 'var(--c-svoi)', '#fff', 'Бесплатная помощь и официальные сайты') +
+    return '<section class="pl-band pb-screen" id="pl-help" aria-labelledby="pl-help-h">' + head('pl-help', 'Хелп', '', '', '', 'Бесплатная помощь, официальные сайты и быт без паники') +
       '<h3 class="pl-eyebrow" style="margin-top:40px">Бесплатная помощь ' + c.loc + '</h3><div class="pl-links">' + help.map(function (h) { return linkCard(h, h.ic || 'volunteer_activism'); }).join('') + '</div>' +
       (c.help.length ? '' : '<p class="pl-note" style="margin-top:12px">Местных организаций по ' + c.voiv + ' в официальной базе пока нет. Контакты ниже работают по всей Польше.</p>') +
       '<h3 class="pl-eyebrow" style="margin-top:40px">Официально</h3><div class="pl-links">' + OFFICIAL.map(function (o) { return linkCard(o); }).join('') + '</div>' +
       '<p class="pl-note" style="margin-top:16px">Zielona Linia: <b class="pl-num" style="color:var(--ink)">19 524</b> <button type="button" class="pl-btn" data-copy="19 524" style="height:28px;padding:0 8px;margin-left:6px">' + ms('content_copy') + '<span>Копировать</span></button></p>' +
     
+      '<h3 class="pl-eyebrow" style="margin-top:56px">Быт без паники</h3>' + lifeAcc(['d30', 'health', 'lang']).replace('margin-top:36px', 'margin-top:12px') +
       '</section>';
   }
 
   function rDict() {
-    return '<section class="pl-band" id="pl-dict" aria-labelledby="pl-dict-h">' + head('pl-dict', 'Словарь ужонда', 'translate', '#141414', '#fff', DICT.length + ' слов, без которых ни одно письмо не читается') +
+    return '<section class="pl-band pb-screen" id="pl-dict" aria-labelledby="pl-dict-h">' + head('pl-dict', 'Словарь ужонда', 'translate', '#141414', '#fff', DICT.length + ' слов, без которых ни одно письмо не читается') +
       '<div class="pl-dict-tools"><label class="sr" for="pl-dict-q">Поиск по словарю</label><input class="pl-input" id="pl-dict-q" type="search" placeholder="Найти: wezwanie, PESEL, мельдунек" autocomplete="off"><span class="pl-small pl-muted" data-o="dictN"></span></div>' +
       '<dl class="pl-dict">' + DICT.map(function (d) { return '<div data-dict="' + esc((d[0] + ' ' + d[1] + ' ' + d[2]).toLowerCase()) + '"><dt>' + d[0] + ' <span>· ' + d[1] + '</span></dt><dd>' + d[2] + '</dd></div>'; }).join('') + '</dl></section>';
-  }
-
-  function rLyrics() {
-    return '<section class="pl-band" id="pl-lyrics" aria-labelledby="pl-lyrics-h">' + head('pl-lyrics', 'Лирика', 'history_edu', '#141414', '#fff', 'Статьи про Польшу · позже подтянем по тегу') +
-      '<div class="pl-posts">' + POSTS.map(function (p) {
-        return '<a class="pl-post" href="' + p.u + '"' + (p.ext ? ' target="_blank" rel="noopener"' : '') + '><span class="pl-eyebrow" style="font-weight:400">' + (p.ext ? 'Пресса · ' + p.ext : 'pasha.by') + '</span><b>' + p.t + '</b></a>';
-      }).join('') + '</div>' +
-      '<div class="pl-acc pl-sources" style="margin-top:56px"><details id="pl-d-src"><summary>' + ms('menu_book', 'lead-ico') + '<span class="t">Источники и даты<small>' + SOURCES.length + ' ссылок, проверено 30.10.2026</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body wide"><ul class="pl-list">' +
-        SOURCES.map(function (s) { return '<li>' + link(s[1], s[0]) + '</li>'; }).join('') + '</ul></div></details></div></section>';
-  }
-
-  function rFoot() {
-    return '<div class="pl-foot"><span>Это гайд, а не юридическая консультация: законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</span>' +
-      '<button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div>';
   }
 
   /* ---------- compute & update ---------- */
@@ -947,7 +984,7 @@
       html += '<div><div class="pl-big">' + (toRd > 0 ? n0(toRd) : '0') + '</div><div class="pl-lab">' + dWord(Math.max(0, toRd)) + ' до 5 лет для rezydenta UE</div><div class="pl-sub">' + (toRd > 0 ? fmtD(addY(since, 5)) : 'Срок уже есть, проверь выезды') + '</div></div>' +
         '<div><div class="pl-big" style="color:var(--red)">' + (toPass > 0 ? n0(toPass) : '0') + '</div><div class="pl-lab">' + dWord(Math.max(0, toPass)) + ' до паспорта обычным путём</div><div class="pl-sub">Если всё пойдёт по плану. Ха</div></div>';
     }
-    out('me', html || '<p class="pl-small pl-muted">Укажи даты выше: появятся твои счётчики и сравнение со средним по воеводству.</p>');
+    out('me', html);
   }
   function updateMine() {
     var si = STAGE_IDX[S.stage] || 0, hidden = 0;
@@ -1177,15 +1214,14 @@
     return best;
   }
   function updateGeo() {
-    var btn = $('[data-geo]'), msg = '';
-    if (btn) { btn.setAttribute('aria-busy', String(geoBusy)); btn.disabled = geoBusy; btn.lastChild.textContent = geoBusy ? 'Ищу…' : 'Рядом со мной'; }
+    var msg = '';
+    out('cityName', geoBusy ? 'Ищу…' : esc(city().n));
     if (geoErr) msg = geoErr;
     else if (S.geo && S.geo.city === S.city) {
       var c = CITIES[S.geo.city];
       msg = S.geo.km <= 60 ? 'Определено по геолокации: ' + c.n + (S.geo.km >= 5 ? ', ' + S.geo.km + ' км' : '') + '.'
         : 'Твоего города пока нет в гайде. Ближе всего ' + c.n + ', ' + n0(S.geo.km) + ' км, показываем его данные. Если ты в другом воеводстве, ужонд и сроки у тебя свои.';
     }
-    else if (navigator.geolocation) msg = 'Или нажми «Рядом со мной»: координаты не сохраняются, только город.';
     out('geoMsg', esc(msg));
   }
   function locate(silent) {
@@ -1226,11 +1262,66 @@
     closeCal();
     var open = $$('details[open]').map(function (d) { return d.id; }).filter(Boolean);
     var y = window.scrollY;
-    root.innerHTML = rBar() + rHero() + rMe() + rNews() + rLegal() + rMoney() + rBank() + rLife() + rAuto() + rSvoi() + rDict() + rLyrics() + rFoot();
+    root.innerHTML = '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
+      rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main></div>' + rFoot() + '</div>' + rTabs();
     if (open.length) $$('details').forEach(function (d) { if (d.id && open.indexOf(d.id) > -1) d.open = true; });
-    renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitCounts();
-    if (rendered) window.scrollTo(0, y);
+    renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); fitCounts();
+    if (rendered) window.scrollTo(0, y); else route();
     rendered = 1;
+  }
+
+  /* ---------- one long page: the menu scrolls to a section, the section in view lights up its menu item and its picture ---------- */
+  var activeNow = '', spyHold = 0;
+  function keyOf(h) {
+    if (!h) return null;
+    for (var i = 0; i < SECTIONS.length; i++) { if (SECTIONS[i].k === h || SECTIONS[i].id === h) return { k: SECTIONS[i].k, el: document.getElementById(SECTIONS[i].id) }; }
+    if (SCREEN_ALIAS[h]) { var al = SECTIONS.filter(function (x) { return x.k === SCREEN_ALIAS[h]; })[0]; return { k: al.k, el: document.getElementById(al.id) }; }
+    var el = document.getElementById(h), sec = el && el.closest && el.closest('.pb-screen');
+    if (sec) { var hit = SECTIONS.filter(function (x) { return x.id === sec.id; })[0]; if (hit) return { k: hit.k, el: el }; }
+    return null;
+  }
+  function go(h, smooth) {
+    var r = keyOf(h); if (!r || !r.el) return false;
+    var d = r.el.tagName === 'DETAILS' ? r.el : r.el.closest('details'); if (d) d.open = true;
+    spyHold = Date.now() + (smooth ? 1200 : 600);
+    r.el.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
+    setActive(r.k);
+    return true;
+  }
+  function route() {
+    var h = ''; try { h = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
+    if (!h || /^import=/.test(h)) return;
+    setTimeout(function () { go(h, false); }, 0);
+  }
+  function setActive(k) {
+    if (k === activeNow) return; activeNow = k;
+    $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === k) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    var more = $('[data-more]'); if (more) more.classList.toggle('on', MOB_MAIN.indexOf(k) < 0);
+    var src = ILL[k] || '';
+    $$('.pb-ill img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-ill') === src); });
+  }
+  function closeMore() { var m = $('#pb-more'), b = $('[data-more]'); if (m) m.hidden = true; if (b) b.setAttribute('aria-expanded', 'false'); }
+  window.addEventListener('hashchange', route);
+  root.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || !root.contains(a)) return;
+    var h = a.getAttribute('href').slice(1); if (!keyOf(h)) return;
+    e.preventDefault(); closeMore();
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    go(h, !reduce);
+    try { history.replaceState(null, '', '#' + h); } catch (err) {}
+  });
+  /* section pictures, pinned to the bottom of the menu column. «Банки» has none of its own yet, it borrows «Бабки» */
+  var ILL_BASE = (document.querySelector('meta[name="pb-img"]') || { content: 'img/' }).content;
+  var ILL = { me: 'me', legal: 'legal', news: 'news', by: 'by', money: 'money', bank: 'money', kids: 'kids', home: 'home', auto: 'auto', help: 'help', dict: 'dict' };
+  function rIll() {
+    var seen = {};
+    return Object.keys(ILL).map(function (k) { var f = ILL[k]; if (seen[f]) return ''; seen[f] = 1; return '<img data-ill="' + f + '" src="' + ILL_BASE + f + '.webp" alt="" width="240" height="240" decoding="async"' + (f === 'me' ? '' : ' loading="lazy"') + '>'; }).join('');
+  }
+  function setStage(id) {
+    S.stage = id; S.stageSet = true; S.legal = { arrive: 'vnzh', wait: 'vnzh', vnzh: 'pmzh', pmzh: 'paszport', pass: 'paszport', citizen: 'paszport' }[id] || S.legal; save();
+    var st = STAGE_LBL[id], sel = $('[data-stage-sel]'), pill = sel && sel.parentNode;
+    if (pill) { var first = pill.firstChild; while (first && first !== sel && first.tagName !== 'svg') { var nx = first.nextSibling; pill.removeChild(first); first = nx; } pill.insertAdjacentHTML('afterbegin', '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>'); var ph = sel.querySelector('option[disabled]'); if (ph) sel.removeChild(ph); }
+    updateStage(); applyTabs(); updatePath(); updateProgress(); updateMine(); updateMe(); fitCounts();
   }
 
   function setStatus(key) {
@@ -1322,7 +1413,9 @@
     var b = e.target.closest('button'); if (!b || !root.contains(b)) return;
     var d = b.dataset;
     if (b.hasAttribute('data-geo')) { locate(false); }
-    else if (d.stage) { S.stage = d.stage; S.stageSet = true; revealMe(); S.legal = { arrive: 'vnzh', wait: 'vnzh', vnzh: 'pmzh', pmzh: 'paszport', pass: 'paszport', citizen: 'paszport' }[d.stage] || S.legal; save(); updateStage(); applyTabs(); updatePath(); updateProgress(); updateMine(); updateMe(); fitCounts(); }
+    else if (d.stage) { setStage(d.stage); }
+    else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
+    else if (b.hasAttribute('data-phrase')) { var t = b.querySelector('.pashaby-t'); t.classList.add('out'); setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160); }
     else if (b.hasAttribute('data-me-all')) { S.meAll = true; save(); updateMine(); }
     else if (d.legal) { S.legal = d.legal; save(); applyTabs(); }
     else if (d.contract) { S.contract = CONTRACTS[d.contract] ? d.contract : 'uop'; save(); updateTools(); applyTabs(); }
@@ -1372,7 +1465,8 @@
   });
   root.addEventListener('change', function (e) {
     var el = e.target;
-    if (el.matches('[data-city-sel]')) { if (!CITIES[el.value]) return; S.city = el.value; S.geo = null; S.cityManual = true; geoErr = ''; save(); render(); var ns = $('#pl-city'); if (ns) ns.focus({ preventScroll: true }); return; }
+    if (el.matches('[data-stage-sel]')) { if (STAGE_LBL[el.value]) setStage(el.value); return; }
+    if (el.matches('[data-city-sel]')) { if (el.value === '__geo') { el.value = S.city; locate(false); return; } if (!CITIES[el.value]) return; S.city = el.value; S.geo = null; S.cityManual = true; geoErr = ''; save(); render(); var ns = $('#pl-city'); if (ns) ns.focus({ preventScroll: true }); return; }
     if (el.matches('[data-pmzh-path]')) { S.pmzhPath = el.value; save(); render(); var ps = $('#pl-pmzh-path'); if (ps) ps.focus({ preventScroll: true }); return; }
     if (el.matches('[data-mypath]')) { S.myPath = el.checked; save(); updatePath(); updateProgress(); return; }
     if (el.matches('[data-check]')) { S.checks[el.getAttribute('data-check')] = el.checked; save(); updateProgress(); }
@@ -1382,16 +1476,18 @@
   /* scrollspy */
   var io;
   function spy() {
+    activeNow = ''; setActive('me');
     if (!('IntersectionObserver' in window)) return;
     if (io) io.disconnect();
     io = new IntersectionObserver(function (ents) {
       ents.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var id = en.target.id;
-        $$('[data-nav]').forEach(function (a) { var on = a.getAttribute('data-nav') === id; a.setAttribute('aria-current', String(on)); if (on) { var nav = a.parentNode; if (nav.scrollTo) nav.scrollTo({ left: Math.max(0, a.getBoundingClientRect().left - nav.getBoundingClientRect().left + nav.scrollLeft - 24), behavior: 'smooth' }); } });
+        if (!en.isIntersecting || Date.now() < spyHold) return;
+        if (en.target.classList.contains('pb-foot')) { setActive('foot'); return; }
+        var hit = SECTIONS.filter(function (x) { return x.id === en.target.id; })[0]; if (hit) setActive(hit.k);
       });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    SECTIONS.forEach(function (s) { var el = document.getElementById(s.id); if (el) io.observe(el); });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    SECTIONS.forEach(function (x) { var el = document.getElementById(x.id); if (el) io.observe(el); });
+    var f = $('.pb-foot'); if (f) io.observe(f);
   }
 
   /* icon font guard: hide ligature text if the font cannot load */
@@ -1402,26 +1498,11 @@
   /* the site logo on this page: a random line instead of pasha.by */
   var PHRASES = ['Дом там, где жабка', 'Из Минска в ZUS', 'Утром PESEL, вечером стулья', 'PESEL есть, счастья нет', 'Уровень польского: Żabka B2', 'Wszystko rozumiem ale nic nie mogę powiedzieć', 'Польша дала мне второй ZUS', 'Интегрировался. Ненавижу соседей.',
     'Promocja, paragon, przepraszam', 'Польский B2, пока не надо звонить', 'Rozumiem wszystko, говорю едва. Мой уровень жабка B2', 'Brakuje jednego dokumentu', 'Хот-дог за жабсы, чайник на раты',
-    'В дымном плену, в угаре пьяном. Жизнь моя пошла по Касторамам', 'Стою в очереди в Хлеб и Вино', 'Umieść artykuł w strefie pakowania', 'Polski 50cent — fifty groszy. Butelkę kaucyjną, poproszę',
+    'В дымном плену, в угаре пьяном. Жизнь моя пошла по Касторамам', 'Стою в очереди в Хлеб и Вино', 'Umieść artykuł w strefie pakowania', 'Polski 50cent: fifty groszy. Butelkę kaucyjną, poproszę',
     'Znalazłem puszki, оказалось не те. Бутылочку не выбрасывай-те', 'Свобода есть. Парковки нет.', 'У меня всё есть. Na raty'];
   var phraseNow = -1;
   function nextPhrase() { var i; do { i = Math.floor(Math.random() * PHRASES.length); } while (PHRASES.length > 1 && i === phraseNow); phraseNow = i; return PHRASES[i]; }
   /* the site logo on this page becomes a phrase about emigrant life in Poland; a click shows another one */
-  function brandPhrase() {
-    Array.prototype.forEach.call(document.querySelectorAll('.cs-header .cs-header__logo, [data-pl-logo]'), function (a) {
-      if (a.getAttribute('data-pl-brand')) return;
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'pashaby-phrase'; b.title = 'Ещё фраза';
-      b.innerHTML = '<span class="pashaby-q" aria-hidden="true">format_quote</span><span class="pashaby-t" aria-live="polite"></span>';
-      var t = b.querySelector('.pashaby-t'); t.textContent = nextPhrase();
-      b.addEventListener('click', function () {
-        t.classList.add('out');
-        setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160);
-      });
-      var w = document.createElement('div'); w.className = 'pashaby-brand'; w.setAttribute('data-pl-brand', '1'); w.appendChild(b);
-      a.parentNode.replaceChild(w, a);
-      fitPhrase(t);
-    });
-  }
   /* one line always: a long phrase gets a smaller font instead of a second line, so the header never changes height */
   function fitPhrase(t) {
     t.style.fontSize = '';
@@ -1434,7 +1515,6 @@
   }
   function fitPhrases() { Array.prototype.forEach.call(document.querySelectorAll('.pashaby-t'), fitPhrase); }
   try {
-    brandPhrase();
     var fitRaf = 0;
     window.addEventListener('resize', function () { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(fitPhrases); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPhrases);

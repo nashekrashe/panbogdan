@@ -7,11 +7,11 @@ const $=s=>w.document.querySelector(s), $$=s=>[...w.document.querySelectorAll(s)
 const view=()=>['vnzh','pmzh','paszport'].map(k=>k+':'+[0,1,2,3,4,5].map(i=>{const r=$('[data-step="'+k+i+'"]');return r.classList.contains('pl-past')?'x':(r.classList.contains('done')?'d':'.')}).join('')+' '+$('[data-o="tc-'+k+'"]').textContent).join('  ');
 const tg=$('[data-mypath]'); console.log('toggle default checked:', tg.checked, '| label:', tg.closest('label').textContent);
 console.log('no stage   ', view());
-for (const st of ['arrive','wait','vnzh','pmzh','pass','citizen']) { $('[data-stage="'+st+'"]').click(); console.log(st.padEnd(11), view()); }
+for (const st of ['arrive','wait','vnzh','pmzh','pass','citizen']) { (s=>{const e=$('[data-stage-sel]');e.value=s;e.dispatchEvent(new w.Event('change',{bubbles:true}))})(st); console.log(st.padEnd(11), view()); }
 const r=$('[data-step="vnzh0"]'); console.log('past row inert:', r.hasAttribute('inert'), 'btn disabled:', r.querySelector('[data-cycle]').disabled, 'label:', r.querySelector('.pl-st').textContent);
 tg.checked=false; tg.dispatchEvent(new w.Event('change',{bubbles:true})); console.log('toggle off ', view(), '| inert:', r.hasAttribute('inert'));
 tg.checked=true; tg.dispatchEvent(new w.Event('change',{bubbles:true}));
-$('[data-stage="vnzh"]').click();
+(s=>{const e=$('[data-stage-sel]');e.value=s;e.dispatchEvent(new w.Event('change',{bubbles:true}))})('vnzh');
 const type=(el,v)=>{el.value=v; el.dispatchEvent(new w.InputEvent('input',{bubbles:true,inputType:'insertText'}));};
 type($('#pl-f-me-pmzhFiled'),'01092026'); console.log('pmzh filed ', view());
 // manual status on a non-past step still works

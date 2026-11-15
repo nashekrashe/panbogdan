@@ -12,8 +12,8 @@ const { chromium, devices } = require('playwright');
     console.log(name, '35y, lim 10k, 1 kid:', JSON.stringify(await rd()));
     await pg.fill('#pl-f-mOwn', '0'); await pg.waitForTimeout(100); console.log(name, 'own 0:', JSON.stringify(await rd()));
     await pg.fill('#pl-f-mOwn', '200000'); await pg.selectOption('#pl-f-mYears', '25'); await pg.fill('#pl-f-mLim', '0'); await pg.selectOption('#pl-f-mKids', '0');
-    const tool = pg.locator('#pl-bank .pl-tool').first(); await tool.scrollIntoViewIfNeeded(); await pg.waitForTimeout(900);
-    const ov = await pg.evaluate(() => ({ docW: document.documentElement.scrollWidth, winW: innerWidth, wide: [...document.querySelectorAll('#pl-bank .pl-tool *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1).map(e => e.className || e.tagName).slice(0, 5) }));
+    const tool = pg.locator('#pl-home .pl-tool').first(); await tool.scrollIntoViewIfNeeded(); await pg.waitForTimeout(900);
+    const ov = await pg.evaluate(() => ({ docW: document.documentElement.scrollWidth, winW: innerWidth, wide: [...document.querySelectorAll('#pl-home .pl-tool *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1).map(e => e.className || e.tagName).slice(0, 5) }));
     console.log(name, 'overflow', JSON.stringify(ov), 'errors', errs);
     await tool.screenshot({ path: '../mort_' + name + '.png' });
     // persistence

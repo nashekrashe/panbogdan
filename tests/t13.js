@@ -7,7 +7,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   const errs=[]; w.addEventListener('error',e=>errs.push(e.message)); w.eval(js);
   const $=s=>w.document.querySelector(s);
   const b=$('.pashaby-phrase'), t=$('.pashaby-t');
-  console.log('anchor gone:', !$('[data-pl-logo]'), '| button:', b && b.tagName, b.type, '| icon:', $('.pashaby-q').textContent, $('.pashaby-q').getAttribute('aria-hidden'));
+  console.log('| button:', b && b.tagName, b.type, '| icon:', $('.pashaby-q').textContent, $('.pashaby-q').getAttribute('aria-hidden'));
   const seen=new Set([t.textContent]); let same=0, prev=t.textContent;
   for(let i=0;i<40;i++){ b.click(); await sleep(170); if(t.textContent===prev) same++; prev=t.textContent; seen.add(t.textContent); }
   console.log('40 clicks: distinct phrases', seen.size, '| repeats in a row', same, '| has new one:', [...seen].some(s=>/Kasторам|Касторам/.test(s))||'maybe');
