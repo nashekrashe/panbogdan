@@ -1,0 +1,42 @@
+# Weekly: do the source links of the news (NEWS in src/block.js) still open?
+# Commits data/news-check.json and site/data/news-check.json (the site shows the date of the last check and marks dead links).
+# If a link is dead, opens an issue so the news gets a new source by hand.
+name: Проверка новостей
+on:
+  schedule:
+    - cron: '43 5 * * 1'   # Mondays 05:43 UTC, after «Проверка реквизитов»
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check links
+        id: chk
+        run: |
+          set +e
+          node build/newscheck.mjs | tee newscheck.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit result
+        run: |
+          git config user.name "newscheck-bot"
+          git config user.email "newscheck-bot@users.noreply.github.com"
+          git add data/news-check.json site/data/news-check.json
+          git diff --cached --quiet || (git commit -m "Новости: еженедельная проверка ссылок" && git pull --rebase && git push)
+      - name: Open an issue when a link is dead
+        if: steps.chk.outputs.code == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "Робот не смог открыть эти источники новостей. Найди новый источник и обнови NEWS в src/block.js."
+            echo
+            node -e "const j=require('./data/news-check.json');for(const f of j.fails)if(f.reason.startsWith('HTTP'))console.log('- '+f.d+' «'+f.h+'»: '+f.url+' ('+f.reason+')')"
+          } > body.md
+          gh issue create --title "Новости: источник не открывается ($(date +%d.%m.%Y))" --body-file body.md

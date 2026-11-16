@@ -169,21 +169,30 @@
     { id: 'citizen', n: 'Есть паспорт', next: [['Сделай dowód osobisty: очередь та же, но теперь ты в ней как гражданин', '#pl-legal', 's:paszport5'], ['Сходи на выборы: теперь в твоих проблемах можно винить и себя', '#pl-news'], ['Помоги новеньким: теперь ты тот самый знакомый, который всё знает', '#help']] }
   ];
 
-  var NEWS = [
-    { d: '24.08.2026', t: 'Протест иностранцев у Мазовецкого ужонда. Средний срок по ВНЖ на Мазовше вырос до 394 дней, в 2023 году было 153.', tag: 'Сроки', u: 'https://warszawa.naszemiasto.pl/mieli-czekac-60-dni-a-czekaja-nawet-2-lata-tlum-obcokrajowcow-wyszedl-na-ulice-warszawy-urzad-milczy-moge-stracic-prace/ar/c1p2-29291631', s: 'naszemiasto.pl' },
-    { d: '27.07.2026', t: 'MSWiA ответило на интерпелляцию 18089: на 6.07.2026 ВНЖ быстрее всего в Małopolskie, 242 дня, дольше всего в Śląskie, 658. На Мазовше ПМЖ ждут в среднем 239 дней, rezydenta UE 423.', tag: 'Сроки', u: 'https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body', s: 'sejm.gov.pl' },
-    { d: '06.07.2026', t: 'MSWiA: в Pomorskie на временный ВНЖ в среднем уходит 598 дней. Дольше только в Śląskie, 658.', tag: 'Сроки', u: 'https://dziennikbaltycki.pl/cudzoziemcy-czekaja-miesiacami-na-legalizacje-pobytu-a-nadchodzi-kolejna-fala-wnioskow-wojewodztwo-pomorskie-ma-problem/ar/c1p2-29401689', s: 'dziennikbaltycki.pl' },
-    { d: '01.06.2026', t: '800+ для иностранцев только при работе или другой активности. Ребёнок должен учиться в Польше, кроме детей до 6 лет.', tag: 'Деньги', u: 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a', s: 'wp.pl' },
-    { d: '13.05.2026', t: 'MSWiA готовит новые правила гражданства: минимум 8 лет в Польше, тест, высокий уровень польского.', tag: 'Проект', u: 'https://forsal.pl/kraj/aktualnosci/artykuly/11246150,dla-kogo-polskie-obywatelstwo-mswia-przygotowuje-zmiany-w-prawie.html', s: 'forsal.pl' },
-    { d: '12.05.2026', t: 'Проект UD408: временный ВНЖ «молчаливым согласием» через 60 дней. Только для граждан стран с безвизом в ЕС, Беларусь в их число не входит. Правительство планирует принять проект в III квартале 2026.', tag: 'Проект', u: 'https://www.gov.pl/web/premier/projekt-ustawy-o-zmianie-ustawy-o-cudzoziemcach', s: 'gov.pl' },
-    { d: '27.04.2026', t: 'MOS 2: заявления на ВНЖ, ПМЖ и rezydenta UE только онлайн. Красный штамп заменило zaświadczenie. Старый портал закрыли 17.04.2026 вместе с аккаунтами.', tag: 'Закон', red: 1, u: 'https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', s: 'zielonalinia.gov.pl' },
-    { d: '05.03.2026', t: 'При отказе или прекращении дела пошлину больше не возвращают.', tag: 'Закон', u: 'https://www.gov.pl/web/uw-warminsko-mazurski/oplaty', s: 'gov.pl' },
-    { d: '01.02.2026', t: 'UdSC: 142 737 беларусов с действующими документами на пребывание. Из них 87 219 с временным ВНЖ, 41 721 с ПМЖ, 10 044 с дополнительной защитой.', tag: 'Цифры', u: 'https://www.gov.pl/attachment/4738d4ca-beae-459f-b0bb-2db8f2da7ac2', s: 'gov.pl' },
-    { d: '09.01.2026', t: 'Сейм отклонил проект о 10 годах на ПМЖ перед гражданством. Пока действуют старые правила.', tag: 'Закон', u: 'https://grantthornton.pl/publikacja/zatrudnianie-cudzoziemcow-2026-sejm-odrzucil-zmiany-w-obywatelstwie/', s: 'grantthornton.pl' },
-    { d: '04.12.2025', t: 'PKO: беларусы без карты побыту, открывшие счёт после 24.10.2025, теряют онлайн-банкинг, BLIK и карту. Основание: санкционный регламент ЕС 2025/2041.', tag: 'Банки', u: 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', s: 'pkobp.pl' },
-    { d: '01.08.2025', t: 'Новые пошлины за гражданство: 1000 zł за uznanie, 1669 zł за nadanie.', tag: 'Закон', u: 'https://www.gov.pl/web/uw-lubelski/obywatelstwo-i-repatriacja', s: 'gov.pl' },
-    { d: '01.07.2024', t: 'Авто на беларусских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец за рулём или в салоне, у него виза или ВНЖ.', tag: 'Авто', u: 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', s: 'gov.pl/web/kas' }
-  ].sort(function (a, b) { var p = function (s) { var x = s.split('.'); return x[2] + x[1] + x[0]; }; return p(b.d) < p(a.d) ? -1 : 1; });
+  /* every item: d date, tag, h headline, t one paragraph, u/s source (u2/s2 optional second source), red = deadline or must-know.
+     build/newscheck.mjs opens every u and u2 once a week (workflow «Проверка новостей») and writes data/news-check.json */
+  var NEWS = /*NEWS*/[
+    { d: '06.11.2026', tag: 'Налоги', h: 'PIT с 2027: три ставки вместо двух, если подпишет президент', t: 'Сейм 5 ноября и Сенат без поправок приняли новую шкалу: 12% до 130 000 zł дохода в год, 24% от 130 000 до 150 000 zł, 32% сверх. В том же законе ryczałt только при выручке до 250 тысяч евро вместо 2 млн, а danina solidarnościowa растёт с 4% до 5%. У президента 21 день, опубликовать закон надо до конца ноября. PIT за 2026 год в любом случае считается по старой шкале.', u: 'https://www.money.pl/podatki/zmiany-w-podatkach-senat-zdecydowal-teraz-czas-na-ruch-prezydenta-7348086529518048a.html', s: 'money.pl', u2: 'https://biznes.wprost.pl/twoj-portfel/12495919/zmiany-podatkowe-w-rekach-prezydenta-co-zrobi-karol-nawrocki.html', s2: 'wprost.pl' },
+    { d: '28.10.2026', tag: 'Проект', h: 'Гражданство: B2, тест и декларация лояльности', t: 'MSWiA внесло проект в план работ правительства. Польский нужен на B2 вместо B1, тест о Польше обязателен, плюс декларация лояльности и доказательства, что центр жизни в Польше, например налоговое резидентство. Ещё минимальный доход и право на жильё. Упрощённое восстановление гражданства (art. 38) оставят до 31.12.2030. Правительство хочет принять проект в IV квартале 2026, потом его рассмотрит Сейм. Пока действуют старые правила.', u: 'https://www.money.pl/gospodarka/zainteresowanie-obywatelstwem-polskim-rosnie-rzad-chce-zmian-7344845081319520a.html', s: 'money.pl' },
+    { d: '15.09.2026', tag: 'Деньги', h: 'Минималка 2027: 4 950 zł brutto', t: 'Правительство утвердило минимальную зарплату на 2027 год: 4 950 zł brutto в месяц вместо 4 806, почасовая ставка на zleceniu 32,30 zł. Распоряжение вышло в Dz.U. 2026 poz. 1213 и действует с 1 января 2027. От минималки считается и ZUS владельца JDG, так что взносы тоже подрастут.', u: 'https://ksiegowosc.infor.pl/wiadomosci/7656496,minimalne-wynagrodzenie-w-2027-r-netto-i-brutto-czy-pracodawca-moze-wyrownac-premia-do-kwoty-minimalnego-wynagrodzenia.html', s: 'infor.pl', u2: 'https://www.podatki.biz/artykuly/maly-zus-2027-wyzsze-wynagrodzenie-minimalne-to-takze-wyzsze-skladki_34_63635.htm', s2: 'podatki.biz' },
+    { d: '24.08.2026', tag: 'Сроки', h: 'Протест иностранцев у Мазовецкого ужонда', t: 'По закону решение по ВНЖ должно быть за 60 дней, а ждут до двух лет. Иностранцы вышли к Мазовецкому ужонду. Средний срок по ВНЖ на Мазовше вырос до 394 дней, в 2023 году было 153.', u: 'https://warszawa.naszemiasto.pl/mieli-czekac-60-dni-a-czekaja-nawet-2-lata-tlum-obcokrajowcow-wyszedl-na-ulice-warszawy-urzad-milczy-moge-stracic-prace/ar/c1p2-29291631', s: 'naszemiasto.pl' },
+    { d: '10.08.2026', tag: 'Сроки', h: 'Карту побыту печатают дольше двух месяцев', t: 'UdSC предупредил: заявлений стало намного больше, поэтому выдача новой карты побыту и обмен старой теперь занимают больше двух месяцев. То же с Genewskim dokumentem podróży. Решение уже есть, а пластика ещё нет. Классика.', u: 'https://www.gov.pl/web/udsc/aktualnosci-udsc', s: 'gov.pl/web/udsc' },
+    { d: '01.08.2026', tag: 'Цифры', h: '133 тысячи беларусов с документами в Польше', t: 'UdSC: на 1.08.2026 документы на пребывание есть у 133 057 беларусов. 77 694 на временном ВНЖ, 41 249 на ПМЖ, 9 902 с дополнительной защитой. Polski dokument podróży в 2026 году до августа получили 4 305 беларусов, к концу года UdSC ждёт больше 7 тысяч. В феврале с документами было 142 737 человек.', u: 'https://www.gov.pl/attachment/7089372c-4050-4051-80ad-a7983a4353dc', s: 'gov.pl, UdSC' },
+    { d: '27.07.2026', tag: 'Сроки', h: 'MSWiA: где ВНЖ дают быстрее всего', t: 'Ответ на интерпелляцию 18089: на 6.07.2026 ВНЖ быстрее всего в Małopolskie, 242 дня, дольше всего в Śląskie, 658. На Мазовше ПМЖ ждут в среднем 239 дней, rezydenta UE 423.', u: 'https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body', s: 'sejm.gov.pl' },
+    { d: '06.07.2026', tag: 'Сроки', h: 'Поморское: 598 дней на ВНЖ', t: 'По данным MSWiA, в Pomorskie на временный ВНЖ в среднем уходит 598 дней. Дольше только в Śląskie, 658. Гданьск, мы тебя любим, но это много.', u: 'https://dziennikbaltycki.pl/cudzoziemcy-czekaja-miesiacami-na-legalizacje-pobytu-a-nadchodzi-kolejna-fala-wnioskow-wojewodztwo-pomorskie-ma-problem/ar/c1p2-29401689', s: 'dziennikbaltycki.pl' },
+    { d: '01.07.2026', tag: 'Беларусам', red: 1, h: 'Polski dokument podróży по упрощённым правилам до 31.12.2026', t: 'MSWiA продлило упрощённую выдачу polskiego dokumentu podróży dla cudzoziemca гражданам Беларуси до 31 декабря 2026. Это замена паспорту, если свой истёк, а в посольство нельзя. По упрощённым правилам подать надо до конца года.', u: 'https://www.mos.cudzoziemcy.gov.pl/artyku-y/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca-przedluzenie-do-31-grudnia-2026-r/', s: 'mos.cudzoziemcy.gov.pl' },
+    { d: '01.07.2026', tag: 'Дети', red: 1, h: 'Dobry Start 300 zł: заявка до 30 ноября', t: '300 zł раз в год на каждого ребёнка, который учится, до 20 лет (с инвалидностью до 24). С 2026/2027 иностранцы не из ЕС, ЕАСТ и Великобритании должны показать работу или другую активность в месяце перед подачей. Подаётся только онлайн: mZUS, PUE ZUS, банк или Emp@tia. Приём до 30.11.2026.', u: 'https://www.zus.pl/en/-/wakacyjne-zakupy-300-z%C5%82-mo%C5%BCe-si%C4%99-przyda%C4%87.-ruszy%C5%82y-wyp%C5%82aty-z-programu-dobry-start', s: 'zus.pl', u2: 'https://bank.pl/?p=553691', s2: 'bank.pl' },
+    { d: '01.06.2026', tag: 'Дети', h: '800+ для иностранцев только при работе', t: 'С 1 июня иностранцам 800+ платят, только если родитель работает или у него есть другая активность. Ребёнок должен учиться в Польше, кроме детей до 6 лет.', u: 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a', s: 'wp.pl' },
+    { d: '13.05.2026', tag: 'Проект', h: 'Гражданство не раньше чем через 8 лет', t: 'MSWiA готовит новые правила: минимум 8 лет легально в Польше, из них 3 года на временном ВНЖ и 5 на ПМЖ. Плюс тест и высокий уровень польского.', u: 'https://forsal.pl/kraj/aktualnosci/artykuly/11246150,dla-kogo-polskie-obywatelstwo-mswia-przygotowuje-zmiany-w-prawie.html', s: 'forsal.pl' },
+    { d: '12.05.2026', tag: 'Проект', h: 'ВНЖ «молчаливым согласием», но не для беларусов', t: 'Проект UD408: временный ВНЖ дают сам собой, если за 60 дней нет решения. Только для граждан стран с безвизом в ЕС, Беларусь в их число не входит. Правительство планировало принять проект в III квартале 2026.', u: 'https://www.gov.pl/web/premier/projekt-ustawy-o-zmianie-ustawy-o-cudzoziemcach', s: 'gov.pl' },
+    { d: '27.04.2026', tag: 'Закон', red: 1, h: 'MOS 2: заявления только онлайн', t: 'Заявления на ВНЖ, ПМЖ и rezydenta UE подаются только через MOS. Красный штамп в паспорте заменило zaświadczenie. Старый портал закрыли 17.04.2026 вместе с аккаунтами.', u: 'https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', s: 'zielonalinia.gov.pl' },
+    { d: '05.03.2026', tag: 'Закон', h: 'Пошлину при отказе больше не вернут', t: 'При отказе или прекращении дела opłatę skarbową больше не возвращают. Проверь документы до подачи, а не после.', u: 'https://www.gov.pl/web/uw-warminsko-mazurski/oplaty', s: 'gov.pl' },
+    { d: '09.01.2026', tag: 'Закон', h: 'Сейм отклонил 10 лет до гражданства', t: 'Сейм отклонил проект о 10 годах на ПМЖ перед гражданством. Пока действуют старые правила.', u: 'https://grantthornton.pl/publikacja/zatrudnianie-cudzoziemcow-2026-sejm-odrzucil-zmiany-w-obywatelstwie/', s: 'grantthornton.pl' },
+    { d: '04.12.2025', tag: 'Банки', h: 'PKO отключает банкинг беларусам без карты побыту', t: 'Беларусы без карты побыту, которые открыли счёт после 24.10.2025, теряют онлайн-банкинг, BLIK и карту. Основание: санкционный регламент ЕС 2025/2041.', u: 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', s: 'pkobp.pl' },
+    { d: '01.08.2025', tag: 'Закон', h: 'Гражданство подорожало', t: 'Новые пошлины: 1 000 zł за uznanie у воеводы, 1 669 zł за nadanie.', u: 'https://www.gov.pl/web/uw-lubelski/obywatelstwo-i-repatriacja', s: 'gov.pl' },
+    { d: '01.07.2024', tag: 'Авто', h: 'Машины на беларусских номерах в ЕС не пускают', t: 'Авто на беларусских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец за рулём или в салоне, у него виза или ВНЖ.', u: 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', s: 'gov.pl/web/kas' }
+  ]/*/NEWS*/.sort(function (a, b) { var p = function (s) { var x = s.split('.'); return x[2] + x[1] + x[0]; }; return p(b.d) < p(a.d) ? -1 : 1; });
+  var NEWS_CHECKED = '16.11.2026';
 
   var LEGAL = {
     vnzh: { tab: 'ВНЖ', code: '01 · Karta pobytu czasowego', title: 'Временный вид на жительство', sub: 'До 3 лет. Продлевается, пока не надоест.', irony: 'Самый длинный квест игры. Сохраняйся чаще.',
@@ -316,12 +325,14 @@
       more: ['ZUS растёт по уровням, смотри ниже', 'Форму налога выбирают раз в год', 'Нужен бухгалтер или хороший сервис'] }
   };
   var TAXES = [
-    { id: 'skala', w: 'uop zlec dzielo b2b', ic: 'percent', tag: 'Skala', t: 'Шкала', big: '12 / 32%', x: '12% до 120 000 zł в год, 32% сверх. Kwota wolna 30 000 zł. Składka zdrowotna 9%.', i: 'По умолчанию, если ничего не выбрал.', more: ['Для UoP и zlecenie всегда шкала', 'До 26 лет ulga dla młodych: PIT 0 до 85 528 zł в год', 'Можно совместное с супругом'] },
+    { id: 'skala', w: 'uop zlec dzielo b2b', ic: 'percent', tag: 'Skala', t: 'Шкала', big: '12 / 32%', x: '12% до 120 000 zł в год, 32% сверх. Kwota wolna 30 000 zł. Składka zdrowotna 9%.', i: 'По умолчанию, если ничего не выбрал.', more: ['Для UoP и zlecenie всегда шкала', 'До 26 лет ulga dla młodych: PIT 0 до 85 528 zł в год', 'С супругом совместно можно, только если никто из вас не на liniowym и не на ryczałcie, см. карточку «С супругом»'] },
     { id: 'kwota', w: 'uop zlec dzielo', ic: 'savings', tag: 'Kwota wolna', t: 'Без налога', big: '30 000', x: 'zł дохода в год без PIT. С PIT-2 работодатель учитывает её сразу, по 300 zł в месяц.', i: 'Единственные бесплатные деньги в Польше.', more: ['Без PIT-2 разницу вернут в годовом PIT', 'На dzieło в месяц не учитывается, только в годовом PIT'] },
     { id: 'ulga', w: 'uop zlec', ic: 'school', tag: 'Ulga dla młodych', t: 'До 26 лет', big: '85 528', x: 'zł в год без PIT на umowie o pracę и zlecenie. ZUS и zdrowotna остаются.', i: 'Молодость, которая окупается.', more: ['Действует до дня 26-летия', 'На dzieło и B2B не действует', 'Сверх лимита обычная шкала'] },
     { id: 'kup', w: 'dzielo', ic: 'description', tag: 'KUP', t: 'Расходы без чеков', big: '20 / 50%', x: 'Из суммы договора без налога вычитают 20%. За авторские права 50%, но не больше 120 000 zł в год.', i: 'Творчество выгодно хотя бы для налога.', more: ['50% только если договор передаёт авторские права', 'До 200 zł: 12% с суммы, без KUP'] },
     { id: 'lin', w: 'b2b', ic: 'percent', tag: 'Liniowy', t: 'Линейный', big: '19%', x: 'Только для JDG, без kwoty wolnej. Zdrowotna 4,9% от дохода.', i: 'Для тех, кому 32% это слишком.', more: ['Выгоден примерно с дохода выше 120 000 zł', 'Без совместного с супругом', 'Расходы вычитаются'] },
-    { id: 'rycz', w: 'b2b', ic: 'percent', tag: 'Ryczałt', t: 'Ryczałt', big: '2–17%', x: 'С выручки, расходы не вычитаются. Ставка по виду деятельности, в IT часто 12% или 8,5%.', i: 'Чеки собирать не надо. Радость.', more: ['Zdrowotna фиксированная, по порогам выручки', 'Ставку проверяй по своему PKD', 'Выгоден при малых расходах'] }
+    { id: 'rycz', w: 'b2b', ic: 'percent', tag: 'Ryczałt', t: 'Ryczałt', big: '2–17%', x: 'С выручки, расходы не вычитаются. Ставка по виду деятельности, в IT часто 12% или 8,5%.', i: 'Чеки собирать не надо. Радость.', more: ['Zdrowotna фиксированная, по порогам выручки', 'Ставку проверяй по своему PKD', 'Выгоден при малых расходах', 'Без совместного PIT с супругом, даже если супруг на etacie', 'Ulga na dzieci с ryczałtu не вычитается, только с налога по шкале'] },
+    { id: 'malz', w: 'uop zlec dzielo b2b', ic: 'volunteer_activism', tag: 'Wspólne rozliczenie', t: 'С супругом', big: '½', x: 'Доходы супругов складывают и делят пополам. Выгодно, если один зарабатывает сильно больше другого или второй не работает.', i: 'Ловушка: ты на etacie, а у супруга JDG на ryczałcie или liniowym? Совместного PIT не будет, даже при нулевой выручке.', more: ['Нужна wspólność majątkowa', 'Мешает liniowy или ryczałt у любого из супругов. Ryczałt с частной аренды не мешает', 'Заявляется в годовом PIT, до 30 апреля'] },
+    { id: 'kids', w: 'uop zlec dzielo b2b', ic: 'child_care', tag: 'Ulga na dzieci', t: 'На детей', big: '1 112', x: 'zł в год с налога на первого и на второго ребёнка, 2 000,04 на третьего, 2 700 на четвёртого и дальше.', i: 'Дети окупаются. Частично.', more: ['При одном ребёнке только если доход до 112 000 zł у супругов или до 56 000 у одного родителя. С двумя и больше без лимита', 'Вычитается только из налога по шкале: liniowy и ryczałt её не дают', 'Вписывается в PIT/O к PIT-37 или PIT-36'] }
   ];
   /* B2B, 2026: social ZUS per month [without, chorobowe], health minimum (9% of 4 806 zł), ryczałt health by yearly revenue, liniowy health deduction limit */
   var ZUS_SOC = { start: [0, 0], pref: [420.86, 35.32], full: [1788.29, 138.47] };
@@ -397,7 +408,7 @@
     ['MOS 2: подача онлайн с 27.04.2026', 'https://www.gov.pl/web/udsc/mos-qa'], ['MOS: старый портал закрыт 17.04.2026', 'https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/'],
     ['Пошлины за ВНЖ и ПМЖ, невозврат с 5.03.2026', 'https://www.gov.pl/web/uw-warminsko-mazurski/oplaty'], ['Пошлины за гражданство с 1.08.2025', 'https://www.gov.pl/web/uw-lubelski/obywatelstwo-i-repatriacja'],
     ['Пути к гражданству (uznanie)', 'https://www.gov.pl/web/uw-zachodniopomorski/uznanie-za-obywatela-polskiego2'], ['Проект UD408, молчаливое согласие', 'https://www.gov.pl/web/premier/projekt-ustawy-o-zmianie-ustawy-o-cudzoziemcach'],
-    ['Беларусы в Польше на 1.02.2026 (UdSC)', 'https://www.gov.pl/attachment/4738d4ca-beae-459f-b0bb-2db8f2da7ac2'], ['Сроки по всем воеводствам на 6.07.2026 (ответ MSWiA, интерпелляция 18089)', 'https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body'],
+    ['Беларусы в Польше на 1.08.2026 (UdSC)', 'https://www.gov.pl/attachment/7089372c-4050-4051-80ad-a7983a4353dc'], ['Сроки по всем воеводствам на 6.07.2026 (ответ MSWiA, интерпелляция 18089)', 'https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body'],
     ['598 дней в Pomorskie (MSWiA, 6.07.2026)', 'https://dziennikbaltycki.pl/cudzoziemcy-czekaja-miesiacami-na-legalizacje-pobytu-a-nadchodzi-kolejna-fala-wnioskow-wojewodztwo-pomorskie-ma-problem/ar/c1p2-29401689'], ['394 дня на Мазовше, протест 24.08.2026', 'https://warszawa.naszemiasto.pl/mieli-czekac-60-dni-a-czekaja-nawet-2-lata-tlum-obcokrajowcow-wyszedl-na-ulice-warszawy-urzad-milczy-moge-stracic-prace/ar/c1p2-29291631'],
     ['Потеря работы: 15 рабочих дней', 'https://zielonalinia.gov.pl/zezwolenie-jednolite-wazny-obowiazek-cudzoziemca/'], ['PESEL для иностранца', 'https://zielonalinia.gov.pl/kiedy-cudzoziemiec-moze-uzyskac-numer-pesel/'],
     ['Выезды для rezydenta UE', 'https://zielonalinia.gov.pl/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue-a-nieprzerwany-pobyt/'], ['Travel doc для беларусов до 31.12.2026', 'https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi'],
@@ -571,7 +582,7 @@
       '<div class="pb-counts">' +
         '<div class="pl-counts" data-fitcells="150">' +
           (c.pmzh ? stat(n0(c.pmzh), 'дней в среднем ждут ПМЖ ' + c.loc, 'По закону 6 месяцев. MSWiA', 'legal') : '') +
-          stat('142 737', 'беларусов с документами на пребывание в Польше', link('https://www.gov.pl/attachment/4738d4ca-beae-459f-b0bb-2db8f2da7ac2', 'UdSC') + ', 1.02.2026. ' + stat0 + 'В 2025 подали ' + n0(c.apps) + ' ' + plural(c.apps, 'заявление', 'заявления', 'заявлений') + ' в ' + c.voiv, 'by') +
+          stat('133 057', 'беларусов с документами на пребывание в Польше', link('https://www.gov.pl/attachment/7089372c-4050-4051-80ad-a7983a4353dc', 'UdSC') + ', 1.08.2026. ' + stat0 + 'В 2025 подали ' + n0(c.apps) + ' ' + plural(c.apps, 'заявление', 'заявления', 'заявлений') + ' в ' + c.voiv, 'by') +
           stat('2 922', 'дня до паспорта обычным путём', '8 лет: 5 на временном и 3 на ПМЖ. Пока', 'legal') +
           stat('4 806', 'zł brutto: минималка 2026', 'На руки около 3 606 zł. ' + link('https://ksiegowosc.infor.pl/zus-kadry/wynagrodzenia/7490561,placa-minimalna-w-2026-r-ile-netto-do-wyplaty-i-jakie-brutto-w-umowie-w-ktorych-umowach-trzeba-stosowac-minimalna-stawke-godzinowa.html', 'infor.pl'), 'money') +
           stat('486 500', 'zł: средняя ипотека', link('https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r', 'BIK') + ', сентябрь 2026. На 8,3% больше, чем год назад', 'home') +
@@ -588,12 +599,23 @@
     '</section>';
   }
 
+  /* «Новости»: the whole list at once, newspaper columns; the first item is the lead */
+  var newsCheck = null;
+  function newsSrc(n) {
+    var bad = newsCheck && newsCheck.dead && newsCheck.dead.indexOf(n.u) > -1;
+    return '<p class="pb-nw-src">Источник: ' + link(n.u, n.s) + (n.u2 ? ', ' + link(n.u2, n.s2) : '') + (bad ? ' <span class="pl-tag red">ссылка не открылась</span>' : '') + '</p>';
+  }
+  function newsChecked() { return 'Проверено ' + NEWS_CHECKED + (newsCheck && newsCheck.checked ? ', робот открыл все ссылки ' + newsCheck.checked : ', ссылки робот проверяет раз в неделю'); }
+  function rNewsList() {
+    return NEWS.map(function (n, i) {
+      return '<article class="pb-nw' + (i === 0 ? ' lead' : '') + (n.red ? ' red' : '') + '"><div class="pb-nw-m"><time>' + n.d + '</time><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span></div>' +
+        '<h3 class="pb-nw-h">' + n.h + '</h3><p class="pb-nw-t">' + n.t + '</p>' + newsSrc(n) + '</article>';
+    }).join('');
+  }
   function rNews() {
-    var first = NEWS.slice(0, 5), rest = NEWS.slice(5);
-    function li(n) { return '<li><time>' + n.d + '</time><p><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span>' + n.t + ' ' + src(n.u, n.s) + '</p></li>'; }
-    return '<section class="pl-band pb-screen" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Новости легализации. Новые законы и правила для иностранцев', 'newspaper', '#141414', '#fff', 'Свежее сверху · проверено 23.10.2026') +
-      '<ul class="pl-news">' + first.map(li).join('') + '</ul>' +
-      '<div class="pl-acc" style="border-top:0"><details id="pl-d-news"><summary><span class="t" style="font-size:15px">Ещё ' + rest.length + ' ' + plural(rest.length, 'новость', 'новости', 'новостей') + '</span>' + ms('expand_more', 'chev') + '</summary><ul class="pl-news" style="margin-top:0">' + rest.map(li).join('') + '</ul></details></div>' +
+    return '<section class="pl-band pb-screen" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Новости легализации. Новые законы и правила для иностранцев', 'newspaper', '#141414', '#fff', 'Свежее сверху, ' + NEWS.length + ' ' + plural(NEWS.length, 'новость', 'новости', 'новостей')) +
+      '<p class="pl-note pb-nw-chk" data-o="newsChk">' + newsChecked() + '</p>' +
+      '<div class="pb-news" data-o="newsList">' + rNewsList() + '</div>' +
     '</section>';
   }
 
@@ -732,6 +754,7 @@
   }
   function loadPayCheck() {
     if (!window.fetch || !/^https?:/.test(location.protocol) || !PATHS) return;
+    fetch('/data/news-check.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j && j.checked) { newsCheck = j; out('newsChk', newsChecked()); out('newsList', rNewsList()); } }).catch(function () {});
     fetch('/data/pay-check.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j && j.v) { payCheck = j; out('uzhond', rUzhond()); } }).catch(function () {});
   }
 
@@ -883,10 +906,10 @@
       '<div class="pl-tip">' + ms('lightbulb') + '<span data-o="mCon"></span></div>' +
       tipHtml('Квартиру иностранец покупает без разрешения MSWiA, если она не в приграничной зоне. На дом или участок разрешение нужно, пока не прожил 5 лет с ПМЖ или резидентом ЕС. С картой временного побыту часть банков ипотеку не даёт или хочет, чтобы карта действовала ещё 6–12 месяцев.') +
       '<p class="pl-note">Как считаем: по правилам KNF банк проверяет платёж при ставке выше на 2,5 п.п. и максимум на 25 лет, даже если берёшь на 30 или 35. Запас на жизнь и долю платежа в доходе мы подобрали по расчётам 12–13 банков за август и сентябрь 2026 (umowa o pracę, без других кредитов): на этих данных ошибка в среднем 2–7%. ' +
-        'Страховки взяли как середину восьми лучших предложений августа 2026: жизнь 0,035% от кредита в месяц, квартира 0,085% от цены в год. Комиссия в них 0%, у семи из восьми ставка 5,47–5,67%, но со счётом для зарплаты, картой и почти везде страховкой жизни. Нотариус по максимальной таксе: за квартиру половина ставки, за ипотеку четверть. ' +
+        'Страховка жизни в банке обычно 0,04–0,07% от кредита в месяц, при 500 тысячах это 200–350 zł, в итог берём середину. Свою полису с цессией на банк принимают все крупные банки, она обычно 70–140 zł. Квартира 0,085% от цены в год, середина восьми лучших предложений августа 2026. Комиссия в них 0%, у семи из восьми ставка 5,47–5,67%, но со счётом для зарплаты, картой и почти везде страховкой жизни. Нотариус по максимальной таксе: за квартиру половина ставки, за ипотеку четверть. ' +
         'Между банками разница бывает в 2–3 раза, так что считай это ориентиром, а точную сумму спроси у брокера. 800+ в доход не вписывай: часть банков его учитывает, это уже усреднено.</p>' +
       srcLine([['https://bip.knf.gov.pl/knf/pl/komponenty/img/Rekomendacja_S_nowelizacja_czerwiec_2023_82872.pdf', 'Rekomendacja S, KNF'], ['https://rutkowskihome.pl/pl/finansy/kreditosposobnost-v-polshe-v-sentyabre-2026-goda-skolko-mozhno-poluchit-na-ipoteku-i-pochemu-banki-snova-uzhestochayut-raschyoty/', 'отчёт ANG, сентябрь 2026'], ['https://blogdariuszkaczorowski.pl/ranking-zdolnosci-kredytowej/', 'ранкинг банков, август 2026'],
-        ['https://marciniwuc.com/wp-content/uploads/2026/08/Najlepsze-oferty-500k-80LTV-zmienne-30lat-2026-08-03.pdf', 'лучшие предложения, август 2026'], ['https://hipoteczny.pl/blog/kredyt-hipoteczny-na-ryczalcie/', 'банки и ryczałt'], ['https://bankoweabc.pl/jak-banki-licza-zdolnosc-kredytowa-na-ryczalcie/', 'доля выручки на ryczałcie'],
+        ['https://marciniwuc.com/wp-content/uploads/2026/08/Najlepsze-oferty-500k-80LTV-zmienne-30lat-2026-08-03.pdf', 'лучшие предложения, август 2026'], ['https://freenance.io/ubezpieczenia/ubezpieczenie-kredytu-hipotecznego-na-zycie-2026-pl-pkb-pko-millennium-koszt-zniesienie-procedura/', 'страховка жизни, 2026'], ['https://hipoteczny.pl/blog/kredyt-hipoteczny-na-ryczalcie/', 'банки и ryczałt'], ['https://bankoweabc.pl/jak-banki-licza-zdolnosc-kredytowa-na-ryczalcie/', 'доля выручки на ryczałcie'],
         ['https://marciniwuc.com/?p=50832', 'стаж и договоры'], ['https://rankomat.pl/finanse/poradniki/minimalny-okres-zatrudnienia-a-kredyt-hipoteczny/', 'минимальный стаж'], ['https://rankomat.pl/finanse/poradniki/kredyt-hipoteczny-z-10-wkladem-wlasnym/', 'взнос 10%'],
         ['https://direct.money.pl/artykuly/porady/ubezpieczenie-pomostowe-co-to-jest-ubezpieczenie-pomostowe-kredytu-i-ile-kosztuje', 'страховка до записи ипотеки'], ['https://www.infor.pl/twoje-pieniadze/podatki/7627213,0-pcc-przy-zakupie-nieruchomosci-z-rynku-wtornego-te-przepisy-juz-obowiazuja-i-jest-tylko-jeden-warunek.html', 'PCC и первое жильё'],
         ['https://api.sejm.gov.pl/eli/acts/DU/2020/1473/text.html', 'такса нотариуса'], ['https://powroty.gov.pl/nieruchomosci-nie-wymagajace-zezwolenia-9953/', 'покупка без разрешения'], ['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'кредит с картой побыту'],
@@ -925,7 +948,9 @@
         return '<article class="pl-card pl-lvlcard" data-w="' + c.w + '" data-taxcard="' + c.id + '"><span class="pl-here" hidden>в расчёте</span><div class="top"><span class="cico" style="background:var(--c-money);color:#141414">' + ms(c.ic) + '</span><span class="tag">' + c.tag + '</span></div>' +
           '<div class="t">' + c.t + '</div><div class="big' + (/[а-яё]/i.test(c.big) ? ' txt' : '') + '">' + c.big + '</div><div class="x">' + c.x + '</div><div class="i">' + c.i + '</div>' +
           '<details><summary>Подробнее' + ms('expand_more') + '</summary><ul class="pl-list" style="--dotc:var(--c-money)">' + c.more.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul></details></article>';
-      }).join('') + '</div>';
+      }).join('') + '</div>' +
+      tipHtml('2027: Сейм и Сенат приняли шкалу 12% до 130 000 zł, 24% до 150 000 zł и 32% сверх. Для B2B там же ryczałt только при выручке до 250 тысяч евро и danina solidarnościowa 5%. Закон ждёт подписи президента, мы считаем по правилам 2026. ' + link('https://www.money.pl/podatki/zmiany-w-podatkach-senat-zdecydowal-teraz-czas-na-ruch-prezydenta-7348086529518048a.html', 'money.pl') + ', ' + link('https://biznes.wprost.pl/twoj-portfel/12495919/zmiany-podatkowe-w-rekach-prezydenta-co-zrobi-karol-nawrocki.html', 'wprost.pl') + ', 16.11.2026') +
+      srcLine([['https://ksiegowosc.infor.pl/podatki/pit/pit/rozliczenia/5650306,wspolne-rozliczenie-malzonkow.html', 'infor.pl: совместный PIT'], ['https://www.pit.pl/?p=17211', 'pit.pl: ulga na dzieci'], ['https://www.pit.pl/?p=13682', 'pit.pl: ulga и ryczałt']]);
     var zus = '<div data-w="b2b"><h3 class="pl-h3" style="margin-top:56px">ZUS</h3><p class="pl-lead" style="margin-top:8px">Взносы владельца JDG растут по уровням, как в игре. Только награды нет.</p>' +
       '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('emoji_events') + 'Мой уровень ZUS</div><div class="pl-fields">' + field('jdg', 'Открыл JDG', 'date') + '</div>' +
       '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="zLv" data-nofit style="font-size:clamp(36px,3.4vw,72px)">—</div><div class="k">сейчас</div></div><div><div class="v" data-o="zLeft">—</div><div class="k" data-o="zNext">дней до следующего уровня</div></div></div><div class="pl-prog" data-o="zBar"><i></i></div></div>' +
@@ -982,8 +1007,25 @@
         '<li>Дом или участок иностранцу из-за пределов ЕС покупать только с разрешением MSWiA.</li>' +
       '</ul>' + srcLine([['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'rankomat.pl'], ['https://pawelpietras.pl/blog/kredyt-hipoteczny-dla-obcokrajowca-z-karta-czasowego-pobytu', 'pawelpietras.pl']]) + lifeAcc(['home']) + '</section>';
   }
+  /* «Дети»: money for children. Checked 16.11.2026 */
+  var KIDS_PAY = [
+    { ic: 'savings', tag: 'ZUS · каждый месяц', t: '800+', big: '800', x: 'zł в месяц на каждого ребёнка до 18 лет, без лимита дохода.', i: 'Для иностранцев с 1.06.2026 только при работе родителя. Ребёнок учится в Польше, кроме детей до 6 лет.', u: 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a', s: 'wp.pl' },
+    { ic: 'work', tag: 'Aktywny Rodzic · 12–35 мес', t: 'Aktywni rodzice w pracy', big: '1 500', x: 'zł в месяц, если ребёнок не ходит в ясли и родитель работает с ZUS. С инвалидностью 1 900.', i: 'Тот самый babciowe: на няню или бабушку, решаешь сам.', u: 'https://powroty.gov.pl/program-aktywny-rodzic-2025/', s: 'powroty.gov.pl' },
+    { ic: 'child_care', tag: 'Aktywny Rodzic · ясли', t: 'Aktywnie w żłobku', big: '1 500', x: 'zł в месяц на ясли, klub dziecięcy или dzienny opiekun, но не больше, чем платишь сам.', i: 'Ясли бесплатно, если найдёшь место.', u: 'https://powroty.gov.pl/program-aktywny-rodzic-2025/', s: 'powroty.gov.pl' },
+    { ic: 'home', tag: 'Aktywny Rodzic · 12–35 мес', t: 'Aktywnie w domu', big: '500', x: 'zł в месяц, если ребёнок дома, а два других варианта не берёшь. Не платят, если на ребёнка получили Rodzinny Kapitał Opiekuńczy.', i: 'Утешительный приз.', u: 'https://powroty.gov.pl/program-aktywny-rodzic-2025/', s: 'powroty.gov.pl' },
+    { ic: 'school', tag: 'ZUS · раз в год', t: 'Dobry Start', big: '300', x: 'zł на каждого ученика до 20 лет (с инвалидностью до 24). Иностранцам нужна работа в месяце перед подачей.', i: 'Заявка за 2026/2027 до 30 ноября 2026.', red: 1, u: 'https://www.zus.pl/en/-/wakacyjne-zakupy-300-z%C5%82-mo%C5%BCe-si%C4%99-przyda%C4%87.-ruszy%C5%82y-wyp%C5%82aty-z-programu-dobry-start', s: 'zus.pl' },
+    { ic: 'percent', tag: 'PIT · раз в год', t: 'Ulga na dzieci', big: '1 112', x: 'zł в год с налога на первого и второго ребёнка, 2 000,04 на третьего, 2 700 на четвёртого и дальше.', i: 'При одном ребёнке лимит дохода 112 000 zł у супругов. Только на шкале, не на ryczałcie.', u: 'https://www.pit.pl/?p=17211', s: 'pit.pl' }
+  ];
   function rKids() {
-    return '<section class="pl-band pb-screen" id="pl-kids" aria-labelledby="pl-kids-h">' + head('pl-kids', 'Дети. Сады. Ясли. Выплаты', '', '', '', 'PESEL, сад, школа, 800+') + lifeAcc(['kids']) + '</section>';
+    return '<section class="pl-band pb-screen" id="pl-kids" aria-labelledby="pl-kids-h">' + head('pl-kids', 'Дети. Сады. Ясли. Выплаты', '', '', '', 'PESEL, сад, школа, 800+') +
+      '<h3 class="pl-h3" style="margin-top:40px">Деньги на детей</h3>' +
+      '<p class="pl-lead" style="margin-top:8px">Всё подаётся онлайн: PUE ZUS, mZUS, банк или Emp@tia. Aktywny Rodzic дают иностранцам с картой побыту, которая открывает рынок труда. На одного ребёнка в месяц платят только один из трёх вариантов.</p>' +
+      '<div class="pl-cards" data-fitcells="120">' + KIDS_PAY.map(function (c) {
+        return '<article class="pl-card pl-lvlcard"><div class="top"><span class="cico" style="background:var(--c-life);color:#fff">' + ms(c.ic) + '</span><span class="tag">' + c.tag + '</span></div>' +
+          '<div class="t">' + c.t + '</div><div class="big">' + c.big + '</div><div class="x">' + c.x + '</div><div class="i"' + (c.red ? ' style="color:var(--red)"' : '') + '>' + c.i + '</div>' +
+          '<p class="pl-note" style="margin-top:auto">' + link(c.u, c.s) + ', проверено 16.11.2026</p></article>';
+      }).join('') + '</div>' +
+      lifeAcc(['kids']) + '</section>';
   }
 
   function rAuto() {
@@ -1066,6 +1108,16 @@
     var pit = b <= 200 ? Math.round(b * 0.12) : Math.round(Math.round(b - r2(b * (aut ? 0.5 : 0.2))) * 0.12);
     return { soc: null, hea: null, pit: pit, net: r2(b - pit), emp: b };
   }
+  /* PIT on the scale for a yearly income: kwota zmniejszająca 3 600 zł, then the bands of SCALE[SCALE_YEAR].
+     2027 (12 / 24 / 32%) is passed by the Sejm and Senate but waits for the president (16.11.2026):
+     switch SCALE_YEAR to 2027 only once the law is in Dziennik Ustaw, and only for the 2027 tax year */
+  var SCALE = { 2026: [[120000, 0.12], [Infinity, 0.32]], 2027: [[130000, 0.12], [150000, 0.24], [Infinity, 0.32]] };
+  var SCALE_YEAR = 2026;
+  function pitScale(y) {
+    var t = 0, lo = 0;
+    SCALE[SCALE_YEAR].forEach(function (b) { if (y > lo) t += (Math.min(y, b[0]) - lo) * b[1]; lo = b[0]; });
+    return Math.max(0, t - 3600);
+  }
   /* B2B, an average month: social ZUS by level, health by tax form, tax per year divided by 12 */
   function b2b(rev, cost, taxf, rate, zl, chor) {
     var soc = r2(ZUS_SOC[zl][0] + (chor && zl !== 'start' ? ZUS_SOC[zl][1] : 0));
@@ -1079,7 +1131,7 @@
     } else {
       hea = Math.max(HEA_MIN, r2(inc * 0.09));
       var y = inc * 12;
-      tax = Math.max(0, Math.round((y <= 120000 ? y * 0.12 - 3600 : 10800 + (y - 120000) * 0.32) / 12));
+      tax = Math.max(0, Math.round(pitScale(y) / 12));
     }
     return { soc: soc, hea: hea, pit: tax, net: r2(rev - cost - soc - hea - tax), emp: r2(soc + hea + tax) };
   }
@@ -1272,8 +1324,8 @@
   /* mortgage capacity in «Банки»: an empty income field takes «на руки» from «Бабки» */
   /* bank income for ryczałt: the bank does not see costs and counts a share of revenue by the rate (bankoweabc ranges); middle bank: the middle of the range, generous: the top */
   var M_WR = { 17: [60, 80], 15: [60, 80], 14: [60, 80], 12: [50, 70], 8.5: [30, 50], 5.5: [10, 20], 3: [10, 20] };
-  /* medians of the 8 best offers, Aug 2026: life 0,035% of the loan a month, flat 0,085% of the price a year; 10% down: +0,2 p.p. (rankomat example) */
-  var M_LIFE = 0.00035, M_PROP = 0.00085, M_COURT = 200, M_VAL = 700, M_LTV10 = 0.2;
+  /* life: the bank's group policy 0,04–0,07% of the loan a month (200–350 zł for 500 000, freenance.io, checked 16.11.2026), the total uses the middle; flat 0,085% of the price a year; 10% down: +0,2 p.p. (rankomat example) */
+  var M_LIFE_LO = 0.0004, M_LIFE_HI = 0.0007, M_LIFE = (M_LIFE_LO + M_LIFE_HI) / 2, M_PROP = 0.00085, M_COURT = 200, M_VAL = 700, M_LTV10 = 0.2;
   /* maximum notary fee, § 3 of the regulation; a flat is half, a mortgage for a housing loan a quarter */
   function taksa(v) { return v <= 0 ? 0 : v <= 3000 ? 100 : v <= 10000 ? 100 + (v - 3000) * 0.03 : v <= 30000 ? 310 + (v - 10000) * 0.02 : v <= 60000 ? 710 + (v - 30000) * 0.01 : v <= 1e6 ? 1010 + (v - 60000) * 0.004 : v <= 2e6 ? 4770 + (v - 1e6) * 0.002 : Math.min(10000, 6770 + (v - 2e6) * 0.0025); }
   function mortCosts(P, L, sec, first) {
@@ -1328,7 +1380,7 @@
     out('mPriceD', own < pr.c.all + 1 || !pr.P ? 'Своих денег не хватит: банки хотят от ' + downK + '% цены плюс расходы на сделку' : pr.byLoan ? 'Упираешься в кредит: свои ' + n0(own) + ' zł уходят на взнос и расходы' : 'Упираешься во взнос: ' + n0(pr.down) + ' zł это ' + downK + '% цены');
     var pay = L ? annPay(L, rate, months) : 0, life = L && f.mLife ? L * M_LIFE : 0, prop = pr.P * M_PROP / 12;
     out('mPayK', L ? 'Кредит ' + n0(L) + ' zł на ' + yrs + ' лет под ' + rs + '%' : 'Кредит'); out('mPay', L ? z2(pay) + ' zł' : '—');
-    out('mLifeP', life ? z2(life) + ' zł' : f.mLife ? '—' : 'не берёшь'); out('mProp', pr.P ? z2(prop) + ' zł' : '—'); out('mTot', L ? z2(pay + life + prop) + ' zł' : '—');
+    out('mLifeP', life ? n0(L * M_LIFE_LO) + '–' + n0(L * M_LIFE_HI) + ' zł' : f.mLife ? '—' : 'не берёшь'); out('mProp', pr.P ? z2(prop) + ' zł' : '—'); out('mTot', L ? z2(pay + life + prop) + ' zł' : '—');
     out('mBridge', L ? '+' + n0(annPay(L, rate + 1, months) - pay) + '–' + n0(annPay(L, rate + 2, months) - pay) + ' zł' : '—');
     var stress = L ? annPay(L, rate + MORT_BUF, Math.min(yrs, 25) * 12) : 0;
     out('mStressK', 'Тот же кредит в проверке банка: ' + String(r2(rate + MORT_BUF)).replace('.', ',') + '% и ' + Math.min(yrs, 25) + ' лет'); out('mStress', L ? z2(stress) + ' zł' : '—');
