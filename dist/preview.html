@@ -1197,7 +1197,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   function roadKm(a, b) { return DIST[a + '-' + b] || DIST[b + '-' + a] || Math.round(km(CITIES[a].g, CITIES[b].g) * 1.25 / 5) * 5; }
   function sico(ic, c, fg) { return '<span class="pl-sico" style="background:' + c + ';color:' + (fg || '#fff') + '">' + ms(ic) + '</span>'; }
   function head(id, title, ic, c, fg, note) {
-    return '<div class="pl-head"><h2 class="pl-h2" id="' + id + '-h">' + title + '</h2>' + (note ? '<p class="pl-small pl-muted">' + note + '</p>' : '') + '</div>';
+    return '<div class="pl-head"><h1 class="pl-h2" id="' + id + '-h">' + title + '</h1>' + (note ? '<p class="pl-small pl-muted">' + note + '</p>' : '') + '</div>';
   }
   function box(st) {
     if (st === 'todo') return '<span class="pl-box" aria-hidden="true"></span>';
@@ -1427,7 +1427,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
           (k === 'vnzh' ? rToolVnzh() : k === 'pmzh' ? (pmPath() === 'rd' || pmPath() === 'prot' ? rToolPmzh() : '') : rToolPass()) + '</div>' +
       '</div></div>';
     }).join('');
-    return '<section class="pl-band pb-screen" id="pl-legal" aria-labelledby="pl-legal-h"><h2 class="sr" id="pl-legal-h">Легализация</h2>' +
+    return '<section class="pl-band pb-screen" id="pl-legal" aria-labelledby="pl-legal-h"><h1 class="sr" id="pl-legal-h">Легализация в Польше: ВНЖ, ПМЖ и паспорт по шагам</h1>' +
       '<p class="pl-small pl-muted pb-uw">Твой ужонд: <b style="color:var(--ink)" data-bind="uw"></b> · квадрат слева меняет статус шага · всё сохраняется в браузере</p>' +
       '<div class="pl-legal-bar">' + tabs + '<label class="pl-toggle pl-mypath"><input type="checkbox" data-mypath' + (myPath() ? ' checked' : '') + '><span>Мой путь<small class="pl-xs pl-muted">пройденное по «Где ты сейчас» и датам в «Своё»</small></span></label></div>' +
       panels + '</section>';

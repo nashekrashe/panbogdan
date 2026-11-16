@@ -6,7 +6,7 @@ import os, re, shutil, json
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIST, SITE = os.path.join(ROOT, 'dist'), os.path.join(ROOT, 'site')
 URL = 'https://panbogdan.com/'
-TITLE = 'Pan Bogdan: Польша пошагово'
+TITLE = 'Pan Bogdan: Польша пошагово. ВНЖ, ПМЖ, паспорт, деньги'
 DESC = 'Ироничный гайд для эмигрантов в Польше: ВНЖ, ПМЖ и паспорт по шагам, бабки и банки, авто и бесплатная помощь в твоём городе.'
 
 html = open(os.path.join(DIST, 'preview.html'), encoding='utf-8').read()
@@ -55,28 +55,30 @@ HEAD = '''<!doctype html>
 <link rel="canonical" href="%(u)s">
 <meta name="theme-color" content="#ffffff">
 <meta name="color-scheme" content="light">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon-180.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=2">
+<link rel="apple-touch-icon" href="/apple-touch-icon-180.png?v=2">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="Pan Bogdan">
-<meta property="og:title" content="Польша пошагово">
+<meta property="og:title" content="%(t)s">
 <meta property="og:description" content="%(d)s">
 <meta property="og:url" content="%(u)s">
-<meta property="og:image" content="%(u)sog-share-1200x630.jpg">
+<meta property="og:image" content="%(u)sog-share-1200x630.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Польша пошагово">
+<meta property="og:image:alt" content="Pan Bogdan, e-помогатор: легализация, новости, беларусам, бабки, дети, дом, хелп, банки">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Польша пошагово">
+<meta name="twitter:title" content="%(t)s">
 <meta name="twitter:description" content="%(d)s">
-<meta name="twitter:image" content="%(u)sog-share-1200x630.jpg">
+<meta name="twitter:image" content="%(u)sog-share-1200x630.jpg?v=2">
 <link rel="https://api.w.org/" href="https://pasha.by/wp-json/">
 <link rel="preload" href="/fonts/ms-rounded-sub.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/ibm-plex-sans-cyrillic-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="pb-img" content="/img/">
 <meta name="pb-paths" content="1">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Pan Bogdan","alternateName":"Пан Богдан","url":"https://panbogdan.com/","inLanguage":"ru","description":"%(d)s"}</script>
 <style>
 %(f)s</style>
 %(i)s</head>
@@ -94,7 +96,7 @@ shutil.copytree(os.path.join(ROOT, 'assets', 'ill'), os.path.join(SITE, 'img'))
 shutil.copy(os.path.join(ROOT, 'vendor', 'air-datepicker.js'), os.path.join(SITE, 'vendor', 'air-datepicker-3.6.0.js'))
 for f in ('og-share-1200x630.jpg', 'favicon-32.png', 'icon-192.png', 'apple-touch-icon-180.png'):
     shutil.copy(os.path.join(ROOT, 'assets', f), os.path.join(SITE, f))
-shutil.copy(os.path.join(SITE, 'favicon-32.png'), os.path.join(SITE, 'favicon.ico'))  # browsers sniff PNG
+shutil.copy(os.path.join(ROOT, 'assets', 'favicon.ico'), os.path.join(SITE, 'favicon.ico'))
 
 
 # one page per section: own address, title and description; prerender.js then leaves only that section's text in it
@@ -115,13 +117,22 @@ for slug, t, d in PAGES:
     h = h.replace('<meta name="description" content="%s">' % DESC, '<meta name="description" content="%s">' % d)
     h = h.replace('<link rel="canonical" href="%s">' % URL, '<link rel="canonical" href="%s%s">' % (URL, slug))
     h = h.replace('<meta property="og:url" content="%s">' % URL, '<meta property="og:url" content="%s%s">' % (URL, slug))
-    h = h.replace('<meta property="og:title" content="Польша пошагово">', '<meta property="og:title" content="%s">' % t)
+    h = h.replace('<meta property="og:title" content="%s">' % TITLE, '<meta property="og:title" content="%s">' % t)
+    h = h.replace('<meta name="twitter:title" content="%s">' % TITLE, '<meta name="twitter:title" content="%s">' % t)
+    h = h.replace('<meta name="twitter:description" content="%s">' % DESC, '<meta name="twitter:description" content="%s">' % d)
     h = h.replace('<meta property="og:description" content="%s">' % DESC, '<meta property="og:description" content="%s">' % d)
     assert h.count(slug) >= 2, slug
+    assert h.count(t) >= 3 and h.count(d) >= 3, slug
     open(os.path.join(SITE, slug + '.html'), 'w', encoding='utf-8').write(h)
 
+# unknown addresses: a real 404 instead of the home page with code 200
+open(os.path.join(SITE, '404.html'), 'w', encoding='utf-8').write('''<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>404 · Pan Bogdan</title><meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="48x48"><style>body{margin:0;min-height:100vh;display:grid;place-content:center;gap:16px;text-align:center;font:16px/1.5 system-ui,sans-serif;color:#1F1919;padding:24px}b{font-size:96px;line-height:1;color:#D74B4E}a{color:inherit;font-weight:600}img{margin:0 auto}</style></head>
+<body><img src="/img/legal.webp" alt="" width="160" height="160"><b>404</b><p>Brakuje jednego dokumentu. Такой страницы нет.</p><p><a href="/">На главную</a></p></body></html>
+''')
 open(os.path.join(SITE, 'robots.txt'), 'w').write('User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n' % URL)
-open(os.path.join(SITE, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join('<url><loc>%s%s</loc></url>' % (URL, p) for p in [''] + [x[0] for x in PAGES]) + '</urlset>\n')
+open(os.path.join(SITE, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join('<url><loc>%s%s</loc><lastmod>%s</lastmod></url>' % (URL, p, __import__('datetime').date.today().isoformat()) for p in [''] + [x[0] for x in PAGES]) + '</urlset>\n')
 open(os.path.join(SITE, '_headers'), 'w').write('''/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
