@@ -851,9 +851,32 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-about-l a:hover b{color:var(--red)}
 @media (max-width:900px){.pb-home,.pb-home.is-filled{grid-template-areas:"hero" "card" "next" "about";grid-template-rows:none}.pb-about{padding-inline:0}}
 /* legal: «Твой ужонд» and «Паспорт» cards, level percent with a "+N%" float, step reward chips */
-.pb-legal-cards{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start;margin-bottom:12px}
+.pb-legal-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;align-items:start;margin-bottom:12px}
 .pb-legal-cards .pl-tool{margin-top:0}
-@media (max-width:1100px){.pb-legal-cards{grid-template-columns:minmax(0,1fr)}}
+.pb-card{padding:0;gap:0}
+.pb-card[open]{grid-column:1/-1}
+.pb-card-h{list-style:none;display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;border-radius:16px}
+.pb-card-h::-webkit-details-marker{display:none}
+.pb-card-h:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(215,75,78,.25)}
+.pb-card-h>.pb-i,.pb-card-h>.ms{flex:0 0 auto;font-size:24px}
+.pb-card-h .t{flex:1 1 auto;min-width:0;font-weight:700;font-size:16px;line-height:1.3}
+.pb-card-h small{display:block;margin-top:2px;font-size:13px;font-weight:400;color:var(--mut)}
+.pb-tog{flex:0 0 auto;display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;border:.75px solid var(--chip);background:var(--paper);transition:border-color .2s}
+.pb-card-h:hover .pb-tog{border-color:var(--ink)}
+.pb-tog-c,.pb-card[open] .pb-tog-e{display:none}
+.pb-card[open] .pb-tog-c{display:block}
+.pb-card-b{padding:0 clamp(18px,2vw,32px) clamp(20px,2vw,32px);display:flex;flex-direction:column;gap:20px}
+.pb-card-b>div{display:flex;flex-direction:column;gap:20px}
+.pb-card[open] .pb-card-b{animation:pbFold .3s ease}
+@keyframes pbFold{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pb-card[open] .pb-card-b{animation:none}}
+.pb-card.is-off .pb-card-h small{color:var(--red)}
+.pb-inv p{margin:0;font-size:14px;line-height:1.5}
+.pb-inv-rows div{font-size:14px}
+.pb-inv-rows span{color:var(--mut);flex:0 0 40%}
+.pb-inv-rows b{white-space:normal;text-align:right;font-weight:600}
+.pb-tpl{margin:0;white-space:pre-wrap;font:13px/1.5 var(--num,inherit);background:var(--tint);border-radius:8px;padding:12px;overflow-wrap:anywhere}
+@media (max-width:520px){.pb-inv-rows div{flex-direction:column;gap:2px}.pb-inv-rows b{text-align:left}}
 .pb-uz p{margin:0;font-size:14px;line-height:1.5}
 .pb-uz-how{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5}
 .pb-uz-how ul{margin:4px 0 0;padding-left:18px}
@@ -884,7 +907,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 
   /* ---------- state ---------- */
   var KEY = 'pb-poland-v2';
-  var DEF = { city: 'gdansk', geo: null, cityManual: false, stage: 'arrive', legal: 'vnzh', contract: 'uop', status: {}, checks: {}, f: { brutto: '7000', pit2: true, rev: '15000', cost: '500', taxf: 'rycz', rate: '12', zusl: 'auto', mInc: '', mInc2: '0', mAd: '1', mKids: '0', mDebt: '0', mLim: '0', mOwn: '150000', mRate: '5.95', mYears: '25', mLtv: '80', mMkt: 'wt', mFirst: false, mLife: true, cons: '7', dist: '340', price: '6.00', cpath: 'std' }, trips: [] };
+  var DEF = { city: 'gdansk', geo: null, cityManual: false, stage: 'arrive', legal: 'vnzh', contract: 'uop', status: {}, checks: {}, f: { brutto: '7000', pit2: true, rev: '15000', cost: '500', taxf: 'rycz', rate: '12', zusl: 'auto', mInc: '', mInc2: '0', mAd: '1', mKids: '0', mDebt: '0', mLim: '0', mOwn: '150000', mRate: '5.95', mYears: '25', mLtv: '80', mMkt: 'wt', mFirst: false, mLife: true, cons: '7', dist: '340', price: '6.00', cpath: 'std', invMonths: '1', invDeps: '0', invGuests: '1', invTrip: 'near', invRel: false }, trips: [] };
   function load() { try { var s = JSON.parse(localStorage.getItem(KEY)); return s && typeof s === 'object' ? s : null; } catch (e) { return null; } }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
   var S = Object.assign({}, DEF, load() || {});
@@ -1010,6 +1033,13 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     "cal": "<path d=\"M8 2V5M16 2V5M3 9H21M5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3Z\" />",
     "loc": "<path d=\"M20 10C20 14.993 14.461 20.193 12.601 21.799C12.4277 21.9293 12.2168 21.9998 12 21.9998C11.7832 21.9998 11.5723 21.9293 11.399 21.799C9.539 20.193 4 14.993 4 10C4 7.87827 4.84285 5.84344 6.34315 4.34315C7.84344 2.84285 9.87827 2 12 2C14.1217 2 16.1566 2.84285 17.6569 4.34315C19.1571 5.84344 20 7.87827 20 10ZM15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z\" />"
   };
+  /* 18px service icons (1.125 stroke): passport, expand, collapse */
+  var ICONS18 = {
+    pass: '<path d="M9.75 14.25C9.75 13.4544 9.43393 12.6913 8.87132 12.1287C8.30871 11.5661 7.54565 11.25 6.75 11.25M6.75 11.25C5.95435 11.25 5.19129 11.5661 4.62868 12.1287C4.06607 12.6913 3.75 13.4544 3.75 14.25M6.75 11.25C7.99264 11.25 9 10.2426 9 9C9 7.75736 7.99264 6.75 6.75 6.75C5.50736 6.75 4.5 7.75736 4.5 9C4.5 10.2426 5.50736 11.25 6.75 11.25ZM12 7.5H13.5M12 10.5H13.5M3 3.75H15C15.8284 3.75 16.5 4.42157 16.5 5.25V12.75C16.5 13.5784 15.8284 14.25 15 14.25H3C2.17157 14.25 1.5 13.5784 1.5 12.75V5.25C1.5 4.42157 2.17157 3.75 3 3.75Z"/>',
+    expand: '<path d="M5.25 11.25L9 15L12.75 11.25M5.25 6.75L9 3L12.75 6.75"/>',
+    collapse: '<path d="M5.25 15L9 11.25L12.75 15M5.25 3L9 6.75L12.75 3"/>'
+  };
+  function svg18(k, sz, cls) { return '<svg class="pb-i' + (cls ? ' ' + cls : '') + '" width="' + (sz || 18) + '" height="' + (sz || 18) + '" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS18[k] + '</svg>'; }
   function svgi(k, sz) { return '<svg class="pb-i" width="' + (sz || 24) + '" height="' + (sz || 24) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[k] + '</svg>'; }
   /* screens: one per menu item; k is the short address (#legal), id the section element */
   var SECTIONS = [
@@ -1548,8 +1578,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     var addr = (P0.addr || []).map(function (x) { return '<li><b>' + x[0] + ':</b> ' + x[1] + '</li>'; }).join('');
     var chk = payCheck && payCheck.v && payCheck.v[vk], bad = chk && (chk.tax === false || chk.card === false);
     var checked = payCheck && payCheck.checked ? 'робот проверил их ' + payCheck.checked : 'робот проверяет их раз в неделю';
-    return '<div class="pl-tool pb-uz"><div class="pl-tool-h">' + ms('account_balance') + 'Твой ужонд: ' + c.uw + '</div>' +
-      '<p>Один на всё воеводство ' + c.voiv + ': решает дела иностранцев ' + [c.loc].concat(others).join(', ').replace(/, ([^,]*)$/, ' и $1') + (others.length ? '' : ' и по всему региону') + '. ' +
+    return '<p>Один на всё воеводство ' + c.voiv + ': решает дела иностранцев ' + [c.loc].concat(others).join(', ').replace(/, ([^,]*)$/, ' и $1') + (others.length ? '' : ' и по всему региону') + '. ' +
         (vk === 'pomorskie' ? 'Своего отдела для иностранцев в Гдыне и Сопоте нет: в Гдыне только паспортный отдел для поляков. Принимают в Гданьске и в отделе в Слупске.' : 'Отдельного ужонда в другом городе воеводства нет, бывают только его отделы (delegatury).') + '</p>' +
       '<ol class="pb-uz-how">' +
         '<li><b>Подать.</b> ВНЖ, ПМЖ и rezydent UE только онлайн в ' + link('https://mos.cudzoziemcy.gov.pl/', 'MOS') + ', с PESEL и profilem zaufanym. К заявлению приложи подтверждения оплат ниже.</li>' +
@@ -1563,13 +1592,12 @@ font-size:16px;line-height:1.5;font-stretch:100%}
       '<p class="pl-note">В заголовке перевода: за что платишь и имя с фамилией, например «opłata za zezwolenie na pobyt czasowy, Ivan Ivanov». ' +
         'MOS просит приложить к заявлению подтверждения обеих оплат, карты тоже (' + link(PAY.list, 'mos.cudzoziemcy.gov.pl') + ', 30.04.2026).' + (vk === 'pomorskie' ? ' Поморский ужонд при этом пишет, что за карту можно платить после решения.' : '') + '</p>' +
       (bad ? tipHtml('При последней проверке номер не нашёлся на странице ужонда. Возможно, его сменили: сверь по ссылке «пруф» перед оплатой.', 1) : '') +
-      '<p class="pl-note">Номера сверены с сайтами ужондов ' + PAY.verified + ', ' + checked + '. Платить в MOS нельзя, только переводом или в кассе.</p></div>';
+      '<p class="pl-note">Номера сверены с сайтами ужондов ' + PAY.verified + ', ' + checked + '. Платить в MOS нельзя, только переводом или в кассе.</p>';
   }
   /* passport: expiry countdown; for Belarusians the simplified Polish travel document until 31.12.2026 */
   var PDPC_END = '2026-12-31';
   function rPassport() {
-    return '<div class="pl-tool pb-pass" aria-live="polite"><div class="pl-tool-h">' + ms('luggage') + 'Паспорт</div>' +
-      '<div class="pl-fields">' + field('passExp', 'Паспорт действует до', 'date') + '</div>' +
+    return '<div class="pl-fields">' + field('passExp', 'Паспорт действует до', 'date') + '</div>' +
       '<div class="pl-out" data-fitcells="150" data-pe-out hidden><div><div class="v" data-o="peLeft">0</div><div class="k" data-o="peK">дней до конца паспорта</div><div class="d" data-o="peD">Укажи дату</div></div></div>' +
       '<div data-o="peMsg"></div>' +
       '<div class="pl-acc"><details id="pl-d-pdpc"><summary><span class="t">Polski dokument podróży для беларусов<small>Если паспорт истёк, а в посольство нельзя</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
@@ -1579,7 +1607,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
         tipHtml('Это не паспорт Польши и не гражданство. Для ВНЖ и ПМЖ нужен действующий паспорт, а для ПМЖ без него и без шанса его получить в обоснованных случаях принимают другой документ личности.') +
         srcLine([['https://www.mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/', 'mos.cudzoziemcy.gov.pl'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'gov.pl/web/udsc'], ['https://www.mos.cudzoziemcy.gov.pl/kategorie-informacji/mozliwosci-legalizacji/spoza-ue-kontynuacja-pobytu/zezwolenie-na-pobyt-staly/', 'MOS, pobyt stały']]) +
         '<p class="pl-note">Проверено 16.11.2026.</p>' +
-      '</div></details></div></div>';
+      '</div></details></div>';
   }
   function updatePassport() {
     var t = today(), e = parseD(S.f.passExp), end = parseD(PDPC_END), dl = days(t, end), msg = '';
@@ -1607,6 +1635,77 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     if (!window.fetch || !/^https?:/.test(location.protocol) || !PATHS) return;
     fetch('/data/pay-check.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j && j.v) { payCheck = j; out('uzhond', rUzhond()); } }).catch(function () {});
   }
+
+  /* a card that starts folded: the summary keeps the title and a one-line status */
+  function card(id, icon, title, sumKey, body, cls) {
+    return '<details class="pl-tool pb-card' + (cls ? ' ' + cls : '') + '" id="' + id + '"><summary class="pb-card-h">' + icon +
+      '<span class="t">' + title + '<small data-o="' + sumKey + '"></small></span>' +
+      '<span class="pb-tog" aria-hidden="true">' + svg18('expand', 18, 'pb-tog-e') + svg18('collapse', 18, 'pb-tog-c') + '</span></summary>' +
+      '<div class="pb-card-b">' + body + '</div></details>';
+  }
+  /* invitation (zaproszenie): an inviting foreigner needs 5 years of legal, unbroken stay right before filing, or stały pobyt / rezydent UE */
+  function invOpen() {
+    var since = parseD(S.f.since), t = today(), si = STAGE_IDX[S.stage] || 0;
+    if (si >= 4 || S.f.staly) return { ok: true, why: 'у тебя ПМЖ или rezydent UE' };
+    if (!since || since > t) return { ok: false, none: true };
+    var at = addY(since, 5), d = days(t, at);
+    return d <= 0 ? { ok: true, why: 'ты легально в Польше больше 5 лет' } : { ok: false, at: at, d: d };
+  }
+  var OWNER_OK = 'Gdańsk, dnia ..........\n\nOświadczenie właściciela lokalu\n\nJa, niżej podpisany/a [imię i nazwisko właściciela], PESEL [numer], właściciel/ka lokalu mieszkalnego przy ul. [ulica, numer domu/mieszkania], [kod pocztowy] [miejscowość], wyrażam zgodę na zakwaterowanie w tym lokalu cudzoziemca [imię i nazwisko], urodzonego/ej [data urodzenia], obywatela/ki [państwo], w okresie od [data] do [data], na zaproszenie [imię i nazwisko zapraszającego], który/a wynajmuje ten lokal.\n\n..........................\n(czytelny podpis właściciela)';
+  function rInvite() {
+    var rows = [
+      ['Osoba fizyczna / prawna', 'Osoba fizyczna'],
+      ['A.5 Obywatelstwo', 'białoruskie (или твоё)'],
+      ['A.II Rodzaj dokumentu, seria, numer', 'karta pobytu или paszport'],
+      ['A.II Numer REGON', 'пусто, это для фирм'],
+      ['A.III Liczba osób na utrzymaniu', 'сколько человек ты содержишь: дети, неработающий супруг'],
+      ['A.IV.1 Tytuł prawny do lokalu', '«umowa najmu» или «własność»'],
+      ['A.IV.2 Powierzchnia użytkowa', 'метры из договора или акта'],
+      ['A.IV.3 Osoby zameldowane', 'сколько прописано, на stałe или czasowo'],
+      ['A.V Zaproszeni w ciągu roku', 'скольких иностранцев приглашал за год, часто 0'],
+      ['B.10 Stopień pokrewieństwa', 'matka, ojciec, syn, córka, brat, siostra, teść, teściowa; не родня: «brak» или «znajomy»'],
+      ['B.11 Dokument podróży', 'серия и номер паспорта гостя'],
+      ['B.II Adres zakwaterowania', 'где гость будет жить в Польше'],
+      ['B.III Cel pobytu', '«odwiedziny rodziny», «odwiedziny» или «turystyka»'],
+      ['Okres', 'od … do …, не дольше года']
+    ];
+    return '<p data-o="invMsg"></p>' +
+      '<p>Приглашение (zaproszenie) это бумага от воеводы: ты обещаешь оплатить гостю жильё, еду и дорогу домой. С ней родственник или друг идёт в консульство за визой: в гости, туристом, к семье. Работать по нему нельзя. Действует на период, который ты указал, но не дольше года. Ужонд вписывает его в течение месяца.</p>' +
+      '<p><b>Кто может.</b> Иностранец, который прямо перед подачей живёт в Польше легально и без перерыва минимум 5 лет, или у кого есть ПМЖ или rezydent UE. Перерывы считают как для ПМЖ. Приглашай только тех, кого хорошо знаешь: если гость не уедет, расходы на его выдворение тоже на тебе.</p>' +
+      '<div class="pl-tool-h" style="font-size:16px">' + ms('calculate') + 'Сколько денег показать</div>' +
+      '<div class="pl-fields">' + field('invMonths', 'Месяцев гостит', 'number', ' min="0" step="0.5" inputmode="decimal"') + field('invDeps', 'Ты содержишь, человек', 'number', ' min="0" step="1" inputmode="numeric"') + field('invGuests', 'Гостей', 'number', ' min="1" step="1" inputmode="numeric"') +
+        selField('invTrip', 'Гость едет домой', [['near', 'В соседнюю страну, Беларусь тоже: от 200 zł'], ['eu', 'В другую страну Европы: от 500 zł'], ['far', 'Не в Европу: от 2500 zł']]) + '</div>' +
+      '<label class="pl-toggle"><input type="checkbox" data-f="invRel"' + (S.f.invRel ? ' checked' : '') + '>Гость близкий родственник: родитель, ребёнок, супруг, брат или сестра, родитель или ребёнок супруга</label>' +
+      '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="invSum">0</div><div class="k">zł на счёте или в доходе</div><div class="d" data-o="invHow"></div></div></div>' +
+      '<p class="pl-note">Правило: 515 zł в месяц на тебя, на каждого, кого ты содержишь, и на каждого гостя. За близкого родственника 200 zł в месяц. Плюс дорога домой каждому гостю, или его обратный билет. Меньше месяца считается пропорционально. Деньги показывают выпиской со счёта сразу на весь срок или справкой о доходе на каждый месяц.</p>' +
+      '<div class="pl-tool-h" style="font-size:16px">' + ms('description') + 'Что писать в бланке</div>' +
+      '<p>Бланк «Wniosek o wpisanie zaproszenia do ewidencji zaproszeń» есть на странице твоего ужонда. Пиши печатными буквами по-польски, заполни все поля в частях A и B, часть C для ужонда. Пустой адрес = заявление не рассмотрят.</p>' +
+      '<div class="pl-rows pb-inv-rows">' + rows.map(function (r) { return '<div><span>' + r[0] + '</span><b>' + r[1] + '</b></div>'; }).join('') + '</div>' +
+      '<div class="pl-tool-h" style="font-size:16px">' + ms('upload_file') + 'Что приложить</div>' +
+      '<ul class="pl-list"><li>Подтверждение оплаты 27 zł (opłata skarbowa, счёт города из карточки «Твой ужонд»)</li><li>Выписку со счёта на всю сумму или справку о доходах</li><li>Договор аренды или акт собственности. Если гость живёт не у тебя, бронь или договор на другое жильё: в брони видно, кто бронирует, для кого и на какие даты</li><li>Снимаешь: согласие владельца, что гость поживёт в квартире. Пример ниже</li><li>Свой документ: karta pobytu или паспорт</li></ul>' +
+      '<div class="pb-acc"><div class="pl-eyebrow">Пример: согласие владельца квартиры</div><pre class="pb-tpl">' + esc(OWNER_OK) + '</pre>' +
+        '<div class="pl-row"><button type="button" class="pl-btn pl-btn-s" data-copy="' + esc(OWNER_OK) + '">' + ms('content_copy') + '<span>Копировать</span></button><span class="pl-small pl-muted">Единого образца нет, это пример. Подставь свои данные вместо скобок.</span></div></div>' +
+      '<p><b>Куда.</b> В ужонд своего воеводства (<span data-bind="uw"></span>), лично или почтой, если он так принимает: смотри страницу отдела. В Слупске Поморский принимает заявления на приглашение по записи. Забираешь лично или по доверенности (17 zł). Готовое приглашение отдай гостю для консульства.</p>' +
+      srcLine([['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/Wpis_do_ewidencji_zaproszen', 'bip.lubuskie.uw.gov.pl'], ['https://www.gov.pl/web/uw-zachodniopomorski/zaproszenia', 'gov.pl/web/uw-zachodniopomorski'], ['https://migrant.poznan.uw.gov.pl/pl/procedury/wpis-zaproszenia-do-ewidencji-zaproszen', 'migrant.poznan.uw.gov.pl'], ['https://migrant.poznan.uw.gov.pl/en/system/files/pliki/formularz_zaproszenia.pdf', 'бланк, Познань'], ['https://www.gov.pl/attachment/872c2503-946e-4534-adf9-ea66044632e4', 'karta informacyjna, gov.pl']]) +
+      '<p class="pl-note">Проверено 16.11.2026.</p>';
+  }
+  function updateInvite() {
+    var o = invOpen(), num = function (k, d) { var v = parseFloat(String(S.f[k] == null || S.f[k] === '' ? d : S.f[k]).replace(',', '.')); return isNaN(v) || v < 0 ? +d : v; };
+    var m = num('invMonths', 1), deps = Math.round(num('invDeps', 0)), g = Math.max(1, Math.round(num('invGuests', 1)));
+    var trip = { near: 200, eu: 500, far: 2500 }[S.f.invTrip] || 200, rel = !!S.f.invRel;
+    var stay = rel ? g * 200 * m : (1 + deps + g) * 515 * m, sum = Math.round(stay + g * trip);
+    out('invSum', n0(sum));
+    out('invHow', (rel ? g + ' × 200 zł × ' + m : (1 + deps + g) + ' × 515 zł × ' + m) + ' мес. + дорога ' + g + ' × ' + trip + ' zł');
+    var st = o.ok ? 'Доступно: ' + o.why : o.none ? 'Укажи в «Своё», с какого дня ты легально в Польше' : 'Через ' + n0(o.d) + ' ' + dWord(o.d) + ', с ' + fmtD(o.at);
+    out('invSum2', st);
+    out('invMsg', o.ok ? '' : tipHtml(o.none ? 'Приглашать можно после 5 лет легальной жизни в Польше без перерыва или с ПМЖ. Укажи дату в «Своё», и тут появится, когда станет можно.' : 'Пока рано: 5 лет наберётся ' + fmtD(o.at) + '. С ПМЖ или rezydentem UE можно сразу.'));
+    var c = $('#pl-d-inv'); if (c) c.classList.toggle('is-off', !o.ok);
+  }
+  function updateCardSums() {
+    out('uzSum', 'Куда и как подавать, реквизиты');
+    var e = parseD(S.f.passExp), d = e ? days(today(), e) : null;
+    out('peSum', e ? (d >= 0 ? n0(d) + ' ' + dWord(d) + ' до конца' : 'Истёк ' + n0(-d) + ' ' + dWord(-d) + ' назад') : 'Срок и dokument podróży для беларусов');
+  }
   function rLegal() {
     var tabs = '<div class="pl-seg" role="tablist" aria-label="Этапы легализации">' + L_ORDER.map(function (k) {
       return '<button type="button" role="tab" id="pl-tab-' + k + '" aria-controls="pl-panel-' + k + '" data-legal="' + k + '" aria-selected="' + (k === S.legal) + '">' + LEGAL[k].tab + '<span class="pl-cnt" data-o="tc-' + k + '"></span></button>';
@@ -1622,7 +1721,11 @@ font-size:16px;line-height:1.5;font-stretch:100%}
       '</div></div>';
     }).join('');
     return '<section class="pl-band pb-screen" id="pl-legal" aria-labelledby="pl-legal-h"><h1 class="sr" id="pl-legal-h">Легализация в Польше: ВНЖ, ПМЖ и паспорт по шагам</h1>' +
-      '<div class="pb-legal-cards"><div data-o="uzhond"></div>' + rPassport() + '</div>' +
+      '<div class="pb-legal-cards">' +
+        card('pl-d-uz', svgi('bank', 24), 'Твой ужонд: <span data-bind="uw"></span>', 'uzSum', '<div class="pb-uz" data-o="uzhond"></div>') +
+        card('pl-d-pass', svg18('pass', 24), 'Паспорт', 'peSum', '<div class="pb-pass" aria-live="polite">' + rPassport() + '</div>') +
+        card('pl-d-inv', ms('flight_land'), 'Пригласить гостя', 'invSum2', '<div class="pb-inv" aria-live="polite">' + rInvite() + '</div>') +
+      '</div>' +
       '<p class="pl-small pl-muted pb-uw">Квадрат слева меняет статус шага, каждый шаг добавляет проценты к уровню. Всё сохраняется только в браузере.</p>' +
       '<div class="pl-legal-bar">' + tabs + '<label class="pl-toggle pl-mypath"><input type="checkbox" data-mypath' + (myPath() ? ' checked' : '') + '><span>Мой путь<small class="pl-xs pl-muted">пройденное по «Где ты сейчас» и датам в «Своё»</small></span></label></div>' +
       panels + '</section>';
@@ -2001,7 +2104,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   }
 
   function updateTools() {
-    updateNext(); updatePassport();
+    updateNext(); updatePassport(); updateInvite(); updateCardSums();
     var t = today(), c = city();
     // waiting timer
     var filed = parseD(S.f.filed);
@@ -2359,7 +2462,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     S.stage = id; S.stageSet = true; S.legal = { arrive: 'vnzh', wait: 'vnzh', vnzh: 'pmzh', pmzhw: 'pmzh', pmzh: 'paszport', pass: 'paszport', citizen: 'paszport' }[id] || S.legal; save();
     var st = STAGE_LBL[id], sel = $('[data-stage-sel]'), pill = sel && sel.parentNode;
     if (pill) { var first = pill.firstChild; while (first && first !== sel && first.tagName !== 'svg') { var nx = first.nextSibling; pill.removeChild(first); first = nx; } pill.insertAdjacentHTML('afterbegin', '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>'); var ph = sel.querySelector('option[disabled]'); if (ph) sel.removeChild(ph); }
-    updateStage(); applyTabs(); updatePath(); updateProgress(); updateMine(); updateMe(); fitCounts();
+    updateStage(); applyTabs(); updatePath(); updateProgress(); updateMine(); updateMe(); updateInvite(); fitCounts();
   }
 
   function setStatus(key) {

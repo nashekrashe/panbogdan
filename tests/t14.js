@@ -66,4 +66,18 @@ const uw=t.$('[data-o="uzhond"]').textContent;
 ok(/Mazowiecki/.test(uw)&&/Marszałkowska 3\/5/.test(uw)&&!/Гдыне/.test(uw),'Warsaw card');
 t=boot({city:'katowice'});
 ok(/Адрес и часы/.test(t.$('[data-o="uzhond"]').textContent),'no verified address: link to the department');
+// cards folded by default; invitation gate and money
+t=boot({city:'gdansk',stage:'vnzh',stageSet:true,f:{since:'2019-03-01'}});
+ok(['pl-d-uz','pl-d-pass','pl-d-inv'].every(id=>t.$('#'+id)&&!t.$('#'+id).open),'three cards, folded');
+ok(/Pomorski/.test(t.$('#pl-d-uz summary').textContent),'ужонд name in the folded summary');
+ok(/^Доступно/.test(t.$('[data-o="invSum2"]').textContent),'invite open after 5 years: '+t.$('[data-o="invSum2"]').textContent);
+ok(t.$('[data-o="invSum"]').textContent.replace(/\s/g,'')==='1230','1 month, 1 guest, Belarus: 2×515+200 = 1230 ('+t.$('[data-o="invSum"]').textContent+')');
+t.$('#pl-d-inv input[data-f="invRel"]').click();
+ok(t.$('[data-o="invSum"]').textContent.replace(/\s/g,'')==='400','close relative: 200+200 = 400');
+ok(!/—/.test(t.$('#pl-d-inv').textContent),'no em dash in invite card');
+t=boot({city:'gdansk',stage:'vnzh',stageSet:true,f:{since:'2024-03-01'}});
+ok(/^Через/.test(t.$('[data-o="invSum2"]').textContent)&&t.$('#pl-d-inv').classList.contains('is-off'),'invite locked before 5 years');
+t=boot({city:'gdansk',stage:'pmzh',stageSet:true});
+ok(/^Доступно/.test(t.$('[data-o="invSum2"]').textContent),'invite open with ПМЖ');
+ok(t.errs.length===0,'no errors: '+t.errs.join('; '));
 console.log(fail?fail+' failed':'all passed');process.exit(fail?1:0);
