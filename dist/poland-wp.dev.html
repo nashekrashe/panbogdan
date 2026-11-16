@@ -828,6 +828,29 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-top .pashaby-q{order:0}
 #pl-me~.pb-foot,.pb-screens~.pb-foot{padding-top:24px}
 
+/* big numbers: no empty band above the digits (Chrome, Safari: text-box; others: a fixed trim) */
+#pl-me .pl-big{text-box:trim-both cap alphabetic}
+@supports not (text-box:trim-both cap alphabetic){#pl-me .pl-big{margin-block:-.1em -.05em}}
+#pl-me .pl-big~.pl-lab{margin-top:14px}
+#pl-me .pb-mine .pl-me .pl-big~.pl-lab{margin-top:12px}
+@media (min-width:901px){.pb-hero{padding-top:0}}
+/* empty «Своё»: under the card, where data lives and what each section is for */
+.pb-home{grid-template-areas:"hero card" "next about";grid-template-rows:auto 1fr}
+.pb-home.is-filled{grid-template-areas:"hero card" "next card";grid-template-rows:auto 1fr}
+.pb-about{grid-area:about;min-width:0;padding:clamp(20px,2vw,28px) clamp(4px,1vw,8px) 0}
+.pb-home.is-filled .pb-about,.pb-home:not(.is-filled) .pb-mine-p{display:none}
+.pb-about-p{display:flex;gap:10px;align-items:flex-start;margin:0 0 clamp(20px,2vw,28px);font-size:14px;line-height:1.5;color:var(--ink)}
+.pb-about-p .pb-i{flex:0 0 auto;margin-top:2px;color:var(--red)}
+.pb-about .pl-eyebrow{margin-bottom:8px}
+.pb-about-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 20px}
+.pb-about-l a{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;margin:0 -12px;border-radius:10px;color:var(--ink);text-decoration:none;transition:background .2s}
+.pb-about-l a:hover{background:var(--tint)}
+.pb-about-l .pb-i{flex:0 0 auto;margin-top:1px}
+.pb-about-l b{display:block;font-size:14px;font-weight:600}
+.pb-about-l small{display:block;margin-top:2px;font-size:13px;line-height:1.4;color:var(--mut)}
+.pb-about-l a:hover b{color:var(--red)}
+@media (max-width:900px){.pb-home,.pb-home.is-filled{grid-template-areas:"hero" "card" "next" "about";grid-template-rows:none}.pb-about{padding-inline:0}}
+
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
 <script>
@@ -1380,6 +1403,10 @@ font-size:16px;line-height:1.5;font-stretch:100%}
           '<p class="pl-note pb-mine-hint" data-o="meHint"></p>' +
           '<div class="pl-me" data-o="me" data-fitcells="300" data-fitmin="40" data-fitref=".pb-counts .pl-counts" aria-live="polite"></div>' +
         '</div>' +
+        '<div class="pb-about"><p class="pb-about-p">' + svgi('mine', 18) + '<span>Всё, что ты вводишь, хранится только в этом браузере. Сервера и аккаунтов нет, даже ужонд не узнает. Сбросить можно внизу страницы.</span></p>' +
+          '<div class="pl-eyebrow">Что где</div><ul class="pb-about-l">' + SECTIONS.filter(function (x) { return x.k !== 'me'; }).map(function (x) {
+            return '<li><a href="' + hrefOf(x) + '">' + svgi(x.ic, 20) + '<span><b>' + x.n + '</b><small>' + SDESC[x.k] + '</small></span></a></li>';
+          }).join('') + '</ul></div>' +
         '<div class="pl-next pb-next" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
       '</div>' +
       '<div class="pb-counts">' +
@@ -1850,6 +1877,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     }
     out('me', html);
     var intro = $('[data-o="meIntro"]'); if (intro) intro.hidden = !!html;
+    var home = $('.pb-home'); if (home) home.classList.toggle('is-filled', !!html);
   }
   function updateMine() {
     var si = STAGE_IDX[S.stage] || 0, hidden = 0;

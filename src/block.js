@@ -547,6 +547,10 @@
           '<p class="pl-note pb-mine-hint" data-o="meHint"></p>' +
           '<div class="pl-me" data-o="me" data-fitcells="300" data-fitmin="40" data-fitref=".pb-counts .pl-counts" aria-live="polite"></div>' +
         '</div>' +
+        '<div class="pb-about"><p class="pb-about-p">' + svgi('mine', 18) + '<span>Всё, что ты вводишь, хранится только в этом браузере. Сервера и аккаунтов нет, даже ужонд не узнает. Сбросить можно внизу страницы.</span></p>' +
+          '<div class="pl-eyebrow">Что где</div><ul class="pb-about-l">' + SECTIONS.filter(function (x) { return x.k !== 'me'; }).map(function (x) {
+            return '<li><a href="' + hrefOf(x) + '">' + svgi(x.ic, 20) + '<span><b>' + x.n + '</b><small>' + SDESC[x.k] + '</small></span></a></li>';
+          }).join('') + '</ul></div>' +
         '<div class="pl-next pb-next" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
       '</div>' +
       '<div class="pb-counts">' +
@@ -1017,6 +1021,7 @@
     }
     out('me', html);
     var intro = $('[data-o="meIntro"]'); if (intro) intro.hidden = !!html;
+    var home = $('.pb-home'); if (home) home.classList.toggle('is-filled', !!html);
   }
   function updateMine() {
     var si = STAGE_IDX[S.stage] || 0, hidden = 0;
