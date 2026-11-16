@@ -144,7 +144,9 @@
   ];
   /* old addresses from links and bookmarks */
   var SCREEN_ALIAS = { 'pl-svoi': 'help', 'pl-life': 'help', 'pl-lyrics': 'me', 'pl-avg': 'me', 'pl-top': 'me', svoi: 'help', life: 'help' };
-  var MOB_MAIN = ['me', 'legal', 'money', 'home'];
+  /* a short line above the picture in the menu column; for sections these are placeholders until real descriptions are written */
+  var SDESC = { me: 'Стараюсь дать максимально много информации, но без гарантий (как любой помогатор)', legal: 'ВНЖ, ПМЖ и паспорт по шагам', news: 'Что изменилось в законах и правилах, свежее сверху', by: 'То, чего нет в общих гайдах',
+    money: 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя', bank: 'Кто как относится к беларусам', kids: 'PESEL, сад, школа, 800+', home: 'Ипотека в цифрах, сколько дадут и аренда', auto: 'Топливо, поездки, права и номера', help: 'Бесплатная помощь, официальные сайты и быт без паники', dict: 'Слова, без которых ни одно письмо не читается' };
 
   var STAGES = [
     { id: 'arrive', n: 'Только приехал', next: [['Сделай PESEL и profil zaufany: без них не подписать заявление в MOS', '#pl-d-d30'], ['Выбери основание для ВНЖ и подай, пока виза или безвиз действуют', '#pl-legal'], ['Найди бесплатную юрпомощь своего города в разделе «Хелп»', '#help']] },
@@ -470,7 +472,7 @@
   function navLink(s, cls) { return '<a class="' + cls + '" href="' + hrefOf(s) + '" data-nav="' + s.k + '">' + svgi(s.ic) + '<span>' + s.n + '</span></a>'; }
   function rSide() {
     return '<aside class="pb-side"><div class="pb-side-in"><nav class="pb-nav" aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav>' +
-      '<div class="pb-ill" aria-hidden="true">' + rIll() + '</div></div></aside>';
+      '<p class="pb-side-d" data-o="secDesc"></p><div class="pb-ill" aria-hidden="true">' + rIll() + '</div></div></aside>';
   }
   function rTop() {
     var st = STAGE_LBL[S.stage] || STAGE_LBL.arrive, set = meOpen();
@@ -485,6 +487,7 @@
             return '<option value="' + s.id + '"' + (set && s.id === S.stage ? ' selected' : '') + '>' + s.n + '</option>';
           }).join('') + '</select></label></span>' +
       '</div>' +
+      '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span><span class="pashaby-q" aria-hidden="true">format_quote</span></button>' +
       '<div class="pb-langs" role="group" aria-label="Язык"><button type="button" aria-pressed="true">РУС</button><button type="button" disabled title="Скоро">БЕЛ</button><button type="button" disabled title="Скоро">УКР</button></div>' +
       '<div class="pl-lvl"><span class="pl-lvl-t">Уровень: <b data-o="lvlName"></b></span>' +
         '<ol class="pl-lvl-s" aria-label="Уровни">' + LEVELS.map(function (l, i) { return '<li data-lvl="' + i + '" title="' + l[1] + '"><i><b></b></i></li>'; }).join('') + '</ol>' +
@@ -498,8 +501,7 @@
 
   function rFoot() {
     return '<footer class="pb-foot">' +
-      '<div class="pb-foot-top"><p class="pb-disc">Стараюсь дать максимально много информации, но без гарантий (как любой помогатор)</p>' +
-        '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span><span class="pashaby-q" aria-hidden="true">format_quote</span></button></div>' +
+      '<p class="pb-disc">' + SDESC.me + '</p>' +
       '<div class="pb-foot-c"><div class="pl-acc pl-sources"><details id="pl-d-src"><summary><span class="t">Источники и даты<small>' + SOURCES.length + ' ссылок, проверено 30.10.2026</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body wide"><ul class="pl-list">' +
           SOURCES.map(function (s) { return '<li>' + link(s[1], s[0]) + '</li>'; }).join('') + '</ul></div></details></div>' +
         '<div class="pb-foot-row"><span class="pl-small pl-muted">Законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</span><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div></div>' +
@@ -1325,7 +1327,7 @@
   function setActive(k) {
     activeNow = k;
     $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === k) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
-    out('secName', secBy(k) ? secBy(k).n : '');
+    out('secName', secBy(k) ? secBy(k).n : ''); out('secDesc', SDESC[k] || '');
     var src = ILL[k] || '';
     $$('.pb-ill img, .pb-mill img').forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-ill') === src); });
   }
@@ -1574,14 +1576,14 @@
   /* the site logo on this page becomes a phrase about emigrant life in Poland; a click shows another one */
   /* one line always: a long phrase gets a smaller font instead of a second line, so the header never changes height */
   function fitPhrase(t) {
-    t.style.fontSize = '';
-    var w = t.clientWidth; if (!w || t.scrollWidth <= w) return;
-    var size = parseFloat(getComputedStyle(t).fontSize), min = 9;
-    for (var i = 0; i < 4 && t.scrollWidth > w && size > min; i++) {
-      size = Math.max(min, Math.floor(size * w / t.scrollWidth * 10) / 10 - (i ? .5 : 0));
-      t.style.fontSize = size + 'px';
-    }
+    t.classList.remove('two'); t.style.fontSize = '';
+    if (!t.clientWidth) return;
+    var one = [22, 20, 18], two = [17, 16, 15, 14, 13, 12], i;
+    for (i = 0; i < one.length; i++) { t.style.fontSize = one[i] + 'px'; if (t.scrollWidth <= t.clientWidth + 1) return; }
+    t.classList.add('two');
+    for (i = 0; i < two.length; i++) { t.style.fontSize = two[i] + 'px'; if (t.scrollHeight <= t.clientHeight + 1 && t.scrollWidth <= t.clientWidth + 1) return; }
   }
+
   function fitPhrases() { Array.prototype.forEach.call(document.querySelectorAll('.pashaby-t'), fitPhrase); }
   try {
     var fitRaf = 0;

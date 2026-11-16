@@ -65,14 +65,14 @@ HEAD = '''<!doctype html>
 <meta property="og:title" content="%(t)s">
 <meta property="og:description" content="%(d)s">
 <meta property="og:url" content="%(u)s">
-<meta property="og:image" content="%(u)sog-share-1200x630.jpg?v=2">
+<meta property="og:image" content="%(u)sog-share-1200x630.jpg?v=3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Pan Bogdan, e-помогатор: легализация, новости, беларусам, бабки, дети, дом, хелп, банки">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="%(t)s">
 <meta name="twitter:description" content="%(d)s">
-<meta name="twitter:image" content="%(u)sog-share-1200x630.jpg?v=2">
+<meta name="twitter:image" content="%(u)sog-share-1200x630.jpg?v=3">
 <link rel="https://api.w.org/" href="https://pasha.by/wp-json/">
 <link rel="preload" href="/fonts/ms-rounded-sub.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/ibm-plex-sans-cyrillic-standard-normal.woff2" as="font" type="font/woff2" crossorigin>

@@ -757,3 +757,24 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-mlogo img{max-height:189px}
 .pb-mine .pl-me:empty{display:none}
 @media (max-width:359px){.pb-mill{display:none}}
+
+/* the phrase lives in the top bar: one line when it fits, else two smaller lines; the bar never changes height */
+.pb-top{flex-wrap:nowrap}
+.pb-pills{flex:0 0 auto;flex-wrap:nowrap}
+.pb-top .pashaby-phrase{flex:1 1 0;min-width:0;width:auto;max-width:none;height:40px;margin:-2px 0;padding:0;gap:12px;justify-content:flex-start;text-align:left;font-family:var(--font);font-weight:500;letter-spacing:-.01em;color:var(--ink)}
+.pb-top .pashaby-t{flex:0 1 auto;min-width:0;font-size:22px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb-top .pashaby-t.two{white-space:normal;text-overflow:clip;max-height:2.3em;text-wrap:balance}
+.pb-top .pashaby-q{color:#fd2222;font-size:26px;order:2}
+.pb-langs{margin-left:0;flex:0 0 auto}
+.pb-top .pl-lvl{flex:0 0 auto}
+.pb-geo-msg{position:absolute;left:0;top:100%;margin-top:2px;background:rgba(255,255,255,.94)}
+/* the line above the picture */
+.pb-side-d{margin-top:auto;padding:16px 12px 0 0;margin-left:-8px;font-size:14px;line-height:1.3;color:var(--mut);max-width:200px;text-wrap:pretty;transition:opacity .3s}
+.pb-side-d:empty{display:none}
+.pb-ill{margin-top:16px}
+.pb-foot>.pb-disc{display:none}
+.pb-foot-c{margin-top:0}
+@media (min-width:901px){.pb-main .pl-head>.pl-small{display:none}}
+@media (max-height:800px){.pb-side-d{display:none}.pb-ill{margin-top:auto}}
+@media (max-width:1279px){.pb-top{flex-wrap:wrap}.pb-top .pashaby-phrase{order:5;flex:1 0 100%}.pb-langs{margin-left:auto}}
+@media (max-width:900px){.pb-pills{flex-wrap:wrap;flex:1 1 100%}.pb-top .pashaby-phrase{height:44px}.pb-top .pashaby-t{font-size:18px}.pb-foot>.pb-disc{display:block;margin-bottom:24px}.pb-geo-msg{position:static}}
