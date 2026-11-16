@@ -1,0 +1,42 @@
+# Weekly: are the payment accounts in src/block.js (PAY) still on the voivodeship offices' pages?
+# Commits data/pay-check.json and site/data/pay-check.json (the site shows the date of the last check).
+# If an account disappeared from its page, opens an issue so the number gets re-checked by hand.
+name: Проверка реквизитов
+on:
+  schedule:
+    - cron: '17 5 * * 1'   # Mondays 05:17 UTC
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check accounts
+        id: chk
+        run: |
+          set +e
+          node build/paycheck.mjs | tee paycheck.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Commit result
+        run: |
+          git config user.name "paycheck-bot"
+          git config user.email "paycheck-bot@users.noreply.github.com"
+          git add data/pay-check.json site/data/pay-check.json
+          git diff --cached --quiet || (git commit -m "Реквизиты: еженедельная проверка" && git push)
+      - name: Open an issue when an account is gone
+        if: steps.chk.outputs.code == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "Робот не нашёл эти номера на страницах ужондов. Проверь вручную и обнови PAY в src/block.js."
+            echo
+            node -e "const j=require('./data/pay-check.json');for(const f of j.fails)console.log('- '+f.voiv+' '+f.kind+': '+f.acc+' ('+f.reason+') '+f.url)"
+          } > body.md
+          gh issue create --title "Реквизиты: номер пропал со страницы ужонда ($(date +%d.%m.%Y))" --body-file body.md

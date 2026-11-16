@@ -97,6 +97,8 @@ shutil.copy(os.path.join(ROOT, 'vendor', 'air-datepicker.js'), os.path.join(SITE
 for f in ('og-share-1200x630.jpg', 'favicon-32.png', 'icon-192.png', 'apple-touch-icon-180.png'):
     shutil.copy(os.path.join(ROOT, 'assets', f), os.path.join(SITE, f))
 shutil.copy(os.path.join(ROOT, 'assets', 'favicon.ico'), os.path.join(SITE, 'favicon.ico'))
+# weekly payment-details check result (build/paycheck.mjs, GitHub Actions)
+if os.path.isdir(os.path.join(ROOT, 'data')): shutil.copytree(os.path.join(ROOT, 'data'), os.path.join(SITE, 'data'))
 
 
 # one page per section: own address, title and description; prerender.js then leaves only that section's text in it

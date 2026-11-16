@@ -1,0 +1,71 @@
+{
+ "checked": "16.11.2026",
+ "v": {
+  "dolnoslaskie": {
+   "tax": true,
+   "card": true
+  },
+  "kujawsko": {
+   "tax": true,
+   "card": true
+  },
+  "lubelskie": {
+   "tax": true,
+   "card": true
+  },
+  "lubuskie": {
+   "tax": true,
+   "card": true
+  },
+  "lodzkie": {
+   "tax": true,
+   "card": true
+  },
+  "malopolskie": {
+   "tax": true,
+   "card": true
+  },
+  "mazowieckie": {
+   "tax": true,
+   "card": true
+  },
+  "opolskie": {
+   "tax": true,
+   "card": true
+  },
+  "podkarpackie": {
+   "tax": true,
+   "card": true
+  },
+  "podlaskie": {
+   "tax": true,
+   "card": true
+  },
+  "pomorskie": {
+   "tax": true,
+   "card": true
+  },
+  "slaskie": {
+   "tax": true,
+   "card": true
+  },
+  "swietokrzyskie": {
+   "tax": true,
+   "card": true
+  },
+  "warminsko": {
+   "tax": true,
+   "card": true
+  },
+  "wielkopolskie": {
+   "tax": true,
+   "card": true
+  },
+  "zachodniopomorskie": {
+   "tax": true,
+   "card": true
+  }
+ },
+ "fails": [],
+ "note": "first check by hand in a browser; from here on build/paycheck.mjs via GitHub Actions"
+}
