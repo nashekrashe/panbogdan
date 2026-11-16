@@ -590,7 +590,7 @@
   function rNews() {
     var first = NEWS.slice(0, 5), rest = NEWS.slice(5);
     function li(n) { return '<li><time>' + n.d + '</time><p><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span>' + n.t + ' ' + src(n.u, n.s) + '</p></li>'; }
-    return '<section class="pl-band pb-screen" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Что изменилось', 'newspaper', '#141414', '#fff', 'Свежее сверху · проверено 23.10.2026') +
+    return '<section class="pl-band pb-screen" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Новости легализации. Новые законы и правила для иностранцев', 'newspaper', '#141414', '#fff', 'Свежее сверху · проверено 23.10.2026') +
       '<ul class="pl-news">' + first.map(li).join('') + '</ul>' +
       '<div class="pl-acc" style="border-top:0"><details id="pl-d-news"><summary><span class="t" style="font-size:15px">Ещё ' + rest.length + ' ' + plural(rest.length, 'новость', 'новости', 'новостей') + '</span>' + ms('expand_more', 'chev') + '</summary><ul class="pl-news" style="margin-top:0">' + rest.map(li).join('') + '</ul></details></div>' +
     '</section>';
@@ -818,7 +818,7 @@
           (k === 'vnzh' ? rToolVnzh() : k === 'pmzh' ? (pmPath() === 'rd' || pmPath() === 'prot' ? rToolPmzh() : '') : rToolPass()) + '</div>' +
       '</div></div>';
     }).join('');
-    return '<section class="pl-band pb-screen" id="pl-legal" aria-labelledby="pl-legal-h"><h1 class="sr" id="pl-legal-h">Легализация в Польше: ВНЖ, ПМЖ и паспорт по шагам</h1>' +
+    return '<section class="pl-band pb-screen" id="pl-legal" aria-labelledby="pl-legal-h">' + head('pl-legal', 'Легализация в Польше. ВНЖ. ПМЖ. Паспорт. Приглашения') +
       '<div class="pb-legal-cards">' +
         card('pl-d-uz', svgi('bank', 24), 'Твой ужонд: <span data-bind="uw"></span>', 'uzSum', '<div class="pb-uz" data-o="uzhond"></div>') +
         card('pl-d-pass', svg18('pass', 24), 'Паспорт', 'peSum', '<div class="pb-pass" aria-live="polite">' + rPassport() + '</div>') +
@@ -938,7 +938,7 @@
       '<div data-w="b2b"><span class="v" data-o="dlMzp"></span><span class="k">дней до 31 января: заявка на Mały ZUS Plus</span></div>' +
       '<div data-w="b2b"><span class="v" data-o="dlForm"></span><span class="k">дней до 20 февраля: сменить форму налога на год</span></div>' +
       '<div><span class="v" data-o="dlPit"></span><span class="k">дней до 30 апреля: годовой PIT</span></div></div>';
-    return '<section class="pl-band pb-screen" id="pl-money" aria-labelledby="pl-money-h">' + head('pl-money', 'Бабки', 'payments', 'var(--c-money)', '#141414', 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя.') + tabs +
+    return '<section class="pl-band pb-screen" id="pl-money" aria-labelledby="pl-money-h">' + head('pl-money', 'Деньги, курсы, зарплаты, налоги', 'payments', 'var(--c-money)', '#141414', 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя.') + tabs +
       '<div role="tabpanel" id="pl-cp" aria-labelledby="pl-ct-' + S.contract + '"><div class="pl-split">' + side + '<div class="pl-main">' + calc + '</div></div>' + taxes + zus + dl + '</div></section>';
   }
 
@@ -951,7 +951,7 @@
   }
   /* «Банки»: who is friendly to Belarusians, and money from Belarus */
   function rBank() {
-    return '<section class="pl-band pb-screen" id="pl-bank" aria-labelledby="pl-bank-h">' + head('pl-bank', 'Банки', '', '', '', 'Кто как относится к беларусам') +
+    return '<section class="pl-band pb-screen" id="pl-bank" aria-labelledby="pl-bank-h">' + head('pl-bank', 'Банки. Счета. Санкции', '', '', '', 'Кто как относится к беларусам') +
             '<p class="pl-lead" style="margin-top:8px">Насколько легко открыть счёт и пользоваться им без карты побыту. С картой побыту проще почти везде.</p>' +
       '<ol class="pl-banks">' + BANKS.map(function (b, i) {
         return '<li><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
@@ -964,7 +964,7 @@
   }
   /* «Дом»: mortgage numbers, the calculator, renting */
   function rHome() {
-    return '<section class="pl-band pb-screen" id="pl-home" aria-labelledby="pl-home-h">' + head('pl-home', 'Дом', '', '', '', 'Ипотека в цифрах, сколько дадут и аренда') +
+    return '<section class="pl-band pb-screen" id="pl-home" aria-labelledby="pl-home-h">' + head('pl-home', 'Аренда. Ипотека. Кредиты. Прописка', '', '', '', 'Ипотека в цифрах, сколько дадут и аренда') +
       '<p class="pl-lead">Средние по всей Польше, по городам официальных данных нет.</p>' +
       '<div class="pl-counts" data-fitcells="200">' +
         '<div><div class="pl-big">486 500</div><div class="pl-lab">zł: средняя ипотека</div><div class="pl-sub">BIK, сентябрь 2026. На 8,3% больше, чем год назад</div></div>' +
@@ -982,7 +982,7 @@
       '</ul>' + srcLine([['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'rankomat.pl'], ['https://pawelpietras.pl/blog/kredyt-hipoteczny-dla-obcokrajowca-z-karta-czasowego-pobytu', 'pawelpietras.pl']]) + lifeAcc(['home']) + '</section>';
   }
   function rKids() {
-    return '<section class="pl-band pb-screen" id="pl-kids" aria-labelledby="pl-kids-h">' + head('pl-kids', 'Дети', '', '', '', 'PESEL, сад, школа, 800+') + lifeAcc(['kids']) + '</section>';
+    return '<section class="pl-band pb-screen" id="pl-kids" aria-labelledby="pl-kids-h">' + head('pl-kids', 'Дети. Сады. Ясли. Выплаты', '', '', '', 'PESEL, сад, школа, 800+') + lifeAcc(['kids']) + '</section>';
   }
 
   function rAuto() {
@@ -991,9 +991,9 @@
       var k = roadKm(c, x);
       return '<button type="button" class="pl-chip" data-dist="' + k + '">' + CITIES[c].n + ' → ' + CITIES[x].n + ' <span class="pl-muted" style="font-weight:400">≈' + k + ' км</span></button>';
     }).join('');
-    return '<section class="pl-band pb-screen" id="pl-auto" aria-labelledby="pl-auto-h">' + head('pl-auto', 'Авто', 'directions_car', 'var(--c-auto)', '#141414', 'Топливо: средние цены по Польше, раз в неделю') +
+    return '<section class="pl-band pb-screen" id="pl-auto" aria-labelledby="pl-auto-h">' + head('pl-auto', 'Авто. Топливо. Права. Учет. Страховка. Техосмотр', 'directions_car', 'var(--c-auto)', '#141414', 'Топливо: средние цены по Польше, раз в неделю') +
       '<div class="pl-counts" data-fitcells="200" style="margin-top:40px">' + [['PB 95', 'fuelPb', 'Зарплата обновляется реже.'], ['ON · дизель', 'fuelOn', 'Дизель снова дороже бензина. Или нет. Смотри цифру.'], ['LPG', 'fuelLpg', 'Газовики смотрят на всех свысока.']].map(function (f) {
-        return '<div><div class="pl-lab" style="margin:0 0 12px">' + f[0] + '</div><div class="pl-big" data-o="' + f[1] + '">—</div><div class="pl-lab">zł за литр, в среднем по Польше</div><div class="pl-sub">' + f[2] + '</div></div>';
+        return '<div><div class="pb-fuel-k">' + f[0] + '</div><div class="pl-big" data-o="' + f[1] + '">—</div><div class="pl-lab">zł за литр, в среднем по Польше</div><div class="pl-sub">' + f[2] + '</div></div>';
       }).join('') + '</div>' +
       '<p class="pl-note" style="margin-top:20px"><span data-o="fuelNote"></span> Где дешевле ' + CITIES[c].loc + ': ' + link('https://www.e-petrol.pl', 'e-petrol.pl') + '</p>' +
       '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('local_gas_station') + 'Сколько стоит доехать</div><div class="pl-row">' + routes + '</div>' +
@@ -1016,7 +1016,7 @@
   function rHelp() {
     var c = city();
     var help = (c.uwUrl ? [{ n: c.uw, d: 'Официальный сайт твоего ужонда: объявления, запись, контакты', u: c.uwUrl, h: c.uwUrl.replace('https://www.', ''), ic: 'gavel' }] : []).concat(c.help);
-    return '<section class="pl-band pb-screen" id="pl-help" aria-labelledby="pl-help-h">' + head('pl-help', 'Хелп', '', '', '', 'Бесплатная помощь, официальные сайты и быт без паники') +
+    return '<section class="pl-band pb-screen" id="pl-help" aria-labelledby="pl-help-h">' + head('pl-help', 'Бесплатная информация и поддержка', '', '', '', 'Бесплатная помощь, официальные сайты и быт без паники') +
       '<h3 class="pl-eyebrow" style="margin-top:40px">Бесплатная помощь ' + c.loc + '</h3><div class="pl-links">' + help.map(function (h) { return linkCard(h, h.ic || 'volunteer_activism'); }).join('') + '</div>' +
       (c.help.length ? '' : '<p class="pl-note" style="margin-top:12px">Местных организаций по ' + c.voiv + ' в официальной базе пока нет. Контакты ниже работают по всей Польше.</p>') +
       '<h3 class="pl-eyebrow" style="margin-top:40px">Официально</h3><div class="pl-links">' + OFFICIAL.map(function (o) { return linkCard(o); }).join('') + '</div>' +

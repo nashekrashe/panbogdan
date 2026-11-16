@@ -895,3 +895,12 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pl-lvl-up{position:absolute;right:0;top:-4px;font-size:13px;font-weight:700;color:var(--red);pointer-events:none;animation:pbUp 1.4s cubic-bezier(.16,1,.3,1) forwards}
 @keyframes pbUp{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-18px)}}
 @media (prefers-reduced-motion:reduce){.pl-lvl-up{animation:none;opacity:0}}
+
+/* top bar and section headings start at the same height as the home screen */
+@media (min-width:901px){.pb-top{padding:20px 0}}
+.pb-main .pb-screen{padding-top:24px}
+.pb-main .pl-h2{text-box:trim-both cap alphabetic;max-width:28ch}
+.pb-main .pl-head{margin-bottom:clamp(24px,2.4vw,40px)}
+/* big numbers: room under the baseline, so a comma does not touch the label */
+.pb-main .pl-big{padding-bottom:.14em}
+.pb-fuel-k{margin:0 0 14px;font-size:clamp(18px,1.6vw,24px);font-weight:700;line-height:1.2}
