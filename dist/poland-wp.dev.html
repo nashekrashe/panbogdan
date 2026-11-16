@@ -1544,12 +1544,12 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   }
   function rUzhond() {
     var c = city(), vk = CITIES[S.city] ? CITIES[S.city].vo : 'pomorskie', P0 = PAY.v[vk], V = VOIV[vk];
-    var others = CITY_ORDER.filter(function (id) { return CITIES[id].vo === vk && id !== S.city; }).map(function (id) { return CITIES[id].n; });
+    var others = CITY_ORDER.filter(function (id) { return CITIES[id].vo === vk && id !== S.city; }).map(function (id) { return CITIES[id].loc; });
     var addr = (P0.addr || []).map(function (x) { return '<li><b>' + x[0] + ':</b> ' + x[1] + '</li>'; }).join('');
     var chk = payCheck && payCheck.v && payCheck.v[vk], bad = chk && (chk.tax === false || chk.card === false);
     var checked = payCheck && payCheck.checked ? 'робот проверил их ' + payCheck.checked : 'робот проверяет их раз в неделю';
     return '<div class="pl-tool pb-uz"><div class="pl-tool-h">' + ms('account_balance') + 'Твой ужонд: ' + c.uw + '</div>' +
-      '<p>Один на всё воеводство ' + c.voiv + ' и решает все дела иностранцев ' + c.loc + (others.length ? ', а также в городах ' + others.join(', ') : '') + '. ' +
+      '<p>Один на всё воеводство ' + c.voiv + ': решает дела иностранцев ' + [c.loc].concat(others).join(', ').replace(/, ([^,]*)$/, ' и $1') + (others.length ? '' : ' и по всему региону') + '. ' +
         (vk === 'pomorskie' ? 'Своего отдела для иностранцев в Гдыне и Сопоте нет: в Гдыне только паспортный отдел для поляков. Принимают в Гданьске и в отделе в Слупске.' : 'Отдельного ужонда в другом городе воеводства нет, бывают только его отделы (delegatury).') + '</p>' +
       '<ol class="pb-uz-how">' +
         '<li><b>Подать.</b> ВНЖ, ПМЖ и rezydent UE только онлайн в ' + link('https://mos.cudzoziemcy.gov.pl/', 'MOS') + ', с PESEL и profilem zaufanym. К заявлению приложи подтверждения оплат ниже.</li>' +
@@ -1570,7 +1570,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   function rPassport() {
     return '<div class="pl-tool pb-pass" aria-live="polite"><div class="pl-tool-h">' + ms('luggage') + 'Паспорт</div>' +
       '<div class="pl-fields">' + field('passExp', 'Паспорт действует до', 'date') + '</div>' +
-      '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="peLeft">0</div><div class="k" data-o="peK">дней до конца паспорта</div><div class="d" data-o="peD">Укажи дату</div></div></div>' +
+      '<div class="pl-out" data-fitcells="150" data-pe-out hidden><div><div class="v" data-o="peLeft">0</div><div class="k" data-o="peK">дней до конца паспорта</div><div class="d" data-o="peD">Укажи дату</div></div></div>' +
       '<div data-o="peMsg"></div>' +
       '<div class="pl-acc"><details id="pl-d-pdpc"><summary><span class="t">Polski dokument podróży для беларусов<small>Если паспорт истёк, а в посольство нельзя</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
         '<p>Упрощённо дают беларусам с ВНЖ на любом основании, ПМЖ, rezydentem UE, ochroną uzupełniającą или гуманитарным статусом. Условие: паспорт истёк, утерян, испорчен или его никогда не было. Пока паспорт действует, не дадут.</p>' +
@@ -1584,6 +1584,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   function updatePassport() {
     var t = today(), e = parseD(S.f.passExp), end = parseD(PDPC_END), dl = days(t, end), msg = '';
     out('pdpcLeft', dl >= 0 ? 'осталось ' + n0(dl) + ' ' + dWord(dl) : 'срок прошёл, следи за продлением');
+    var box = $('[data-pe-out]'); if (box) box.hidden = !e;
     if (!e) { out('peLeft', '0'); out('peK', 'дней до конца паспорта'); out('peD', 'Укажи дату'); out('peMsg', ''); return; }
     var d = days(t, e);
     out('peLeft', n0(Math.abs(d))); out('peK', d >= 0 ? dWord(d) + ' до конца паспорта' : dWord(-d) + ' как истёк'); out('peD', 'До ' + fmtD(e));
