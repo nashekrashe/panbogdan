@@ -782,6 +782,26 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 @media (max-width:1279px){.pb-top{flex-wrap:wrap}.pb-top .pashaby-phrase{order:5;flex:1 0 100%}.pb-langs{margin-left:auto}}
 @media (max-width:900px){.pb-pills{flex-wrap:wrap;flex:1 1 100%}.pb-top .pashaby-phrase{height:44px}.pb-top .pashaby-t{font-size:18px}.pb-foot>.pb-disc{display:block;margin-bottom:24px}.pb-geo-msg{position:static}}
 
+/* home: next steps under the big number, counters and badges inside the «Своё» card */
+.pb-home{grid-template-areas:"hero card" "next card";grid-template-rows:auto 1fr}
+.pb-hero{grid-area:hero}
+.pb-mine{grid-area:card;min-width:0}
+#pl-me .pb-next{grid-area:next;margin-top:0;align-self:start}
+.pb-mine .pl-me .pl-big{line-height:.95}
+.pb-mine .pl-badges{margin:clamp(16px,1.6vw,24px) 0 0;padding:clamp(16px,1.6vw,24px) 0 0;border-top:1px solid var(--line);flex-wrap:wrap;overflow:visible;gap:14px 4px}
+.pb-mine .pl-badge{flex:0 0 84px;width:84px}
+.pl-badge small,.pb-mine .pl-eyebrow{font-size:12px}
+@media (max-width:900px){.pb-home{grid-template-areas:"hero" "card" "next";grid-template-rows:none}}
+@media (max-width:767px){.pb-mine .pl-badges{margin-inline:0;padding-inline:0;justify-content:flex-start}.pb-mine .pl-badge{flex:0 0 calc(25% - 3px);width:auto}}
+/* the stage pill pulses until a stage is chosen */
+.pb-pill.pb-pulse{border-color:var(--red);animation:pb-pulse 1.8s ease-in-out infinite}
+@keyframes pb-pulse{0%,100%{box-shadow:var(--sh1),0 0 0 0 rgba(215,75,78,.4)}50%{box-shadow:var(--sh1),0 0 0 5px rgba(215,75,78,.12),0 0 18px 2px rgba(215,75,78,.35)}}
+@media (prefers-reduced-motion:reduce){.pb-pill.pb-pulse{animation:none;box-shadow:0 0 0 3px rgba(215,75,78,.25)}}
+/* keep air between the menu logo and the content */
+.pb-ill img[data-ill=me]{max-width:min(200px,calc(var(--side) + var(--pad) - 48px))}
+@media (max-width:767px){#pl-me .pb-mine .pl-me{grid-template-columns:minmax(0,1fr)}}
+#pl-me .pb-mine .pl-me:empty{display:none}
+
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
 <script>
@@ -1307,7 +1327,6 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   /* «Своё»: the home screen. Dates live only in this browser */
   var ME_KEYS = ['since', 'filed', 'vnzhGot', 'pmzhFiled', 'staly', 'passFiled', 'passGot'];
   function meOpen() { return !!S.stageSet || ME_KEYS.some(function (k) { return !!S.f[k]; }); }
-  function revealMe() {}
   /* personal dates: arrival for everyone, the rest appears with the stage (or when filled) */
   var ME_ROWS = [
     { k: 'vnzh', t: 'ВНЖ', ic: 'id_card', min: 1, f: 'filed', g: 'vnzhGot' },
@@ -1322,7 +1341,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
       '<div class="pb-home">' +
         '<div class="pb-hero" data-fitcells="300"><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', данные MSWiA</div></div>' +
         '<div class="pb-card pb-mine">' +
-          '<div class="pb-mine-h"><h2 class="pb-mine-logo" id="pl-me-h">Своё</h2><p class="pb-mine-d">Укажи даты: появятся твои счётчики и сравнение со средним по воеводству.</p><p class="pb-mine-p">Хранится только в этом браузере. <br>Даже ужонд не узнает.</p></div>' +
+          '<div class="pb-mine-h"><h2 class="pb-mine-logo" id="pl-me-h">Своё</h2><p class="pb-mine-d" data-o="meIntro">Укажи даты: появятся твои счётчики и сравнение со средним по воеводству.</p><p class="pb-mine-p">Хранится только в этом браузере. <br>Даже ужонд не узнает.</p></div>' +
           '<div class="pl-mine">' +
             '<div class="pl-mine-row"><div class="pl-mine-t">' + ms('flight_land') + 'Приехал</div><div class="pl-fields">' + field('since', 'В Польше с', 'date', '', 'me-since') + '</div></div>' +
             ME_ROWS.map(function (r) {
@@ -1330,8 +1349,12 @@ font-size:16px;line-height:1.5;font-stretch:100%}
             }).join('') +
           '</div>' +
           '<p class="pl-note pb-mine-hint" data-o="meHint"></p>' +
-          '<div class="pl-me" data-o="me" data-fitcells="64" data-fitmin="40" aria-live="polite"></div>' +
+          '<div class="pl-me" data-o="me" data-fitcells="300" data-fitmin="40" data-fitref=".pb-counts .pl-counts" aria-live="polite"></div>' +
+          '<div class="pl-badges" aria-label="Ачивки">' + BADGES.map(function (b) {
+            return '<div class="pl-badge" data-badge="' + b.id + '"><span class="c">' + ms(b.ic) + '</span><small>' + b.t + '</small></div>';
+          }).join('') + '</div>' +
         '</div>' +
+        '<div class="pl-next pb-next" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
       '</div>' +
       '<div class="pb-counts">' +
         '<div class="pl-counts" data-fitcells="150">' +
@@ -1340,13 +1363,9 @@ font-size:16px;line-height:1.5;font-stretch:100%}
           '<div><div class="pl-big">2 922</div><div class="pl-lab">дня до паспорта обычным путём</div><div class="pl-sub">8 лет: 5 на временном и 3 на ПМЖ. Пока</div></div>' +
           '<div><div class="pl-big">4 806</div><div class="pl-lab">zł brutto: минималка 2026</div><div class="pl-sub">На руки около 3 606 zł</div></div>' +
         '</div>' +
-        '<a class="pb-newscard" href="#news"><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span><span class="pb-nc-h"><b>' + n.d + '</b> <span class="pb-nc-s">' + esc(n.s) + '</span></span><span class="pb-nc-t">' + n.t + '</span></a>' +
+        '<a class="pb-newscard" href="' + hrefOf(secBy('news')) + '"><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span><span class="pb-nc-h"><b>' + n.d + '</b> <span class="pb-nc-s">' + esc(n.s) + '</span></span><span class="pb-nc-t">' + n.t + '</span></a>' +
       '</div>' +
       '<p class="pb-asof">' + c.voiv + ' · данные на ' + c.waitDate + '</p>' +
-      '<div class="pl-next" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
-      '<div class="pl-badges" aria-label="Ачивки">' + BADGES.map(function (b) {
-        return '<div class="pl-badge" data-badge="' + b.id + '"><span class="c">' + ms(b.ic) + '</span><small>' + b.t + '</small></div>';
-      }).join('') + '</div>' +
     '</section>';
   }
 
@@ -1745,10 +1764,9 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 
   function updateStage() {
     var st = STAGES.filter(function (s) { return s.id === S.stage; })[0] || STAGES[0];
-    out('next', st.next.map(function (n) { return '<li>' + ms('arrow_outward') + '<span>' + n[0] + ' · <a href="' + n[1] + '">к разделу</a></span></li>'; }).join(''));
-    var open = meOpen();
-    $$('[data-stage]').forEach(function (b) { b.setAttribute('aria-pressed', String(open && b.getAttribute('data-stage') === S.stage)); });
-    out('stageHint', open ? '' : 'Выбери, где ты сейчас, и ниже откроется раздел «Своё»: твои даты, сроки и сравнение со средним.');
+    out('next', st.next.map(function (n) { return '<li>' + ms('arrow_outward') + '<span>' + n[0] + ' · <a href="' + linkOf(n[1]) + '">к разделу</a></span></li>'; }).join(''));
+    /* no stage yet: the stage pill pulses, it is where the date fields come from */
+    var pill = $('[data-stage-sel]'); if (pill) pill.parentNode.classList.toggle('pb-pulse', !S.stageSet);
   }
 
   /* one waiting counter: days from filing to decision (or to today), compared with the regional average or the legal term */
@@ -1780,15 +1798,16 @@ font-size:16px;line-height:1.5;font-stretch:100%}
         '<div><div class="pl-big" style="color:var(--red)">' + (toPass > 0 ? n0(toPass) : '0') + '</div><div class="pl-lab">' + dWord(Math.max(0, toPass)) + ' до паспорта обычным путём</div><div class="pl-sub">Если всё пойдёт по плану. Ха</div></div>';
     }
     out('me', html);
+    var intro = $('[data-o="meIntro"]'); if (intro) intro.hidden = !!html;
   }
   function updateMine() {
     var si = STAGE_IDX[S.stage] || 0, hidden = 0;
     ME_ROWS.forEach(function (r) {
       var el = $('[data-mrow="' + r.k + '"]'); if (!el) return;
-      var show = !!S.meAll || si >= r.min || !!S.f[r.f] || !!S.f[r.g];
+      var show = si >= r.min || !!S.f[r.f] || !!S.f[r.g];
       el.hidden = !show; if (!show) hidden++;
     });
-    out('meHint', hidden ? 'Поля для ВНЖ, ПМЖ и паспорта появятся, когда выберешь этап сверху. <button type="button" class="pl-textbtn" data-me-all>Показать все</button>' : '');
+    out('meHint', hidden && !S.stageSet ? 'Поля для ВНЖ, ПМЖ и паспорта появятся, когда выберешь этап сверху.' : '');
   }
 
   function updateTools() {
@@ -2039,13 +2058,16 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   var rendered = 0;
   /* life-counter fit: one row fills the page width (desktop), each number fits its cell (phone) */
   function fitCounts() {
-    $$('[data-fitcells]').forEach(function (g) {
+    /* groups capped by another group go last */
+    $$('[data-fitcells]').sort(function (a, b) { return a.hasAttribute('data-fitref') - b.hasAttribute('data-fitref'); }).forEach(function (g) {
       var nums = Array.prototype.slice.call(g.querySelectorAll('.pl-big, .v:not([data-nofit]), .big:not(.txt)')).filter(function (n) { return n.getClientRects().length; }); if (!nums.length || !g.offsetParent) return;
       var best = +g.getAttribute('data-fitcells') || 240;
       /* an empty value («—») does not set the size and stays small and pale */
       var nil = function (n) { return /^[—–-]?$/.test(n.textContent.trim()); };
       nums.forEach(function (n) { n.classList.toggle('pl-nil', nil(n)); if (nil(n)) return; n.style.fontSize = '100px'; var pc = getComputedStyle(n.parentNode), cw = n.parentNode.clientWidth - parseFloat(pc.paddingLeft) - parseFloat(pc.paddingRight), w = n.getBoundingClientRect().width || 1; best = Math.min(best, Math.floor(90 * cw / w)); });
       best = Math.max(+g.getAttribute('data-fitmin') || 44, best);
+      var ref = g.getAttribute('data-fitref') && document.querySelector(g.getAttribute('data-fitref') + ' .pl-big');
+      if (ref && ref.style.fontSize) best = Math.min(best, parseFloat(ref.style.fontSize));
       Array.prototype.forEach.call(g.querySelectorAll('[data-nofit]'), function (n) { n.classList.toggle('pl-nil', nil(n)); });
       nums.forEach(function (n) { n.style.fontSize = (nil(n) ? Math.min(best, 64) : best) + 'px'; });
     });
@@ -2111,6 +2133,8 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     return byHash || { k: 'me' };
   }
   function route(scroll) { show(here(), scroll); }
+  /* an inner link (#pl-legal, #pl-d-d30) as a real address: /legalizacja, /pomoc#pl-d-d30 */
+  function linkOf(h) { var r = keyOf(String(h).replace(/^#/, '')); if (!r) return h; return r.el ? (PATHS ? hrefOf(secBy(r.k)) : '') + '#' + r.el.id : hrefOf(secBy(r.k)); }
   function setActive(k) {
     activeNow = k;
     $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === k) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
@@ -2126,7 +2150,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     var a = e.target.closest && e.target.closest('a[href]'); if (!a || !root.contains(a) || a.target) return;
     var href = a.getAttribute('href'), r = null;
     if (href.charAt(0) === '#') r = keyOf(href.slice(1));
-    else if (PATHS && href.charAt(0) === '/' && href.charAt(1) !== '/') r = keyOf(href);
+    else if (PATHS && href.charAt(0) === '/' && href.charAt(1) !== '/') { var hp = href.split('#'); r = (hp[1] && keyOf(hp[1])) || keyOf(hp[0]); }
     if (!r) return;
     e.preventDefault(); closeMore();
     var url = r.el ? (PATHS ? hrefOf(secBy(r.k)) : '') + '#' + r.el.id : hrefOf(secBy(r.k));
@@ -2240,7 +2264,6 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     else if (d.opt != null) { var os = b.closest('.pb-dd').querySelector('select'); closeMenu(); os.value = d.opt; os.dispatchEvent(new Event('change', { bubbles: true })); }
     else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; var mh = $('.pb-mhead'); if (mh) m.style.setProperty('--mh', Math.round(mh.getBoundingClientRect().bottom) + 'px'); m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
     else if (b.hasAttribute('data-phrase')) { var t = b.querySelector('.pashaby-t'); t.classList.add('out'); setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160); }
-    else if (b.hasAttribute('data-me-all')) { S.meAll = true; save(); updateMine(); }
     else if (d.legal) { S.legal = d.legal; save(); applyTabs(); }
     else if (d.contract) { S.contract = CONTRACTS[d.contract] ? d.contract : 'uop'; save(); updateTools(); applyTabs(); }
     else if (d.cycle) { setStatus(d.cycle); }

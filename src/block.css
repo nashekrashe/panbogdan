@@ -778,3 +778,23 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 @media (max-height:800px){.pb-side-d{display:none}.pb-ill{margin-top:auto}}
 @media (max-width:1279px){.pb-top{flex-wrap:wrap}.pb-top .pashaby-phrase{order:5;flex:1 0 100%}.pb-langs{margin-left:auto}}
 @media (max-width:900px){.pb-pills{flex-wrap:wrap;flex:1 1 100%}.pb-top .pashaby-phrase{height:44px}.pb-top .pashaby-t{font-size:18px}.pb-foot>.pb-disc{display:block;margin-bottom:24px}.pb-geo-msg{position:static}}
+
+/* home: next steps under the big number, counters and badges inside the «Своё» card */
+.pb-home{grid-template-areas:"hero card" "next card";grid-template-rows:auto 1fr}
+.pb-hero{grid-area:hero}
+.pb-mine{grid-area:card;min-width:0}
+#pl-me .pb-next{grid-area:next;margin-top:0;align-self:start}
+.pb-mine .pl-me .pl-big{line-height:.95}
+.pb-mine .pl-badges{margin:clamp(16px,1.6vw,24px) 0 0;padding:clamp(16px,1.6vw,24px) 0 0;border-top:1px solid var(--line);flex-wrap:wrap;overflow:visible;gap:14px 4px}
+.pb-mine .pl-badge{flex:0 0 84px;width:84px}
+.pl-badge small,.pb-mine .pl-eyebrow{font-size:12px}
+@media (max-width:900px){.pb-home{grid-template-areas:"hero" "card" "next";grid-template-rows:none}}
+@media (max-width:767px){.pb-mine .pl-badges{margin-inline:0;padding-inline:0;justify-content:flex-start}.pb-mine .pl-badge{flex:0 0 calc(25% - 3px);width:auto}}
+/* the stage pill pulses until a stage is chosen */
+.pb-pill.pb-pulse{border-color:var(--red);animation:pb-pulse 1.8s ease-in-out infinite}
+@keyframes pb-pulse{0%,100%{box-shadow:var(--sh1),0 0 0 0 rgba(215,75,78,.4)}50%{box-shadow:var(--sh1),0 0 0 5px rgba(215,75,78,.12),0 0 18px 2px rgba(215,75,78,.35)}}
+@media (prefers-reduced-motion:reduce){.pb-pill.pb-pulse{animation:none;box-shadow:0 0 0 3px rgba(215,75,78,.25)}}
+/* keep air between the menu logo and the content */
+.pb-ill img[data-ill=me]{max-width:min(200px,calc(var(--side) + var(--pad) - 48px))}
+@media (max-width:767px){#pl-me .pb-mine .pl-me{grid-template-columns:minmax(0,1fr)}}
+#pl-me .pb-mine .pl-me:empty{display:none}
