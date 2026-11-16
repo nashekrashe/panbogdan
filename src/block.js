@@ -736,10 +736,10 @@
 
   /* a card that starts folded: the summary keeps the title and a one-line status */
   function card(id, icon, title, sumKey, body, cls) {
-    return '<details class="pl-tool pb-card' + (cls ? ' ' + cls : '') + '" id="' + id + '"><summary class="pb-card-h">' + icon +
+    return '<details class="pl-tool pb-fold' + (cls ? ' ' + cls : '') + '" id="' + id + '"><summary class="pb-fold-h">' + icon +
       '<span class="t">' + title + '<small data-o="' + sumKey + '"></small></span>' +
       '<span class="pb-tog" aria-hidden="true">' + svg18('expand', 18, 'pb-tog-e') + svg18('collapse', 18, 'pb-tog-c') + '</span></summary>' +
-      '<div class="pb-card-b">' + body + '</div></details>';
+      '<div class="pb-fold-b">' + body + '</div></details>';
   }
   /* invitation (zaproszenie): an inviting foreigner needs 5 years of legal, unbroken stay right before filing, or stały pobyt / rezydent UE */
   function invOpen() {
