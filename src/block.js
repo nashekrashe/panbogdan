@@ -502,15 +502,16 @@
           }).join('') + '</select></label></span>' +
       '</div>' +
       '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-q" aria-hidden="true">format_quote</span><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span></button>' +
-      '<div class="pb-langs" role="group" aria-label="Язык"><button type="button" aria-pressed="true">РУС</button><button type="button" disabled title="Скоро">БЕЛ</button><button type="button" disabled title="Скоро">УКР</button></div>' +
+      rLangs() +
       '<div class="pl-lvl"><span class="pl-lvl-t">Уровень: <b data-o="lvlName"></b></span>' +
         '<ol class="pl-lvl-s" aria-label="Уровни">' + LEVELS.map(function (l, i) { return '<li data-lvl="' + i + '" title="' + l[1] + '"><i><b></b></i></li>'; }).join('') + '</ol>' +
         '<b class="pl-lvl-p" data-o="lvlPct"></b></div>' +
       '<p class="pb-geo-msg" id="pl-geo-msg" data-o="geoMsg" aria-live="polite"></p>' +
     '</div>';
   }
+  function rLangs() { return '<div class="pb-langs" role="group" aria-label="Язык"><button type="button" aria-pressed="true">РУС</button><button type="button" disabled title="Скоро">БЕЛ</button><button type="button" disabled title="Скоро">УКР</button></div>'; }
   function rTabs() {
-    return '<div class="pb-more" id="pb-more" hidden><nav aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav></div>';
+    return '<div class="pb-more" id="pb-more" hidden><nav aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav>' + rLangs() + '</div>';
   }
 
   function rFoot() {
@@ -521,11 +522,11 @@
         '<div class="pb-foot-row"><span class="pl-small pl-muted">Законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</span><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div></div>' +
     '</footer>';
   }
-  /* phone: the logo on top, it shrinks to an icon on scroll; the section picture sits next to it */
+  /* phone: one picture on the left, the logo on the home screen and the section picture elsewhere; it shrinks on scroll */
   function rMHead() {
     return '<header class="pb-mhead"><a class="pb-mlogo" href="' + hrefOf(SECTIONS[0]) + '"><img src="' + ILL_BASE + 'me.webp" alt="Pan Bogdan, e-помогатор" width="200" height="189" decoding="async"></a>' +
+      '<a class="pb-mill" href="' + hrefOf(SECTIONS[0]) + '" aria-label="На главную">' + rIll(1) + '</a>' +
       '<b class="pb-mname" data-o="secName"></b>' +
-      '<div class="pb-mill" aria-hidden="true">' + rIll(1) + '</div>' +
       '<button type="button" class="pb-burger" data-more aria-expanded="false" aria-controls="pb-more" aria-label="Разделы"><i></i><i></i><i></i></button></header>';
   }
 
@@ -1499,6 +1500,7 @@
     var sec = secBy(r.k), changed = r.k !== activeNow;
     SECTIONS.forEach(function (x) { var el = document.getElementById(x.id); if (el) el.hidden = x.k !== r.k; });
     var ft = $('.pb-foot'); if (ft) ft.hidden = r.k !== 'me';
+    var mh = $('.pb-mhead'); if (mh) mh.classList.toggle('home', r.k === 'me');
     if (changed && rendered) { var scn = document.getElementById(sec.id); if (scn) { scn.classList.remove('pb-enter'); void scn.offsetWidth; scn.classList.add('pb-enter'); } }
     setActive(r.k);
     if (scroll) document.title = (r.k === 'me' ? '' : sec.n + ' · ') + 'Pan Bogdan: Польша пошагово';

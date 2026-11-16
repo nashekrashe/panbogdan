@@ -904,3 +904,23 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 /* big numbers: room under the baseline, so a comma does not touch the label */
 .pb-main .pl-big{padding-bottom:.14em}
 .pb-fuel-k{margin:0 0 14px;font-size:clamp(18px,1.6vw,24px);font-weight:700;line-height:1.2}
+
+/* phone: one picture in the header, languages live in the burger */
+.pb-more .pb-langs{display:none}
+@media (max-width:900px){
+.pb-mhead .pb-mill img{left:0;right:auto;object-position:left bottom}
+.pb-mhead.home .pb-mill,.pb-mhead:not(.home) .pb-mlogo{display:none}
+.pb-mhead .pb-mill{width:64px;height:64px}
+.pb-scrolled .pb-mhead .pb-mill{width:36px;height:36px}
+.pb-mname{margin-right:auto}
+.pb-top .pb-langs{display:none}
+.pb-more .pb-langs{display:flex;gap:4px;margin:8px 4px 4px;padding-top:10px;border-top:1px solid var(--line)}
+.pb-top .pl-lvl{order:4;margin-left:0;flex:1 1 100%;display:flex;align-items:center;gap:10px}
+.pb-top .pl-lvl .pl-lvl-t{display:inline;font-size:13px}
+.pb-top .pl-lvl-s{margin-left:auto}
+.pb-top .pl-lvl-p{font-size:18px;line-height:17px;min-width:2.4em;text-align:right}
+.pb-main .pl-h2{font-size:clamp(24px,7vw,32px);letter-spacing:-.02em;max-width:none}
+}
+@media (max-width:359px){.pb-mhead .pb-mill{display:block}.pb-mhead.home .pb-mill{display:none}}
+#pl-me .pb-hero .pl-big{padding-bottom:0}
+@media (max-width:900px){.pb-more .pb-langs{gap:24px;padding:14px 12px 6px;margin:8px 0 0}.pb-more .pb-langs button{font-size:15px;min-height:32px}}
