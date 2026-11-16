@@ -848,10 +848,9 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-about-l a:hover b{color:var(--red)}
 @media (max-width:900px){.pb-home,.pb-home.is-filled{grid-template-areas:"hero" "card" "next" "about";grid-template-rows:none}.pb-about{padding-inline:0}}
 /* legal: «Твой ужонд» and «Паспорт» cards, level percent with a "+N%" float, step reward chips */
-.pb-legal-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;align-items:start;margin-bottom:12px}
+.pb-legal-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start;margin-bottom:12px}
 .pb-legal-cards .pl-tool{margin-top:0}
 .pb-card{padding:0;gap:0}
-.pb-card[open]{grid-column:1/-1}
 .pb-card-h{list-style:none;display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;border-radius:16px}
 .pb-card-h::-webkit-details-marker{display:none}
 .pb-card-h:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(215,75,78,.25)}
@@ -860,13 +859,18 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-card-h small{display:block;margin-top:2px;font-size:13px;font-weight:400;color:var(--mut)}
 .pb-tog{flex:0 0 auto;display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;border:.75px solid var(--chip);background:var(--paper);transition:border-color .2s}
 .pb-card-h:hover .pb-tog{border-color:var(--ink)}
-.pb-tog-c,.pb-card[open] .pb-tog-e{display:none}
-.pb-card[open] .pb-tog-c{display:block}
+.pl .pb-tog .pb-tog-c,.pl .pb-card[open] .pb-tog .pb-tog-e{display:none}
+.pl .pb-card[open] .pb-tog .pb-tog-c{display:block}
 .pb-card-b{padding:0 clamp(18px,2vw,32px) clamp(20px,2vw,32px);display:flex;flex-direction:column;gap:20px}
 .pb-card-b>div{display:flex;flex-direction:column;gap:20px}
 .pb-card[open] .pb-card-b{animation:pbFold .3s ease}
 @keyframes pbFold{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.pb-card[open] .pb-card-b{animation:none}}
+@media (max-width:1100px){.pb-legal-cards{grid-template-columns:minmax(0,1fr)}}
+.pb-card .pl-field{flex:1 1 140px;min-width:0}
+.pb-card .pl-out .v{font-size:clamp(48px,5vw,88px)}
+.pb-card .pb-inv-rows div{flex-direction:column;gap:2px}.pb-card .pb-inv-rows b{text-align:left}
+.pb-card .pb-accs{grid-template-columns:minmax(0,1fr)}
 .pb-card.is-off .pb-card-h small{color:var(--red)}
 .pb-inv p{margin:0;font-size:14px;line-height:1.5}
 .pb-inv-rows div{font-size:14px}
