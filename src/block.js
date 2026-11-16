@@ -149,12 +149,12 @@
     money: 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя', bank: 'Кто как относится к беларусам', kids: 'PESEL, сад, школа, 800+', home: 'Ипотека в цифрах, сколько дадут и аренда', auto: 'Топливо, поездки, права и номера', help: 'Бесплатная помощь, официальные сайты и быт без паники', dict: 'Слова, без которых ни одно письмо не читается' };
 
   var STAGES = [
-    { id: 'arrive', n: 'Только приехал', next: [['Сделай PESEL и profil zaufany: без них не подписать заявление в MOS', '#pl-d-d30'], ['Выбери основание для ВНЖ и подай, пока виза или безвиз действуют', '#pl-legal'], ['Найди бесплатную юрпомощь своего города в разделе «Хелп»', '#help']] },
-    { id: 'wait', n: 'Подал, жду', next: [['Сохрани UPO и следи за письмами: вызов на отпечатки придёт сам', '#pl-legal'], ['Посчитай, сколько ты уже ждёшь, в таймере ожидания', '#pl-legal'], ['Не уезжай из Польши без действующей карты или визы', '#pl-legal']] },
-    { id: 'vnzh', n: 'Есть ВНЖ', next: [['Поставь в календарь дату окончания карты и подай заранее', '#pl-legal'], ['Начни считать выезды: для ПМЖ важен каждый день', '#pl-legal'], ['Обменяй права: беларусские действуют 6 месяцев после ВНЖ', '#pl-auto']] },
-    { id: 'pmzh', n: 'Есть ПМЖ', next: [['Посчитай дату, с которой можно на гражданство', '#pl-legal'], ['Готовь доход и жильё на бумаге: их проверят', '#pl-legal'], ['Следи за законом о гражданстве: сроки хотят увеличить', '#pl-news']] },
-    { id: 'pass', n: 'Иду на паспорт', next: [['Uznanie у воеводы: 1000 zł, решение по закону за 6 месяцев', '#pl-legal'], ['Проверь, что выездов дольше 6 месяцев не было', '#pl-legal'], ['Расскажи своим, когда получишь: это праздник', '#help']] },
-    { id: 'citizen', n: 'Есть паспорт', next: [['Сделай dowód osobisty: очередь та же, но теперь ты в ней как гражданин', '#pl-legal'], ['Сходи на выборы: теперь в твоих проблемах можно винить и себя', '#pl-news'], ['Помоги новеньким: теперь ты тот самый знакомый, который всё знает', '#help']] }
+    { id: 'arrive', n: 'Только приехал', next: [['Сделай PESEL и profil zaufany: без них не подписать заявление в MOS', '#pl-d-d30', 'c:d30_pesel,d30_pz'], ['Выбери основание для ВНЖ и подай, пока виза или безвиз действуют', '#pl-legal', 's:vnzh2'], ['Найди бесплатную юрпомощь своего города в разделе «Хелп»', '#help', 'c:d30_tg']] },
+    { id: 'wait', n: 'Подал, жду', next: [['Сохрани UPO и следи за письмами: вызов на отпечатки придёт сам', '#pl-legal', 's:vnzh2'], ['Посчитай, сколько ты уже ждёшь, в таймере ожидания', '#pl-legal', 'f:filed'], ['Не уезжай из Польши без действующей карты или визы', '#pl-legal']] },
+    { id: 'vnzh', n: 'Есть ВНЖ', next: [['Поставь в календарь дату окончания карты и подай заранее', '#pl-legal', 'f:cardExp'], ['Начни считать выезды: для ПМЖ важен каждый день', '#pl-legal', 't'], ['Обменяй права: беларусские действуют 6 месяцев после ВНЖ', '#pl-auto']] },
+    { id: 'pmzh', n: 'Есть ПМЖ', next: [['Посчитай дату, с которой можно на гражданство', '#pl-legal', 'f:staly'], ['Готовь доход и жильё на бумаге: их проверят', '#pl-legal', 's:paszport3'], ['Следи за законом о гражданстве: сроки хотят увеличить', '#pl-news']] },
+    { id: 'pass', n: 'Иду на паспорт', next: [['Uznanie у воеводы: 1000 zł, решение по закону за 6 месяцев', '#pl-legal', 's:paszport4'], ['Проверь, что выездов дольше 6 месяцев не было', '#pl-legal', 't'], ['Расскажи своим, когда получишь: это праздник', '#help']] },
+    { id: 'citizen', n: 'Есть паспорт', next: [['Сделай dowód osobisty: очередь та же, но теперь ты в ней как гражданин', '#pl-legal', 's:paszport5'], ['Сходи на выборы: теперь в твоих проблемах можно винить и себя', '#pl-news'], ['Помоги новеньким: теперь ты тот самый знакомый, который всё знает', '#help']] }
   ];
 
   var NEWS = [
@@ -487,7 +487,7 @@
             return '<option value="' + s.id + '"' + (set && s.id === S.stage ? ' selected' : '') + '>' + s.n + '</option>';
           }).join('') + '</select></label></span>' +
       '</div>' +
-      '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span><span class="pashaby-q" aria-hidden="true">format_quote</span></button>' +
+      '<button type="button" class="pashaby-phrase" data-phrase title="Ещё фраза"><span class="pashaby-q" aria-hidden="true">format_quote</span><span class="pashaby-t" aria-live="polite">' + esc(phraseNow < 0 ? nextPhrase() : PHRASES[phraseNow]) + '</span></button>' +
       '<div class="pb-langs" role="group" aria-label="Язык"><button type="button" aria-pressed="true">РУС</button><button type="button" disabled title="Скоро">БЕЛ</button><button type="button" disabled title="Скоро">УКР</button></div>' +
       '<div class="pl-lvl"><span class="pl-lvl-t">Уровень: <b data-o="lvlName"></b></span>' +
         '<ol class="pl-lvl-s" aria-label="Уровни">' + LEVELS.map(function (l, i) { return '<li data-lvl="' + i + '" title="' + l[1] + '"><i><b></b></i></li>'; }).join('') + '</ol>' +
@@ -526,13 +526,16 @@
     { k: 'pmzh', t: 'ПМЖ', ic: 'verified', min: 2, f: 'pmzhFiled', g: 'staly' },
     { k: 'pass', t: 'Паспорт', ic: 'emoji_events', min: 3, f: 'passFiled', g: 'passGot' }
   ];
+  /* a home stat with a link to its section */
+  function secLink(k) { var x = secBy(k); return x ? '<a class="pb-seclink" href="' + hrefOf(x) + '">' + x.n + ms('arrow_outward') + '</a>' : ''; }
+  function stat(big, lab, sub, k) { return '<div class="pb-stat"><div class="pl-big">' + big + '</div><div class="pl-lab">' + lab + '</div><div class="pl-sub">' + sub + '</div>' + secLink(k) + '</div>'; }
   function rMe() {
     var c = city(), n = NEWS[0];
-    var stat = c.by ? 'Из них около ' + c.by + ' тыс. живут в ' + c.voiv + '. ' : '';
+    var stat0 = c.by ? 'Из них около ' + c.by + ' тыс. живут в ' + c.voiv + '. ' : '';
     return '<section class="pl-band pb-screen" id="pl-me" aria-labelledby="pl-h1">' +
       '<h1 class="sr" id="pl-h1">Pan Bogdan: Польша пошагово</h1>' +
       '<div class="pb-home">' +
-        '<div class="pb-hero" data-fitcells="300"><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', данные MSWiA</div></div>' +
+        '<div class="pb-hero" data-fitcells="300"><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', ' + link('https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body', 'данные MSWiA') + ' на ' + c.waitDate + '</div></div>' +
         '<div class="pb-card pb-mine">' +
           '<div class="pb-mine-h"><h2 class="pb-mine-logo" id="pl-me-h">Своё</h2><p class="pb-mine-d" data-o="meIntro">Укажи даты: появятся твои счётчики и сравнение со средним по воеводству.</p><p class="pb-mine-p">Хранится только в этом браузере. <br>Даже ужонд не узнает.</p></div>' +
           '<div class="pl-mine">' +
@@ -543,22 +546,26 @@
           '</div>' +
           '<p class="pl-note pb-mine-hint" data-o="meHint"></p>' +
           '<div class="pl-me" data-o="me" data-fitcells="300" data-fitmin="40" data-fitref=".pb-counts .pl-counts" aria-live="polite"></div>' +
-          '<div class="pl-badges" aria-label="Ачивки">' + BADGES.map(function (b) {
-            return '<div class="pl-badge" data-badge="' + b.id + '"><span class="c">' + ms(b.ic) + '</span><small>' + b.t + '</small></div>';
-          }).join('') + '</div>' +
         '</div>' +
         '<div class="pl-next pb-next" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
       '</div>' +
       '<div class="pb-counts">' +
         '<div class="pl-counts" data-fitcells="150">' +
-          (c.pmzh ? '<div><div class="pl-big">' + n0(c.pmzh) + '</div><div class="pl-lab">дней в среднем ждут ПМЖ ' + c.loc + '</div><div class="pl-sub">По закону 6 месяцев. MSWiA</div></div>' : '') +
-          '<div><div class="pl-big">142 737</div><div class="pl-lab">беларусов с документами на пребывание в Польше</div><div class="pl-sub">UdSC, 1.02.2026. ' + stat + 'В 2025 подали ' + n0(c.apps) + ' ' + plural(c.apps, 'заявление', 'заявления', 'заявлений') + ' в ' + c.voiv + '</div></div>' +
-          '<div><div class="pl-big">2 922</div><div class="pl-lab">дня до паспорта обычным путём</div><div class="pl-sub">8 лет: 5 на временном и 3 на ПМЖ. Пока</div></div>' +
-          '<div><div class="pl-big">4 806</div><div class="pl-lab">zł brutto: минималка 2026</div><div class="pl-sub">На руки около 3 606 zł</div></div>' +
+          (c.pmzh ? stat(n0(c.pmzh), 'дней в среднем ждут ПМЖ ' + c.loc, 'По закону 6 месяцев. MSWiA', 'legal') : '') +
+          stat('142 737', 'беларусов с документами на пребывание в Польше', link('https://www.gov.pl/attachment/4738d4ca-beae-459f-b0bb-2db8f2da7ac2', 'UdSC') + ', 1.02.2026. ' + stat0 + 'В 2025 подали ' + n0(c.apps) + ' ' + plural(c.apps, 'заявление', 'заявления', 'заявлений') + ' в ' + c.voiv, 'by') +
+          stat('2 922', 'дня до паспорта обычным путём', '8 лет: 5 на временном и 3 на ПМЖ. Пока', 'legal') +
+          stat('4 806', 'zł brutto: минималка 2026', 'На руки около 3 606 zł. ' + link('https://ksiegowosc.infor.pl/zus-kadry/wynagrodzenia/7490561,placa-minimalna-w-2026-r-ile-netto-do-wyplaty-i-jakie-brutto-w-umowie-w-ktorych-umowach-trzeba-stosowac-minimalna-stawke-godzinowa.html', 'infor.pl'), 'money') +
+          stat('486 500', 'zł: средняя ипотека', link('https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r', 'BIK') + ', сентябрь 2026. На 8,3% больше, чем год назад', 'home') +
+          stat('5,95%', 'средний процент по новым ипотекам', link('https://finwire.pl/artykuly/nowe-kredyty-mieszkaniowe-wrzesien-2026-nbp', 'NBP') + ', сентябрь 2026', 'home') +
+          '<div class="pb-stat"><div class="pl-big" data-o="fuelPb">—</div><div class="pl-lab">zł за литр PB 95 (наш АИ-95), средняя по Польше</div><div class="pl-sub">' + link('https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en', 'Weekly Oil Bulletin') + ', <span data-o="fuelDate"></span></div>' + secLink('auto') + '</div>' +
         '</div>' +
-        '<a class="pb-newscard" href="' + hrefOf(secBy('news')) + '"><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span><span class="pb-nc-h"><b>' + n.d + '</b> <span class="pb-nc-s">' + esc(n.s) + '</span></span><span class="pb-nc-t">' + n.t + '</span></a>' +
+        '<div class="pb-newscol"><div class="pl-eyebrow">Новости</div>' + NEWS.slice(0, 3).map(function (x) {
+          return '<a class="pb-newscard" href="' + hrefOf(secBy('news')) + '"><span class="pb-nc-h"><b>' + x.d + '</b><span class="pl-tag' + (x.red ? ' red' : '') + '">' + x.tag + '</span></span><span class="pb-nc-t">' + x.t + '</span></a>';
+        }).join('') + '<a class="pb-seclink" href="' + hrefOf(secBy('news')) + '">Все новости, ' + NEWS.length + ms('arrow_outward') + '</a></div>' +
       '</div>' +
-      '<p class="pb-asof">' + c.voiv + ' · данные на ' + c.waitDate + '</p>' +
+      '<div class="pl-badges" aria-label="Ачивки">' + BADGES.map(function (b) {
+        return '<div class="pl-badge" data-badge="' + b.id + '"><span class="c">' + ms(b.ic) + '</span><small>' + b.t + '</small></div>';
+      }).join('') + '</div>' +
     '</section>';
   }
 
@@ -945,6 +952,7 @@
       el.className = i < li || (citizen && i === li) ? 'done' : i === li ? 'cur' : '';
       if (i === li) el.setAttribute('aria-current', 'step'); else el.removeAttribute('aria-current');
     });
+    updateNext();
     var nextT = citizen ? 'Уровней больше нет. Дальше только выборы.' : 'Дальше: «' + LEVELS[li + 1][1] + '». Уровень растёт со статусом «Где ты сейчас» и отмеченными шагами.';
     $$('.pl-lvl').forEach(function (el) { el.title = lv + ', ' + p + '%. ' + nextT; });
     L_ORDER.forEach(function (k) { var d = LEGAL[k].steps.filter(function (s, i) { return stepState(k, i).v === 'done'; }).length; out('tc-' + k, d + '/' + LEGAL[k].steps.length); });
@@ -957,9 +965,26 @@
 
   function updateStage() {
     var st = STAGES.filter(function (s) { return s.id === S.stage; })[0] || STAGES[0];
-    out('next', st.next.map(function (n) { return '<li>' + ms('arrow_outward') + '<span>' + n[0] + ' · <a href="' + linkOf(n[1]) + '">к разделу</a></span></li>'; }).join(''));
+    updateNext();
     /* no stage yet: the stage pill pulses, it is where the date fields come from */
     var pill = $('[data-stage-sel]'); if (pill) pill.parentNode.classList.toggle('pb-pulse', !S.stageSet);
+  }
+
+  /* a next step is done when its mark in the section is done: c: checklist items, s: legal step, f: a date filled in, t: trips logged */
+  function stepDone(w) {
+    if (!w) return false;
+    var t = w.charAt(0), v = w.slice(2);
+    if (t === 'c') return v.split(',').every(function (k) { return !!S.checks[k]; });
+    if (t === 's') { var m = /^([a-z]+)(\d+)$/.exec(v); return !!m && stepState(m[1], +m[2]).v === 'done'; }
+    if (t === 'f') return !!S.f[v];
+    if (t === 't') return S.trips.some(function (x) { return x.from && x.to; });
+    return false;
+  }
+  function updateNext() {
+    var st = STAGES.filter(function (s) { return s.id === S.stage; })[0] || STAGES[0];
+    var left = st.next.filter(function (n) { return !stepDone(n[2]); });
+    out('next', left.length ? left.map(function (n) { return '<li>' + ms('arrow_outward') + '<span>' + n[0] + ' · <a href="' + linkOf(n[1]) + '">к разделу</a></span></li>'; }).join('')
+      : '<li>' + ms('check') + '<span>На этом этапе всё сделано. Сменишь этап сверху, будут новые шаги.</span></li>');
   }
 
   /* one waiting counter: days from filing to decision (or to today), compared with the regional average or the legal term */
@@ -1004,6 +1029,7 @@
   }
 
   function updateTools() {
+    updateNext();
     var t = today(), c = city();
     // waiting timer
     var filed = parseD(S.f.filed);
@@ -1262,7 +1288,7 @@
       var ref = g.getAttribute('data-fitref') && document.querySelector(g.getAttribute('data-fitref') + ' .pl-big');
       if (ref && ref.style.fontSize) best = Math.min(best, parseFloat(ref.style.fontSize));
       Array.prototype.forEach.call(g.querySelectorAll('[data-nofit]'), function (n) { n.classList.toggle('pl-nil', nil(n)); });
-      nums.forEach(function (n) { n.style.fontSize = (nil(n) ? Math.min(best, 64) : best) + 'px'; });
+      nums.forEach(function (n) { n.style.fontSize = (nil(n) ? Math.min(best, 64) : best) + 'px'; n.parentNode.style.setProperty('--nw', Math.ceil(n.getBoundingClientRect().width) + 'px'); });
     });
   }
   var fitT; window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitCounts, 120); });
@@ -1602,7 +1628,7 @@
   function updateFuel() {
     var f = FUEL || FUEL_FALLBACK, d = String(f.date || '').split('-').reverse().join('.');
     if (f.pb95) $$('[data-f="price"]').forEach(function (x) { x.placeholder = f.pb95.toFixed(2); });
-    out('fuelPb', f.pb95 ? z2(f.pb95) : '—'); out('fuelOn', f.on ? z2(f.on) : '—'); out('fuelLpg', f.lpg ? z2(f.lpg) : '—');
+    out('fuelPb', f.pb95 ? z2(f.pb95) : '—'); out('fuelDate', d); setTimeout(fitCounts, 0); out('fuelOn', f.on ? z2(f.on) : '—'); out('fuelLpg', f.lpg ? z2(f.lpg) : '—');
     out('fuelNote', 'Еврокомиссия, ' + link('https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en', 'Weekly Oil Bulletin') + ', цены на ' + d + '. Из евро в злотые по курсу NBP ' + String(f.rate).replace('.', ',') + '.');
     if (!S.f.priceManual && f.pb95) {
       var v = f.pb95.toFixed(2);
