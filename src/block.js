@@ -135,7 +135,13 @@
   var ICONS18 = {
     pass: '<path d="M9.75 14.25C9.75 13.4544 9.43393 12.6913 8.87132 12.1287C8.30871 11.5661 7.54565 11.25 6.75 11.25M6.75 11.25C5.95435 11.25 5.19129 11.5661 4.62868 12.1287C4.06607 12.6913 3.75 13.4544 3.75 14.25M6.75 11.25C7.99264 11.25 9 10.2426 9 9C9 7.75736 7.99264 6.75 6.75 6.75C5.50736 6.75 4.5 7.75736 4.5 9C4.5 10.2426 5.50736 11.25 6.75 11.25ZM12 7.5H13.5M12 10.5H13.5M3 3.75H15C15.8284 3.75 16.5 4.42157 16.5 5.25V12.75C16.5 13.5784 15.8284 14.25 15 14.25H3C2.17157 14.25 1.5 13.5784 1.5 12.75V5.25C1.5 4.42157 2.17157 3.75 3 3.75Z"/>',
     expand: '<path d="M5.25 11.25L9 15L12.75 11.25M5.25 6.75L9 3L12.75 6.75"/>',
-    collapse: '<path d="M5.25 15L9 11.25L12.75 15M5.25 3L9 6.75L12.75 3"/>'
+    collapse: '<path d="M5.25 15L9 11.25L12.75 15M5.25 3L9 6.75L12.75 3"/>',
+    file: '<path d="M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H13.5C13.8978 16.5 14.2794 16.342 14.5607 16.0607C14.842 15.7794 15 15.3978 15 15V6M10.5 1.5C10.7374 1.49962 10.9726 1.5462 11.1919 1.63708C11.4112 1.72795 11.6104 1.86132 11.778 2.0295L14.469 4.7205C14.6376 4.88813 14.7714 5.08751 14.8625 5.30712C14.9537 5.52674 15.0004 5.76223 15 6M10.5 1.5V5.25C10.5 5.44891 10.579 5.63968 10.7197 5.78033C10.8603 5.92098 11.0511 6 11.25 6L15 6"/>',
+    scan: '<path d="M15 7.5V6M15 6C15.0004 5.76259 14.9538 5.52744 14.8629 5.3081C14.772 5.08877 14.6387 4.88958 14.4705 4.722L11.7795 2.031C11.6119 1.86237 11.4125 1.72862 11.1929 1.63748C10.9733 1.54634 10.7378 1.49962 10.5 1.5M15 6H11.25C11.0511 6 10.8603 5.92098 10.7197 5.78033C10.579 5.63968 10.5 5.44891 10.5 5.25V1.5M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H7.7625M12 10.5C11.6022 10.5 11.2206 10.658 10.9393 10.9393C10.658 11.2206 10.5 11.6022 10.5 12M12 16.5C11.6022 16.5 11.2206 16.342 10.9393 16.0607C10.658 15.7794 10.5 15.3978 10.5 15M15 10.5C15.3978 10.5 15.7794 10.658 16.0607 10.9393C16.342 11.2206 16.5 11.6022 16.5 12M15 16.5C15.3978 16.5 15.7794 16.342 16.0607 16.0607C16.342 15.7794 16.5 15.3978 16.5 15"/>',
+    photo: '<path d="M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H13.5C13.8978 16.5 14.2794 16.342 14.5607 16.0607C14.842 15.7794 15 15.3978 15 15V6M10.5 1.5C10.7374 1.49962 10.9726 1.5462 11.1919 1.63708C11.4112 1.72795 11.6104 1.86132 11.778 2.0295L14.469 4.7205C14.6376 4.88813 14.7714 5.08751 14.8625 5.30712C14.9537 5.52674 15.0004 5.76223 15 6M10.5 1.5V5.25C10.5 5.44891 10.579 5.63968 10.7197 5.78033C10.8603 5.92098 11.0511 6 11.25 6L15 6M15 12.75L14.028 11.778C13.689 11.4391 13.2293 11.2487 12.75 11.2487C12.2707 11.2487 11.811 11.4391 11.472 11.778L6.75 16.5M9 9C9 9.82843 8.32843 10.5 7.5 10.5C6.67157 10.5 6 9.82843 6 9C6 8.17157 6.67157 7.5 7.5 7.5C8.32843 7.5 9 8.17157 9 9Z"/>',
+    pay: '<path d="M3 4.5H15C15.8284 4.5 16.5 5.17157 16.5 6V12C16.5 12.8284 15.8284 13.5 15 13.5H3C2.17157 13.5 1.5 12.8284 1.5 12V6C1.5 5.17157 2.17157 4.5 3 4.5ZM9 10.875C10.0355 10.875 10.875 10.0355 10.875 9C10.875 7.96447 10.0355 7.125 9 7.125C7.96447 7.125 7.125 7.96447 7.125 9C7.125 10.0355 7.96447 10.875 9 10.875ZM4.5 9H4.5075M13.5 9H13.5075"/>',
+    sign: '<path d="M15 9V6M15 6C15.0004 5.76259 14.9538 5.52744 14.8629 5.3081C14.772 5.08877 14.6387 4.88958 14.4705 4.722L11.7795 2.031C11.6119 1.86237 11.4125 1.72862 11.1929 1.63748C10.9733 1.54634 10.7378 1.49962 10.5 1.5M15 6H11.25C11.0511 6 10.8603 5.92098 10.7197 5.78033C10.579 5.63968 10.5 5.44891 10.5 5.25V1.5M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H7.5M6 12.75C6.75 11.25 7.5 11.25 8.25 12.75C9 14.25 9.75 14.25 10.5 12.75M12 15.75L16.5 11.25"/>',
+    close: '<path d="M13.5 4.5L4.5 13.5M4.5 4.5L13.5 13.5"/>'
   };
   function svg18(k, sz, cls) { return '<svg class="pb-i' + (cls ? ' ' + cls : '') + '" width="' + (sz || 18) + '" height="' + (sz || 18) + '" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS18[k] + '</svg>'; }
   function svgi(k, sz) { return '<svg class="pb-i" width="' + (sz || 24) + '" height="' + (sz || 24) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[k] + '</svg>'; }
@@ -451,10 +457,69 @@
     if (st === 'todo') return '<span class="pl-box" aria-hidden="true"></span>';
     return '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x=".5" y=".5" width="17" height="17" rx="2.5" fill="#1F1919" stroke="#1F1919"/><path d="' + (st === 'done' ? CHECK : DASH) + '" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   }
-  function checks(list) {
-    return '<div class="pl-checks">' + list.map(function (c) {
-      return '<label class="pl-check"><input type="checkbox" data-check="' + c[0] + '"' + (S.checks[c[0]] ? ' checked' : '') + '><span>' + c[1] + '</span></label>';
+  function checks(list, tab) {
+    return '<div class="pl-checks' + (tab ? ' pl-docs' : '') + '">' + list.map(function (c) {
+      var box = '<input type="checkbox" data-check="' + c[0] + '"' + (S.checks[c[0]] ? ' checked' : '') + '>';
+      if (!tab) return '<label class="pl-check">' + box + '<span>' + c[1] + '</span></label>';
+      var d = docType(c[1], tab);
+      return docRow(d, c[1], box, c[0]);
     }).join('') + '</div>';
+  }
+  /* what a document line is: pay (with a payment kind), sign (contract, lease, the employer's annex), scan, photo, file; note for lines that are not papers */
+  var DOC_T = { pay: 'Оплата', sign: 'Договор' };
+  function docType(t, tab) {
+    var x = String(t).replace(/<[^>]+>/g, '');
+    if (/пошлин|оплат/i.test(x)) return { k: 'pay', pay: /карт/i.test(x) ? 'card' : tab === 'paszport' ? 'cit' : tab === 'pmzh' ? 'pmzh' : 'vnzh' };
+    if (/договор|umow|akt własności|акт нотариальн|подтверждение жилья|załącznik nr 1/i.test(x)) return { k: 'sign' };
+    if (/скан/i.test(x)) return { k: 'scan' };
+    if (/^фото/i.test(x)) return { k: 'photo' };
+    if (/^(почта|нет выездов|profil zaufany|pesel$)/i.test(x)) return { k: 'note' };
+    return { k: 'file' };
+  }
+  function docRow(d, text, box, key) {
+    var ic = '<span class="pl-doc-i">' + (d.k === 'note' ? '' : svg18(d.k)) + '</span>';
+    var body = '<span class="pl-doc-t">' + text + '</span>';
+    if (d.k !== 'pay' && d.k !== 'sign') return '<label class="pl-check pl-doc">' + (box || '') + ic + body + '</label>';
+    var pid = 'pb-pop-' + (key || d.pay);
+    var side = d.k === 'pay' ? '<span class="pl-doc-amt" data-payamt="' + d.pay + '">' + payAmt(d.pay) + '</span><button type="button" class="pl-doc-more" popovertarget="' + pid + '" aria-haspopup="dialog">Реквизиты' + ms('expand_more') + '</button>' : '<span class="pl-doc-tag">' + DOC_T.sign + '</span>';
+    return '<div class="pl-doc-key pl-doc-' + d.k + '">' + (box ? '<label class="pl-check pl-doc">' + box + ic + body + '</label>' : '<div class="pl-check pl-doc">' + ic + body + '</div>') +
+      '<span class="pl-doc-side">' + side + '</span>' +
+      (d.k === 'pay' ? '<div class="pb-pop" id="' + pid + '" popover data-pay="' + d.pay + '" role="dialog" aria-label="Реквизиты для оплаты"></div>' : '') + '</div>';
+  }
+  /* payments: amounts from the offices' fee pages, accounts from PAY for the voivodeship of the chosen city; built when the popover opens, so a city change is picked up */
+  var PAY_K = {
+    vnzh: { h: 'Пошлина за ВНЖ', pl: 'opłata skarbowa', acc: 'tax', a: [['ВНЖ и работа (jednolite)', 440], ['ВНЖ, другое основание', 340]], ex: 'opłata skarbowa za zezwolenie na pobyt czasowy, Ivan Ivanov' },
+    pmzh: { h: 'Пошлина за ПМЖ', pl: 'opłata skarbowa', acc: 'tax', a: [['ПМЖ и rezydent UE', 640], ['ПМЖ по Karcie Polaka', 0]], ex: 'opłata skarbowa za zezwolenie na pobyt stały, Ivan Ivanov' },
+    card: { h: 'Оплата карты', pl: 'opłata za wydanie karty pobytu', acc: 'card', a: [['Karta pobytu', 100]], ex: 'opłata za wydanie karty pobytu, Ivan Ivanov' },
+    cit: { h: 'Пошлина за гражданство', pl: 'uznanie или nadanie obywatelstwa', acc: 'cit', a: [['Uznanie za obywatela, у воеводы', 1000], ['Nadanie obywatelstwa, у президента', 1669]], ex: 'opłata za uznanie za obywatela polskiego, Ivan Ivanov' },
+    inv: { h: 'Пошлина за приглашение', pl: 'opłata skarbowa', acc: 'tax', a: [['Wpis zaproszenia', 27]], ex: 'opłata skarbowa za wpis zaproszenia, Ivan Ivanov' }
+  };
+  var MONTHS = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+  function payAsOf() { var m = /\d+\.(\d+)\.(\d{4})/.exec(PAY.verified); return m ? MONTHS[+m[1] - 1] + ' ' + m[2] : PAY.verified; }
+  function payAmt(k) { var a = PAY_K[k].a.filter(function (x) { return x[1]; }).map(function (x) { return n0(x[1]); }); return a.join(' / ') + ' zł'; }
+  function payPop(k, id) {
+    var P = PAY_K[k], vk = CITIES[S.city] ? CITIES[S.city].vo : 'pomorskie', P0 = PAY.v[vk], V = VOIV[vk];
+    var acc = P.acc === 'cit' ? (P0.cit ? P0.tax : null) : P0[P.acc];
+    var digits = acc ? acc[1].replace(/\s/g, '') : '';
+    return '<div class="pb-pop-h"><span class="pb-pop-ic">' + svg18('pay') + '</span><span><b>' + P.h + '</b><small>' + P.pl + '</small></span>' +
+        '<button type="button" class="pb-pop-x" popovertarget="' + id + '" popovertargetaction="hide" aria-label="Закрыть">' + svg18('close') + '</button></div>' +
+      '<div class="pb-pop-a">' + P.a.map(function (x) { return '<div><span>' + x[0] + '</span><b>' + (x[1] ? n0(x[1]) + ' zł' : 'бесплатно') + '</b></div>'; }).join('') + '</div>' +
+      (acc ? '<div class="pb-pop-acc"><div class="pl-eyebrow">Получатель</div><div class="pb-pop-v">' + esc(acc[0]) + '</div>' +
+          '<div class="pl-eyebrow">Счёт</div><div class="pb-pop-n"><code>' + acc[1] + '</code><button type="button" class="pl-btn pl-btn-s" data-copy="' + digits + '">' + ms('content_copy') + '<span>Копировать</span></button></div></div>'
+        : '<p class="pb-pop-p">Счёт для этой пошлины ищи на ' + link(P0.tax[2], 'странице оплат ужонда') + ': у каждого воеводства свой.</p>') +
+      '<div class="pl-eyebrow">Заголовок перевода</div><p class="pb-pop-p">За что платишь и имя с фамилией, например: <code>' + P.ex + '</code></p>' +
+      (P.acc === 'card' && vk === 'pomorskie' ? '<p class="pb-pop-p">Поморский ужонд пишет, что за карту можно платить после решения.</p>' : '') +
+      (P.acc === 'tax' ? '<p class="pb-pop-p">Платится городу, где сидит ужонд. С 5.03.2026 при отказе не возвращается.</p>' : '') +
+      '<p class="pb-pop-f">' + V.v + ', по городу в шапке. Цены и счёт на ' + payAsOf() + ': ' + link(PAY.list, 'MOS') + (acc ? ', ' + link(acc[2], 'сайт ужонда') : '') + '.</p>';
+  }
+  /* popover: filled right before it opens; placed under its button on a wide screen, a bottom sheet on a phone */
+  function popPlace(pop) {
+    var btn = document.querySelector('[popovertarget="' + pop.id + '"]');
+    if (!btn || innerWidth < 640) { pop.style.top = pop.style.left = ''; return; }
+    var r = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    var top = r.bottom + 8; if (top + h > innerHeight - 8 && r.top - h - 8 > 8) top = r.top - h - 8;
+    pop.style.top = (top + scrollY) + 'px';
+    pop.style.left = (Math.max(8, Math.min(r.right - w, innerWidth - w - 8)) + scrollX) + 'px';
   }
   function srcLine(list) { return list && list.length ? '<p class="pl-note">' + (list.length > 1 ? 'Источники: ' : 'Источник: ') + list.map(function (x) { return link(x[0], x[1]); }).join(', ') + '</p>' : ''; }
   function tipHtml(t, red) { return '<div class="pl-tip' + (red ? ' red' : '') + '">' + ms(red ? 'warning' : 'lightbulb') + '<span>' + t + '</span></div>'; }
@@ -651,7 +716,7 @@
       '<button type="button" class="pl-chk" data-cycle="' + key + '"' + (st.past ? ' disabled' : '') + ' aria-label="' + esc(s.t) + ': ' + (st.past ? 'пройдено' : LBL[v] + '. Сменить статус') + '">' + box(v) + '</button>' +
       '<details id="pl-d-' + key + '"><summary><span class="t"><span class="n">0' + (i + 1) + '</span>' + s.t + '<small>' + s.s + '</small></span><span class="pl-st">' + (st.past ? 'Пройдено' : LBL[v]) + '</span><span class="pl-gain" data-gain="' + key + '"></span>' + (docs.length ? '<span class="pl-cnt" data-o="dc-' + key + '"></span>' : '') + ms('expand_more', 'chev') + '</summary>' +
       '<div class="body">' + s.b.map(function (p) { return '<p>' + p + '</p>'; }).join('') +
-        (docs.length ? '<div><div class="pl-eyebrow" style="margin-bottom:4px">Документы</div>' + checks(docs) + '</div>' : '') +
+        (docs.length ? '<div><div class="pl-eyebrow" style="margin-bottom:4px">Документы</div>' + checks(docs, tab) + '</div>' : '') +
         (s.tip ? tipHtml(s.tip) : '') + (s.warn ? tipHtml(s.warn, 1) : '') + srcLine(s.src) +
       '</div></details></div>';
   }
@@ -804,7 +869,7 @@
       '<p>Бланк «Wniosek o wpisanie zaproszenia do ewidencji zaproszeń» есть на странице твоего ужонда. Пиши печатными буквами по-польски, заполни все поля в частях A и B, часть C для ужонда. Пустой адрес = заявление не рассмотрят.</p>' +
       '<div class="pl-rows pb-inv-rows">' + rows.map(function (r) { return '<div><span>' + r[0] + '</span><b>' + r[1] + '</b></div>'; }).join('') + '</div>' +
       '<div class="pl-tool-h" style="font-size:16px">' + ms('upload_file') + 'Что приложить</div>' +
-      '<ul class="pl-list"><li>Подтверждение оплаты 27 zł (opłata skarbowa, счёт города из карточки «Твой ужонд»)</li><li>Выписку со счёта на всю сумму или справку о доходах</li><li>Договор аренды или акт собственности. Если гость живёт не у тебя, бронь или договор на другое жильё: в брони видно, кто бронирует, для кого и на какие даты</li><li>Снимаешь: согласие владельца, что гость поживёт в квартире. Пример ниже</li><li>Свой документ: karta pobytu или паспорт</li></ul>' +
+      '<div class="pl-checks pl-docs">' + docRow({ k: 'pay', pay: 'inv' }, 'Подтверждение оплаты 27 zł, opłata skarbowa') + '</div><ul class="pl-list"><li>Выписку со счёта на всю сумму или справку о доходах</li><li>Договор аренды или акт собственности. Если гость живёт не у тебя, бронь или договор на другое жильё: в брони видно, кто бронирует, для кого и на какие даты</li><li>Снимаешь: согласие владельца, что гость поживёт в квартире. Пример ниже</li><li>Свой документ: karta pobytu или паспорт</li></ul>' +
       '<div class="pb-acc"><div class="pl-eyebrow">Пример: согласие владельца квартиры</div><pre class="pb-tpl">' + esc(OWNER_OK) + '</pre>' +
         '<div class="pl-row"><button type="button" class="pl-btn pl-btn-s" data-copy="' + esc(OWNER_OK) + '">' + ms('content_copy') + '<span>Копировать</span></button><span class="pl-small pl-muted">Единого образца нет, это пример. Подставь свои данные вместо скобок.</span></div></div>' +
       '<p><b>Куда.</b> В ужонд своего воеводства (<span data-bind="uw"></span>), лично или почтой, если он так принимает: смотри страницу отдела. В Слупске Поморский принимает заявления на приглашение по записи. Забираешь лично или по доверенности (17 zł). Готовое приглашение отдай гостю для консульства.</p>' +
@@ -1695,6 +1760,9 @@
   root.addEventListener('focusin', function (e) { var t = e.target; if (!t.matches || !t.matches('[data-date]')) return; if (calQuiet === t.id) { calQuiet = ''; return; } openCal(t.id); });
   root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && cal && cal.visible && e.target.id === calFor) cal.plBack = true; }, true);
   root.addEventListener('click', function (e) { var t = e.target; if (t.matches && t.matches('[data-date]')) openCal(t.id); });
+  root.addEventListener('beforetoggle', function (e) { var p = e.target; if (p.classList && p.classList.contains('pb-pop') && e.newState === 'open') p.innerHTML = payPop(p.getAttribute('data-pay'), p.id); }, true);
+  root.addEventListener('toggle', function (e) { var p = e.target; if (p.classList && p.classList.contains('pb-pop') && e.newState === 'open') popPlace(p); }, true);
+  addEventListener('resize', function () { $$('.pb-pop').forEach(function (p) { try { if (p.matches(':popover-open')) popPlace(p); } catch (x) {} }); });
   /* fetch the library early: when the page is idle or when the pointer gets near a date field */
   root.addEventListener('pointerover', function (e) { if (e.target.closest && e.target.closest('.pl-date')) loadAdp().catch(function () {}); });
   if (window.requestIdleCallback) window.requestIdleCallback(function () { loadAdp().catch(function () {}); }, { timeout: 5000 });
