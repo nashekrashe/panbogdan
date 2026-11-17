@@ -1086,6 +1086,18 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 @media (min-width:901px){.pb-more .pb-fb-m{display:none}}
 .pb-fb .pl-input{width:100%;max-width:none;box-sizing:border-box}
 .pb-fb-anon input:checked+span{color:var(--ink);text-decoration:none}
+/* contact form: wider, more air, labels on one line, inputs aligned */
+.pb-fb{width:min(600px,calc(100vw - 24px));padding:28px 28px 22px}
+.pb-fb .pb-pop-h{margin-bottom:6px;align-items:flex-start}
+.pb-fb .pb-pop-h b{font-size:18px}
+.pb-fb-f{gap:16px}
+.pb-fb-f .pl-eyebrow{margin:0 0 6px;white-space:nowrap;display:block}
+.pb-fb-f>.pl-eyebrow{margin-bottom:-10px}
+.pb-fb-who{gap:16px;align-items:end}
+.pb-fb-who .pl-field{display:flex;flex-direction:column;min-width:0}
+.pb-fb-row{margin-top:2px}
+.pb-fb .pb-pop-f{margin-top:4px}
+@media (max-width:639px){.pb-fb{padding:22px 18px 18px}}
 
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
@@ -2865,8 +2877,8 @@ font-size:16px;line-height:1.5;font-stretch:100%}
         '<button type="button" class="pb-pop-x" popovertarget="pb-fb" popovertargetaction="hide">Закрыть</button></div>' +
       '<label class="pl-eyebrow" for="pb-fb-msg">Сообщение</label><textarea class="pl-input pb-fb-msg" id="pb-fb-msg" name="msg" rows="5" maxlength="4000" required></textarea>' +
       '<label class="pl-check pb-fb-anon"><input type="checkbox" name="anon" checked><span>Анонимно</span></label>' +
-      '<div class="pb-fb-who" hidden><div class="pl-field"><label class="pl-eyebrow" for="pb-fb-name">Имя, если хотите</label><input class="pl-input" id="pb-fb-name" name="name" maxlength="120" autocomplete="name"></div>' +
-        '<div class="pl-field"><label class="pl-eyebrow" for="pb-fb-mail">Почта для ответа, если хотите</label><input class="pl-input" id="pb-fb-mail" name="email" type="email" maxlength="200" autocomplete="email"></div></div>' +
+      '<div class="pb-fb-who" hidden><div class="pl-field"><label class="pl-eyebrow" for="pb-fb-name">Имя</label><input class="pl-input" id="pb-fb-name" name="name" maxlength="120" autocomplete="name" placeholder="необязательно"></div>' +
+        '<div class="pl-field"><label class="pl-eyebrow" for="pb-fb-mail">Почта для ответа</label><input class="pl-input" id="pb-fb-mail" name="email" type="email" maxlength="200" autocomplete="email" placeholder="необязательно"></div></div>' +
       '<input class="pb-fb-hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '<div class="pb-fb-row"><button type="submit" class="pl-btn pb-fb-send">Отправить</button><span class="pb-fb-st" role="status" aria-live="polite"></span></div>' +
       '<p class="pb-pop-f">Вместе с сообщением уйдёт адрес страницы, на которой ты сейчас. Сообщение хранится год в закрытом хранилище Cloudflare, видит его только Богдан.</p>' +

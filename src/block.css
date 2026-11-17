@@ -1083,3 +1083,15 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 @media (min-width:901px){.pb-more .pb-fb-m{display:none}}
 .pb-fb .pl-input{width:100%;max-width:none;box-sizing:border-box}
 .pb-fb-anon input:checked+span{color:var(--ink);text-decoration:none}
+/* contact form: wider, more air, labels on one line, inputs aligned */
+.pb-fb{width:min(600px,calc(100vw - 24px));padding:28px 28px 22px}
+.pb-fb .pb-pop-h{margin-bottom:6px;align-items:flex-start}
+.pb-fb .pb-pop-h b{font-size:18px}
+.pb-fb-f{gap:16px}
+.pb-fb-f .pl-eyebrow{margin:0 0 6px;white-space:nowrap;display:block}
+.pb-fb-f>.pl-eyebrow{margin-bottom:-10px}
+.pb-fb-who{gap:16px;align-items:end}
+.pb-fb-who .pl-field{display:flex;flex-direction:column;min-width:0}
+.pb-fb-row{margin-top:2px}
+.pb-fb .pb-pop-f{margin-top:4px}
+@media (max-width:639px){.pb-fb{padding:22px 18px 18px}}

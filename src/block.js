@@ -1773,8 +1773,8 @@
         '<button type="button" class="pb-pop-x" popovertarget="pb-fb" popovertargetaction="hide">Закрыть</button></div>' +
       '<label class="pl-eyebrow" for="pb-fb-msg">Сообщение</label><textarea class="pl-input pb-fb-msg" id="pb-fb-msg" name="msg" rows="5" maxlength="4000" required></textarea>' +
       '<label class="pl-check pb-fb-anon"><input type="checkbox" name="anon" checked><span>Анонимно</span></label>' +
-      '<div class="pb-fb-who" hidden><div class="pl-field"><label class="pl-eyebrow" for="pb-fb-name">Имя, если хотите</label><input class="pl-input" id="pb-fb-name" name="name" maxlength="120" autocomplete="name"></div>' +
-        '<div class="pl-field"><label class="pl-eyebrow" for="pb-fb-mail">Почта для ответа, если хотите</label><input class="pl-input" id="pb-fb-mail" name="email" type="email" maxlength="200" autocomplete="email"></div></div>' +
+      '<div class="pb-fb-who" hidden><div class="pl-field"><label class="pl-eyebrow" for="pb-fb-name">Имя</label><input class="pl-input" id="pb-fb-name" name="name" maxlength="120" autocomplete="name" placeholder="необязательно"></div>' +
+        '<div class="pl-field"><label class="pl-eyebrow" for="pb-fb-mail">Почта для ответа</label><input class="pl-input" id="pb-fb-mail" name="email" type="email" maxlength="200" autocomplete="email" placeholder="необязательно"></div></div>' +
       '<input class="pb-fb-hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '<div class="pb-fb-row"><button type="submit" class="pl-btn pb-fb-send">Отправить</button><span class="pb-fb-st" role="status" aria-live="polite"></span></div>' +
       '<p class="pb-pop-f">Вместе с сообщением уйдёт адрес страницы, на которой ты сейчас. Сообщение хранится год в закрытом хранилище Cloudflare, видит его только Богдан.</p>' +
