@@ -1048,6 +1048,8 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 
 .pl-docs .pl-doc-key:has(.pl-doc-ib):hover .pl-doc-ib{background:#FFD6D6}
 .pb-pop-x{width:auto!important;flex:0 0 auto!important;padding:0 10px;font:inherit;font-size:13px;font-weight:600;color:var(--mut)}
+.pb-mos-how{margin:0 0 12px;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5}
+.pb-mos-how a{overflow-wrap:anywhere}
 
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
@@ -1277,13 +1279,28 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   ]/*/NEWS*/.sort(function (a, b) { var p = function (s) { var x = s.split('.'); return x[2] + x[1] + x[0]; }; return p(b.d) < p(a.d) ? -1 : 1; });
   var NEWS_CHECKED = '16.11.2026';
 
+  /* how to file in MOS, step by step with direct links (MOS «Jak zacząć» and «Najczęstsze błędy», checked 17.11.2026) */
+  function MOS_HOW(k) {
+    var a = function (u, t) { return '<a href="' + u + '" target="_blank" rel="noopener">' + t + '</a>'; };
+    return '<ol class="pb-mos-how">' +
+      '<li><b>Подпись.</b> Сделай ' + a('https://www.gov.pl/web/profilzaufany', 'profil zaufany') + ', проще всего в своём банке онлайн. Без него или платной квалифицированной подписи MOS не даст отправить заявление.</li>' +
+      '<li><b>Вход.</b> Открой ' + a('https://wnioskimos.cudzoziemcy.gov.pl/konto', 'wnioskimos.cudzoziemcy.gov.pl') + ' и войди через login.gov.pl профилем zaufanym, так заводится твой аккаунт MOS. Инструкция по-русски: ' + a('https://www.mos.cudzoziemcy.gov.pl/ru/kak-nachat/', '«Как начать»') + '. Заполнять и подписывать можешь только ты сам: pełnomocnik может сидеть рядом, но не заходить за тебя.</li>' +
+      '<li><b>Файлы заранее.</b> Фото в jpg и скан всех страниц паспорта одним pdf. Подтверждения оплат: реквизиты в карточке «Твой ужонд» вверху раздела. ' +
+        (k === 'vnzh' ? 'Если ВНЖ по работе, e-mail работодателя: ему уйдёт ссылка на Załącznik nr 1.' : 'Для rezydenta UE ещё документ на жильё: договор аренды или акт собственности.') +
+        ' Остальные документы можно приложить сразу, так быстрее, или донести по вызову.</li>' +
+      '<li><b>Заполнить.</b> Выбери тип: ' + (k === 'vnzh' ? 'pobyt czasowy с нужной целью' : 'pobyt stały или rezydent długoterminowy UE') + '. Адрес пиши тот, где реально живёшь. Судимости и неоплаченные штрафы указывай, ужонд это проверяет. Черновик хранится 45 дней с последней правки.' +
+        (k === 'vnzh' ? ' Пока работодатель не подписал Załącznik nr 1, отправить нельзя: когда подпишет, придёт письмо. Ссылка у него живёт 30 дней.' : '') + '</li>' +
+      '<li><b>Подписать и отправить</b> профилем zaufanym, находясь в Польше: из-за границы подать нельзя. Сразу скачай UPO, письма с ним не будет.</li>' +
+      '<li><b>Дальше.</b> Ужонд сам пришлёт вызов: на отпечатки и с перечнем документов, сроком и способом их доставки. Ошибку в отправленном заявлении исправляют только от руки на распечатке, с подписью и датой, при визите или почтой.</li>' +
+      '</ol>';
+  }
   var LEGAL = {
     vnzh: { tab: 'ВНЖ', code: '01 · Karta pobytu czasowego', title: 'Временный вид на жительство', sub: 'До 3 лет. Продлевается, пока не надоест.', irony: 'Самый длинный квест игры. Сохраняйся чаще.',
       fees: [['Работа', '440 zł'], ['Другое', '340 zł'], ['Карта', '100 zł']],
       steps: [
         { t: 'Выбрать основание', s: 'От него зависит всё остальное', b: ['Работа (jednolite zezwolenie na pobyt i pracę), бизнес (JDG или sp. z o.o.), учёба, семья или Karta Polaka. Основание должно быть реальным на момент подачи и дожить до решения.'], docs: ['Договор с работодателем или документы бизнеса', 'Справка из вуза, если учёба', 'Документы о браке или родстве, если семья'], warn: 'Потерял работу: письменно сообщи воеводе в течение 15 рабочих дней. Тогда у тебя есть 30 дней на новую работу, и ВНЖ не отзовут.', src: [['https://zielonalinia.gov.pl/zezwolenie-jednolite-wazny-obowiazek-cudzoziemca/', 'zielonalinia.gov.pl']] },
         { t: 'PESEL и profil zaufany', s: 'Без подписи MOS не пустит', b: ['С 27.04.2026 заявление подаётся только онлайн через MOS 2. Подписать его можно профилем zaufany, квалифицированной подписью или podpisem osobistym, но он есть только в польском e-dowodzie. Иностранцу обычно остаётся profil zaufany.', 'PESEL при визе или временном ВНЖ дают только по заявлению, где указано, зачем он нужен. Это бесплатно, подаётся в urzędzie gminy, работодатель за тебя подать не может. Дальше profil zaufany проще всего сделать через свой банк.'], docs: ['PESEL', 'Profil zaufany', 'Почта, которую ты правда читаешь'], src: [['https://www.gov.pl/web/udsc/mos-qa', 'gov.pl/web/udsc'], ['https://zielonalinia.gov.pl/kiedy-cudzoziemiec-moze-uzyskac-numer-pesel/', 'zielonalinia.gov.pl']] },
-        { t: 'Заполнить и отправить в MOS', s: 'UPO храни как паспорт', b: ['Работодатель подписывает Załącznik nr 1 по ссылке из письма, ссылка живёт 30 дней. Черновик хранится 45 дней с последней правки. После отправки скачай UPO: письма на почту не будет.'], docs: ['Скан всех страниц паспорта', 'Фото', 'Пошлина 440 zł (работа) или 340 zł (другое)', 'Страховка: ZUS или частная', 'Подтверждение жилья', 'Załącznik nr 1 от работодателя'], warn: 'Подать нужно, пока ты легален. Если MOS лежит в твой последний день, есть 3 рабочих дня после восстановления. С 5.03.2026 при отказе пошлину не возвращают.' },
+        { t: 'Заполнить и отправить в MOS', s: 'UPO храни как паспорт', b: [MOS_HOW('vnzh')], src: [['https://www.mos.cudzoziemcy.gov.pl/ru/kak-nachat/', 'MOS, как начать'], ['https://www.mos.cudzoziemcy.gov.pl/ru/najczesciej-pope-niane-b-edy/', 'MOS, частые ошибки']], docs: ['Скан всех страниц паспорта', 'Фото', 'Пошлина 440 zł (работа) или 340 zł (другое)', 'Страховка: ZUS или частная', 'Подтверждение жилья', 'Załącznik nr 1 от работодателя'], warn: 'Подать нужно, пока ты легален. Если MOS лежит в твой последний день, есть 3 рабочих дня после восстановления. С 5.03.2026 при отказе пошлину не возвращают.' },
         { t: 'Вызов на отпечатки', s: 'Записаться нельзя, жди письмо', b: ['Воевода сам назначит дату. На месте: отпечатки, образец подписи, оригинал паспорта и, возможно, braki formalne. После проверки в MOS появится zaświadczenie, оно заменило старый красный штамп.'], docs: ['Оригинал паспорта', 'Wezwanie', 'Оригиналы приложенных документов'], tip: 'Zaświadczenie подтверждает легальное пребывание, но по Шенгену с ним не ездят.' },
         { t: 'Ждать', s: 'Таймер ниже', b: ['По закону решение за 60 дней. На деле сроки приостановлены до 4.03.2027 (art. 100d), а в среднем ждут <b data-bind="wait"></b> <span data-bind="dayword"></span> <span data-bind="loc"></span>.'], docs: ['UPO и zaświadczenie', 'Вся переписка с ужондом', 'Ответы на braki в срок из письма'], warn: 'Выезд из Польши без действующей карты или визы: обратно могут не пустить.' },
         { t: 'Децизия и карта', s: 'Пластик отдельно и позже', b: ['Сначала decyzja, потом карта. За карту 100 zł. Карта временного пребывания выдаётся на срок до 3 лет.', '<span data-bind="cityNote"></span>'], docs: ['Оплатить 100 zł за карту', 'Паспорт', 'Decyzja'] }
@@ -1333,8 +1350,8 @@ font-size:16px;line-height:1.5;font-stretch:100%}
         { t: 'Подать в MOS', p: {
           kp: { s: 'Без пошлины, и снова тот же ужонд', docs: ['Оплата карты 100 zł', 'UPO', 'Zaświadczenie после проверки'] },
           _: { s: '640 zł и снова тот же ужонд', docs: ['Пошлина 640 zł', 'Оплата карты 100 zł', 'UPO', 'Zaświadczenie после проверки'], warn: 'С 5.03.2026 при отказе пошлину не возвращают.' }
-        }, b: ['Только онлайн через MOS 2. Нужны PESEL и profil zaufany, аккаунт заводится заново: старые закрыли 27.04.2026. Подписать заявление можешь только ты сам, pełnomocnik не может.', 'Подай не позже последнего дня легального пребывания. Если в заявлении нет недостатков или ты исправил их в срок, ты здесь легально до решения.', 'После отправки скачай UPO. Когда ужонд проверит заявление, в MOS появится zaświadczenie вместо штампа. Отправленное заявление в MOS не исправить, только бумажной корректой.'],
-          src: [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/Zezw_na_pobyt_rezydenta_dlugoterm_UE', 'bip.lubuskie.uw.gov.pl'], ['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue', 'migrant.poznan.uw.gov.pl']] },
+        }, b: ['Только онлайн через MOS 2, аккаунт заводится заново: старые закрыли 27.04.2026. Подай не позже последнего дня легального пребывания. Если в заявлении нет недостатков или ты исправил их в срок, ты здесь легально до решения.', MOS_HOW('pmzh'), 'Когда ужонд проверит заявление, в MOS появится zaświadczenie вместо штампа.'],
+          src: [['https://www.mos.cudzoziemcy.gov.pl/ru/kak-nachat/', 'MOS, как начать'], ['https://www.mos.cudzoziemcy.gov.pl/ru/najczesciej-pope-niane-b-edy/', 'MOS, частые ошибки'], ['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/Zezw_na_pobyt_rezydenta_dlugoterm_UE', 'bip.lubuskie.uw.gov.pl'], ['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue', 'migrant.poznan.uw.gov.pl']] },
         { t: 'Отпечатки и карта', s: 'Больше не продлевать каждые 3 года', b: ['Вызов придёт сам: отпечатки в <span data-bind="uw"></span>, образец подписи, оригинал паспорта и оригиналы документов. Да, опять.', 'По закону решение за 6 месяцев. На деле дольше: на Мазовше ПМЖ ждут в среднем 239 дней, rezydenta UE 423.', 'Статус бессрочный, меняется только пластик.'], docs: ['Wezwanie', 'Оригинал паспорта', 'Оригиналы приложенных документов', 'Decyzja'] }
       ] },
     paszport: { tab: 'Паспорт', code: '03 · Obywatelstwo', title: 'Гражданство', sub: 'Финальный босс. Обычно около восьми лет с приезда.', irony: 'Правила игры могут поменять прямо во время игры.',
@@ -1843,7 +1860,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     return '<div class="pl-step ' + v + (st.past ? ' pl-past" inert' : '"') + ' data-step="' + key + '">' +
       '<button type="button" class="pl-chk" data-cycle="' + key + '"' + (st.past ? ' disabled' : '') + ' aria-label="' + esc(s.t) + ': ' + (st.past ? 'пройдено' : LBL[v] + '. Сменить статус') + '">' + box(v) + '</button>' +
       '<details id="pl-d-' + key + '"><summary><span class="t"><span class="n">0' + (i + 1) + '</span>' + s.t + '<small>' + s.s + '</small></span><span class="pl-st">' + (st.past ? 'Пройдено' : LBL[v]) + '</span><span class="pl-gain" data-gain="' + key + '"></span>' + (docs.length ? '<span class="pl-cnt" data-o="dc-' + key + '"></span>' : '') + ms('expand_more', 'chev') + '</summary>' +
-      '<div class="body">' + s.b.map(function (p) { return '<p>' + p + '</p>'; }).join('') +
+      '<div class="body">' + s.b.map(function (p) { return p.charAt(0) === '<' ? p : '<p>' + p + '</p>'; }).join('') +
         (docs.length ? '<div><div class="pl-eyebrow" style="margin-bottom:4px">Документы</div>' + checks(docs, tab) + '</div>' : '') +
         (s.tip ? tipHtml(s.tip) : '') + (s.warn ? tipHtml(s.warn, 1) : '') + srcLine(s.src) +
       '</div></details></div>';
