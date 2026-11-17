@@ -947,16 +947,16 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 @media (min-width:900px){.pb-nw.lead{grid-column:span 2}.pb-nw.lead .pb-nw-h{font-size:clamp(30px,2.6vw,40px)}.pb-nw.lead .pb-nw-t{font-size:17px}}
 
 /* documents: a type icon on every line; payments and contracts as cards with a tag; payment details in a popover */
-.pl-docs{gap:4px}
+.pl-docs{gap:6px}
 .pl-doc{gap:10px;align-items:flex-start}
 .pl-doc-i{flex:0 0 18px;width:18px;height:18px;margin-top:2px;color:var(--mut)}
 .pl-doc-i .pb-i{display:block}
 .pl-check input:checked~.pl-doc-t{color:var(--mut);text-decoration:line-through;text-decoration-color:#c9cfd6}
 .pl-check input:checked~.pl-doc-i{opacity:.5}
-.pl-doc-key{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:4px 0;padding:6px 8px 6px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:0 1px 2px rgba(31,25,25,.04)}
+.pl-doc-key{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0;padding:6px 8px 6px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:0 1px 2px rgba(31,25,25,.04)}
 .pl-doc-key>.pl-check{flex:1 1 220px;min-width:0;padding:4px 0}
-.pl-doc-key .pl-doc-t{font-weight:600}
-.pl-doc-key .pl-doc-i{color:var(--ink)}
+.pl-doc-pay .pl-doc-t,.pl-doc-sign .pl-doc-t{font-weight:600}
+.pl-doc-sign .pl-doc-i{color:var(--ink)}
 .pl-doc-pay{border-color:rgba(215,75,78,.35);background:linear-gradient(0deg,rgba(215,75,78,.035),rgba(215,75,78,.035)),var(--paper)}
 .pl-doc-pay .pl-doc-i{color:var(--red)}
 .pl-doc-side{display:inline-flex;align-items:center;gap:8px;margin-left:auto;flex:0 0 auto}
@@ -1002,3 +1002,19 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 @keyframes pb-sheet-in{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.pb-pop:popover-open{animation:none}}
 .pl-docs div.pl-check{cursor:default}
+
+/* every document line in a frame; its icon is a button with the details */
+.pl-doc-key:hover{border-color:#cfd3d8}
+.pl-doc-pay:hover{border-color:rgba(215,75,78,.55)}
+.pl-doc-ib{all:unset;box-sizing:border-box;display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;margin:-4px -6px -4px -6px;border-radius:8px;color:var(--mut);cursor:help;transition:background .15s,color .15s}
+.pl-doc-ib:hover,.pl-doc-ib:focus-visible{background:var(--fill);color:var(--ink)}
+.pl-doc-ib:focus-visible{box-shadow:0 0 0 3px rgba(215,75,78,.25)}
+.pl-doc-pay .pl-doc-ib{color:var(--red)}
+.pl-doc-pay .pl-doc-ib:hover{background:rgba(215,75,78,.1);color:var(--red)}
+.pl-doc-sign .pl-doc-ib{color:var(--ink)}
+.pl-doc-key:has(.pb-pop-i:popover-open) .pl-doc-ib{background:var(--fill);color:var(--ink)}
+.pb-pop-i{width:min(340px,calc(100vw - 16px))}
+.pb-pop-ic.n{background:var(--fill);color:var(--ink)}
+.pb-pop-l{margin:0;padding:0 0 0 18px;list-style:disc;display:flex;flex-direction:column;gap:6px}
+.pb-pop-l li::marker{color:var(--red)}
+@media (max-width:639px){.pl-doc-ib{flex-basis:36px;width:36px;height:36px;margin:-9px -9px -9px -9px}}

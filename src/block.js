@@ -144,6 +144,31 @@
     close: '<path d="M13.5 4.5L4.5 13.5M4.5 4.5L13.5 13.5"/>'
   };
   function svg18(k, sz, cls) { return '<svg class="pb-i' + (cls ? ' ' + cls : '') + '" width="' + (sz || 18) + '" height="' + (sz || 18) + '" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS18[k] + '</svg>'; }
+  /* details behind the icon of a document line; each entry checked against the linked pages on 17.11.2026 */
+  var DOC_CHECKED = '17.11.2026';
+  var SRC_MOS_PHOTO = ['https://api.sejm.gov.pl/eli/acts/DU/2026/488/text.pdf', 'Dz.U. 2026 poz. 488'];
+  var SRC_BIO = ['https://migrant.poznan.uw.gov.pl/pl/slownik-pojec/fotografiezdjecie-biometrycznefotografia-cyfrowa', 'migrant.poznan.uw.gov.pl'];
+  var SRC_TR = ['https://migrant.poznan.uw.gov.pl/pl/wskazowki/co-powinienem-wiedziec-polski-dokument-tozsamosci-cudzoziemca', 'migrant.poznan.uw.gov.pl'];
+  var BIO = 'Как на паспорт: 35 × 45 мм, цветное, резкое, лицо занимает 70–80% кадра, ровный светлый фон, смотришь прямо, глаза открыты и не закрыты волосами, рот закрыт, лицо спокойное.';
+  var DOC_INFO = [
+    [/фото в цифровом|^фото$/i, ['vnzh', 'pmzh'], 'Фото для MOS', ['Файл JPG, минимум 684 × 883 px, до 2,5 MB.', 'Сделано не раньше чем за 6 месяцев до подачи.', BIO, 'В MOS прикладывается файл, бумажное фото не нужно.'], [SRC_MOS_PHOTO, SRC_BIO]],
+    [/фото 35|биометрическ\S* фото/i, null, 'Фото на бумаге', [BIO, 'Сделано не раньше чем за 6 месяцев до подачи.'], [SRC_BIO, ['https://www.gov.pl/attachment/d1d50407-ebd3-4a57-b2d0-10d8406314c9', 'карта услуги, Кельце']]],
+    [/скан всех страниц|паспорт: скан|паспорт ребёнка: скан/i, ['vnzh', 'pmzh'], 'Скан паспорта', ['Все страницы действующего паспорта, сканом или фото.', 'Одним файлом: ужонды просят не грузить страницы по отдельности.', 'Каждый документ отдельным файлом. Файл до 10 MB, все вместе до 50 MB.', 'Оригинал покажешь на отпечатках.'], [['https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', 'zielonalinia.gov.pl'], ['https://www.gov.pl/web/uw-lubuski/skladasz-wniosek-pobytowy-przez-mos-uniknij-tych-bledow', 'gov.pl/web/uw-lubuski'], ['https://api.sejm.gov.pl/eli/acts/DU/2026/487/text.pdf', 'Dz.U. 2026 poz. 487']]],
+    [/załącznik nr 1/i, null, 'Załącznik nr 1', ['Заполняет работодатель: условия работы для jednolitego.', 'Подписывается электронно и уходит через MOS, по ссылке из письма. Ссылка живёт 30 дней.'], [['https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', 'zielonalinia.gov.pl'], ['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/zezwolenie_na_pobyt_czasowy_i_prace', 'bip.lubuskie.uw.gov.pl']]],
+    [/страховк/i, null, 'Страховка', ['Для rezydenta UE это условие закона: страховка в NFZ (через ZUS) или полис, который покрывает лечение в Польше.', 'Для ВНЖ требования зависят от основания, смотри карточку услуги своего ужонда.'], [['https://archiwum.kielce.uw.gov.pl/pl/obsluga-klienta/cudzoziemcy-1/obywatele-panstw-trzecich-spoz/rezydent-dlugoterminowy-ue/23585,Rezydent-dlugoterminowy-UE.pdf', 'Świętokrzyski UW']]],
+    [/жиль|аренд|umowa najmu|akt własności/i, null, 'Жильё', ['Обычно договор аренды (umowa najmu) или акт собственности.', 'Документ на чужом языке нужен с переводом присяжного переводчика.'], [SRC_TR]],
+    [/PIT/, null, 'PIT за 3 года', ['Годовые PIT за 3 года перед подачей с подтверждением, что их приняли, или справка из urzędu skarbowego с суммами дохода.'], [['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue?page=1', 'migrant.poznan.uw.gov.pl']]],
+    [/ZUS RMUA|справка из ZUS/i, null, 'Справка из ZUS', ['Справка о взносах: кто платил и с какой базы по месяцам, за 3 года перед подачей.'], [['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue', 'migrant.poznan.uw.gov.pl']]],
+    [/B1/, null, 'Польский B1', ['Государственный сертификат минимум B1: certyfikatpolski.pl.', 'Вместо него подходит польский аттестат или диплом с обучением на польском.'], [['https://www.gov.pl/attachment/8de4be48-3f37-43a6-b19d-058d9ccadc9d', 'карта услуги ужонда'], ['https://certyfikatpolski.pl/', 'certyfikatpolski.pl']]],
+    [/urzędu skarbowego/i, null, 'Справка об отсутствии долгов', ['Zaświadczenie o niezaleganiu w podatkach из своего urzędu skarbowego.', 'Через e-Urząd Skarbowy бесплатно. Бумажный запрос стоит 21 zł opłaty skarbowej, её платят городу, где налоговая.'], [['https://archiwum.lodzkie.kas.gov.pl/urzad-skarbowy-w-lasku/zalatwianie-spraw/druki-do-pobrania', 'kas.gov.pl']]],
+    [/свидетельств|odpis|национальност|польскост|гражданстве|решения о статусе/i, null, 'Документы о семье и происхождении', ['Документ на чужом языке нужен вместе с переводом присяжного переводчика на польский. Переводчиков ищи на сайте Министерства юстиции.', 'Приложи оригинал или заверенную копию.'], [SRC_TR]],
+    [/karta polaka/i, null, 'Karta Polaka', ['Копия Karty Polaka, оригинал покажешь.'], [['https://bip.kielce.uw.gov.pl/download/2/19715/KartaUslugPOBYTSTALY.pdf', 'карта услуги, Кельце']]],
+    [/^upo/i, null, 'UPO', ['Подтверждение, что MOS принял заявление. Скачай сразу после отправки.', 'Нет UPO: заявление не подано.'], [['https://migrant.poznan.uw.gov.pl/pl/node/374', 'migrant.poznan.uw.gov.pl']]],
+    [/wezwanie/i, null, 'Wezwanie', ['Письмо от воеводы: прийти сдать отпечатки, образец подписи и показать оригинал паспорта. Могут попросить дополнить документы.'], [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/zezwolenie-na-pobyt-czasowy-wysokich-kwalifikacji', 'bip.lubuskie.uw.gov.pl']]],
+    [/^wniosek$/i, ['paszport'], 'Wniosek', ['Бланк по образцу, на польском, 1 экземпляр. С ним 1 фото и подтверждение оплаты.'], [['https://www.gov.pl/attachment/d1d50407-ebd3-4a57-b2d0-10d8406314c9', 'карта услуги, Кельце'], ['https://www.gov.pl/web/mswia/popros-o-uznanie-za-polskiego-obywatela', 'gov.pl/web/mswia']]],
+    [/биограф/i, null, 'Биография', ['К wniosku о nadanie её можно приложить по желанию.'], [['https://www.gov.pl/web/uw-zachodniopomorski/nadanie-obywatelstwa', 'gov.pl/web/uw-zachodniopomorski']]]
+  ];
+  var DOC_T = { pay: 'Оплата', sign: 'Договор' };
   function svgi(k, sz) { return '<svg class="pb-i" width="' + (sz || 24) + '" height="' + (sz || 24) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[k] + '</svg>'; }
   /* screens: one per menu item; k is the short address (#legal), id the section element */
   var SECTIONS = [
@@ -267,7 +292,7 @@
         { t: 'Отсидеть срок', s: '3 года, 2 или 1', b: ['На ПМЖ или rezydencie UE: 3 года при доходе и жилье; 2 года, если ты не меньше 3 лет в браке с гражданином; 1 год, если ПМЖ получен по Karcie Polaka или польскому происхождению. Есть и путь через 10 лет легального пребывания.', 'Пребывание должно быть непрерывным: длинные выезды могут обнулить счётчик.'], src: [['https://www.gov.pl/web/uw-zachodniopomorski/uznanie-za-obywatela-polskiego2', 'gov.pl']], docs: ['Карта stały pobyt или rezydent UE', 'Нет выездов дольше 6 месяцев'] },
         { t: 'B1', s: 'Тот же сертификат', b: ['Нужен официальный сертификат B1 или школьный аттестат из Польши или польской школы за границей. Если уже сдавал для ПМЖ, второй раз не нужно.'], docs: ['Państwowy certyfikat B1 или польский аттестат'] },
         { t: 'Доход и жильё', s: 'Романтика закончилась', b: ['Стабильный доход и законное жильё на бумаге.'], docs: ['Договор, справка или PIT', 'Umowa najmu или akt własności'] },
-        { t: 'Подать заявление', s: '1000 zł или 1669 zł', b: ['С 1.08.2025: uznanie 1000 zł, nadanie 1669 zł. Заявление на uznanie подаётся воеводе: <span data-bind="uw"></span>.', 'Пошлину платят переводом. Счёт смотри на странице оплат своего ужонда, ссылка «пруф» в карточке «Твой ужонд» вверху раздела.'], docs: ['Wniosek', 'Пошлина', 'Биография, если nadanie'] },
+        { t: 'Подать заявление', s: '1000 zł или 1669 zł', b: ['С 1.08.2025: uznanie 1000 zł, nadanie 1669 zł. Заявление на uznanie подаётся воеводе: <span data-bind="uw"></span>.', 'Пошлину платят переводом. Счёт смотри на странице оплат своего ужонда, ссылка «пруф» в карточке «Твой ужонд» вверху раздела.'], docs: ['Wniosek', 'Пошлина', 'Биография, если nadanie (по желанию)', 'Фото 35 × 45 мм, 1 штука'] },
         { t: 'Паспорт и dowód', s: 'Финальный босс', b: ['Дальше dowód osobisty и паспорт. Добро пожаловать в очередь, на этот раз гражданскую.'], docs: ['Решение', 'Фото', 'Заявление на dowód'] }
       ] }
   };
@@ -301,7 +326,7 @@
         '<b>Документы, которые подтверждают данные из бланка.</b> Документы на чужом языке с переводом присяжного.',
         'Если на фото головной убор по религии: <b>oświadczenie o przynależności do wspólnoty wyznaniowej</b>.',
         'Квитанция об оплате не нужна: беларусы освобождены.'
-      ].map(function (x) { return docRow(docType(x, 'by'), x); }).join('') + '</div>' +
+      ].map(function (x, j) { var d = docType(x, 'by'); d.info = docInfo(x, 'by'); return docRow(d, x, '', 'pdpc' + j); }).join('') + '</div>' +
       '<p><b>Как.</b> Подать лично в ужонде или по почте. Забирать лично, с документом личности и прошлым dokumentem podróży, если он был. Получил свой паспорт или польское гражданство: верни документ в ужонд в течение 14 дней.</p></div></details>' +
       '<details><summary><span class="t">Сроки по воеводствам</span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
       '<p><b>Твой ужонд, <span data-bind="uw"></span>:</b> <span data-o="pdpcUw"></span></p>' +
@@ -489,12 +514,23 @@
     return '<div class="pl-checks' + (tab ? ' pl-docs' : '') + '">' + list.map(function (c) {
       var box = '<input type="checkbox" data-check="' + c[0] + '"' + (S.checks[c[0]] ? ' checked' : '') + '>';
       if (!tab) return '<label class="pl-check">' + box + '<span>' + c[1] + '</span></label>';
-      var d = docType(c[1], tab);
+      var d = docType(c[1], tab); d.info = docInfo(c[1], tab);
       return docRow(d, c[1], box, c[0]);
     }).join('') + '</div>';
   }
+  function docInfo(t, tab) {
+    var x = String(t).replace(/<[^>]+>/g, ''), i;
+    for (i = 0; i < DOC_INFO.length; i++) if (DOC_INFO[i][0].test(x) && (!DOC_INFO[i][1] || DOC_INFO[i][1].indexOf(tab) >= 0)) return i;
+    return -1;
+  }
+  function infoPop(i, d, id) {
+    var D = DOC_INFO[i];
+    return '<div class="pb-pop-h"><span class="pb-pop-ic' + (d === 'pay' ? '' : ' n') + '">' + svg18(d === 'note' ? 'file' : d) + '</span><span><b>' + D[2] + '</b></span>' +
+        '<button type="button" class="pb-pop-x" popovertarget="' + id + '" popovertargetaction="hide" aria-label="Закрыть">' + svg18('close') + '</button></div>' +
+      '<ul class="pb-pop-l">' + D[3].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
+      '<p class="pb-pop-f">Проверено ' + DOC_CHECKED + ': ' + D[4].map(function (x) { return link(x[0], x[1]); }).join(', ') + '.</p>';
+  }
   /* what a document line is: pay (with a payment kind), sign (contract, lease, the employer's annex), scan, photo, file; note for lines that are not papers */
-  var DOC_T = { pay: 'Оплата', sign: 'Договор' };
   function docType(t, tab) {
     var x = String(t).replace(/<[^>]+>/g, '');
     if (/не нужн|бесплатн|освобожд/i.test(x)) return { k: 'note' };
@@ -506,14 +542,19 @@
     return { k: 'file' };
   }
   function docRow(d, text, box, key) {
-    var ic = '<span class="pl-doc-i">' + (d.k === 'note' ? '' : svg18(d.k)) + '</span>';
+    var pid = 'pb-pop-' + (key || d.pay), iid = 'pb-inf-' + (key || d.pay);
+    var label = esc(String(text).replace(/<[^>]+>/g, ''));
+    var hasInfo = d.info != null && d.info >= 0;
+    var tgt = d.k === 'pay' ? pid : hasInfo ? iid : '';
+    var ic = tgt ? '<button type="button" class="pl-doc-i pl-doc-ib" popovertarget="' + tgt + '" aria-haspopup="dialog" aria-label="Подробнее: ' + label + '">' + svg18(d.k === 'note' ? 'file' : d.k) + '</button>'
+      : '<span class="pl-doc-i">' + (d.k === 'note' ? '' : svg18(d.k)) + '</span>';
+    var pop = hasInfo && d.k !== 'pay' ? '<div class="pb-pop pb-pop-i" id="' + iid + '" popover data-info="' + d.info + '" data-k="' + d.k + '" role="dialog" aria-label="' + label + '"></div>' : '';
     var body = '<span class="pl-doc-t">' + text + '</span>';
-    if (d.k !== 'pay' && d.k !== 'sign') return box ? '<label class="pl-check pl-doc">' + box + ic + body + '</label>' : '<div class="pl-check pl-doc">' + ic + body + '</div>';
-    var pid = 'pb-pop-' + (key || d.pay);
+    if (d.k !== 'pay' && d.k !== 'sign') return '<div class="pl-doc-key pl-doc-' + d.k + '">' + (box ? '<label class="pl-check pl-doc">' + box + ic + body + '</label>' : '<div class="pl-check pl-doc">' + ic + body + '</div>') + pop + '</div>';
     var side = d.k === 'pay' ? '<span class="pl-doc-amt" data-payamt="' + d.pay + '">' + payAmt(d.pay) + '</span><button type="button" class="pl-doc-more" popovertarget="' + pid + '" aria-haspopup="dialog">Реквизиты' + ms('expand_more') + '</button>' : '<span class="pl-doc-tag">' + DOC_T.sign + '</span>';
     return '<div class="pl-doc-key pl-doc-' + d.k + '">' + (box ? '<label class="pl-check pl-doc">' + box + ic + body + '</label>' : '<div class="pl-check pl-doc">' + ic + body + '</div>') +
       '<span class="pl-doc-side">' + side + '</span>' +
-      (d.k === 'pay' ? '<div class="pb-pop" id="' + pid + '" popover data-pay="' + d.pay + '" role="dialog" aria-label="Реквизиты для оплаты"></div>' : '') + '</div>';
+      (d.k === 'pay' ? '<div class="pb-pop" id="' + pid + '" popover data-pay="' + d.pay + '" role="dialog" aria-label="Реквизиты для оплаты"></div>' : pop) + '</div>';
   }
   /* payments: amounts from the offices' fee pages, accounts from PAY for the voivodeship of the chosen city; built when the popover opens, so a city change is picked up */
   var PAY_K = {
@@ -536,19 +577,21 @@
       (acc ? '<div class="pb-pop-acc"><div class="pl-eyebrow">Получатель</div><div class="pb-pop-v">' + esc(acc[0]) + '</div>' +
           '<div class="pl-eyebrow">Счёт</div><div class="pb-pop-n"><code>' + acc[1] + '</code><button type="button" class="pl-btn pl-btn-s" data-copy="' + digits + '">' + ms('content_copy') + '<span>Копировать</span></button></div></div>'
         : '<p class="pb-pop-p">Счёт для этой пошлины ищи на ' + link(P0.tax[2], 'странице оплат ужонда') + ': у каждого воеводства свой.</p>') +
+      '<p class="pb-pop-p">В MOS подтверждение каждой оплаты прикладывай отдельным файлом.</p>' +
       '<div class="pl-eyebrow">Заголовок перевода</div><p class="pb-pop-p">За что платишь и имя с фамилией, например: <code>' + P.ex + '</code></p>' +
       (P.acc === 'card' && vk === 'pomorskie' ? '<p class="pb-pop-p">Поморский ужонд пишет, что за карту можно платить после решения.</p>' : '') +
       (P.acc === 'tax' ? '<p class="pb-pop-p">Платится городу, где сидит ужонд. С 5.03.2026 при отказе не возвращается.</p>' : '') +
-      '<p class="pb-pop-f">' + V.v + ', по городу в шапке. Цены и счёт на ' + payAsOf() + ': ' + link(PAY.list, 'MOS') + (acc ? ', ' + link(acc[2], 'сайт ужонда') : '') + '.</p>';
+      '<p class="pb-pop-f">' + V.v + ', по городу в шапке. Цены и счёт на ' + payAsOf() + ': ' + link(PAY.list, 'MOS') + (acc ? ', ' + link(acc[2], 'сайт ужонда') : '') + ', ' + link('https://www.gov.pl/web/uw-lubuski/skladasz-wniosek-pobytowy-przez-mos-uniknij-tych-bledow', 'про файлы') + '.</p>';
   }
   /* popover: filled right before it opens; placed under its button on a wide screen, a bottom sheet on a phone */
   function popPlace(pop) {
-    var btn = document.querySelector('[popovertarget="' + pop.id + '"]');
+    var btn = document.querySelector('.pl-doc-ib:hover[popovertarget="' + pop.id + '"]') || document.querySelector('.pl-doc-more[popovertarget="' + pop.id + '"]') || document.querySelector('[popovertarget="' + pop.id + '"]');
+    var fromIcon = btn && btn.classList.contains('pl-doc-ib');
     if (!btn || innerWidth < 640) { pop.style.top = pop.style.left = ''; return; }
     var r = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
     var top = r.bottom + 8; if (top + h > innerHeight - 8 && r.top - h - 8 > 8) top = r.top - h - 8;
     pop.style.top = (top + scrollY) + 'px';
-    pop.style.left = (Math.max(8, Math.min(r.right - w, innerWidth - w - 8)) + scrollX) + 'px';
+    pop.style.left = (Math.max(8, Math.min(fromIcon ? r.left - 12 : r.right - w, innerWidth - w - 8)) + scrollX) + 'px';
   }
   function srcLine(list) { return list && list.length ? '<p class="pl-note">' + (list.length > 1 ? 'Источники: ' : 'Источник: ') + list.map(function (x) { return link(x[0], x[1]); }).join(', ') + '</p>' : ''; }
   function tipHtml(t, red) { return '<div class="pl-tip' + (red ? ' red' : '') + '">' + ms(red ? 'warning' : 'lightbulb') + '<span>' + t + '</span></div>'; }
@@ -1792,7 +1835,19 @@
   root.addEventListener('focusin', function (e) { var t = e.target; if (!t.matches || !t.matches('[data-date]')) return; if (calQuiet === t.id) { calQuiet = ''; return; } openCal(t.id); });
   root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && cal && cal.visible && e.target.id === calFor) cal.plBack = true; }, true);
   root.addEventListener('click', function (e) { var t = e.target; if (t.matches && t.matches('[data-date]')) openCal(t.id); });
-  root.addEventListener('beforetoggle', function (e) { var p = e.target; if (p.classList && p.classList.contains('pb-pop') && e.newState === 'open') p.innerHTML = payPop(p.getAttribute('data-pay'), p.id); }, true);
+  root.addEventListener('beforetoggle', function (e) { var p = e.target; if (!(p.classList && p.classList.contains('pb-pop')) || e.newState !== 'open') return; p.innerHTML = p.hasAttribute('data-pay') ? payPop(p.getAttribute('data-pay'), p.id) : infoPop(+p.getAttribute('data-info'), p.getAttribute('data-k'), p.id); }, true);
+  /* hover on a document icon opens its details on a mouse; leaving the icon and the popover closes them */
+  var hovT = 0, hovP = null;
+  function hovClose() { clearTimeout(hovT); hovT = setTimeout(function () { if (hovP && !hovP.matches(':hover') && !document.querySelector('.pl-doc-ib:hover')) { try { hovP.hidePopover(); } catch (x) {} hovP = null; } }, 260); }
+  if (matchMedia('(hover:hover)').matches) {
+    root.addEventListener('mouseover', function (e) {
+      var b = e.target.closest && e.target.closest('.pl-doc-ib');
+      if (b) { var p = document.getElementById(b.getAttribute('popovertarget')); clearTimeout(hovT); hovT = setTimeout(function () { try { if (!p.matches(':popover-open')) { p.showPopover(); hovP = p; } } catch (x) {} }, 220); }
+      else if (hovP && e.target.closest && e.target.closest('.pb-pop') === hovP) clearTimeout(hovT);
+    });
+    root.addEventListener('mouseout', function (e) { var b = e.target.closest && (e.target.closest('.pl-doc-ib') || e.target.closest('.pb-pop')); if (b) { if (!hovP) clearTimeout(hovT); else hovClose(); } });
+    root.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.pl-doc-ib')) { clearTimeout(hovT); hovP = null; } }, true);
+  }
   root.addEventListener('toggle', function (e) { var p = e.target; if (p.classList && p.classList.contains('pb-pop') && e.newState === 'open') popPlace(p); }, true);
   addEventListener('resize', function () { $$('.pb-pop').forEach(function (p) { try { if (p.matches(':popover-open')) popPlace(p); } catch (x) {} }); });
   /* fetch the library early: when the page is idle or when the pointer gets near a date field */
