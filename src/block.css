@@ -1035,3 +1035,14 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-mos-how{margin:0 0 12px;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5}
 .pb-mos-how a{overflow-wrap:anywhere}
 @media (min-width:901px){.pb-ill img[data-ill=me]{bottom:20px}}
+
+/* «Своё» counters: captions as wide as the widest number, tighter rows */
+#pl-me .pb-mine .pl-me{gap:24px 32px}
+#pl-me .pb-mine .pl-me .pl-big~.pl-lab{margin-top:10px}
+#pl-me .pb-mine .pl-me .pl-big~.pl-sub{margin-top:2px}
+#pl-me .pb-mine .pl-me .pl-big~.pl-lab,#pl-me .pb-mine .pl-me .pl-big~.pl-sub{max-width:max(var(--nw,100%),200px)}
+/* air between cards, tips and notes that follow each other */
+.pl-cards+.pl-tip,.pl-cards+.pl-note{margin-top:20px}
+.pl-tip+.pl-note{margin-top:10px}
+.pl-note+.pl-tip{margin-top:14px}
+#pl-me .pb-mine .pl-me{grid-template-columns:repeat(2,minmax(0,1fr))}

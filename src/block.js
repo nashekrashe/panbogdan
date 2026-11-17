@@ -1673,6 +1673,8 @@
       if (ref && ref.style.fontSize) best = Math.min(best, parseFloat(ref.style.fontSize));
       Array.prototype.forEach.call(g.querySelectorAll('[data-nofit]'), function (n) { n.classList.toggle('pl-nil', nil(n)); });
       nums.forEach(function (n) { n.style.fontSize = (nil(n) ? Math.min(best, 64) : best) + 'px'; n.parentNode.style.setProperty('--nw', Math.ceil(n.getBoundingClientRect().width) + 'px'); });
+      /* «Своё»: every caption as wide as the widest number, so short numbers do not squeeze their text into a tall column */
+      if (g.hasAttribute('data-fitref')) { var mw = 0; nums.forEach(function (n) { mw = Math.max(mw, Math.ceil(n.getBoundingClientRect().width)); }); nums.forEach(function (n) { n.parentNode.style.setProperty('--nw', mw + 'px'); }); }
     });
   }
   var fitT; window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitCounts, 120); });

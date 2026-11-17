@@ -1052,6 +1052,17 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 .pb-mos-how a{overflow-wrap:anywhere}
 @media (min-width:901px){.pb-ill img[data-ill=me]{bottom:20px}}
 
+/* «Своё» counters: captions as wide as the widest number, tighter rows */
+#pl-me .pb-mine .pl-me{gap:24px 32px}
+#pl-me .pb-mine .pl-me .pl-big~.pl-lab{margin-top:10px}
+#pl-me .pb-mine .pl-me .pl-big~.pl-sub{margin-top:2px}
+#pl-me .pb-mine .pl-me .pl-big~.pl-lab,#pl-me .pb-mine .pl-me .pl-big~.pl-sub{max-width:max(var(--nw,100%),200px)}
+/* air between cards, tips and notes that follow each other */
+.pl-cards+.pl-tip,.pl-cards+.pl-note{margin-top:20px}
+.pl-tip+.pl-note{margin-top:10px}
+.pl-note+.pl-tip{margin-top:14px}
+#pl-me .pb-mine .pl-me{grid-template-columns:repeat(2,minmax(0,1fr))}
+
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
 <script>
@@ -2730,6 +2741,8 @@ font-size:16px;line-height:1.5;font-stretch:100%}
       if (ref && ref.style.fontSize) best = Math.min(best, parseFloat(ref.style.fontSize));
       Array.prototype.forEach.call(g.querySelectorAll('[data-nofit]'), function (n) { n.classList.toggle('pl-nil', nil(n)); });
       nums.forEach(function (n) { n.style.fontSize = (nil(n) ? Math.min(best, 64) : best) + 'px'; n.parentNode.style.setProperty('--nw', Math.ceil(n.getBoundingClientRect().width) + 'px'); });
+      /* «Своё»: every caption as wide as the widest number, so short numbers do not squeeze their text into a tall column */
+      if (g.hasAttribute('data-fitref')) { var mw = 0; nums.forEach(function (n) { mw = Math.max(mw, Math.ceil(n.getBoundingClientRect().width)); }); nums.forEach(function (n) { n.parentNode.style.setProperty('--nw', mw + 'px'); }); }
     });
   }
   var fitT; window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitCounts, 120); });
