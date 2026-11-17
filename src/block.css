@@ -1001,3 +1001,4 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 }
 @keyframes pb-sheet-in{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.pb-pop:popover-open{animation:none}}
+.pl-docs div.pl-check{cursor:default}

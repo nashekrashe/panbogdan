@@ -1017,6 +1017,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 }
 @keyframes pb-sheet-in{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.pb-pop:popover-open{animation:none}}
+.pl-docs div.pl-check{cursor:default}
 
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
@@ -1314,7 +1315,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     { ic: 'luggage', t: 'Документ Подружи', s: 'Polski dokument podróży dla cudzoziemca', b: [
       'Польская замена паспорту, если свой истёк, потерян, испорчен или его никогда не было, а в посольство нельзя. Подтверждает личность и гражданство, по нему можно много раз пересекать границу. Действует 1 год. Это не польский паспорт и не гражданство, и он не отменяет попыток получить свой паспорт.',
       'Кому: беларусам с ВНЖ на любом основании, ПМЖ, rezydentem UE, гуманитаркой или ochroną uzupełniającą. Доказывать, что в Беларуси паспорт не получить, не надо. По упрощённым правилам заявление надо подать до 31.12.2026. Для беларусов бесплатно, обычная цена 350 zł.',
-      '<div class="pl-acc"><details><summary><span class="t">Полный список документов</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><ul class="pl-list">' + [
+      '<div class="pl-acc"><details><summary><span class="t">Полный список документов</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><div class="pl-checks pl-docs">' + [
         '<b>Wniosek o wydanie/wymianę polskiego dokumentu podróży dla cudzoziemca</b>, 1 экземпляр. Бланк на сайте ужонда или в MOS.',
         '<b>2 биометрические фотографии</b> как на польский паспорт, не старше 6 месяцев, подписанные.',
         '<b>Копия документа личности</b>, например истёкшего паспорта. Оригинал показать.',
@@ -1324,7 +1325,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
         '<b>Документы, которые подтверждают данные из бланка.</b> Документы на чужом языке с переводом присяжного.',
         'Если на фото головной убор по религии: <b>oświadczenie o przynależności do wspólnoty wyznaniowej</b>.',
         'Квитанция об оплате не нужна: беларусы освобождены.'
-      ].map(function (x) { return '<li><span>' + x + '</span></li>'; }).join('') + '</ul>' +
+      ].map(function (x) { return docRow(docType(x, 'by'), x); }).join('') + '</div>' +
       '<p><b>Как.</b> Подать лично в ужонде или по почте. Забирать лично, с документом личности и прошлым dokumentem podróży, если он был. Получил свой паспорт или польское гражданство: верни документ в ужонд в течение 14 дней.</p></div></details>' +
       '<details><summary><span class="t">Сроки по воеводствам</span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
       '<p><b>Твой ужонд, <span data-bind="uw"></span>:</b> <span data-o="pdpcUw"></span></p>' +
@@ -1520,17 +1521,18 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   var DOC_T = { pay: 'Оплата', sign: 'Договор' };
   function docType(t, tab) {
     var x = String(t).replace(/<[^>]+>/g, '');
+    if (/не нужн|бесплатн|освобожд/i.test(x)) return { k: 'note' };
     if (/пошлин|оплат/i.test(x)) return { k: 'pay', pay: /карт/i.test(x) ? 'card' : tab === 'paszport' ? 'cit' : tab === 'pmzh' ? 'pmzh' : 'vnzh' };
     if (/договор|umow|akt własności|акт нотариальн|подтверждение жилья|załącznik nr 1/i.test(x)) return { k: 'sign' };
-    if (/скан/i.test(x)) return { k: 'scan' };
-    if (/^фото/i.test(x)) return { k: 'photo' };
+    if (/скан|копи[яи]/i.test(x)) return { k: 'scan' };
+    if (/^(\d+ )?(биометрическ\S* )?фото/i.test(x)) return { k: 'photo' };
     if (/^(почта|нет выездов|profil zaufany|pesel$)/i.test(x)) return { k: 'note' };
     return { k: 'file' };
   }
   function docRow(d, text, box, key) {
     var ic = '<span class="pl-doc-i">' + (d.k === 'note' ? '' : svg18(d.k)) + '</span>';
     var body = '<span class="pl-doc-t">' + text + '</span>';
-    if (d.k !== 'pay' && d.k !== 'sign') return '<label class="pl-check pl-doc">' + (box || '') + ic + body + '</label>';
+    if (d.k !== 'pay' && d.k !== 'sign') return box ? '<label class="pl-check pl-doc">' + box + ic + body + '</label>' : '<div class="pl-check pl-doc">' + ic + body + '</div>';
     var pid = 'pb-pop-' + (key || d.pay);
     var side = d.k === 'pay' ? '<span class="pl-doc-amt" data-payamt="' + d.pay + '">' + payAmt(d.pay) + '</span><button type="button" class="pl-doc-more" popovertarget="' + pid + '" aria-haspopup="dialog">Реквизиты' + ms('expand_more') + '</button>' : '<span class="pl-doc-tag">' + DOC_T.sign + '</span>';
     return '<div class="pl-doc-key pl-doc-' + d.k + '">' + (box ? '<label class="pl-check pl-doc">' + box + ic + body + '</label>' : '<div class="pl-check pl-doc">' + ic + body + '</div>') +
