@@ -1,4 +1,4 @@
-/* Cloudflare Pages Function: POST /api/feedback → запись в KV.
+/* Cloudflare Pages Function: POST /api/feedback → запись в KV и письмо через воркер panbogdan-mail (workers/mail).
    Привязка в панели Pages (Settings → Bindings): KV namespace с именем переменной FEEDBACK, для Production и Preview.
    Читать: Storage & Databases → KV → panbogdan-feedback. Ключ msg:<время>:<случайное>, значение JSON. Хранится 365 дней. */
 const J = (o, s) => new Response(JSON.stringify(o), { status: s || 200, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
@@ -16,6 +16,8 @@ export async function onRequestPost({ request, env }) {
   const key = 'msg:' + at + ':' + crypto.randomUUID().slice(0, 8);
   const rec = { at, msg, name, email, page, host: new URL(request.url).host };
   await env.FEEDBACK.put(key, JSON.stringify(rec), { expirationTtl: 60 * 60 * 24 * 365, metadata: { at, who: name || email || 'аноним', page, preview: msg.slice(0, 80) } });
+  /* письмо через воркер panbogdan-mail (service binding MAILER); если он не привязан или упал, сообщение всё равно уже в KV */
+  if (env.MAILER) { try { await env.MAILER.fetch('https://mail/send', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.assign({ key }, rec)) }); } catch (e) {} }
   return J({ ok: true });
 }
 export const onRequest = () => J({ ok: false, err: 'method' }, 405);
