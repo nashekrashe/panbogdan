@@ -1036,15 +1036,18 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 @media (max-width:639px){.pl-doc-ib{flex-basis:36px;width:36px;height:36px;margin:-9px -9px -9px -9px}}
 
 /* document icons: brand red on a soft red tile */
-.pl-docs .pl-doc-i{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;margin:-3px 0 -3px;border-radius:8px;background:#FFC5C5;color:var(--red)}
+.pl-docs .pl-doc-i{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;margin:-3px 0 -3px;border-radius:8px;background:#FFE9E9;color:var(--red)}
 .pl-docs .pl-doc-i:empty{background:none}
 .pl-docs .pl-doc-ib{margin:-3px 0 -3px;cursor:help}
-.pl-docs .pl-doc-ib:hover,.pl-docs .pl-doc-ib:focus-visible,.pl-doc-key:has(.pb-pop-i:popover-open) .pl-doc-ib{background:#ffb1b1;color:var(--red)}
+.pl-docs .pl-doc-ib:hover,.pl-docs .pl-doc-ib:focus-visible,.pl-doc-key:has(.pb-pop-i:popover-open) .pl-doc-ib{background:#FFD6D6;color:var(--red)}
 .pl-docs .pl-doc-sign .pl-doc-i,.pl-docs .pl-doc-pay .pl-doc-i{color:var(--red)}
 .pl-check input:checked~.pl-doc-i{opacity:.45}
-.pb-pop-ic.n,.pb-pop-ic{background:#FFC5C5;color:var(--red)}
+.pb-pop-ic.n,.pb-pop-ic{background:#FFE9E9;color:var(--red)}
 @media (max-width:639px){.pl-docs .pl-doc-ib{flex-basis:32px;width:32px;height:32px;margin:-5px 0 -5px}}
 @media (max-width:639px){.pl-doc-pay .pl-doc-side{padding-left:70px}}
+
+.pl-docs .pl-doc-key:has(.pl-doc-ib):hover .pl-doc-ib{background:#FFD6D6}
+.pb-pop-x{width:auto!important;flex:0 0 auto!important;padding:0 10px;font:inherit;font-size:13px;font-weight:600;color:var(--mut)}
 
 </style>
 <div class="pl" id="pl-root"><noscript><p style="padding:24px">Включи JavaScript, чтобы увидеть гайд.</p></noscript></div>
@@ -1189,10 +1192,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     collapse: '<path d="M5.25 15L9 11.25L12.75 15M5.25 3L9 6.75L12.75 3"/>',
     file: '<path d="M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H13.5C13.8978 16.5 14.2794 16.342 14.5607 16.0607C14.842 15.7794 15 15.3978 15 15V6M10.5 1.5C10.7374 1.49962 10.9726 1.5462 11.1919 1.63708C11.4112 1.72795 11.6104 1.86132 11.778 2.0295L14.469 4.7205C14.6376 4.88813 14.7714 5.08751 14.8625 5.30712C14.9537 5.52674 15.0004 5.76223 15 6M10.5 1.5V5.25C10.5 5.44891 10.579 5.63968 10.7197 5.78033C10.8603 5.92098 11.0511 6 11.25 6L15 6"/>',
     scan: '<path d="M15 7.5V6M15 6C15.0004 5.76259 14.9538 5.52744 14.8629 5.3081C14.772 5.08877 14.6387 4.88958 14.4705 4.722L11.7795 2.031C11.6119 1.86237 11.4125 1.72862 11.1929 1.63748C10.9733 1.54634 10.7378 1.49962 10.5 1.5M15 6H11.25C11.0511 6 10.8603 5.92098 10.7197 5.78033C10.579 5.63968 10.5 5.44891 10.5 5.25V1.5M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H7.7625M12 10.5C11.6022 10.5 11.2206 10.658 10.9393 10.9393C10.658 11.2206 10.5 11.6022 10.5 12M12 16.5C11.6022 16.5 11.2206 16.342 10.9393 16.0607C10.658 15.7794 10.5 15.3978 10.5 15M15 10.5C15.3978 10.5 15.7794 10.658 16.0607 10.9393C16.342 11.2206 16.5 11.6022 16.5 12M15 16.5C15.3978 16.5 15.7794 16.342 16.0607 16.0607C16.342 15.7794 16.5 15.3978 16.5 15"/>',
-    photo: '<path d="M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H13.5C13.8978 16.5 14.2794 16.342 14.5607 16.0607C14.842 15.7794 15 15.3978 15 15V6M10.5 1.5C10.7374 1.49962 10.9726 1.5462 11.1919 1.63708C11.4112 1.72795 11.6104 1.86132 11.778 2.0295L14.469 4.7205C14.6376 4.88813 14.7714 5.08751 14.8625 5.30712C14.9537 5.52674 15.0004 5.76223 15 6M10.5 1.5V5.25C10.5 5.44891 10.579 5.63968 10.7197 5.78033C10.8603 5.92098 11.0511 6 11.25 6L15 6M15 12.75L14.028 11.778C13.689 11.4391 13.2293 11.2487 12.75 11.2487C12.2707 11.2487 11.811 11.4391 11.472 11.778L6.75 16.5M9 9C9 9.82843 8.32843 10.5 7.5 10.5C6.67157 10.5 6 9.82843 6 9C6 8.17157 6.67157 7.5 7.5 7.5C8.32843 7.5 9 8.17157 9 9Z"/>',
-    pay: '<path d="M3 4.5H15C15.8284 4.5 16.5 5.17157 16.5 6V12C16.5 12.8284 15.8284 13.5 15 13.5H3C2.17157 13.5 1.5 12.8284 1.5 12V6C1.5 5.17157 2.17157 4.5 3 4.5ZM9 10.875C10.0355 10.875 10.875 10.0355 10.875 9C10.875 7.96447 10.0355 7.125 9 7.125C7.96447 7.125 7.125 7.96447 7.125 9C7.125 10.0355 7.96447 10.875 9 10.875ZM4.5 9H4.5075M13.5 9H13.5075"/>',
-    sign: '<path d="M15 9V6M15 6C15.0004 5.76259 14.9538 5.52744 14.8629 5.3081C14.772 5.08877 14.6387 4.88958 14.4705 4.722L11.7795 2.031C11.6119 1.86237 11.4125 1.72862 11.1929 1.63748C10.9733 1.54634 10.7378 1.49962 10.5 1.5M15 6H11.25C11.0511 6 10.8603 5.92098 10.7197 5.78033C10.579 5.63968 10.5 5.44891 10.5 5.25V1.5M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H7.5M6 12.75C6.75 11.25 7.5 11.25 8.25 12.75C9 14.25 9.75 14.25 10.5 12.75M12 15.75L16.5 11.25"/>',
-    close: '<path d="M13.5 4.5L4.5 13.5M4.5 4.5L13.5 13.5"/>'
+    photo: '<path d="M10.5 1.5H4.5C4.10218 1.5 3.72064 1.65804 3.43934 1.93934C3.15804 2.22065 3 2.60218 3 3V15C3 15.3978 3.15804 15.7794 3.43934 16.0607C3.72064 16.342 4.10218 16.5 4.5 16.5H13.5C13.8978 16.5 14.2794 16.342 14.5607 16.0607C14.842 15.7794 15 15.3978 15 15V6M10.5 1.5C10.7374 1.49962 10.9726 1.5462 11.1919 1.63708C11.4112 1.72795 11.6104 1.86132 11.778 2.0295L14.469 4.7205C14.6376 4.88813 14.7714 5.08751 14.8625 5.30712C14.9537 5.52674 15.0004 5.76223 15 6M10.5 1.5V5.25C10.5 5.44891 10.579 5.63968 10.7197 5.78033C10.8603 5.92098 11.0511 6 11.25 6L15 6M15 12.75L14.028 11.778C13.689 11.4391 13.2293 11.2487 12.75 11.2487C12.2707 11.2487 11.811 11.4391 11.472 11.778L6.75 16.5M9 9C9 9.82843 8.32843 10.5 7.5 10.5C6.67157 10.5 6 9.82843 6 9C6 8.17157 6.67157 7.5 7.5 7.5C8.32843 7.5 9 8.17157 9 9Z"/>'
   };
   function svg18(k, sz, cls) { return '<svg class="pb-i' + (cls ? ' ' + cls : '') + '" width="' + (sz || 18) + '" height="' + (sz || 18) + '" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS18[k] + '</svg>'; }
   /* details behind the icon of a document line; each entry checked against the linked pages on 17.11.2026 */
@@ -1203,17 +1203,18 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   var BIO = 'Как на паспорт: 35 × 45 мм, цветное, резкое, лицо занимает 70–80% кадра, ровный светлый фон, смотришь прямо, глаза открыты и не закрыты волосами, рот закрыт, лицо спокойное.';
   var DOC_INFO = [
     [/фото в цифровом|^фото$/i, ['vnzh', 'pmzh'], 'Фото для MOS', ['Файл JPG, минимум 684 × 883 px, до 2,5 MB.', 'Сделано не раньше чем за 6 месяцев до подачи.', BIO, 'В MOS прикладывается файл, бумажное фото не нужно.'], [SRC_MOS_PHOTO, SRC_BIO]],
-    [/фото 35|биометрическ\S* фото/i, null, 'Фото на бумаге', [BIO, 'Сделано не раньше чем за 6 месяцев до подачи.'], [SRC_BIO, ['https://www.gov.pl/attachment/d1d50407-ebd3-4a57-b2d0-10d8406314c9', 'карта услуги, Кельце']]],
+    [/биометрическ\S* фото/i, ['by'], 'Фото на бумаге', [BIO], [SRC_BIO]],
+    [/фото 35/i, ['paszport'], 'Фото к wniosku', ['Одна фотография 3,5 × 4,5 см, прикладывается к wniosku о uznanie.'], [['https://www.gov.pl/attachment/d1d50407-ebd3-4a57-b2d0-10d8406314c9', 'карта услуги, Кельце']]],
     [/скан всех страниц|паспорт: скан|паспорт ребёнка: скан/i, ['vnzh', 'pmzh'], 'Скан паспорта', ['Все страницы действующего паспорта, сканом или фото.', 'Одним файлом: ужонды просят не грузить страницы по отдельности.', 'Каждый документ отдельным файлом. Файл до 10 MB, все вместе до 50 MB.', 'Оригинал покажешь на отпечатках.'], [['https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', 'zielonalinia.gov.pl'], ['https://www.gov.pl/web/uw-lubuski/skladasz-wniosek-pobytowy-przez-mos-uniknij-tych-bledow', 'gov.pl/web/uw-lubuski'], ['https://api.sejm.gov.pl/eli/acts/DU/2026/487/text.pdf', 'Dz.U. 2026 poz. 487']]],
     [/załącznik nr 1/i, null, 'Załącznik nr 1', ['Заполняет работодатель: условия работы для jednolitego.', 'Подписывается электронно и уходит через MOS, по ссылке из письма. Ссылка живёт 30 дней.'], [['https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', 'zielonalinia.gov.pl'], ['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/zezwolenie_na_pobyt_czasowy_i_prace', 'bip.lubuskie.uw.gov.pl']]],
-    [/страховк/i, null, 'Страховка', ['Для rezydenta UE это условие закона: страховка в NFZ (через ZUS) или полис, который покрывает лечение в Польше.', 'Для ВНЖ требования зависят от основания, смотри карточку услуги своего ужонда.'], [['https://archiwum.kielce.uw.gov.pl/pl/obsluga-klienta/cudzoziemcy-1/obywatele-panstw-trzecich-spoz/rezydent-dlugoterminowy-ue/23585,Rezydent-dlugoterminowy-UE.pdf', 'Świętokrzyski UW']]],
+    [/страховк/i, ['pmzh:rd'], 'Страховка для rezydenta UE', ['Условие закона: страховка в NFZ (через ZUS) или полис, который покрывает лечение в Польше.'], [['https://archiwum.kielce.uw.gov.pl/pl/obsluga-klienta/cudzoziemcy-1/obywatele-panstw-trzecich-spoz/rezydent-dlugoterminowy-ue/23585,Rezydent-dlugoterminowy-UE.pdf', 'Świętokrzyski UW']]],
     [/жиль|аренд|umowa najmu|akt własności/i, null, 'Жильё', ['Обычно договор аренды (umowa najmu) или акт собственности.', 'Документ на чужом языке нужен с переводом присяжного переводчика.'], [SRC_TR]],
-    [/PIT/, null, 'PIT за 3 года', ['Годовые PIT за 3 года перед подачей с подтверждением, что их приняли, или справка из urzędu skarbowego с суммами дохода.'], [['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue?page=1', 'migrant.poznan.uw.gov.pl']]],
-    [/ZUS RMUA|справка из ZUS/i, null, 'Справка из ZUS', ['Справка о взносах: кто платил и с какой базы по месяцам, за 3 года перед подачей.'], [['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue', 'migrant.poznan.uw.gov.pl']]],
-    [/B1/, null, 'Польский B1', ['Государственный сертификат минимум B1: certyfikatpolski.pl.', 'Вместо него подходит польский аттестат или диплом с обучением на польском.'], [['https://www.gov.pl/attachment/8de4be48-3f37-43a6-b19d-058d9ccadc9d', 'карта услуги ужонда'], ['https://certyfikatpolski.pl/', 'certyfikatpolski.pl']]],
-    [/urzędu skarbowego/i, null, 'Справка об отсутствии долгов', ['Zaświadczenie o niezaleganiu w podatkach из своего urzędu skarbowego.', 'Через e-Urząd Skarbowy бесплатно. Бумажный запрос стоит 21 zł opłaty skarbowej, её платят городу, где налоговая.'], [['https://archiwum.lodzkie.kas.gov.pl/urzad-skarbowy-w-lasku/zalatwianie-spraw/druki-do-pobrania', 'kas.gov.pl']]],
+    [/PIT/, ['pmzh:rd'], 'PIT за 3 года', ['Годовые PIT за 3 года перед подачей с подтверждением, что их приняли, или справка из urzędu skarbowego с суммами дохода.'], [['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue?page=1', 'migrant.poznan.uw.gov.pl']]],
+    [/ZUS RMUA|справка из ZUS/i, ['pmzh:rd'], 'Справка из ZUS', ['Справка о взносах: кто платил и с какой базы по месяцам, за 3 года перед подачей.'], [['https://migrant.poznan.uw.gov.pl/pl/procedury/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue', 'migrant.poznan.uw.gov.pl']]],
+    [/B1/, ['pmzh:rd', 'paszport'], 'Польский B1', ['Государственный сертификат минимум B1: certyfikatpolski.pl.', 'Вместо него подходит польский аттестат или диплом с обучением на польском.'], [['https://www.gov.pl/attachment/8de4be48-3f37-43a6-b19d-058d9ccadc9d', 'карта услуги ужонда'], ['https://certyfikatpolski.pl/', 'certyfikatpolski.pl']]],
+    [/urzędu skarbowego/i, ['pmzh:kp'], 'Справка об отсутствии долгов', ['Zaświadczenie o niezaleganiu w podatkach из своего urzędu skarbowego.', 'Через e-Urząd Skarbowy бесплатно. Бумажный запрос стоит 21 zł opłaty skarbowej, её платят городу, где налоговая.'], [['https://archiwum.lodzkie.kas.gov.pl/urzad-skarbowy-w-lasku/zalatwianie-spraw/druki-do-pobrania', 'kas.gov.pl']]],
     [/свидетельств|odpis|национальност|польскост|гражданстве|решения о статусе/i, null, 'Документы о семье и происхождении', ['Документ на чужом языке нужен вместе с переводом присяжного переводчика на польский. Переводчиков ищи на сайте Министерства юстиции.', 'Приложи оригинал или заверенную копию.'], [SRC_TR]],
-    [/karta polaka/i, null, 'Karta Polaka', ['Копия Karty Polaka, оригинал покажешь.'], [['https://bip.kielce.uw.gov.pl/download/2/19715/KartaUslugPOBYTSTALY.pdf', 'карта услуги, Кельце']]],
+    [/karta polaka/i, ['pmzh:kp'], 'Karta Polaka', ['Копия Karty Polaka, оригинал покажешь.'], [['https://bip.kielce.uw.gov.pl/download/2/19715/KartaUslugPOBYTSTALY.pdf', 'карта услуги, Кельце']]],
     [/^upo/i, null, 'UPO', ['Подтверждение, что MOS принял заявление. Скачай сразу после отправки.', 'Нет UPO: заявление не подано.'], [['https://migrant.poznan.uw.gov.pl/pl/node/374', 'migrant.poznan.uw.gov.pl']]],
     [/wezwanie/i, null, 'Wezwanie', ['Письмо от воеводы: прийти сдать отпечатки, образец подписи и показать оригинал паспорта. Могут попросить дополнить документы.'], [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/zezwolenie-na-pobyt-czasowy-wysokich-kwalifikacji', 'bip.lubuskie.uw.gov.pl']]],
     [/^wniosek$/i, ['paszport'], 'Wniosek', ['Бланк по образцу, на польском, 1 экземпляр. С ним 1 фото и подтверждение оплаты.'], [['https://www.gov.pl/attachment/d1d50407-ebd3-4a57-b2d0-10d8406314c9', 'карта услуги, Кельце'], ['https://www.gov.pl/web/mswia/popros-o-uznanie-za-polskiego-obywatela', 'gov.pl/web/mswia']]],
@@ -1565,19 +1566,21 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     return '<div class="pl-checks' + (tab ? ' pl-docs' : '') + '">' + list.map(function (c) {
       var box = '<input type="checkbox" data-check="' + c[0] + '"' + (S.checks[c[0]] ? ' checked' : '') + '>';
       if (!tab) return '<label class="pl-check">' + box + '<span>' + c[1] + '</span></label>';
-      var d = docType(c[1], tab); d.info = docInfo(c[1], tab);
+      var d = docType(c[1], tab); d.info = docInfo(c[1], ctxOf(tab));
       return docRow(d, c[1], box, c[0]);
     }).join('') + '</div>';
   }
-  function docInfo(t, tab) {
+  /* ctx: 'vnzh', 'paszport', 'by' or 'pmzh:<ground>'; an entry for 'pmzh' fits every ground, 'pmzh:rd' only rezydent UE */
+  function ctxOf(tab) { return tab === 'pmzh' ? 'pmzh:' + pmPath() : tab; }
+  function docInfo(t, ctx) {
     var x = String(t).replace(/<[^>]+>/g, ''), i;
-    for (i = 0; i < DOC_INFO.length; i++) if (DOC_INFO[i][0].test(x) && (!DOC_INFO[i][1] || DOC_INFO[i][1].indexOf(tab) >= 0)) return i;
+    for (i = 0; i < DOC_INFO.length; i++) if (DOC_INFO[i][0].test(x) && (!DOC_INFO[i][1] || DOC_INFO[i][1].some(function (c) { return ctx === c || ctx.indexOf(c + ':') === 0; }))) return i;
     return -1;
   }
   function infoPop(i, d, id) {
     var D = DOC_INFO[i];
-    return '<div class="pb-pop-h"><span class="pb-pop-ic' + (d === 'pay' ? '' : ' n') + '">' + svg18(d === 'note' ? 'file' : d) + '</span><span><b>' + D[2] + '</b></span>' +
-        '<button type="button" class="pb-pop-x" popovertarget="' + id + '" popovertargetaction="hide" aria-label="Закрыть">' + svg18('close') + '</button></div>' +
+    return '<div class="pb-pop-h"><span class="pb-pop-ic">' + svg18(d === 'scan' || d === 'photo' ? d : 'file') + '</span><span><b>' + D[2] + '</b></span>' +
+        '<button type="button" class="pb-pop-x" popovertarget="' + id + '" popovertargetaction="hide">Закрыть</button></div>' +
       '<ul class="pb-pop-l">' + D[3].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
       '<p class="pb-pop-f">Проверено ' + DOC_CHECKED + ': ' + D[4].map(function (x) { return link(x[0], x[1]); }).join(', ') + '.</p>';
   }
@@ -1597,8 +1600,9 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     var label = esc(String(text).replace(/<[^>]+>/g, ''));
     var hasInfo = d.info != null && d.info >= 0;
     var tgt = d.k === 'pay' ? pid : hasInfo ? iid : '';
-    var ic = tgt ? '<button type="button" class="pl-doc-i pl-doc-ib" popovertarget="' + tgt + '" aria-haspopup="dialog" aria-label="Подробнее: ' + label + '">' + svg18(d.k === 'note' ? 'file' : d.k) + '</button>'
-      : '<span class="pl-doc-i">' + (d.k === 'note' ? '' : svg18(d.k)) + '</span>';
+    var ik = d.k === 'pay' || d.k === 'sign' || d.k === 'note' ? 'file' : d.k;
+    var ic = tgt ? '<button type="button" class="pl-doc-i pl-doc-ib" popovertarget="' + tgt + '" aria-haspopup="dialog" aria-label="Подробнее: ' + label + '">' + svg18(ik) + '</button>'
+      : '<span class="pl-doc-i">' + (d.k === 'note' ? '' : svg18(ik)) + '</span>';
     var pop = hasInfo && d.k !== 'pay' ? '<div class="pb-pop pb-pop-i" id="' + iid + '" popover data-info="' + d.info + '" data-k="' + d.k + '" role="dialog" aria-label="' + label + '"></div>' : '';
     var body = '<span class="pl-doc-t">' + text + '</span>';
     if (d.k !== 'pay' && d.k !== 'sign') return '<div class="pl-doc-key pl-doc-' + d.k + '">' + (box ? '<label class="pl-check pl-doc">' + box + ic + body + '</label>' : '<div class="pl-check pl-doc">' + ic + body + '</div>') + pop + '</div>';
@@ -1622,8 +1626,8 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     var P = PAY_K[k], vk = CITIES[S.city] ? CITIES[S.city].vo : 'pomorskie', P0 = PAY.v[vk], V = VOIV[vk];
     var acc = P.acc === 'cit' ? (P0.cit ? P0.tax : null) : P0[P.acc];
     var digits = acc ? acc[1].replace(/\s/g, '') : '';
-    return '<div class="pb-pop-h"><span class="pb-pop-ic">' + svg18('pay') + '</span><span><b>' + P.h + '</b><small>' + P.pl + '</small></span>' +
-        '<button type="button" class="pb-pop-x" popovertarget="' + id + '" popovertargetaction="hide" aria-label="Закрыть">' + svg18('close') + '</button></div>' +
+    return '<div class="pb-pop-h"><span class="pb-pop-ic">' + svg18('file') + '</span><span><b>' + P.h + '</b><small>' + P.pl + '</small></span>' +
+        '<button type="button" class="pb-pop-x" popovertarget="' + id + '" popovertargetaction="hide">Закрыть</button></div>' +
       '<div class="pb-pop-a">' + P.a.map(function (x) { return '<div><span>' + x[0] + '</span><b>' + (x[1] ? n0(x[1]) + ' zł' : 'бесплатно') + '</b></div>'; }).join('') + '</div>' +
       (acc ? '<div class="pb-pop-acc"><div class="pl-eyebrow">Получатель</div><div class="pb-pop-v">' + esc(acc[0]) + '</div>' +
           '<div class="pl-eyebrow">Счёт</div><div class="pb-pop-n"><code>' + acc[1] + '</code><button type="button" class="pl-btn pl-btn-s" data-copy="' + digits + '">' + ms('content_copy') + '<span>Копировать</span></button></div></div>'
@@ -1636,13 +1640,14 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   }
   /* popover: filled right before it opens; placed under its button on a wide screen, a bottom sheet on a phone */
   function popPlace(pop) {
-    var btn = document.querySelector('.pl-doc-ib:hover[popovertarget="' + pop.id + '"]') || document.querySelector('.pl-doc-more[popovertarget="' + pop.id + '"]') || document.querySelector('[popovertarget="' + pop.id + '"]');
-    var fromIcon = btn && btn.classList.contains('pl-doc-ib');
+    var btn = pop._anchor || document.querySelector('.pl-doc-more[popovertarget="' + pop.id + '"]') || document.querySelector('[popovertarget="' + pop.id + '"]');
+    var fromIcon = btn && btn.classList.contains('pl-doc-ib'), row = pop._row || (btn && btn.closest('.pl-doc-key'));
     if (!btn || innerWidth < 640) { pop.style.top = pop.style.left = ''; return; }
-    var r = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
-    var top = r.bottom + 8; if (top + h > innerHeight - 8 && r.top - h - 8 > 8) top = r.top - h - 8;
+    var r = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight, rr = row ? row.getBoundingClientRect() : r, top, left;
+    if (fromIcon && innerWidth - rr.right >= w + 24) { top = Math.max(8, Math.min(rr.top, innerHeight - h - 8)); left = rr.right + 12; }
+    else { var b0 = fromIcon ? rr.bottom : r.bottom; top = b0 + 8; if (top + h > innerHeight - 8 && rr.top - h - 8 > 8) top = rr.top - h - 8; left = Math.max(8, Math.min(fromIcon ? r.left - 12 : r.right - w, innerWidth - w - 8)); }
     pop.style.top = (top + scrollY) + 'px';
-    pop.style.left = (Math.max(8, Math.min(fromIcon ? r.left - 12 : r.right - w, innerWidth - w - 8)) + scrollX) + 'px';
+    pop.style.left = (left + scrollX) + 'px';
   }
   function srcLine(list) { return list && list.length ? '<p class="pl-note">' + (list.length > 1 ? 'Источники: ' : 'Источник: ') + list.map(function (x) { return link(x[0], x[1]); }).join(', ') + '</p>' : ''; }
   function tipHtml(t, red) { return '<div class="pl-tip' + (red ? ' red' : '') + '">' + ms(red ? 'warning' : 'lightbulb') + '<span>' + t + '</span></div>'; }
@@ -2887,18 +2892,20 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && cal && cal.visible && e.target.id === calFor) cal.plBack = true; }, true);
   root.addEventListener('click', function (e) { var t = e.target; if (t.matches && t.matches('[data-date]')) openCal(t.id); });
   root.addEventListener('beforetoggle', function (e) { var p = e.target; if (!(p.classList && p.classList.contains('pb-pop')) || e.newState !== 'open') return; p.innerHTML = p.hasAttribute('data-pay') ? payPop(p.getAttribute('data-pay'), p.id) : infoPop(+p.getAttribute('data-info'), p.getAttribute('data-k'), p.id); }, true);
-  /* hover on a document icon opens its details on a mouse; leaving the icon and the popover closes them */
+  /* hover over a whole document line opens its details on a mouse; leaving the line and the popover closes them */
   var hovT = 0, hovP = null;
-  function hovClose() { clearTimeout(hovT); hovT = setTimeout(function () { if (hovP && !hovP.matches(':hover') && !document.querySelector('.pl-doc-ib:hover')) { try { hovP.hidePopover(); } catch (x) {} hovP = null; } }, 260); }
+  function rowPop(row) { var b = row && row.querySelector('.pl-doc-ib'); return b ? document.getElementById(b.getAttribute('popovertarget')) : null; }
+  function hovClose() { clearTimeout(hovT); hovT = setTimeout(function () { if (hovP && !hovP.matches(':hover') && !(hovP._row && hovP._row.matches(':hover'))) { try { hovP.hidePopover(); } catch (x) {} hovP = null; } }, 140); }
   if (matchMedia('(hover:hover)').matches) {
     root.addEventListener('mouseover', function (e) {
-      var b = e.target.closest && e.target.closest('.pl-doc-ib');
-      if (b) { var p = document.getElementById(b.getAttribute('popovertarget')); clearTimeout(hovT); hovT = setTimeout(function () { try { if (!p.matches(':popover-open')) { p.showPopover(); hovP = p; } } catch (x) {} }, 220); }
-      else if (hovP && e.target.closest && e.target.closest('.pb-pop') === hovP) clearTimeout(hovT);
+      if (!e.target.closest) return;
+      var row = e.target.closest('.pl-doc-key'), p = rowPop(row);
+      if (p) { clearTimeout(hovT); if (p === hovP && p.matches(':popover-open')) return; hovT = setTimeout(function () { try { p._row = row; p._anchor = row.querySelector('.pl-doc-ib'); if (!p.matches(':popover-open')) p.showPopover(); hovP = p; } catch (x) {} }, 60); }
+      else if (hovP && e.target.closest('.pb-pop') === hovP) clearTimeout(hovT);
     });
-    root.addEventListener('mouseout', function (e) { var b = e.target.closest && (e.target.closest('.pl-doc-ib') || e.target.closest('.pb-pop')); if (b) { if (!hovP) clearTimeout(hovT); else hovClose(); } });
-    root.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.pl-doc-ib')) { clearTimeout(hovT); hovP = null; } }, true);
+    root.addEventListener('mouseout', function (e) { if (!e.target.closest) return; if (e.target.closest('.pl-doc-key') || e.target.closest('.pb-pop')) { if (hovP) hovClose(); else clearTimeout(hovT); } });
   }
+  root.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.pl-doc-ib, .pl-doc-more'); if (!b) return; var p = document.getElementById(b.getAttribute('popovertarget')); if (p) { p._anchor = b; p._row = b.closest('.pl-doc-key'); } if (p === hovP) { clearTimeout(hovT); hovP = null; e.preventDefault(); } }, true);
   root.addEventListener('toggle', function (e) { var p = e.target; if (p.classList && p.classList.contains('pb-pop') && e.newState === 'open') popPlace(p); }, true);
   addEventListener('resize', function () { $$('.pb-pop').forEach(function (p) { try { if (p.matches(':popover-open')) popPlace(p); } catch (x) {} }); });
   /* fetch the library early: when the page is idle or when the pointer gets near a date field */
