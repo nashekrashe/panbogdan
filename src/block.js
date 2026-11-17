@@ -652,7 +652,7 @@
   function navLink(s, cls) { return '<a class="' + cls + '" href="' + hrefOf(s) + '" data-nav="' + s.k + '">' + svgi(s.ic) + '<span>' + s.n + '</span></a>'; }
   function rSide() {
     return '<aside class="pb-side"><div class="pb-side-in"><nav class="pb-nav" aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav>' +
-      '<p class="pb-side-d" data-o="secDesc"></p><div class="pb-ill" aria-hidden="true">' + rIll() + '</div></div></aside>';
+      '<p class="pb-side-d" data-o="secDesc"></p><button type="button" class="pb-ill" data-fb aria-label="Написать Богдану: ошибка, дополнение или вопрос" title="Написать Богдану">' + rIll() + '</button></div></aside>';
   }
   function rTop() {
     var st = STAGE_LBL[S.stage] || STAGE_LBL.arrive, set = meOpen();
@@ -677,7 +677,7 @@
   }
   function rLangs() { return '<div class="pb-langs" role="group" aria-label="Язык"><button type="button" aria-pressed="true">РУС</button><button type="button" disabled title="Скоро">БЕЛ</button><button type="button" disabled title="Скоро">УКР</button></div>'; }
   function rTabs() {
-    return '<div class="pb-more" id="pb-more" hidden><nav aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav>' + rLangs() + '</div>';
+    return '<div class="pb-more" id="pb-more" hidden><nav aria-label="Разделы">' + SECTIONS.map(function (s) { return navLink(s, 'pb-nav-a'); }).join('') + '</nav><button type="button" class="pb-nav-a pb-fb-m" data-fb>Нашли ошибку? Напишите</button>' + rLangs() + '</div>';
   }
 
   function rFoot() {
@@ -685,7 +685,7 @@
       '<p class="pb-disc">' + SDESC.me + '</p>' +
       '<div class="pb-foot-c"><div class="pl-acc pl-sources"><details id="pl-d-src"><summary><span class="t">Источники и даты<small>' + SOURCES.length + ' ссылок, проверено 30.10.2026</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body wide"><ul class="pl-list">' +
           SOURCES.map(function (s) { return '<li>' + link(s[1], s[0]) + '</li>'; }).join('') + '</ul></div></details></div>' +
-        '<div class="pb-foot-row"><span class="pl-small pl-muted">Законы меняются быстрее, чем очередь в ужонде. Нашёл ошибку, напиши.</span><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div></div>' +
+        '<div class="pb-foot-row"><span class="pl-small pl-muted">Законы меняются быстрее, чем очередь в ужонде. <button type="button" class="pb-fb-link" data-fb>Нашёл ошибку? Напиши</button>.</span><button type="button" class="pl-btn" data-reset>' + ms('restart_alt') + '<span>Сбросить мой прогресс</span></button></div></div>' +
     '</footer>';
   }
   /* phone: one picture on the left, the logo on the home screen and the section picture elsewhere; it shrinks on scroll */
@@ -1685,7 +1685,7 @@
     var open = $$('details[open]').map(function (d) { return d.id; }).filter(Boolean);
     var y = window.scrollY;
     root.innerHTML = rMHead() + '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
-      rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs();
+      rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback();
     if (open.length) $$('details').forEach(function (d) { if (d.id && open.indexOf(d.id) > -1) d.open = true; });
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
     if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
@@ -1766,6 +1766,34 @@
   /* section pictures, pinned to the bottom of the menu column; hidden while the footer logo is in view. «Банки» borrows «Бабки» */
   var ILL_BASE = (document.querySelector('meta[name="pb-img"]') || { content: 'img/' }).content;
   var ILL = { me: 'me', legal: 'legal', news: 'news', by: 'by', money: 'money', bank: 'money', kids: 'kids', home: 'home', auto: 'auto', help: 'help', dict: 'dict' };
+  /* contact form: a centered popover; anonymous by default, name and e-mail only when the box is unticked; sent to /api/feedback (Pages Function, stored in Cloudflare KV) */
+  function rFeedback() {
+    return '<div class="pb-pop pb-fb" id="pb-fb" popover role="dialog" aria-labelledby="pb-fb-h"><form class="pb-fb-f" novalidate>' +
+      '<div class="pb-pop-h"><span><b id="pb-fb-h">Нашли ошибку? Хотите дополнить? Есть вопрос?</b><small>Богдан читает всё. Ответит, если оставите почту.</small></span>' +
+        '<button type="button" class="pb-pop-x" popovertarget="pb-fb" popovertargetaction="hide">Закрыть</button></div>' +
+      '<label class="pl-eyebrow" for="pb-fb-msg">Сообщение</label><textarea class="pl-input pb-fb-msg" id="pb-fb-msg" name="msg" rows="5" maxlength="4000" required></textarea>' +
+      '<label class="pl-check pb-fb-anon"><input type="checkbox" name="anon" checked><span>Анонимно</span></label>' +
+      '<div class="pb-fb-who" hidden><div class="pl-field"><label class="pl-eyebrow" for="pb-fb-name">Имя, если хотите</label><input class="pl-input" id="pb-fb-name" name="name" maxlength="120" autocomplete="name"></div>' +
+        '<div class="pl-field"><label class="pl-eyebrow" for="pb-fb-mail">Почта для ответа, если хотите</label><input class="pl-input" id="pb-fb-mail" name="email" type="email" maxlength="200" autocomplete="email"></div></div>' +
+      '<input class="pb-fb-hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+      '<div class="pb-fb-row"><button type="submit" class="pl-btn pb-fb-send">Отправить</button><span class="pb-fb-st" role="status" aria-live="polite"></span></div>' +
+      '<p class="pb-pop-f">Вместе с сообщением уйдёт адрес страницы, на которой ты сейчас. Сообщение хранится год в закрытом хранилище Cloudflare, видит его только Богдан.</p>' +
+    '</form></div>';
+  }
+  function fbOpen() { var p = $('#pb-fb'); if (!p) return; try { p.showPopover(); } catch (x) {} var t = $('#pb-fb-msg'); if (t) setTimeout(function () { t.focus(); }, 30); }
+  function fbSend(f) {
+    var st = f.querySelector('.pb-fb-st'), btn = f.querySelector('.pb-fb-send'), msg = f.msg.value.trim();
+    if (msg.length < 3) { st.textContent = 'Напишите хотя бы пару слов.'; f.msg.focus(); return; }
+    var anon = f.anon.checked, body = { msg: msg, anon: anon, name: anon ? '' : f.name.value, email: anon ? '' : f.email.value, page: location.pathname + location.hash, hp: f.hp.value };
+    if (body.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) { st.textContent = 'Проверьте почту или оставьте поле пустым.'; f.email.focus(); return; }
+    btn.disabled = true; st.textContent = 'Отправляю…';
+    fetch('/api/feedback', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+      .then(function (j) {
+        btn.disabled = false;
+        if (j && j.ok) { f.reset(); f.querySelector('.pb-fb-who').hidden = true; st.textContent = 'Спасибо! Богдан прочитает.'; }
+        else st.textContent = j && j.err === 'off' ? 'Почта пока не подключена, попробуйте позже.' : 'Не отправилось. Попробуйте ещё раз.';
+      }, function () { btn.disabled = false; st.textContent = 'Нет связи. Попробуйте ещё раз.'; });
+  }
   function rIll(noLogo) {
     var seen = noLogo ? { me: 1 } : {};
     return Object.keys(ILL).map(function (k) { var f = ILL[k]; if (!f || seen[f]) return ''; seen[f] = 1; return '<img data-ill="' + f + '" src="' + ILL_BASE + f + '.webp" alt="" width="240" height="240" decoding="async"' + (f === 'me' ? '' : ' loading="lazy"') + '>'; }).join('');
@@ -1855,7 +1883,9 @@
   root.addEventListener('focusin', function (e) { var t = e.target; if (!t.matches || !t.matches('[data-date]')) return; if (calQuiet === t.id) { calQuiet = ''; return; } openCal(t.id); });
   root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && cal && cal.visible && e.target.id === calFor) cal.plBack = true; }, true);
   root.addEventListener('click', function (e) { var t = e.target; if (t.matches && t.matches('[data-date]')) openCal(t.id); });
-  root.addEventListener('beforetoggle', function (e) { var p = e.target; if (!(p.classList && p.classList.contains('pb-pop')) || e.newState !== 'open') return; p.innerHTML = p.hasAttribute('data-pay') ? payPop(p.getAttribute('data-pay'), p.id) : infoPop(+p.getAttribute('data-info'), p.getAttribute('data-k'), p.id); }, true);
+  root.addEventListener('submit', function (e) { var f = e.target; if (f.classList && f.classList.contains('pb-fb-f')) { e.preventDefault(); fbSend(f); } });
+  root.addEventListener('change', function (e) { var t = e.target; if (t.name === 'anon' && t.closest('.pb-fb-f')) { var w = t.form.querySelector('.pb-fb-who'); w.hidden = t.checked; if (!t.checked) t.form.name.focus(); } });
+  root.addEventListener('beforetoggle', function (e) { var p = e.target; if (!(p.classList && p.classList.contains('pb-pop')) || e.newState !== 'open' || !(p.hasAttribute('data-pay') || p.hasAttribute('data-info'))) return; p.innerHTML = p.hasAttribute('data-pay') ? payPop(p.getAttribute('data-pay'), p.id) : infoPop(+p.getAttribute('data-info'), p.getAttribute('data-k'), p.id); }, true);
   /* hover over a whole document line opens its details on a mouse; leaving the line and the popover closes them */
   var hovT = 0, hovP = null;
   function rowPop(row) { var b = row && row.querySelector('.pl-doc-ib'); return b ? document.getElementById(b.getAttribute('popovertarget')) : null; }
@@ -1870,7 +1900,7 @@
     root.addEventListener('mouseout', function (e) { if (!e.target.closest) return; if (e.target.closest('.pl-doc-key') || e.target.closest('.pb-pop')) { if (hovP) hovClose(); else clearTimeout(hovT); } });
   }
   root.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.pl-doc-ib, .pl-doc-more'); if (!b) return; var p = document.getElementById(b.getAttribute('popovertarget')); if (p) { p._anchor = b; p._row = b.closest('.pl-doc-key'); } if (p === hovP) { clearTimeout(hovT); hovP = null; e.preventDefault(); } }, true);
-  root.addEventListener('toggle', function (e) { var p = e.target; if (p.classList && p.classList.contains('pb-pop') && e.newState === 'open') popPlace(p); }, true);
+  root.addEventListener('toggle', function (e) { var p = e.target; if (p.classList && p.classList.contains('pb-pop') && !p.classList.contains('pb-fb') && e.newState === 'open') popPlace(p); }, true);
   addEventListener('resize', function () { $$('.pb-pop').forEach(function (p) { try { if (p.matches(':popover-open')) popPlace(p); } catch (x) {} }); });
   /* fetch the library early: when the page is idle or when the pointer gets near a date field */
   root.addEventListener('pointerover', function (e) { if (e.target.closest && e.target.closest('.pl-date')) loadAdp().catch(function () {}); });
@@ -1886,6 +1916,7 @@
     else if (d.stage) { setStage(d.stage); }
     else if (d.opt != null) { var os = b.closest('.pb-dd').querySelector('select'); closeMenu(); os.value = d.opt; os.dispatchEvent(new Event('change', { bubbles: true })); }
     else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; var mh = $('.pb-mhead'); if (mh) m.style.setProperty('--mh', Math.round(mh.getBoundingClientRect().bottom) + 'px'); m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
+    else if (b.hasAttribute('data-fb')) { var mm = $('#pb-more'); if (mm && !mm.hidden) { var mb = $('[data-more]'); if (mb) mb.click(); } fbOpen(); }
     else if (b.hasAttribute('data-phrase')) { var t = b.querySelector('.pashaby-t'); t.classList.add('out'); setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160); }
     else if (d.legal) { S.legal = d.legal; save(); applyTabs(); }
     else if (d.contract) { S.contract = CONTRACTS[d.contract] ? d.contract : 'uop'; save(); updateTools(); applyTabs(); }
