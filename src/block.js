@@ -201,6 +201,7 @@
   /* every item: d date, tag, h headline, t one paragraph, u/s source (u2/s2 optional second source), red = deadline or must-know.
      build/newscheck.mjs opens every u and u2 once a week (workflow «Проверка новостей») and writes data/news-check.json */
   var NEWS = /*NEWS*/[
+    { d: '12.11.2026', tag: 'Сроки', red: 1, h: 'Суд ЕС: заморозка сроков по ВНЖ не бесконечная', t: 'TSUE ответил суду в Гливицах по делу студента, который ждал ВНЖ с апреля 2024 (C-254/25). По директиве 2016/801 студенту решение нужно за 90 дней. Наплыв беженцев из Украины мог быть форс-мажором, но после 31.12.2022 уже вряд ли. Нехватка людей и рост числа заявлений не оправдание: Польша должна доказать, что сделала всё возможное. Окончательно решит суд в Гливицах. Сам art. 100d действует до 4.03.2027, так что ужонд сам по себе быстрее не станет. Зато в жалобе на przewlekłość теперь есть на что сослаться.', u: 'https://sawickiwspolnicy.pl/bezczynnosc-organow-w-sprawach-pobytowych-tsue-okresla-granice-dopuszczalnych-opoznien/', s: 'sawickiwspolnicy.pl', u2: 'https://bip.brpo.gov.pl/sites/default/files/2026-06/Do_MSWiA_cudzoziemcy_legalizacja_pobytu_przewleklosc_1_06_2026.pdf', s2: 'brpo.gov.pl' },
     { d: '06.11.2026', tag: 'Налоги', h: 'PIT с 2027: три ставки вместо двух, если подпишет президент', t: 'Сейм 5 ноября и Сенат без поправок приняли новую шкалу: 12% до 130 000 zł дохода в год, 24% от 130 000 до 150 000 zł, 32% сверх. В том же законе ryczałt только при выручке до 250 тысяч евро вместо 2 млн, а danina solidarnościowa растёт с 4% до 5%. У президента 21 день, опубликовать закон надо до конца ноября. PIT за 2026 год в любом случае считается по старой шкале.', u: 'https://www.money.pl/podatki/zmiany-w-podatkach-senat-zdecydowal-teraz-czas-na-ruch-prezydenta-7348086529518048a.html', s: 'money.pl', u2: 'https://biznes.wprost.pl/twoj-portfel/12495919/zmiany-podatkowe-w-rekach-prezydenta-co-zrobi-karol-nawrocki.html', s2: 'wprost.pl' },
     { d: '28.10.2026', tag: 'Проект', h: 'Гражданство: B2, тест и декларация лояльности', t: 'MSWiA внесло проект в план работ правительства. Польский нужен на B2 вместо B1, тест о Польше обязателен, плюс декларация лояльности и доказательства, что центр жизни в Польше, например налоговое резидентство. Ещё минимальный доход и право на жильё. Упрощённое восстановление гражданства (art. 38) оставят до 31.12.2030. Правительство хочет принять проект в IV квартале 2026, потом его рассмотрит Сейм. Пока действуют старые правила.', u: 'https://www.money.pl/gospodarka/zainteresowanie-obywatelstwem-polskim-rosnie-rzad-chce-zmian-7344845081319520a.html', s: 'money.pl' },
     { d: '15.09.2026', tag: 'Деньги', h: 'Минималка 2027: 4 950 zł brutto', t: 'Правительство утвердило минимальную зарплату на 2027 год: 4 950 zł brutto в месяц вместо 4 806, почасовая ставка на zleceniu 32,30 zł. Распоряжение вышло в Dz.U. 2026 poz. 1213 и действует с 1 января 2027. От минималки считается и ZUS владельца JDG, так что взносы тоже подрастут.', u: 'https://ksiegowosc.infor.pl/wiadomosci/7656496,minimalne-wynagrodzenie-w-2027-r-netto-i-brutto-czy-pracodawca-moze-wyrownac-premia-do-kwoty-minimalnego-wynagrodzenia.html', s: 'infor.pl', u2: 'https://www.podatki.biz/artykuly/maly-zus-2027-wyzsze-wynagrodzenie-minimalne-to-takze-wyzsze-skladki_34_63635.htm', s2: 'podatki.biz' },
@@ -221,7 +222,7 @@
     { d: '01.08.2025', tag: 'Закон', h: 'Гражданство подорожало', t: 'Новые пошлины: 1 000 zł за uznanie у воеводы, 1 669 zł за nadanie.', u: 'https://www.gov.pl/web/uw-lubelski/obywatelstwo-i-repatriacja', s: 'gov.pl' },
     { d: '01.07.2024', tag: 'Авто', h: 'Машины на беларуских номерах в ЕС не пускают', t: 'Авто на беларуских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец за рулём или в салоне, у него виза или ВНЖ.', u: 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', s: 'gov.pl/web/kas' }
   ]/*/NEWS*/.sort(function (a, b) { var p = function (s) { var x = s.split('.'); return x[2] + x[1] + x[0]; }; return p(b.d) < p(a.d) ? -1 : 1; });
-  var NEWS_CHECKED = '16.11.2026';
+  var NEWS_CHECKED = '17.11.2026';
 
   /* how to file in MOS, step by step with direct links (MOS «Jak zacząć» and «Najczęstsze błędy», checked 17.11.2026) */
   function MOS_HOW(k) {
@@ -767,7 +768,7 @@
     }).join('');
   }
   function rNews() {
-    return '<section class="pl-band pb-screen" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Новости легализации. Новые законы и правила для иностранцев', 'newspaper', '#141414', '#fff', 'Свежее сверху, ' + NEWS.length + ' ' + plural(NEWS.length, 'новость', 'новости', 'новостей')) +
+    return '<section class="pl-band pb-screen" id="pl-news" aria-labelledby="pl-news-h">' + head('pl-news', 'Новости легализации. Новые законы, слухи и правила для иностранцев', 'newspaper', '#141414', '#fff', 'Свежее сверху, ' + NEWS.length + ' ' + plural(NEWS.length, 'новость', 'новости', 'новостей')) +
       '<p class="pl-note pb-nw-chk" data-o="newsChk">' + newsChecked() + '</p>' +
       '<div class="pb-news" data-o="newsList">' + rNewsList() + '</div>' +
     '</section>';
