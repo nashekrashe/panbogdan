@@ -1116,7 +1116,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   var STAGES = [
     { id: 'arrive', n: 'Только приехал', next: [['Сделай PESEL и profil zaufany: без них не подписать заявление в MOS', '#pl-d-d30', 'c:d30_pesel,d30_pz'], ['Выбери основание для ВНЖ и подай, пока виза или безвиз действуют', '#pl-legal', 's:vnzh2'], ['Найди бесплатную юрпомощь своего города в разделе «Хелп»', '#help', 'c:d30_tg']] },
     { id: 'wait', n: 'Подал, жду', next: [['Сохрани UPO и следи за письмами: вызов на отпечатки придёт сам', '#pl-legal', 's:vnzh2'], ['Посчитай, сколько ты уже ждёшь, в таймере ожидания', '#pl-legal', 'f:filed'], ['Не уезжай из Польши без действующей карты или визы', '#pl-legal']] },
-    { id: 'vnzh', n: 'Есть ВНЖ', next: [['Поставь в календарь дату окончания карты и подай заранее', '#pl-legal', 'f:cardExp'], ['Начни считать выезды: для ПМЖ важен каждый день', '#pl-legal', 't'], ['Обменяй права: беларусские действуют 6 месяцев после ВНЖ', '#pl-auto']] },
+    { id: 'vnzh', n: 'Есть ВНЖ', next: [['Поставь в календарь дату окончания карты и подай заранее', '#pl-legal', 'f:cardExp'], ['Начни считать выезды: для ПМЖ важен каждый день', '#pl-legal', 't'], ['Обменяй права: беларуские действуют 6 месяцев после ВНЖ', '#pl-auto']] },
     { id: 'pmzhw', n: 'Подал на ПМЖ', next: [['Сохрани UPO и zaświadczenie из MOS: с ними ты легален до решения', '#pl-legal', 's:pmzh4'], ['Посчитай, сколько ждёшь ПМЖ, в «Своё»', '#', 'f:pmzhFiled'], ['Проверь срок паспорта. Истёк: беларусам дают polski dokument podróży', '#pl-legal', 'f:passExp']] },
     { id: 'pmzh', n: 'Есть ПМЖ', next: [['Посчитай дату, с которой можно на гражданство', '#pl-legal', 'f:staly'], ['Готовь доход и жильё на бумаге: их проверят', '#pl-legal', 's:paszport3'], ['Следи за законом о гражданстве: сроки хотят увеличить', '#pl-news']] },
     { id: 'pass', n: 'Иду на паспорт', next: [['Uznanie у воеводы: 1000 zł, решение по закону за 6 месяцев', '#pl-legal', 's:paszport4'], ['Проверь, что выездов дольше 6 месяцев не было', '#pl-legal', 't'], ['Расскажи своим, когда получишь: это праздник', '#help']] },
@@ -1144,7 +1144,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     { d: '09.01.2026', tag: 'Закон', h: 'Сейм отклонил 10 лет до гражданства', t: 'Сейм отклонил проект о 10 годах на ПМЖ перед гражданством. Пока действуют старые правила.', u: 'https://grantthornton.pl/publikacja/zatrudnianie-cudzoziemcow-2026-sejm-odrzucil-zmiany-w-obywatelstwie/', s: 'grantthornton.pl' },
     { d: '04.12.2025', tag: 'Банки', h: 'PKO отключает банкинг беларусам без карты побыту', t: 'Беларусы без карты побыту, которые открыли счёт после 24.10.2025, теряют онлайн-банкинг, BLIK и карту. Основание: санкционный регламент ЕС 2025/2041.', u: 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', s: 'pkobp.pl' },
     { d: '01.08.2025', tag: 'Закон', h: 'Гражданство подорожало', t: 'Новые пошлины: 1 000 zł за uznanie у воеводы, 1 669 zł за nadanie.', u: 'https://www.gov.pl/web/uw-lubelski/obywatelstwo-i-repatriacja', s: 'gov.pl' },
-    { d: '01.07.2024', tag: 'Авто', h: 'Машины на беларусских номерах в ЕС не пускают', t: 'Авто на беларусских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец за рулём или в салоне, у него виза или ВНЖ.', u: 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', s: 'gov.pl/web/kas' }
+    { d: '01.07.2024', tag: 'Авто', h: 'Машины на беларуских номерах в ЕС не пускают', t: 'Авто на беларуских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец за рулём или в салоне, у него виза или ВНЖ.', u: 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', s: 'gov.pl/web/kas' }
   ]/*/NEWS*/.sort(function (a, b) { var p = function (s) { var x = s.split('.'); return x[2] + x[1] + x[0]; }; return p(b.d) < p(a.d) ? -1 : 1; });
   var NEWS_CHECKED = '16.11.2026';
 
@@ -1236,12 +1236,40 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   var CHECK = 'M3.75 9L7.25 12.375L14.25 5.625', DASH = 'M4.13859 8.91161L13.8613 9.08839';
 
   var BELARUS = [
-    { ic: 'luggage', t: 'Паспорт истёк, в посольство нельзя', s: 'Polski dokument podróży dla cudzoziemca', b: ['Упрощённо для беларусов с ВНЖ на любом основании, ПМЖ, rezydentem UE, гуманитаркой или дополнительной защитой. Заявления принимают до 31.12.2026. Бесплатно, документ выдаётся на 1 год. Нужен meldunek и две биометрические фотографии.'], src: [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi', 'bip.lubuskie.uw.gov.pl']] },
+    { ic: 'luggage', t: 'Документ Подружи', s: 'Polski dokument podróży dla cudzoziemca', b: [
+      'Польская замена паспорту, если свой истёк, потерян, испорчен или его никогда не было, а в посольство нельзя. Подтверждает личность и гражданство, по нему можно много раз пересекать границу. Действует 1 год. Это не польский паспорт и не гражданство, и он не отменяет попыток получить свой паспорт.',
+      'Кому: беларусам с ВНЖ на любом основании, ПМЖ, rezydentem UE, гуманитаркой или ochroną uzupełniającą. Доказывать, что в Беларуси паспорт не получить, не надо. По упрощённым правилам заявление надо подать до 31.12.2026. Для беларусов бесплатно, обычная цена 350 zł.',
+      '<div class="pl-acc"><details><summary><span class="t">Полный список документов</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><ul class="pl-list">' + [
+        '<b>Wniosek o wydanie/wymianę polskiego dokumentu podróży dla cudzoziemca</b>, 1 экземпляр. Бланк на сайте ужонда или в MOS.',
+        '<b>2 биометрические фотографии</b> как на польский паспорт, не старше 6 месяцев, подписанные.',
+        '<b>Копия документа личности</b>, например истёкшего паспорта. Оригинал показать.',
+        '<b>Копия карты побыту.</b>',
+        '<b>Подтверждение meldunku</b>, постоянного или временного.',
+        '<b>Oświadczenie о ВНЖ</b>, если он не гуманитарный (не art. 186 ust. 1 pkt 9): какой орган дал и дата решения. Бланк у ужонда. UdSC советует рубрику D в бланке не отмечать, а приложить это oświadczenie.',
+        '<b>Документы, которые подтверждают данные из бланка.</b> Документы на чужом языке с переводом присяжного.',
+        'Если на фото головной убор по религии: <b>oświadczenie o przynależności do wspólnoty wyznaniowej</b>.',
+        'Квитанция об оплате не нужна: беларусы освобождены.'
+      ].map(function (x) { return '<li><span>' + x + '</span></li>'; }).join('') + '</ul>' +
+      '<p><b>Как.</b> Подать лично в ужонде или по почте. Забирать лично, с документом личности и прошлым dokumentem podróży, если он был. Получил свой паспорт или польское гражданство: верни документ в ужонд в течение 14 дней.</p></div></details>' +
+      '<details><summary><span class="t">Сроки по воеводствам</span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
+      '<p><b>Твой ужонд, <span data-bind="uw"></span>:</b> <span data-o="pdpcUw"></span></p>' +
+      '<ul class="pl-list" data-o="pdpcAll"></ul>' +
+      '<p class="pl-note">Срок считают с момента, когда у ужонда полный комплект документов.</p></div></details></div>'
+    ], src: [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi', 'bip.lubuskie.uw.gov.pl'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'gov.pl/web/udsc'], ['https://www.mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/', 'mos.cudzoziemcy.gov.pl'], ['https://migrant.wsc.mazowieckie.pl/pl/procedury/polski-dokument-podrozy', 'migrant.wsc.mazowieckie.pl'], ['https://migrant.poznan.uw.gov.pl/pl/checklist/1356', 'migrant.poznan.uw.gov.pl'], ['https://www.pomocprawna.org/polski-dokument-podrozy-dla-cudzoziemca', 'pomocprawna.org']], checked: '17.11.2026' },
     { ic: 'account_balance', t: 'Банки и санкции', s: 'Счета, карты, происхождение денег', b: ['Санкции ЕС (регламент 2025/2041): если у тебя нет карты побыту и счёт открыт после 24.10.2025, банк отключает онлайн-банкинг, BLIK и карту. Счётом можно пользоваться только в отделении. Решение: показать в банке карту побыту или другой документ на пребывание.', 'Держи документы о происхождении денег: банки обязаны проверять крупные поступления, и без бумаг перевод могут остановить.'], src: [['https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', 'pkobp.pl']] },
     { ic: 'verified', t: 'Karta Polaka', s: 'Короткий путь', b: ['Даёт ПМЖ, а через 1 год на ПМЖ по Karcie Polaka можно подавать на uznanie. B1 всё равно нужен.'], src: [['https://www.gov.pl/web/uw-zachodniopomorski/uznanie-za-obywatela-polskiego2', 'gov.pl']] },
-    { ic: 'directions_car', t: 'Права и авто', s: '6 месяцев после ВНЖ', b: ['Беларусские права действуют 6 месяцев после получения ВНЖ или ПМЖ, дальше обмен: 100 zł, перевод присяжного, starostwo по месту жительства.', 'С 1.07.2024 авто на беларусских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец сам за рулём или в салоне, у него виза или ВНЖ.'], src: [['https://powroty.gov.pl/prawo-jazdy-5285/', 'powroty.gov.pl'], ['https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas']] },
-    { ic: 'language', t: 'Официально по-беларусски', s: 'gov.pl/web/by', b: ['У правительства есть раздел на беларусском языке. Начни со страницы «Першыя крокі» о том, как легально находиться в Польше.'], src: [['https://www.gov.pl/web/by/piersyja-kroki', 'gov.pl/web/by']] }
+    { ic: 'directions_car', t: 'Права и авто', s: '6 месяцев после ВНЖ', b: ['Беларуские права действуют 6 месяцев после получения ВНЖ или ПМЖ, дальше обмен: 100 zł, перевод присяжного, starostwo по месту жительства.', 'С 1.07.2024 авто на беларуских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец сам за рулём или в салоне, у него виза или ВНЖ.'], src: [['https://powroty.gov.pl/prawo-jazdy-5285/', 'powroty.gov.pl'], ['https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas']] },
+    { ic: 'language', t: 'Официально по-беларуски', s: 'gov.pl/web/by', b: ['У правительства есть раздел на беларуском языке. Начни со страницы «Першыя крокі» о том, как легально находиться в Польше.'], src: [['https://www.gov.pl/web/by/piersyja-kroki', 'gov.pl/web/by']] }
   ];
+
+  /* Dokument podróży: what each voivode's page says about timing (checked 17.11.2026). Missing key = not collected yet */
+  var PDPC_UW = {
+    mazowieckie: ['до 30 дней после полного комплекта документов', 'https://migrant.wsc.mazowieckie.pl/pl/procedury/polski-dokument-podrozy'],
+    lubuskie: ['срок на сайте не указан. На визит вызывают письмом, записываться самому не надо', 'https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi'],
+    podkarpackie: ['срок на сайте не указан. Подать можно только по онлайн-записи на визит', 'https://www.gov.pl/attachment/70bfdbef-e3ef-4f97-bcec-398a7ce8dab8'],
+    malopolskie: ['около 1 месяца, по данным Centrum Pomocy Prawnej im. Haliny Nieć', 'https://www.pomocprawna.org/polski-dokument-podrozy-dla-cudzoziemca']
+  };
+  function pdpcTxt(k) { var x = PDPC_UW[k]; return x ? x[0] + ' (' + link(x[1], 'пруф') + ')' : 'срок пока не собрали, смотри ' + link(VOIV[k].u, 'страницу отдела'); }
 
   /* Banks: loyalty to Belarusians. Only what a bank page or the press states, with the date of that statement */
   var RP22 = 'https://pieniadze.rp.pl/konta-bankowe/art36052361-rachunek-dla-rosjan-w-polskich-bankach-czasem-ze-specjalna-zgoda';
@@ -1310,7 +1338,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
 
   var OFFICIAL = [
     { n: 'MOS 2', d: 'Подача заявлений на ВНЖ, ПМЖ и rezydenta UE', u: 'https://mos.cudzoziemcy.gov.pl', h: 'mos.cudzoziemcy.gov.pl', ic: 'upload_file' },
-    { n: 'gov.pl для беларусов', d: 'Официальный раздел на беларусском', u: 'https://www.gov.pl/web/by/piersyja-kroki', h: 'gov.pl/web/by', ic: 'language' },
+    { n: 'gov.pl для беларусов', d: 'Официальный раздел на беларуском', u: 'https://www.gov.pl/web/by/piersyja-kroki', h: 'gov.pl/web/by', ic: 'language' },
     { n: 'Urząd do Spraw Cudzoziemców', d: 'Правила, статистика, MOS Q&A', u: 'https://www.gov.pl/web/udsc', h: 'gov.pl/web/udsc', ic: 'gavel' },
     { n: 'Zielona Linia', d: 'Консультации по работе и пребыванию', u: 'https://zielonalinia.gov.pl', h: '19 524', ic: 'call' },
     { n: 'Krajowa Sieć Integracji', d: 'Официальная база центров помощи иностранцам по воеводствам', u: 'https://www.gov.pl/web/krajowa-siec-integracji/krajowe-biura-integracji-baza-adresowa', h: 'gov.pl/web/krajowa-siec-integracji', ic: 'volunteer_activism' }
@@ -1366,7 +1394,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     ['598 дней в Pomorskie (MSWiA, 6.07.2026)', 'https://dziennikbaltycki.pl/cudzoziemcy-czekaja-miesiacami-na-legalizacje-pobytu-a-nadchodzi-kolejna-fala-wnioskow-wojewodztwo-pomorskie-ma-problem/ar/c1p2-29401689'], ['394 дня на Мазовше, протест 24.08.2026', 'https://warszawa.naszemiasto.pl/mieli-czekac-60-dni-a-czekaja-nawet-2-lata-tlum-obcokrajowcow-wyszedl-na-ulice-warszawy-urzad-milczy-moge-stracic-prace/ar/c1p2-29291631'],
     ['Потеря работы: 15 рабочих дней', 'https://zielonalinia.gov.pl/zezwolenie-jednolite-wazny-obowiazek-cudzoziemca/'], ['PESEL для иностранца', 'https://zielonalinia.gov.pl/kiedy-cudzoziemiec-moze-uzyskac-numer-pesel/'],
     ['Выезды для rezydenta UE', 'https://zielonalinia.gov.pl/zezwolenie-na-pobyt-rezydenta-dlugoterminowego-ue-a-nieprzerwany-pobyt/'], ['Travel doc для беларусов до 31.12.2026', 'https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi'],
-    ['Санкции: счета беларусов без карты побыту', 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu'], ['Авто на беларусских номерах (KAS)', 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi'],
+    ['Санкции: счета беларусов без карты побыту', 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu'], ['Авто на беларуских номерах (KAS)', 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi'],
     ['Обмен прав', 'https://powroty.gov.pl/prawo-jazdy-5285/'], ['Техосмотр, art. 81 PoRD', 'https://lexlege.pl/prawo-o-ruchu-drogowym/art-81/'],
     ['Kaucja: лимиты и возврат', 'https://www.infor.pl/prawo/umowy/najem-i-dzierzawy/5591797,wynajem-mieszkania-kaucja-limity-zasady-waloryzacja.html'], ['800+ для иностранцев с 1.06.2026', 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a'],
     ['Минималка 2026', 'https://ksiegowosc.infor.pl/zus-kadry/wynagrodzenia/7490561,placa-minimalna-w-2026-r-ile-netto-do-wyplaty-i-jakie-brutto-w-umowie-w-ktorych-umowach-trzeba-stosowac-minimalna-stawke-godzinowa.html'], ['ZUS для JDG в 2026', 'https://norman.finance/pl/pomoc/zus-dla-jdg'], ['Składka zdrowotna 2026: минимум, ryczałt, лимит для линейного', 'https://www.infakt.pl/blog/?p=81462'], ['Erste: счёт для иностранца', 'https://www.erste.pl/bank-porad/konta/jak-zalozyc-konto-bankowe-dla-obcokrajowca'],
@@ -1810,7 +1838,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
     return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
       '<div class="pb-cols">' + BELARUS.map(function (b, i) {
         return '<article class="pb-col" id="pl-d-by' + i + '"><div class="pb-col-h">' + ms(b.ic, 'lead-ico') + '<h3>' + b.t + '<small>' + b.s + '</small></h3></div>' +
-          b.b.map(function (p) { return '<p>' + p + '</p>'; }).join('') + srcLine(b.src) + '</article>';
+          b.b.map(function (p) { return p.charAt(0) === '<' ? p : '<p>' + p + '</p>'; }).join('') + srcLine(b.src) + (b.checked ? '<p class="pl-note">Проверено ' + b.checked + '.</p>' : '') + '</article>';
       }).join('') + '</div></section>';
   }
 
@@ -1999,7 +2027,7 @@ font-size:16px;line-height:1.5;font-stretch:100%}
       '<p class="pl-note" data-o="priceNote">Цена в поле для примера. Подставь сегодняшнюю.</p></div>' +
       '<div class="pl-acc" style="margin-top:36px">' + [
         ['badge', 'Обмен прав', '6 месяцев после ВНЖ', ['Иностранные права перестают действовать через 6 месяцев после получения ВНЖ или ПМЖ. Обмен: 100 zł, заявление, фото, медсправка при необходимости, перевод прав у присяжного переводчика.', 'Подают в starostwo, в городе на правах повята в urząd miasta, в Варшаве в urząd dzielnicy. Готово примерно за 9 рабочих дней после подтверждения данных, статус на info-car.pl.'], 'https://powroty.gov.pl/prawo-jazdy-5285/', 'powroty.gov.pl'],
-        ['swap_horiz', 'Авто на беларусских номерах', 'Санкции ЕС с 1.07.2024', ['Легковые авто на беларусских номерах нельзя ввозить в ЕС (регламент 2024/1865). Исключение: машина для личного пользования, владелец сам за рулём или в салоне, у него виза или ВНЖ. Возить в ней товары нельзя.', 'Литва, Латвия и Эстония применяют запрет жёстче, проверь маршрут заранее.'], 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas'],
+        ['swap_horiz', 'Авто на беларуских номерах', 'Санкции ЕС с 1.07.2024', ['Легковые авто на беларуских номерах нельзя ввозить в ЕС (регламент 2024/1865). Исключение: машина для личного пользования, владелец сам за рулём или в салоне, у него виза или ВНЖ. Возить в ней товары нельзя.', 'Литва, Латвия и Эстония применяют запрет жёстче, проверь маршрут заранее.'], 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas'],
         ['shield', 'Przegląd и OC', 'Обязательное', ['OC обязательно с первого дня. Без него штрафы неприятно круглые.', 'Техосмотр легковой машины: у новой первый до 3 лет с первой регистрации, второй до 5 лет, дальше каждый год.'], 'https://lexlege.pl/prawo-o-ruchu-drogowym/art-81/', 'art. 81 PoRD']
       ].map(function (a, i) {
         return '<details id="pl-d-au' + i + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
@@ -2114,6 +2142,9 @@ font-size:16px;line-height:1.5;font-stretch:100%}
   function updateBinds() {
     var c = city();
     out('uzhond', rUzhond());
+    var vk = (CITIES[S.city] || CITIES.gdansk).vo;
+    out('pdpcUw', pdpcTxt(vk));
+    out('pdpcAll', Object.keys(VOIV).filter(function (k) { return PDPC_UW[k]; }).map(function (k) { return '<li><span><b>' + VOIV[k].v + ':</b> ' + pdpcTxt(k) + '</span></li>'; }).join(''));
     var map = { wait: n0(c.wait), waitFmt: n0(c.wait), dayword: dWord(c.wait), loc: c.loc, uw: c.uw, waitMonths: Math.round(c.wait / 30.4) + ' ' + plural(Math.round(c.wait / 30.4), 'месяц', 'месяца', 'месяцев'), cityNote: c.note };
     $$('[data-bind]').forEach(function (el) { var k = el.getAttribute('data-bind'); if (k in map) { el.textContent = map[k]; if (k === 'cityNote' && el.parentNode) el.parentNode.hidden = !map[k]; } });
   }
