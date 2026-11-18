@@ -1,4 +1,4 @@
-// Weekly check of the news: every source link (u, u2) of NEWS in src/block.js must still open.
+// Weekly check of the news: every source link (u, u2, u3) of NEWS in src/block.js must still open.
 // Writes data/news-check.json and site/data/news-check.json ({checked, n, dead:[url], fails:[{url, h, reason}]}); the site shows the date and marks dead links.
 // A page that answers 401/403/429 (anti-bot) counts as alive: the link exists, the robot is just not welcome. Exit code 2 when a link is dead.
 import fs from 'node:fs';
@@ -8,9 +8,9 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const js = fs.readFileSync(path.join(root, 'src/block.js'), 'utf8');
 const block = js.match(/\/\*NEWS\*\/([\s\S]*?)\/\*\/NEWS\*\//)[1];
-const items = [...block.matchAll(/\{ d: '([^']+)'[^\n]*?h: '((?:[^'\\]|\\.)*)'[^\n]*?\n/g)].map(m => {
+const items = [...block.matchAll(/\{ (?:id: '[^']+', )?d: '([^']+)'[^\n]*?h: '((?:[^'\\]|\\.)*)'[^\n]*?\n/g)].map(m => {
   const line = m[0];
-  return { d: m[1], h: m[2], urls: [...line.matchAll(/\bu2?: '([^']+)'/g)].map(x => x[1]) };
+  return { d: m[1], h: m[2], urls: [...line.matchAll(/\bu[23]?: '([^']+)'/g)].map(x => x[1]) };
 });
 const UA = 'Mozilla/5.0 (compatible; PanBogdanNewsCheck/1.0; +https://panbogdan.com)';
 const ALIVE = new Set([401, 403, 405, 429]);

@@ -201,26 +201,26 @@
   /* every item: d date, tag, h headline, t one paragraph, u/s source (u2/s2 optional second source), red = deadline or must-know.
      build/newscheck.mjs opens every u and u2 once a week (workflow «Проверка новостей») and writes data/news-check.json */
   var NEWS = /*NEWS*/[
-    { d: '12.11.2026', tag: 'Сроки', red: 1, h: 'Суд ЕС: заморозка сроков по ВНЖ не бесконечная', t: 'TSUE ответил суду в Гливицах по делу студента, который ждал ВНЖ с апреля 2024 (C-254/25). По директиве 2016/801 студенту решение нужно за 90 дней. Наплыв беженцев из Украины мог быть форс-мажором, но после 31.12.2022 уже вряд ли. Нехватка людей и рост числа заявлений не оправдание: Польша должна доказать, что сделала всё возможное. Окончательно решит суд в Гливицах. Сам art. 100d действует до 4.03.2027, так что ужонд сам по себе быстрее не станет. Зато в жалобе на przewlekłość теперь есть на что сослаться.', u: 'https://sawickiwspolnicy.pl/bezczynnosc-organow-w-sprawach-pobytowych-tsue-okresla-granice-dopuszczalnych-opoznien/', s: 'sawickiwspolnicy.pl', u2: 'https://bip.brpo.gov.pl/sites/default/files/2026-06/Do_MSWiA_cudzoziemcy_legalizacja_pobytu_przewleklosc_1_06_2026.pdf', s2: 'brpo.gov.pl' },
-    { d: '06.11.2026', tag: 'Налоги', h: 'PIT с 2027: три ставки вместо двух, если подпишет президент', t: 'Сейм 5 ноября и Сенат без поправок приняли новую шкалу: 12% до 130 000 zł дохода в год, 24% от 130 000 до 150 000 zł, 32% сверх. В том же законе ryczałt только при выручке до 250 тысяч евро вместо 2 млн, а danina solidarnościowa растёт с 4% до 5%. У президента 21 день, опубликовать закон надо до конца ноября. PIT за 2026 год в любом случае считается по старой шкале.', u: 'https://www.money.pl/podatki/zmiany-w-podatkach-senat-zdecydowal-teraz-czas-na-ruch-prezydenta-7348086529518048a.html', s: 'money.pl', u2: 'https://biznes.wprost.pl/twoj-portfel/12495919/zmiany-podatkowe-w-rekach-prezydenta-co-zrobi-karol-nawrocki.html', s2: 'wprost.pl' },
-    { d: '28.10.2026', tag: 'Проект', h: 'Гражданство: B2, тест и декларация лояльности', t: 'MSWiA внесло проект в план работ правительства. Польский нужен на B2 вместо B1, тест о Польше обязателен, плюс декларация лояльности и доказательства, что центр жизни в Польше, например налоговое резидентство. Ещё минимальный доход и право на жильё. Упрощённое восстановление гражданства (art. 38) оставят до 31.12.2030. Правительство хочет принять проект в IV квартале 2026, потом его рассмотрит Сейм. Пока действуют старые правила.', u: 'https://www.money.pl/gospodarka/zainteresowanie-obywatelstwem-polskim-rosnie-rzad-chce-zmian-7344845081319520a.html', s: 'money.pl' },
-    { d: '15.09.2026', tag: 'Деньги', h: 'Минималка 2027: 4 950 zł brutto', t: 'Правительство утвердило минимальную зарплату на 2027 год: 4 950 zł brutto в месяц вместо 4 806, почасовая ставка на zleceniu 32,30 zł. Распоряжение вышло в Dz.U. 2026 poz. 1213 и действует с 1 января 2027. От минималки считается и ZUS владельца JDG, так что взносы тоже подрастут.', u: 'https://ksiegowosc.infor.pl/wiadomosci/7656496,minimalne-wynagrodzenie-w-2027-r-netto-i-brutto-czy-pracodawca-moze-wyrownac-premia-do-kwoty-minimalnego-wynagrodzenia.html', s: 'infor.pl', u2: 'https://www.podatki.biz/artykuly/maly-zus-2027-wyzsze-wynagrodzenie-minimalne-to-takze-wyzsze-skladki_34_63635.htm', s2: 'podatki.biz' },
-    { d: '24.08.2026', tag: 'Сроки', h: 'Протест иностранцев у Мазовецкого ужонда', t: 'По закону решение по ВНЖ должно быть за 60 дней, а ждут до двух лет. Иностранцы вышли к Мазовецкому ужонду. Средний срок по ВНЖ на Мазовше вырос до 394 дней, в 2023 году было 153.', u: 'https://warszawa.naszemiasto.pl/mieli-czekac-60-dni-a-czekaja-nawet-2-lata-tlum-obcokrajowcow-wyszedl-na-ulice-warszawy-urzad-milczy-moge-stracic-prace/ar/c1p2-29291631', s: 'naszemiasto.pl' },
-    { d: '10.08.2026', tag: 'Сроки', h: 'Карту побыту печатают дольше двух месяцев', t: 'UdSC предупредил: заявлений стало намного больше, поэтому выдача новой карты побыту и обмен старой теперь занимают больше двух месяцев. То же с Genewskim dokumentem podróży. Решение уже есть, а пластика ещё нет. Классика.', u: 'https://www.gov.pl/web/udsc/aktualnosci-udsc', s: 'gov.pl/web/udsc' },
-    { d: '01.08.2026', tag: 'Цифры', h: '133 тысячи беларусов с документами в Польше', t: 'UdSC: на 1.08.2026 документы на пребывание есть у 133 057 беларусов. 77 694 на временном ВНЖ, 41 249 на ПМЖ, 9 902 с дополнительной защитой. Polski dokument podróży в 2026 году до августа получили 4 305 беларусов, к концу года UdSC ждёт больше 7 тысяч. В феврале с документами было 142 737 человек.', u: 'https://www.gov.pl/attachment/7089372c-4050-4051-80ad-a7983a4353dc', s: 'gov.pl, UdSC' },
-    { d: '27.07.2026', tag: 'Сроки', h: 'MSWiA: где ВНЖ дают быстрее всего', t: 'Ответ на интерпелляцию 18089: на 6.07.2026 ВНЖ быстрее всего в Małopolskie, 242 дня, дольше всего в Śląskie, 658. На Мазовше ПМЖ ждут в среднем 239 дней, rezydenta UE 423.', u: 'https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body', s: 'sejm.gov.pl' },
-    { d: '06.07.2026', tag: 'Сроки', h: 'Поморское: 598 дней на ВНЖ', t: 'По данным MSWiA, в Pomorskie на временный ВНЖ в среднем уходит 598 дней. Дольше только в Śląskie, 658. Гданьск, мы тебя любим, но это много.', u: 'https://dziennikbaltycki.pl/cudzoziemcy-czekaja-miesiacami-na-legalizacje-pobytu-a-nadchodzi-kolejna-fala-wnioskow-wojewodztwo-pomorskie-ma-problem/ar/c1p2-29401689', s: 'dziennikbaltycki.pl' },
-    { d: '01.07.2026', tag: 'Беларусам', red: 1, h: 'Polski dokument podróży по упрощённым правилам до 31.12.2026', t: 'MSWiA продлило упрощённую выдачу polskiego dokumentu podróży dla cudzoziemca гражданам Беларуси до 31 декабря 2026. Это замена паспорту, если свой истёк, а в посольство нельзя. По упрощённым правилам подать надо до конца года.', u: 'https://www.mos.cudzoziemcy.gov.pl/artyku-y/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca-przedluzenie-do-31-grudnia-2026-r/', s: 'mos.cudzoziemcy.gov.pl' },
-    { d: '01.07.2026', tag: 'Дети', red: 1, h: 'Dobry Start 300 zł: заявка до 30 ноября', t: '300 zł раз в год на каждого ребёнка, который учится, до 20 лет (с инвалидностью до 24). С 2026/2027 иностранцы не из ЕС, ЕАСТ и Великобритании должны показать работу или другую активность в месяце перед подачей. Подаётся только онлайн: mZUS, PUE ZUS, банк или Emp@tia. Приём до 30.11.2026.', u: 'https://www.zus.pl/en/-/wakacyjne-zakupy-300-z%C5%82-mo%C5%BCe-si%C4%99-przyda%C4%87.-ruszy%C5%82y-wyp%C5%82aty-z-programu-dobry-start', s: 'zus.pl', u2: 'https://bank.pl/?p=553691', s2: 'bank.pl' },
-    { d: '01.06.2026', tag: 'Дети', h: '800+ для иностранцев только при работе', t: 'С 1 июня иностранцам 800+ платят, только если родитель работает или у него есть другая активность. Ребёнок должен учиться в Польше, кроме детей до 6 лет.', u: 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a', s: 'wp.pl' },
-    { d: '13.05.2026', tag: 'Проект', h: 'Гражданство не раньше чем через 8 лет', t: 'MSWiA готовит новые правила: минимум 8 лет легально в Польше, из них 3 года на временном ВНЖ и 5 на ПМЖ. Плюс тест и высокий уровень польского.', u: 'https://forsal.pl/kraj/aktualnosci/artykuly/11246150,dla-kogo-polskie-obywatelstwo-mswia-przygotowuje-zmiany-w-prawie.html', s: 'forsal.pl' },
-    { d: '12.05.2026', tag: 'Проект', h: 'ВНЖ «молчаливым согласием», но не для беларусов', t: 'Проект UD408: временный ВНЖ дают сам собой, если за 60 дней нет решения. Только для граждан стран с безвизом в ЕС, Беларусь в их число не входит. Правительство планировало принять проект в III квартале 2026.', u: 'https://www.gov.pl/web/premier/projekt-ustawy-o-zmianie-ustawy-o-cudzoziemcach', s: 'gov.pl' },
-    { d: '27.04.2026', tag: 'Закон', red: 1, h: 'MOS 2: заявления только онлайн', t: 'Заявления на ВНЖ, ПМЖ и rezydenta UE подаются только через MOS. Красный штамп в паспорте заменило zaświadczenie. Старый портал закрыли 17.04.2026 вместе с аккаунтами.', u: 'https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', s: 'zielonalinia.gov.pl' },
-    { d: '05.03.2026', tag: 'Закон', h: 'Пошлину при отказе больше не вернут', t: 'При отказе или прекращении дела opłatę skarbową больше не возвращают. Проверь документы до подачи, а не после.', u: 'https://www.gov.pl/web/uw-warminsko-mazurski/oplaty', s: 'gov.pl' },
-    { d: '09.01.2026', tag: 'Закон', h: 'Сейм отклонил 10 лет до гражданства', t: 'Сейм отклонил проект о 10 годах на ПМЖ перед гражданством. Пока действуют старые правила.', u: 'https://grantthornton.pl/publikacja/zatrudnianie-cudzoziemcow-2026-sejm-odrzucil-zmiany-w-obywatelstwie/', s: 'grantthornton.pl' },
-    { d: '04.12.2025', tag: 'Банки', h: 'PKO отключает банкинг беларусам без карты побыту', t: 'Беларусы без карты побыту, которые открыли счёт после 24.10.2025, теряют онлайн-банкинг, BLIK и карту. Основание: санкционный регламент ЕС 2025/2041.', u: 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', s: 'pkobp.pl' },
-    { d: '01.08.2025', tag: 'Закон', h: 'Гражданство подорожало', t: 'Новые пошлины: 1 000 zł за uznanie у воеводы, 1 669 zł за nadanie.', u: 'https://www.gov.pl/web/uw-lubelski/obywatelstwo-i-repatriacja', s: 'gov.pl' },
-    { d: '01.07.2024', tag: 'Авто', h: 'Машины на беларуских номерах в ЕС не пускают', t: 'Авто на беларуских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец за рулём или в салоне, у него виза или ВНЖ.', u: 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', s: 'gov.pl/web/kas' }
+    { id: 'tsue-zawieszenie-terminow', d: '12.11.2026', tag: 'Сроки', red: 1, h: 'Суд ЕС: заморозка сроков по ВНЖ не бесконечная', t: 'TSUE ответил суду в Гливицах по делу студента, который ждал ВНЖ с апреля 2024 (C-⁠254/25). По директиве 2016/801 студенту решение нужно за 90 дней. Наплыв беженцев из Украины мог быть форс-мажором, но после 31.12.2022 уже вряд ли. Нехватка людей и рост числа заявлений не оправдание: Польша должна доказать, что сделала всё возможное. Окончательно решит суд в Гливицах. Сам art. 100d действует до 4.03.2027, так что ужонд сам по себе быстрее не станет. Зато в жалобе на przewlekłość теперь есть на что сослаться.', u: 'https://sawickiwspolnicy.pl/bezczynnosc-organow-w-sprawach-pobytowych-tsue-okresla-granice-dopuszczalnych-opoznien/', s: 'sawickiwspolnicy.pl', u2: 'https://bip.brpo.gov.pl/sites/default/files/2026-06/Do_MSWiA_cudzoziemcy_legalizacja_pobytu_przewleklosc_1_06_2026.pdf', s2: 'brpo.gov.pl', more: ['Ещё 16.04.2026 генеральный адвокат суда ЕС Дин Спильманн написал в заключении: директива разрешает останавливать срок, только если заявление неполное. А art. 100d останавливал сроки всем подряд и заодно отнимал жалобу на бездействие ужонда, хотя у поляков в похожих делах такая жалоба есть.', 'Суд с этим в целом согласился, но оставил Польше лазейку: форс-мажор. Чтобы на него сослаться, государство должно показать, что сделало всё возможное и держало ограничения не дольше нужного. Наплыв людей после 24.02.2022 мог быть неожиданным, но после 31.12.2022 суд в этом сомневается. Продление заморозки жалоб до 30.09.2025 он тоже счёл вряд ли нужным.', 'Дело про студента, и 90 дней в директиве написаны именно для студентов. Касается ли решение других оснований ВНЖ, пока прямо никто не сказал. Адвокаты называют его ориентиром для польских административных судов, но не кнопкой «ускорить».', 'Что это значит для тебя: если ждёшь долго, на это решение можно ссылаться в жалобе. Как именно её подавать, лучше спросить юриста, бесплатная помощь есть в разделе «Хелп».'], u3: 'https://eur-lex.europa.eu/legal-content/PL/TXT/HTML/?uri=CELEX%3A62025CC0254', s3: 'заключение адвоката, EUR-Lex' },
+    { id: 'pit-2027', d: '06.11.2026', tag: 'Налоги', h: 'PIT с 2027: три ставки вместо двух, если подпишет президент', t: 'Сейм 5 ноября и Сенат без поправок приняли новую шкалу: 12% до 130 000 zł дохода в год, 24% от 130 000 до 150 000 zł, 32% сверх. В том же законе ryczałt только при выручке до 250 тысяч евро вместо 2 млн, а danina solidarnościowa растёт с 4% до 5%. У президента 21 день, опубликовать закон надо до конца ноября. PIT за 2026 год в любом случае считается по старой шкале.', u: 'https://www.money.pl/podatki/zmiany-w-podatkach-senat-zdecydowal-teraz-czas-na-ruch-prezydenta-7348086529518048a.html', s: 'money.pl', u2: 'https://biznes.wprost.pl/twoj-portfel/12495919/zmiany-podatkowe-w-rekach-prezydenta-co-zrobi-karol-nawrocki.html', s2: 'wprost.pl' },
+    { id: 'obywatelstwo-b2-test', d: '28.10.2026', tag: 'Проект', h: 'Гражданство: B2, тест и декларация лояльности', t: 'MSWiA внесло проект в план работ правительства. Польский нужен на B2 вместо B1, тест о Польше обязателен, плюс декларация лояльности и доказательства, что центр жизни в Польше, например налоговое резидентство. Ещё минимальный доход и право на жильё. Упрощённое восстановление гражданства (art. 38) оставят до 31.12.2030. Правительство хочет принять проект в IV квартале 2026, потом его рассмотрит Сейм. Пока действуют старые правила.', u: 'https://www.money.pl/gospodarka/zainteresowanie-obywatelstwem-polskim-rosnie-rzad-chce-zmian-7344845081319520a.html', s: 'money.pl' },
+    { id: 'placa-minimalna-2027', d: '15.09.2026', tag: 'Деньги', h: 'Минималка 2027: 4 950 zł brutto', t: 'Правительство утвердило минимальную зарплату на 2027 год: 4 950 zł brutto в месяц вместо 4 806, почасовая ставка на zleceniu 32,30 zł. Распоряжение вышло в Dz.U. 2026 poz. 1213 и действует с 1 января 2027. От минималки считается и ZUS владельца JDG, так что взносы тоже подрастут.', u: 'https://ksiegowosc.infor.pl/wiadomosci/7656496,minimalne-wynagrodzenie-w-2027-r-netto-i-brutto-czy-pracodawca-moze-wyrownac-premia-do-kwoty-minimalnego-wynagrodzenia.html', s: 'infor.pl', u2: 'https://www.podatki.biz/artykuly/maly-zus-2027-wyzsze-wynagrodzenie-minimalne-to-takze-wyzsze-skladki_34_63635.htm', s2: 'podatki.biz' },
+    { id: 'protest-mazowiecki-urzad', d: '24.08.2026', tag: 'Сроки', h: 'Протест иностранцев у Мазовецкого ужонда', t: 'По закону решение по ВНЖ должно быть за 60 дней, а ждут до двух лет. Иностранцы вышли к Мазовецкому ужонду. Средний срок по ВНЖ на Мазовше вырос до 394 дней, в 2023 году было 153.', u: 'https://warszawa.naszemiasto.pl/mieli-czekac-60-dni-a-czekaja-nawet-2-lata-tlum-obcokrajowcow-wyszedl-na-ulice-warszawy-urzad-milczy-moge-stracic-prace/ar/c1p2-29291631', s: 'naszemiasto.pl' },
+    { id: 'karta-pobytu-druk', d: '10.08.2026', tag: 'Сроки', h: 'Карту побыту печатают дольше двух месяцев', t: 'UdSC предупредил: заявлений стало намного больше, поэтому выдача новой карты побыту и обмен старой теперь занимают больше двух месяцев. То же с Genewskim dokumentem podróży. Решение уже есть, а пластика ещё нет. Классика.', u: 'https://www.gov.pl/web/udsc/aktualnosci-udsc', s: 'gov.pl/web/udsc' },
+    { id: 'bialorusini-133-tys', d: '01.08.2026', tag: 'Цифры', h: '133 тысячи беларусов с документами в Польше', t: 'UdSC: на 1.08.2026 документы на пребывание есть у 133 057 беларусов. 77 694 на временном ВНЖ, 41 249 на ПМЖ, 9 902 с дополнительной защитой. Polski dokument podróży в 2026 году до августа получили 4 305 беларусов, к концу года UdSC ждёт больше 7 тысяч. В феврале с документами было 142 737 человек.', u: 'https://www.gov.pl/attachment/7089372c-4050-4051-80ad-a7983a4353dc', s: 'gov.pl, UdSC' },
+    { id: 'mswia-czas-oczekiwania', d: '27.07.2026', tag: 'Сроки', h: 'MSWiA: где ВНЖ дают быстрее всего', t: 'Ответ на интерпелляцию 18089: на 6.07.2026 ВНЖ быстрее всего в Małopolskie, 242 дня, дольше всего в Śląskie, 658. На Мазовше ПМЖ ждут в среднем 239 дней, rezydenta UE 423.', u: 'https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body', s: 'sejm.gov.pl' },
+    { id: 'pomorskie-598-dni', d: '06.07.2026', tag: 'Сроки', h: 'Поморское: 598 дней на ВНЖ', t: 'По данным MSWiA, в Pomorskie на временный ВНЖ в среднем уходит 598 дней. Дольше только в Śląskie, 658. Гданьск, мы тебя любим, но это много.', u: 'https://dziennikbaltycki.pl/cudzoziemcy-czekaja-miesiacami-na-legalizacje-pobytu-a-nadchodzi-kolejna-fala-wnioskow-wojewodztwo-pomorskie-ma-problem/ar/c1p2-29401689', s: 'dziennikbaltycki.pl' },
+    { id: 'polski-dokument-podrozy', d: '01.07.2026', tag: 'Беларусам', red: 1, h: 'Polski dokument podróży по упрощённым правилам до 31.12.2026', t: 'MSWiA продлило упрощённую выдачу polskiego dokumentu podróży dla cudzoziemca гражданам Беларуси до 31 декабря 2026. Это замена паспорту, если свой истёк, а в посольство нельзя. По упрощённым правилам подать надо до конца года.', u: 'https://www.mos.cudzoziemcy.gov.pl/artyku-y/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca-przedluzenie-do-31-grudnia-2026-r/', s: 'mos.cudzoziemcy.gov.pl' },
+    { id: 'dobry-start-2026', d: '01.07.2026', tag: 'Дети', red: 1, h: 'Dobry Start 300 zł: заявка до 30 ноября', t: '300 zł раз в год на каждого ребёнка, который учится, до 20 лет (с инвалидностью до 24). С 2026/2027 иностранцы не из ЕС, ЕАСТ и Великобритании должны показать работу или другую активность в месяце перед подачей. Подаётся только онлайн: mZUS, PUE ZUS, банк или Emp@tia. Приём до 30.11.2026.', u: 'https://www.zus.pl/en/-/wakacyjne-zakupy-300-z%C5%82-mo%C5%BCe-si%C4%99-przyda%C4%87.-ruszy%C5%82y-wyp%C5%82aty-z-programu-dobry-start', s: 'zus.pl', u2: 'https://bank.pl/?p=553691', s2: 'bank.pl' },
+    { id: '800-plus-praca', d: '01.06.2026', tag: 'Дети', h: '800+ для иностранцев только при работе', t: 'С 1 июня иностранцам 800+ платят, только если родитель работает или у него есть другая активность. Ребёнок должен учиться в Польше, кроме детей до 6 лет.', u: 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a', s: 'wp.pl' },
+    { id: 'obywatelstwo-8-lat', d: '13.05.2026', tag: 'Проект', h: 'Гражданство не раньше чем через 8 лет', t: 'MSWiA готовит новые правила: минимум 8 лет легально в Польше, из них 3 года на временном ВНЖ и 5 на ПМЖ. Плюс тест и высокий уровень польского.', u: 'https://forsal.pl/kraj/aktualnosci/artykuly/11246150,dla-kogo-polskie-obywatelstwo-mswia-przygotowuje-zmiany-w-prawie.html', s: 'forsal.pl' },
+    { id: 'milczaca-zgoda', d: '12.05.2026', tag: 'Проект', h: 'ВНЖ «молчаливым согласием», но не для беларусов', t: 'Проект UD408: временный ВНЖ дают сам собой, если за 60 дней нет решения. Только для граждан стран с безвизом в ЕС, Беларусь в их число не входит. Правительство планировало принять проект в III квартале 2026.', u: 'https://www.gov.pl/web/premier/projekt-ustawy-o-zmianie-ustawy-o-cudzoziemcach', s: 'gov.pl' },
+    { id: 'mos-2-online', d: '27.04.2026', tag: 'Закон', red: 1, h: 'MOS 2: заявления только онлайн', t: 'Заявления на ВНЖ, ПМЖ и rezydenta UE подаются только через MOS. Красный штамп в паспорте заменило zaświadczenie. Старый портал закрыли 17.04.2026 вместе с аккаунтами.', u: 'https://zielonalinia.gov.pl/mos-czyli-elektroniczne-skladanie-niektorych-wnioskow-pobytowych/', s: 'zielonalinia.gov.pl' },
+    { id: 'oplata-skarbowa-zwrot', d: '05.03.2026', tag: 'Закон', h: 'Пошлину при отказе больше не вернут', t: 'При отказе или прекращении дела opłatę skarbową больше не возвращают. Проверь документы до подачи, а не после.', u: 'https://www.gov.pl/web/uw-warminsko-mazurski/oplaty', s: 'gov.pl' },
+    { id: 'obywatelstwo-10-lat-odrzucone', d: '09.01.2026', tag: 'Закон', h: 'Сейм отклонил 10 лет до гражданства', t: 'Сейм отклонил проект о 10 годах на ПМЖ перед гражданством. Пока действуют старые правила.', u: 'https://grantthornton.pl/publikacja/zatrudnianie-cudzoziemcow-2026-sejm-odrzucil-zmiany-w-obywatelstwie/', s: 'grantthornton.pl' },
+    { id: 'pko-bialorusini', d: '04.12.2025', tag: 'Банки', h: 'PKO отключает банкинг беларусам без карты побыту', t: 'Беларусы без карты побыту, которые открыли счёт после 24.10.2025, теряют онлайн-банкинг, BLIK и карту. Основание: санкционный регламент ЕС 2025/2041.', u: 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', s: 'pkobp.pl' },
+    { id: 'obywatelstwo-oplata', d: '01.08.2025', tag: 'Закон', h: 'Гражданство подорожало', t: 'Новые пошлины: 1 000 zł за uznanie у воеводы, 1 669 zł за nadanie.', u: 'https://www.gov.pl/web/uw-lubelski/obywatelstwo-i-repatriacja', s: 'gov.pl' },
+    { id: 'bialoruskie-tablice', d: '01.07.2024', tag: 'Авто', h: 'Машины на беларуских номерах в ЕС не пускают', t: 'Авто на беларуских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец за рулём или в салоне, у него виза или ВНЖ.', u: 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', s: 'gov.pl/web/kas' }
   ]/*/NEWS*/.sort(function (a, b) { var p = function (s) { var x = s.split('.'); return x[2] + x[1] + x[0]; }; return p(b.d) < p(a.d) ? -1 : 1; });
   var NEWS_CHECKED = '17.11.2026';
 
@@ -745,7 +745,7 @@
           '<div class="pb-stat"><div class="pl-big" data-o="fuelPb">—</div><div class="pl-lab">zł за литр PB 95 (наш АИ-95), средняя по Польше</div><div class="pl-sub">' + link('https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en', 'Weekly Oil Bulletin') + ', <span data-o="fuelDate"></span></div>' + secLink('auto') + '</div>' +
         '</div>' +
         '<div class="pb-newscol"><div class="pl-eyebrow">Новости</div>' + NEWS.slice(0, 3).map(function (x) {
-          return '<a class="pb-newscard" href="' + hrefOf(secBy('news')) + '"><span class="pb-nc-h"><b>' + x.d + '</b><span class="pl-tag' + (x.red ? ' red' : '') + '">' + x.tag + '</span></span><span class="pb-nc-t">' + x.t + '</span></a>';
+          return '<a class="pb-newscard" href="' + newsHref(x) + '"><span class="pb-nc-h"><b>' + x.d + '</b><span class="pl-tag' + (x.red ? ' red' : '') + '">' + x.tag + '</span></span><span class="pb-nc-t">' + x.t + '</span></a>';
         }).join('') + '<a class="pb-seclink" href="' + hrefOf(secBy('news')) + '">Все новости, ' + NEWS.length + ms('arrow_outward') + '</a></div>' +
       '</div>' +
       '<div class="pl-badges" aria-label="Ачивки">' + BADGES.map(function (b) {
@@ -758,13 +758,53 @@
   var newsCheck = null;
   function newsSrc(n) {
     var bad = newsCheck && newsCheck.dead && newsCheck.dead.indexOf(n.u) > -1;
-    return '<p class="pb-nw-src">Источник: ' + link(n.u, n.s) + (n.u2 ? ', ' + link(n.u2, n.s2) : '') + (bad ? ' <span class="pl-tag red">ссылка не открылась</span>' : '') + '</p>';
+    return '<p class="pb-nw-src">' + (n.u2 ? 'Источники: ' : 'Источник: ') + link(n.u, n.s) + (n.u2 ? ', ' + link(n.u2, n.s2) : '') + (n.u3 ? ', ' + link(n.u3, n.s3) : '') + (bad ? ' <span class="pl-tag red">ссылка не открылась</span>' : '') + '</p>';
+  }
+  /* every news item has its own address: /aktualnosci#<id>, it opens full screen */
+  function newsHref(n) { return (PATHS ? hrefOf(secBy('news')) : '') + '#' + n.id; }
+  function newsById(id) { for (var i = 0; i < NEWS.length; i++) if (NEWS[i].id === id) return i; return -1; }
+  function rNewsPop() {
+    return '<dialog class="pb-nwp" id="pb-nwp" aria-labelledby="pb-nwp-h"><div class="pb-nwp-in">' +
+      '<div class="pb-nwp-bar"><a class="pb-nwp-back" href="' + hrefOf(secBy('news')) + '" data-nwp-close><span>Все новости</span></a>' +
+        '<span class="pb-nwp-tools"><button type="button" class="pb-nwp-btn" data-nwp-copy><span>Ссылка</span></button>' +
+        '<button type="button" class="pb-nwp-btn pb-nwp-x" data-nwp-close><span>Закрыть</span></button></span></div>' +
+      '<article class="pb-nwp-a" data-o="nwpBody"></article></div></dialog>';
+  }
+  function nwpFill(i) {
+    var n = NEWS[i], prev = NEWS[i - 1], next = NEWS[i + 1];
+    var nav = function (x, lbl, cls) { return x ? '<a class="pb-nwp-nav ' + cls + '" href="' + newsHref(x) + '"><small>' + lbl + ', ' + x.d + '</small><span>' + x.h + '</span></a>' : '<span></span>'; };
+    return '<div class="pb-nw-m"><time>' + n.d + '</time><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span></div>' +
+      '<h1 class="pb-nwp-h" id="pb-nwp-h">' + n.h + '</h1>' +
+      '<p class="pb-nwp-lead">' + n.t + '</p>' +
+      (n.more ? n.more.map(function (p) { return '<p class="pb-nwp-p">' + p + '</p>'; }).join('') : '') +
+      newsSrc(n) + '<p class="pb-nwp-chk">' + newsChecked() + '</p>' +
+      '<nav class="pb-nwp-navs" aria-label="Другие новости">' + nav(prev, 'Новее', 'prev') + nav(next, 'Раньше', 'next') + '</nav>';
+  }
+  var nwpPushed = 0;
+  function nwpOpen(i) {
+    var d = $('#pb-nwp'), b = $('[data-o="nwpBody"]'); if (!d || !b) return;
+    b.innerHTML = nwpFill(i);
+    if (!d.open) { try { d.showModal(); } catch (x) { d.setAttribute('open', ''); } document.documentElement.classList.add('pb-nwp-on'); }
+    d.scrollTop = 0; var inr = d.querySelector('.pb-nwp-in'); if (inr) inr.scrollTop = 0;
+    document.title = NEWS[i].h + ' · Pan Bogdan';
+  }
+  function nwpHide() {
+    document.documentElement.classList.remove('pb-nwp-on');
+    var d = $('#pb-nwp'); if (!d || !d.open) return;
+    try { d.close(); } catch (x) { d.removeAttribute('open'); }
+    document.title = secBy('news').n + ' · Pan Bogdan: Польша пошагово';
+  }
+  /* closing goes back in history when the item was opened from the site, otherwise just drops the #id */
+  function nwpClose() {
+    if (nwpPushed) { nwpPushed = 0; history.back(); return; }
+    nwpHide(); try { history.replaceState(null, '', hrefOf(secBy('news'))); } catch (x) {}
   }
   function newsChecked() { return 'Проверено ' + NEWS_CHECKED + (newsCheck && newsCheck.checked ? ', робот открыл все ссылки ' + newsCheck.checked : ', ссылки робот проверяет раз в неделю'); }
   function rNewsList() {
     return NEWS.map(function (n, i) {
-      return '<article class="pb-nw' + (i === 0 ? ' lead' : '') + (n.red ? ' red' : '') + '"><div class="pb-nw-m"><time>' + n.d + '</time><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span></div>' +
-        '<h3 class="pb-nw-h">' + n.h + '</h3><p class="pb-nw-t">' + n.t + '</p>' + newsSrc(n) + '</article>';
+      return '<article class="pb-nw' + (i === 0 ? ' lead' : '') + (n.red ? ' red' : '') + '" id="' + n.id + '"><div class="pb-nw-m"><time>' + n.d + '</time><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span></div>' +
+        '<h3 class="pb-nw-h"><a class="pb-nw-a" href="' + newsHref(n) + '">' + n.h + '</a></h3><p class="pb-nw-t">' + n.t + '</p>' +
+        (n.more ? '<span class="pb-nw-more" aria-hidden="true">Читать полностью</span>' : '') + newsSrc(n) + '</article>';
     }).join('');
   }
   function rNews() {
@@ -1685,7 +1725,7 @@
     var open = $$('details[open]').map(function (d) { return d.id; }).filter(Boolean);
     var y = window.scrollY;
     root.innerHTML = rMHead() + '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
-      rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback();
+      rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback() + rNewsPop();
     if (open.length) $$('details').forEach(function (d) { if (d.id && open.indexOf(d.id) > -1) d.open = true; });
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
     if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
@@ -1717,6 +1757,9 @@
     setActive(r.k);
     if (scroll) document.title = (r.k === 'me' ? '' : sec.n + ' · ') + 'Pan Bogdan: Польша пошагово';
     setTimeout(fitCounts, 0);
+    var ni = r.el && r.el.classList && r.el.classList.contains('pb-nw') ? newsById(r.el.id) : -1;
+    if (ni > -1) { nwpOpen(ni); return; }
+    nwpHide();
     if (r.el) {
       var d = r.el.tagName === 'DETAILS' ? r.el : r.el.closest('details'); if (d) d.open = true;
       setTimeout(function () { r.el.scrollIntoView({ block: 'start' }); }, 0);
@@ -1750,9 +1793,17 @@
   }
   function closeMore() { var m = $('#pb-more'), b = $('[data-more]'); if (m) m.hidden = true; if (b) b.setAttribute('aria-expanded', 'false'); }
   window.addEventListener('hashchange', function () { route(true); });
-  window.addEventListener('popstate', function () { route(true); });
+  window.addEventListener('popstate', function () { var d = $('#pb-nwp'); if (d && d.open && !/#./.test(location.hash)) nwpPushed = 0; route(true); });
+  root.addEventListener('cancel', function (e) { if (e.target && e.target.id === 'pb-nwp') { e.preventDefault(); nwpClose(); } }, true);
   root.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var nc = e.target.closest && e.target.closest('[data-nwp-close]'); if (nc) { e.preventDefault(); nwpClose(); return; }
+    var cp = e.target.closest && e.target.closest('[data-nwp-copy]');
+    if (cp) {
+      var cl = cp.querySelector('span:last-child'), ok = function () { if (cl) { cl.textContent = 'Скопировано'; setTimeout(function () { cl.textContent = 'Ссылка'; }, 1600); } };
+      try { navigator.clipboard.writeText(location.href).then(ok, function () {}); } catch (err) {}
+      return;
+    }
     var a = e.target.closest && e.target.closest('a[href]'); if (!a || !root.contains(a) || a.target) return;
     var href = a.getAttribute('href'), r = null;
     if (href.charAt(0) === '#') r = keyOf(href.slice(1));
@@ -1760,7 +1811,11 @@
     if (!r) return;
     e.preventDefault(); closeMore();
     var url = r.el ? (PATHS ? hrefOf(secBy(r.k)) : '') + '#' + r.el.id : hrefOf(secBy(r.k));
-    try { history.pushState(null, '', url); } catch (err) {}
+    var toNews = r.el && r.el.classList && r.el.classList.contains('pb-nw'), dlg = $('#pb-nwp'), inPop = dlg && dlg.open;
+    try {
+      if (toNews && inPop) history.replaceState(null, '', url);
+      else { history.pushState(null, '', url); if (toNews) nwpPushed = 1; else if (inPop) { nwpPushed = 0; } }
+    } catch (err) {}
     show(r, true);
   });
   /* section pictures, pinned to the bottom of the menu column; hidden while the footer logo is in view. «Банки» borrows «Бабки» */
