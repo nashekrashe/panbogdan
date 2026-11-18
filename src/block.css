@@ -1120,7 +1120,7 @@ html.pb-nwp-on{overflow:hidden}
 .pb-nwp-btn{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);font:inherit;font-size:14px;cursor:pointer;box-shadow:var(--sh1);transition:border-color .2s,color .2s}
 .pb-nwp-btn:hover{color:var(--red);border-color:var(--red)}
 .pb-nwp-a{max-width:1120px;margin:0 auto;padding:clamp(16px,4vw,64px) var(--g) clamp(56px,8vw,120px)}
-.pb-nwp-h{margin:20px 0 0;font-family:var(--num);font-stretch:80%;font-weight:700;font-size:clamp(44px,7vw,128px);line-height:.92;letter-spacing:-.025em;text-wrap:balance;overflow-wrap:anywhere}
+.pb-nwp-h{margin:20px 0 0;font-family:var(--num);font-stretch:80%;font-weight:700;font-size:92px;line-height:.8;letter-spacing:-.025em;text-wrap:balance;overflow-wrap:anywhere}
 .pb-nwp-lead{max-width:42rem;margin:clamp(28px,3.4vw,56px) 0 0;font-size:clamp(19px,1.45vw,24px);line-height:1.45;font-weight:500}
 .pb-nwp-p{max-width:42rem;margin:1.1em 0 0;font-size:clamp(17px,1.15vw,19px);line-height:1.62}
 .pb-nwp .pb-nw-src{max-width:42rem;margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:14px}
