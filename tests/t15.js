@@ -1,4 +1,4 @@
-// CR 17.11.2026 «Беларусам»: «Документ Подружи», full document list, timing per voivodeship, spelling «беларуский»
+// CR 17.11.2026 «Беларусам»: «dokument podróży», full document list, timing per voivodeship, spelling «беларуский»
 const {JSDOM}=require('jsdom');const fs=require('fs');const path=require('path');
 const js=fs.readFileSync(path.resolve(__dirname,'../src/block.js'),'utf8');
 let fail=0;const ok=(c,m)=>{console.log((c?'ok  ':'FAIL')+' '+m);if(!c)fail++;};
@@ -12,7 +12,7 @@ function boot(state){
 ok(!/еларусск/.test(js),'no «беларусск» left in the source');
 let t=boot();const c=t.$('#pl-d-by0');
 ok(t.errs.length===0,'no errors: '+t.errs.join('; '));
-ok(c&&/Документ Подружи/.test(c.querySelector('h3').textContent),'first card is «Документ Подружи»');
+ok(c&&/dokument podróży/.test(c.querySelector('h3').textContent),'first card is «dokument podróży»');
 ok(c.querySelectorAll('.pl-acc li').length>=9,'full document list plus timing rows');
 ok(/meldunku/.test(c.textContent)&&/2 биометрические/.test(c.textContent),'list has meldunek and photos');
 ok(/Pomorski/.test(c.textContent)&&/не собрали/.test(c.querySelector('[data-o="pdpcUw"]').textContent),'Gdańsk by default: honest «не собрали» for Pomorskie');
