@@ -1216,3 +1216,22 @@ html.pb-nwp-on{overflow:hidden}
  .pb-by-heading.pb-section-h p{grid-column:1;grid-row:2;margin-top:0}
  .pb-by-heading.pb-section-h .pb-tog{grid-column:2;grid-row:1/3}
 }
+
+
+/* Shared section subtitle and opening text: one scale across all screens. */
+.pl-head .pl-small{font-size:12px;line-height:1.4;max-width:320px;text-align:right;margin-left:auto}
+.pl-section-intro{font-size:16px;line-height:1.5;color:var(--mut);max-width:780px;margin-top:16px}
+@media(max-width:600px){
+  .pl-head .pl-small{width:100%;max-width:none;text-align:left;margin-left:0}
+}
+
+/* Bank reference rate and mortgage cross-link. */
+.pb-bank-extra{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}
+.pb-bank-info{min-width:0;border:1px solid var(--line);border-radius:10px;padding:20px;background:var(--tint);font-size:15px;line-height:1.45}
+.pb-bank-label{font-size:13px;font-weight:700;letter-spacing:.01em;margin-bottom:10px}
+.pb-bank-quote{font-size:clamp(23px,2.4vw,38px);font-stretch:80%;font-weight:600;line-height:1.1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:12px 0}
+.pb-bank-quote strong{font-weight:700;white-space:nowrap}
+.pb-bank-info .pl-note{font-size:12px;margin-top:12px}
+.pb-bank-info .pl-note a{overflow-wrap:anywhere}
+.pb-bank-info .pb-seclink{margin-top:16px}
+@media(max-width:700px){.pb-bank-extra{grid-template-columns:minmax(0,1fr);gap:12px;margin-top:20px}.pb-bank-info{padding:16px}}
