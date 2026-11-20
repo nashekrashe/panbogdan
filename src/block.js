@@ -2219,17 +2219,31 @@
         copy.setAttribute('aria-label', 'Скопировать ссылку: ' + name);
         copy.setAttribute('title', 'Скопировать прямую ссылку');
         copy.textContent = '#';
-        title.appendChild(copy);
+        var smaller = title.querySelector('small');
+        if (smaller) title.insertBefore(copy, smaller); else title.appendChild(copy);
       }
       host.setAttribute('data-share-ready', '1');
     });
+    /* Top-level sections already have permanent paths; copy those without altering H1 text. */
+    SECTIONS.forEach(function (x) {
+      var screen = document.getElementById(x.id);
+      if (!screen || screen.querySelector('[data-copy-section="' + x.k + '"]')) return;
+      var header = screen.querySelector(':scope > .pl-head, :scope > .pb-kids-head .pl-head, :scope > .pb-home .pb-mine-h');
+      if (!header) return;
+      var copy = document.createElement('button');
+      copy.type = 'button'; copy.className = 'pb-anchor-copy pb-section-copy';
+      copy.setAttribute('data-copy-section', x.k);
+      copy.setAttribute('aria-label', 'Скопировать ссылку на раздел ' + x.n);
+      copy.setAttribute('title', 'Скопировать ссылку на раздел');
+      copy.textContent = '#'; header.appendChild(copy);
+    });
   }
   function copyAnchorUrl(slug, btn) {
-    var host = btn.closest('.pb-share-host'), sc = host && host.closest('.pb-screen');
+    var host = btn.closest('.pb-share-host') || btn.closest('.pb-screen'), sc = host && host.closest('.pb-screen');
     var part = sc && SECTIONS.filter(function (x) { return x.id === sc.id; })[0];
-    if (!part || !slug) return;
+    if (!part) return;
     var path = PATHS ? hrefOf(part) : location.pathname;
-    var url = location.origin + path + '#' + encodeURIComponent(slug);
+    var url = location.origin + path + (slug ? '#' + encodeURIComponent(slug) : (!PATHS ? '#' + (part.p || 'start') : ''));
     function done(ok) {
       if (!btn.isConnected) return;
       btn.textContent = ok ? 'Скопировано' : 'Не удалось';
@@ -2356,8 +2370,8 @@
   root.addEventListener('cancel', function (e) { if (e.target && e.target.id === 'pb-nwp') { e.preventDefault(); nwpClose(); } }, true);
   root.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    var shared = e.target.closest && e.target.closest('[data-copy-anchor]');
-    if (shared) { e.preventDefault(); e.stopPropagation(); copyAnchorUrl(shared.getAttribute('data-copy-anchor'), shared); return; }
+    var shared = e.target.closest && e.target.closest('[data-copy-anchor], [data-copy-section]');
+    if (shared) { e.preventDefault(); e.stopPropagation(); copyAnchorUrl(shared.getAttribute('data-copy-anchor') || '', shared); return; }
     var nc = e.target.closest && e.target.closest('[data-nwp-close]'); if (nc) { e.preventDefault(); nwpClose(); return; }
     var cp = e.target.closest && e.target.closest('[data-nwp-copy]');
     if (cp) {
