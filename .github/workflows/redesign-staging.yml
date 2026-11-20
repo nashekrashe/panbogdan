@@ -48,6 +48,7 @@ jobs:
           node tests/t17.js
           node tests/t18.js
           node tests/t19.js
+          node tests/t20.js
           node tests/mortval.js
       - name: Install Chromium for layout tests
         run: |
@@ -65,6 +66,7 @@ jobs:
           node tests/by-viewport.js http://127.0.0.1:8765/bialorusini.html
           node tests/kids-viewport.js http://127.0.0.1:8765/dzieci.html
           node tests/banks-viewport.js http://127.0.0.1:8765/banki.html
+          node tests/anchors-viewport.js http://127.0.0.1:8765
       - name: Save screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -74,6 +76,7 @@ jobs:
             dist/by-screenshots/*.png
             dist/kids-screenshots/*.png
             dist/banks-screenshots/*.png
+            dist/anchors-screenshots/*.png
           if-no-files-found: ignore
           retention-days: 7
       - name: Commit built site and push redesign + staging
