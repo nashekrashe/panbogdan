@@ -37,11 +37,32 @@ function page(rate) {
   assert($('#pl-bank [data-o="usdDate"]').textContent.includes('20.11.2026'), 'NBP publication date displayed');
   assert($('#pl-bank .pb-bank-info a[href*="api.nbp.pl"]'), 'official NBP source linked');
   assert($('#pl-bank .pb-bank-info a[href="#dom"]'), 'mortgage links to Home in preview routing');
+  const offers=[...w.document.querySelectorAll('#pl-bank .pb-bank-mort-row')];
+  assert(offers.length===4, 'four bank mortgage offers with official representative examples');
+  const expected=[
+    ['ING Bank Śląski','6,07%','6,56%','от 20%','ing.pl'],
+    ['Bank Pekao','6,29%','6,77%','30,18%','pekao.com.pl'],
+    ['PKO Bank Polski','6,57%','7,93%','от 10%','pkobp.pl'],
+    ['mBank','6,77%','7,41%','от 10%','mbank.pl']
+  ];
+  expected.forEach((x,i)=>{
+    const row=offers[i];
+    assert(row.querySelector('.pb-bank-mort-n').textContent.includes(x[0]), 'mortgage bank name '+x[0]);
+    const nums=row.querySelectorAll('.pb-bank-mort-rate b');
+    assert(nums.length===2 && nums[0].textContent===x[1] && nums[1].textContent===x[2], 'verified nominal + RRSO: '+x[0]);
+    assert(row.querySelector('.pb-bank-mort-terms').textContent.includes(x[3]), 'down payment detail: '+x[0]);
+    assert(row.querySelector('.pb-bank-mort-terms a').hostname.endsWith(x[4]), 'official bank URL: '+x[0]);
+  });
+  assert($('#pl-bank .pb-bank-mort-home[href="#dom"]'), 'mortgage comparison links to Home calculator');
+  assert($('#pl-bank .pb-bank-mort-foot').textContent.includes('разных сумм'), 'rates labelled as non-comparable representative examples');
+  assert($('#pl-bank .pb-bank-account-head').textContent.includes('Открытие счёта'), 'deposit-account rankings are separate from mortgage comparison');
+
   assert(!!$('#pl-home .pl-section-intro') && !!$('#pl-by .pl-section-intro'), 'page intros share consistent styles');
   const city = $('[data-city-sel]');
   city.value='gdynia';
   city.dispatchEvent(new w.Event('change',{bubbles:true}));
   assert($('#pl-bank [data-o="usdRate"]').textContent === '3,9876', 'rate survives a section rerender');
+  assert(w.document.querySelectorAll('#pl-bank .pb-bank-mort-row').length===4, 'all mortgage offers survive city rerender');
   w.close();
 
   const invalid = page({table:'C',code:'USD',rates:[{effectiveDate:'2026-11-20',mid:3.9876}]});
