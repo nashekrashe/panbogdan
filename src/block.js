@@ -1981,7 +1981,7 @@
   /* All disclosures remember their state locally, scoped by screen and stable id/position. */
   function restoreFolds() {
     var order = {};
-    $('details').forEach(function (d) {
+    $$('details').forEach(function (d) {
       var screen = d.closest('.pb-screen'), scope = screen ? screen.id : 'footer';
       var n = order[scope] || 0; order[scope] = n + 1;
       var key = scope + ':' + (d.id || 'details-' + n);
