@@ -27,11 +27,17 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
         aria:node.getAttribute('aria-describedby'),
         nativeTitle:node.hasAttribute('title'),
         tabIndex:node.tabIndex,
+        countColor:getComputedStyle(node.querySelector('.pl-big')).color,
+        labelColor:getComputedStyle(node.querySelector('.pl-lab')).color,
+        tipFont:parseFloat(getComputedStyle(node.querySelector('.pb-rd-tooltip')).fontSize),
+        tipPadding:parseFloat(getComputedStyle(node.querySelector('.pb-rd-tooltip')).paddingLeft),
         win:innerWidth,doc:document.documentElement.scrollWidth
       }));
       if(result.value!=='-111'||result.label!=='дней после 5 лет для rezydenta UE'||
         result.hint!=='уже 111 дней как должен податься, поднимай дупу!'||
-        result.aria!=='pb-rd-tooltip'||result.nativeTitle||result.tabIndex!==0||result.doc>result.win+1){
+        result.aria!=='pb-rd-tooltip'||result.nativeTitle||result.tabIndex!==0||
+        result.countColor!=='rgb(215, 75, 78)'||result.labelColor!=='rgb(215, 75, 78)'||
+        result.tipFont<(width<=480?19:22)||result.tipPadding<(width<=480?20:24)||result.doc>result.win+1){
         throw Error('rezydent negative count / tooltip / viewport at '+width+': '+JSON.stringify(result));
       }
       const tip=card.locator('.pb-rd-tooltip');
