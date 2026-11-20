@@ -21,7 +21,7 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/banki.html';
       await page.waitForFunction(() => document.querySelector('#pl-bank [data-o="usdRate"]').textContent === '3,9876');
       const result=await page.evaluate(() => {
         const bank=document.querySelector('#pl-bank'), note=bank.querySelector('.pl-head .pl-small'),
-          mortgage=bank.querySelector('.pb-bank-info a[href="/dom"]'),
+          mortgage=bank.querySelector('.pb-bank-info a[href="/dom#kalkulator-hipoteki"]'),
           quote=bank.querySelector('[data-o="usdRate"]'),
           rows=[...bank.querySelectorAll('.pb-bank-mort-row')],
           mortgageHome=bank.querySelector('.pb-bank-mort-home');
@@ -38,13 +38,13 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/banki.html';
       await page.screenshot({path:path.join(folder,'banki-'+width+'.png'),fullPage:true});
       console.log(width,result,'errors:',errors);
       if (result.doc>result.win+1) throw Error('horizontal overflow at '+width);
-      if (result.subtitlePx !== 12 || result.href !== '/dom' || result.quote !== '3,9876' || result.rateRows !== 11 || !result.erste || result.foreignerRules !== 11 || !result.calculatorTile || result.mortgageHref !== '/dom' || !result.visible) throw Error('bank content or styles at '+width);
+      if (result.subtitlePx !== 12 || result.href !== '/dom#kalkulator-hipoteki' || result.quote !== '3,9876' || result.rateRows !== 11 || !result.erste || result.foreignerRules !== 11 || !result.calculatorTile || result.mortgageHref !== '/dom#kalkulator-hipoteki' || !result.visible) throw Error('bank content or styles at '+width);
       if (errors.length) throw Error('page JS errors at '+width+': '+errors.join('; '));
       if (width===375) {
         await page.locator('a.pb-bank-calc-card').click();
         await page.waitForSelector('#pl-home',{state:'visible'});
-        const route=await page.evaluate(()=>location.pathname);
-        if(route!=='/dom') throw Error('calculator link did not navigate to /dom: '+route);
+        const route=await page.evaluate(()=>location.pathname+location.hash);
+        if(route!=='/dom#kalkulator-hipoteki') throw Error('calculator link did not navigate to /dom: '+route);
       }
       await page.close();
     }
