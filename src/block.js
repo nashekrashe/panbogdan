@@ -534,7 +534,7 @@
         link('https://www.aliorbank.pl/dam/jcr%3A213bf45d-8adb-4894-b806-42c13f8b8410/regulamin-udzielenia-i-obslugi-kredytow-zabezpieczonych-na-nieruchomosci-megahipoteka-od-03112026.pdf','Alior') + '. Санкционные правила и документы для открытия счёта не равны ипотечным критериям: ' +
         link('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041','ЕС, регламент 2025/2041') + '.</p></div>' +
       '<p class="pl-note pb-bank-mort-foot">RRSO включает расходы по условиям конкретного примера: страховки, комиссии и другие затраты. Суммы, сроки и взносы различаются, поэтому проценты нельзя считать прямым рейтингом. «Взнос в примере» не означает минимальный взнос банка.</p>' +
-      '<a class="pb-bank-calc-card pb-bank-mort-home" href="' + hrefOf(secBy('home')) + '">' +
+      '<a class="pb-bank-calc-card pb-bank-mort-home" href="' + (PATHS ? '/dom#kalkulator-hipoteki' : '#kalkulator-hipoteki') + '">' +
         '<span class="pb-bank-calc-label">Раздел «Дом»</span><strong>Калькулятор ипотеки</strong>' +
         '<span>Посчитать платёж, взнос и ориентировочную кредитоспособность</span></a></section>';
   }
@@ -1390,7 +1390,7 @@
           '<p class="pl-note"><span data-o="usdDate">Загружается</span>. ' + link('https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json', 'NBP, таблица A') + '</p></div>' +
         '<div class="pb-bank-info" data-share="hipoteka-link"><div class="pb-bank-label">Ипотека</div>' +
           '<p>Ставка, платёж и сколько банк может дать на жильё.</p>' +
-          '<a class="pb-seclink" href="' + hrefOf(secBy('home')) + '">Ипотека и калькулятор в разделе «Дом»</a></div>' +
+          '<a class="pb-seclink" href="' + (PATHS ? '/dom#kalkulator-hipoteki' : '#kalkulator-hipoteki') + '">Ипотека и калькулятор в разделе «Дом»</a></div>' +
       '</div>' +
       rBankMortgages() +
       '<h3 class="pl-h3 pb-bank-account-head" data-share="konta-dla-bialorusinow">Открытие счёта для беларусов</h3>' +
@@ -1710,10 +1710,13 @@
       '</section>';
   }
 
+  function shareWordSlug(v) {
+    return String(v).toLowerCase().replace(/ł/g, 'l').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
   function rDict() {
     return '<section class="pl-band pb-screen" id="pl-dict" aria-labelledby="pl-dict-h">' + head('pl-dict', 'Словарь ужонда', 'translate', '#141414', '#fff', DICT.length + ' слов, без которых ни одно письмо не читается') +
       '<div class="pl-dict-tools"><label class="sr" for="pl-dict-q">Поиск по словарю</label><input class="pl-input" id="pl-dict-q" type="search" placeholder="Найти: wezwanie, PESEL, мельдунек" autocomplete="off"><span class="pl-small pl-muted" data-o="dictN"></span></div>' +
-      '<dl class="pl-dict">' + DICT.map(function (d) { return '<div data-dict="' + esc((d[0] + ' ' + d[1] + ' ' + d[2]).toLowerCase()) + '"><dt>' + d[0] + ' <span>· ' + d[1] + '</span></dt><dd>' + d[2] + '</dd></div>'; }).join('') + '</dl></section>';
+      '<dl class="pl-dict">' + DICT.map(function (d) { return '<div data-share="slowo-' + shareWordSlug(d[0]) + '" data-dict="' + esc((d[0] + ' ' + d[1] + ' ' + d[2]).toLowerCase()) + '"><dt>' + d[0] + ' <span>· ' + d[1] + '</span></dt><dd>' + d[2] + '</dd></div>'; }).join('') + '</dl></section>';
   }
 
   /* ---------- compute & update ---------- */
