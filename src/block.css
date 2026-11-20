@@ -1322,3 +1322,21 @@ html.pb-nwp-on{overflow:hidden}
 .pb-bank-calc-card strong{font-size:clamp(20px,2.4vw,30px);line-height:1.2;font-weight:700;letter-spacing:-.025em}
 .pb-bank-calc-card>span:last-child{font-size:14px;line-height:1.45;color:var(--mut)}
 @media(max-width:560px){.pb-bank-calc-card{padding:19px 18px}.pb-bank-by-note{padding:18px}}
+
+
+/* Permanent fragment addresses, accessible copy buttons, sticky-header offsets. */
+.pb-share-host{scroll-margin-top:112px}
+.pb-anchor-copy{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 5px;margin:0 0 0 9px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--red);font-size:13px;font-weight:700;line-height:1;vertical-align:middle;cursor:pointer;text-decoration:none;white-space:nowrap;letter-spacing:0}
+.pb-anchor-copy:hover,.pb-anchor-copy:focus-visible{border-color:var(--red);background:#fff3f3;outline-offset:2px}
+.pb-anchor-copy:focus-visible{outline:2px solid var(--red)}
+.pb-anchor-copy[data-copy-anchor]{position:relative;z-index:1}
+.pb-anchor-copy:not(:hover):not(:focus-visible){opacity:.75}
+.pb-bank-mort-n .pb-anchor-copy,.pl-bank-n .pb-anchor-copy{align-self:center;font-size:12px}
+.pb-bank-mort-head .pb-anchor-copy,.pb-bank-label .pb-anchor-copy{font-size:12px}
+.pl-tool-h .pb-anchor-copy{margin-left:auto}
+.pb-kid-route .pl-h3 .pb-anchor-copy{margin-left:12px}
+.pb-by-heading h2 .pb-anchor-copy,.pb-kid-group .pb-anchor-copy{font-size:12px}
+.pb-nw-h .pb-anchor-copy{display:inline-flex;vertical-align:middle}
+.pl-head .pb-section-copy{flex:none;align-self:flex-start;margin:2px 0 0 8px}
+.pb-mine-h .pb-section-copy{margin:4px 0 10px}
+@media(max-width:767px){.pb-share-host{scroll-margin-top:82px}.pb-anchor-copy{min-width:25px;height:25px;margin-left:6px}.pl-head .pb-section-copy{margin-left:5px}}
