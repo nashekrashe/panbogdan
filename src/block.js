@@ -2239,17 +2239,39 @@
       copy.textContent = '#'; header.appendChild(copy);
     });
   }
+  var anchorToastTimer = null;
+  function anchorCopyNotice(ok, url) {
+    var toast = root.querySelector('.pb-anchor-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'pb-anchor-toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      toast.setAttribute('aria-atomic', 'true');
+      root.appendChild(toast);
+    }
+    clearTimeout(anchorToastTimer);
+    toast.textContent = (ok ? 'copied: ' : 'copy failed: ') + url;
+    toast.hidden = false;
+    anchorToastTimer = setTimeout(function () { if (toast.isConnected) toast.hidden = true; }, 4500);
+  }
   function copyAnchorUrl(slug, btn) {
     var host = btn.closest('.pb-share-host') || btn.closest('.pb-screen'), sc = host && host.closest('.pb-screen');
     var part = sc && SECTIONS.filter(function (x) { return x.id === sc.id; })[0];
     if (!part) return;
     var path = PATHS ? hrefOf(part) : location.pathname;
-    var url = location.origin + path + (slug ? '#' + encodeURIComponent(slug) : (!PATHS ? '#' + (part.p || 'start') : ''));
+    var relative = path + (slug ? '#' + encodeURIComponent(slug) : (!PATHS ? '#' + (part.p || 'start') : ''));
+    var url = location.origin + relative;
+    /* Update the address bar synchronously, even if clipboard permission is delayed or denied.
+       replaceState keeps repeated copy clicks from polluting browser Back history and does not scroll. */
+    try { history.replaceState(history.state, '', relative); } catch (err) {}
     function done(ok) {
       if (!btn.isConnected) return;
-      btn.textContent = ok ? 'Скопировано' : 'Не удалось';
-      btn.setAttribute('aria-label', ok ? 'Ссылка скопирована' : 'Ссылка не скопирована');
-      setTimeout(function () { if (btn.isConnected) { btn.textContent = '#'; btn.setAttribute('aria-label', 'Скопировать прямую ссылку'); } }, 1800);
+      btn.setAttribute('aria-label', ok ? 'Скопирована ссылка: ' + url : 'Не удалось скопировать: ' + url);
+      anchorCopyNotice(ok, url);
+      setTimeout(function () {
+        if (btn.isConnected) btn.setAttribute('aria-label', 'Скопировать прямую ссылку');
+      }, 4500);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       try { navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); }); } catch (err) { done(false); }
