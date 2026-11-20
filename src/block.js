@@ -1304,25 +1304,171 @@
         '<li>Дом или участок иностранцу из-за пределов ЕС покупать только с разрешением MSWiA.</li>' +
       '</ul>' + srcLine([['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'rankomat.pl'], ['https://pawelpietras.pl/blog/kredyt-hipoteczny-dla-obcokrajowca-z-karta-czasowego-pobytu', 'pawelpietras.pl']]) + lifeAcc(['home']) + '</section>';
   }
-  /* «Дети»: money for children. Checked 16.11.2026 */
-  var KIDS_PAY = [
-    { ic: 'savings', tag: 'ZUS · каждый месяц', t: '800+', big: '800', x: 'zł в месяц на каждого ребёнка до 18 лет, без лимита дохода.', i: 'Для иностранцев с 1.06.2026 только при работе родителя. Ребёнок учится в Польше, кроме детей до 6 лет.', u: 'https://finanse.wp.pl/zmiany-dla-cudzoziemcow-od-1-czerwca-zus-wyjasnia-7292105621981504a', s: 'wp.pl' },
-    { ic: 'work', tag: 'Aktywny Rodzic · 12–35 мес', t: 'Aktywni rodzice w pracy', big: '1 500', x: 'zł в месяц, если ребёнок не ходит в ясли и родитель работает с ZUS. С инвалидностью 1 900.', i: 'Тот самый babciowe: на няню или бабушку, решаешь сам.', u: 'https://powroty.gov.pl/program-aktywny-rodzic-2025/', s: 'powroty.gov.pl' },
-    { ic: 'child_care', tag: 'Aktywny Rodzic · ясли', t: 'Aktywnie w żłobku', big: '1 500', x: 'zł в месяц на ясли, klub dziecięcy или dzienny opiekun, но не больше, чем платишь сам.', i: 'Ясли бесплатно, если найдёшь место.', u: 'https://powroty.gov.pl/program-aktywny-rodzic-2025/', s: 'powroty.gov.pl' },
-    { ic: 'home', tag: 'Aktywny Rodzic · 12–35 мес', t: 'Aktywnie w domu', big: '500', x: 'zł в месяц, если ребёнок дома, а два других варианта не берёшь. Не платят, если на ребёнка получили Rodzinny Kapitał Opiekuńczy.', i: 'Утешительный приз.', u: 'https://powroty.gov.pl/program-aktywny-rodzic-2025/', s: 'powroty.gov.pl' },
-    { ic: 'school', tag: 'ZUS · раз в год', t: 'Dobry Start', big: '300', x: 'zł на каждого ученика до 20 лет (с инвалидностью до 24). Иностранцам нужна работа в месяце перед подачей.', i: 'Заявка за 2026/2027 до 30 ноября 2026.', red: 1, u: 'https://www.zus.pl/en/-/wakacyjne-zakupy-300-z%C5%82-mo%C5%BCe-si%C4%99-przyda%C4%87.-ruszy%C5%82y-wyp%C5%82aty-z-programu-dobry-start', s: 'zus.pl' },
-    { ic: 'percent', tag: 'PIT · раз в год', t: 'Ulga na dzieci', big: '1 112', x: 'zł в год с налога на первого и второго ребёнка, 2 000,04 на третьего, 2 700 на четвёртого и дальше.', i: 'При одном ребёнке лимит дохода 112 000 zł у супругов. Только на шкале, не на ryczałcie.', u: 'https://www.pit.pl/?p=17211', s: 'pit.pl' }
+  /* «Дети»: public health, registration, immigration status, childcare and benefits. Verified 20.11.2026 */
+  var KIDS_U = {
+    usc: 'https://www.gov.pl/web/gov/zglos-urodzenie-dziecka',
+    nfz: 'https://pacjent.gov.pl/aktualnosc/zglos-dziecko-do-ubezpieczenia',
+    poz: 'https://pacjent.gov.pl/czym-jest-opieka-okoloporodowa',
+    vacc: 'https://pacjent.gov.pl/szczepienia-dzieci-pierwsze-24-miesiace-zycia',
+    temporary: 'https://wsc.gdansk.uw.gov.pl/pl/node/1658',
+    permanent: 'https://wsc.gdansk.uw.gov.pl/pl/procedury/maloletnie-dziecko-cudzoziemca',
+    other: 'https://mos.cudzoziemcy.gov.pl/kategorie-informacji/mozliwosci-legalizacji/spoza-ue-kontynuacja-pobytu/zezwolenie-czasowy/pobyt-z-rodzina/dziecko-cudzoziemca-urodzone-w-pl/',
+    mos: 'https://www.gov.pl/web/udsc/info-mos',
+    passport: 'https://www.mos.cudzoziemcy.gov.pl/kategorie-informacji/procedury/osobiste-stawiennictwo/szczegolowe-objasnienie/',
+    polish: 'https://api.sejm.gov.pl/eli/acts/DU/2023/1989/text.html',
+    all800: 'https://www.zus.pl/pl/swiadczenia/swiadczenia-dla-rodzin/swiadczenie-wychowawcze-800-plus/zmiany-w-swiadczeniu-wychowawczym-program-rodzina-800-',
+    plus800: 'https://www.zus.pl/pl/swiadczenia/swiadczenia-dla-rodzin/swiadczenie-wychowawcze-800-plus',
+    work: 'https://www.zus.pl/pl/aktywnyrodzic/swiadczenie-aktywni-rodzice-w-pracy',
+    nurseryPay: 'https://www.zus.pl/pl/aktywnyrodzic/wiadczenie-aktywnie-w-zlobku',
+    homePay: 'https://www.zus.pl/pl/aktywnyrodzic/wiadczenie-aktywnie-w-domu',
+    dobry: 'https://www.gov.pl/web/rodzina/zmiany-w-programie-dobry-start-obowiazujace-od-1-lipca-2026-r',
+    pit: 'https://podatki.gov.pl/ulgi-i-odliczenia/ulga-na-dziecko-pit',
+    becik: 'https://www.gov.pl/web/gov/uzyskaj-becikowe',
+    rodz: 'https://www.gov.pl/web/gov/uzyskaj-swiadczenie-rodzicielskie'
+  };
+  var KIDS_STEPS = [
+    { id:'pregnancy', tag:'Во время беременности', t:'Беременность и NFZ',
+      x:'Гинеколог NFZ без направления. Выбери położna POZ заранее, она же поможет после родов.',
+      docs:['Паспорт или другой документ личности, PESEL при наличии, подтверждение права на NFZ.','Karta ciąży и результаты обследований для дальнейших визитов.'],
+      how:['Проверь свой страховой статус. Бесплатная помощь иностранке без страхования не гарантирована только из-за беременности: всё зависит от основания пребывания и страховки.','Запишись к гинекологу по NFZ без skierowania. Пренатальные обследования обсуждай с врачом, направление на них выдаётся по показаниям и правилам программы.','Выбери położna POZ отдельной декларацией; с 21-й недели доступна бесплатная дородовая подготовка по NFZ.'],
+      src:[[KIDS_U.poz,'pacjent.gov.pl: беременность и поłożna'],['https://pacjent.gov.pl/aktualnosc/opieka-medyczna-dla-kobiet-w-ciazy','pacjent.gov.pl: гинеколог и обследования']] },
+    { id:'afterbirth', tag:'Роддом и первые недели', t:'Сразу после рождения',
+      x:'Получить документы из роддома, связаться с POZ и назначить первую домашнюю патронажную встречу.',
+      docs:['Książeczka zdrowia dziecka и karta informacyjna ze szpitala.','Результаты скринингов, информация о прививках, документы матери.'],
+      how:['Роддом передаёт kartę urodzenia в USC. Родители не заменяют её выпиской из больницы.','После выписки сообщи выбранной położna POZ: первая патронажная встреча не позднее 48 часов после выписки, затем всего 4–6 визитов за первые два месяца.','Запиши ребёнка к врачу POZ на первый профилактический осмотр; согласуй следующие прививки. Первые дозы BCG и гепатита B обычно делают в роддоме.'],
+      src:[[KIDS_U.usc,'gov.pl: карта рождения'],[KIDS_U.poz,'pacjent.gov.pl: визиты położnej'],[KIDS_U.vacc,'pacjent.gov.pl: календарь прививок']] },
+    { id:'usc', tag:'До 21 дня', t:'USC, акт рождения и PESEL',
+      x:'Регистрируй ребёнка в USC города рождения, а не города проживания. Получишь польский акт рождения и, как правило, PESEL.',
+      docs:['Документ личности родителя, который заявляет о рождении.','При необходимости: иностранный акт брака/документы о семейном положении и их переводы.','Если родители не в браке: uznanie ojcostwa до регистрации, чтобы отец смог заявить о рождении.'],
+      how:['Проверь, что роддом отправил kartę urodzenia. На регистрацию даётся 21 день.','Заяви рождение в USC по месту родов или через gov.pl: онлайн с 2026 года используется e-Doręczenia и электронная подпись.','Бесплатно получи один сокращённый odpis aktu urodzenia, уведомление о PESEL и, если применимо, регистрацию адреса. PESEL не равен гражданству или ВНЖ.'],
+      src:[[KIDS_U.usc,'gov.pl: регистрация рождения']] },
+    { id:'nfz', tag:'После PESEL · 7 дней', t:'NFZ для ребёнка',
+      x:'Вписать ребёнка в страховку родителя и выбрать врача, медсестру и położna POZ.',
+      docs:['PESEL ребёнка и его данные из акта рождения.','Данные родителя, за счёт которого оформляется страхование; для выбора POZ нужна декларация.'],
+      how:['При umowa o pracę или zlecenie передай работодателю данные для ZUS ZCNA. При JDG подай ZCNA самостоятельно. На это 7 дней после присвоения PESEL.','В отдельной placówka POZ подай декларации: lekarz POZ, pielęgniarka POZ, położna POZ. Можно выбрать не по прописке; при наличии услуги также через IKP.','Убедись, что ребёнок отображается в mojeIKP. Обновление данных после ZCNA может занять до 21 дня; одного акта рождения для зачисления в NFZ недостаточно.'],
+      src:[[KIDS_U.nfz,'pacjent.gov.pl: страхование ребёнка'],['https://pacjent.gov.pl/system-zdrowia/podstawowa-opieka-zdrowotna','pacjent.gov.pl: выбор POZ']] },
+    { id:'passport', tag:'Для иностранного ребёнка', t:'Гражданство и документ для поездок',
+      x:'Польское свидетельство о рождении само по себе не заменяет национальный паспорт.',
+      docs:['Польский odpis aktu urodzenia, документы личности и гражданства родителей.','Согласия и дополнительные документы для консульства по правилам государства гражданства ребёнка.'],
+      how:['Уточни в консульстве государства гражданства родителей, как оформить гражданство и первый паспорт ребёнка. Требования зависят от страны.','Перед заявлением на pobyt приготовь действующий документ путешествия ребёнка либо уточни в ужонде допустимое исключение.','Не планируй выезд только с PESEL, актом рождения или UPO: они не заменяют паспорт/проездной документ и право на повторный въезд.'],
+      src:[[KIDS_U.passport,'MOS: документ ребёнка и явка'],[KIDS_U.usc,'gov.pl: акт рождения']] }
   ];
+  var KIDS_LEGAL = [
+    { id:'citizen', tag:'Один родитель поляк', t:'Ребёнок с польским гражданством',
+      x:'Если хотя бы один родитель гражданин Польши на день рождения, ребёнок получает польское гражданство по происхождению.',
+      docs:['Польский акт рождения, документ польского родителя.','Подтверждение родства; при необходимости документы иностранного родителя.'],
+      how:['Зарегистрируй рождение через USC, как обычно.','Оформи ребёнку польский паспорт или dowód osobisty по правилам для граждан. ВНЖ ему не нужен.','Если родители не в браке, уладь признание отцовства, чтобы родство было отражено в акте.'],
+      src:[[KIDS_U.polish,'Ustawa o obywatelstwie polskim, art. 14'],[KIDS_U.usc,'gov.pl: USC']] },
+    { id:'temporary', tag:'Родитель: виза D / временный ВНЖ', t:'Ребёнку временный pobyt',
+      x:'Специальная процедура для родившихся в Польше в период действия национальной визы или выданного временного ВНЖ родителя.',
+      docs:['Акт рождения ребёнка и его документ путешествия.','Решение/карта временного ВНЖ родителя или паспорт с действовавшей национальной визой D.','Подтверждения страховки, дохода/содержания и прочие приложения, если требует основание.'],
+      how:['Проверь не только карту сегодня, но и какой статус у родителя был именно в день рождения.','Родитель подаёт отдельное заявление на pobyt czasowy ребёнка через MOS. С 27.04.2026 заявления на pobyt только электронные; старые инструкции ужондов о почтовой подаче устарели.','Следи за wezwanie: для ребёнка до 6 лет обычно явится родитель с документом малыша. Действие разрешения ограничивается сроком визы/разрешения родителя, максимум 3 года.'],
+      src:[[KIDS_U.temporary,'Поморский ужонд: ребёнок и виза/ВНЖ'],[KIDS_U.mos,'UdSC: подача в MOS']] },
+    { id:'permanent', tag:'Родитель: ПМЖ / резидент ЕС', t:'Когда ребёнку доступен pobyt stały',
+      x:'Важны дата рождения и история разрешений родителя; наличие ПМЖ сейчас не даёт ребёнку ПМЖ автоматически.',
+      docs:['Акт рождения ребёнка, его документ путешествия.','Решение о pobyt stały или rezydent długoterminowy UE у родителя.','Подтверждение статуса родителя в день рождения (если тогда был временный ВНЖ или защита).'],
+      how:['Если ребёнок родился уже после получения родителем ПМЖ/резидента ЕС, можно подавать на pobyt stały ребёнка.','Если родился раньше, это также возможно при некоторых статусах родителя на момент рождения: действовавший временный ВНЖ, гуманитарный/толерированный pobyt, статус беженца или дополнительная защита.','Если условия не выполняются, проверь маршрут временного ВНЖ. Заявление ребёнку отдельно через MOS, а не по карте родителя.'],
+      src:[[KIDS_U.permanent,'Поморский ужонд: pobyt stały ребёнка'],[KIDS_U.mos,'UdSC: MOS']] },
+    { id:'pending', tag:'Родитель: ждёт решение / иные документы', t:'Штамп, UPO, безвиз, защита',
+      x:'Само ожидание решения родителя, PESEL ребёнка или его рождение в Польше не легализуют малыша.',
+      docs:['Акт рождения и документ путешествия ребёнка (если доступен).','Паспорт родителя, подтверждение подачи и UPO, документы о его текущем законном пребывании.','Документы о доходе/страховании/семье по выбранному основанию.'],
+      how:['Если в день родов был только статус ожидания по заявлению, безвиз, шенгенская виза или истёкшая карта, не считай это автоматически равным действующей визе D или разрешению на pobyt czasowy.','Проверь индивидуальное основание, в том числе art. 187 pkt 6/7, либо семейный pobyt; точный путь зависит от текущего статуса обоих родителей. При международной защите потребуется отдельная оценка прав ребёнка.','Обращайся в отдел иностранцев по воеводству проживания и подавай подходящее заявление в MOS. Не выезжай с ребёнком до прояснения документов на возвращение.'],
+      src:[[KIDS_U.other,'MOS: другие основания для ребёнка'],[KIDS_U.mos,'UdSC: MOS'],[KIDS_U.permanent,'Поморский ужонд: ограничения по ПМЖ']] }
+  ];
+  var KIDS_PAY = [
+    {id:'800',tag:'ZUS · до 18 лет',t:'800+',big:'800',x:'zł в месяц на каждого ребёнка, без проверки дохода семьи.',
+      i:'С июня 2026 для многих иностранцев из стран вне ЕС нужны законное пребывание с доступом к работе и подтверждённая активность; для школьников также выполнение обязанности учиться в Польше.',
+      docs:['PESEL ребёнка, PESEL заявителя (или данные личности), польский банковский счёт.','Для иностранцев: документ законного пребывания и права работы; иные приложения по запросу ZUS.'],
+      how:['Подай в PUE/eZUS, mZUS, через банк или Emp@tia. На новорождённого в первые 3 месяца заявка даёт выплату с даты рождения.','Укажи оба гражданства/статуса, если это требуется формой, и проверь сообщения в eZUS. Проверка занятости у ZUS имеет исключения, например отдельные случаи пособий и безработицы.','Следующий период выплат обычно начинается 1 июня; на него нужна новая заявка.'],
+      src:[[KIDS_U.all800,'ZUS: условия для иностранцев 2026'],[KIDS_U.plus800,'ZUS: подача 800+']] },
+    {id:'work',tag:'Aktywny Rodzic · 12–35 мес',t:'Aktywni rodzice w pracy',big:'1 500',
+      x:'zł ежемесячно; при соответствующей инвалидности ребёнка 1 900 zł.',i:'Если родители работают и ребёнок не посещает ясли, клуб или dzienny opiekun. Няня не обязательна.',
+      docs:['Данные ребёнка и заявителя, номер банковского счёта.','Для иностранца: документ легального пребывания с доступом к рынку труда; при необходимости документы об особых обстоятельствах.'],
+      how:['Оба родителя обычно должны соответствовать нормам активности и взносов; для одинокого родителя применяется отдельный расчёт. Проверяй условия ZUS по своим договорам.','Подай электронную заявку в eZUS/mZUS, банк или Emp@tia не раньше месяца, в котором ребёнку исполнится 12 месяцев.','На ребёнка за тот же месяц нельзя одновременно получить два варианта Aktywny Rodzic.'],
+      src:[[KIDS_U.work,'ZUS: aktywni rodzice w pracy']] },
+    {id:'nurseryPay',tag:'Aktywny Rodzic · ясли',t:'Aktywnie w żłobku',big:'1 500',
+      x:'до 1 500 zł в месяц, до 1 900 zł при соответствующей инвалидности.',i:'Для ребёнка в зарегистрированных яслях, детском клубе или у дневного опекуна. Нет нижней границы 12 месяцев.',
+      docs:['PESEL ребёнка и сведения о записанной в реестр placówka.','Для иностранца: документ легального пребывания с доступом к работе, если этого требует его категория.'],
+      how:['Сначала ребёнок начинает посещать placówka; заявка в eZUS/mZUS или другим электронным каналом. При подаче в течение 2 месяцев от начала посещения возможно начисление с даты начала.','ZUS переводит деньги учреждению, не родителю. Питание не покрывается; сумма ограничена платой за пребывание и установленным лимитом стоимости учреждения.','Выплата возможна до конца учебного года, в котором ребёнку исполнилось 3 года, при особых препятствиях с садом до 4 лет.'],
+      src:[[KIDS_U.nurseryPay,'ZUS: aktywnie w żłobku']] },
+    {id:'home',tag:'Aktywny Rodzic · 12–35 мес',t:'Aktywnie w domu',big:'500',
+      x:'zł в месяц на ребёнка дома с 12 до 35 месяцев.',i:'Без проверки занятости, но надо соответствовать условиям пребывания; не совмещается с другими выплатами программы за тот же месяц.',
+      docs:['PESEL ребёнка, данные родителя и банковский счёт.','Для иностранцев: документ легального пребывания с правом работы по требованиям ZUS.'],
+      how:['Подай онлайн в eZUS/mZUS, банк или Emp@tia, начиная с месяца, в котором ребёнок достиг 12 месяцев.','Право обычно с месяца подачи, поэтому не откладывай.','Если на этого ребёнка уже полностью получен RKO 12 000 zł, эту выплату не назначат.'],
+      src:[[KIDS_U.homePay,'ZUS: aktywnie w domu']] },
+    {id:'dobry',tag:'Школа · до 30 ноября',t:'Dobry Start',big:'300',
+      x:'zł раз в учебный год на школьные принадлежности.',i:'Для учащихся до 20 лет, при инвалидности до 24. Не выплачивается за детский сад и zerówka.',
+      docs:['PESEL ребёнка, данные школы и польский банковский счёт.','Для иностранцев из стран вне ЕС: документы о законном пребывании и, где требуется, подтверждённой активности в Польше.'],
+      how:['Заявка онлайн с 1 июля по 30 ноября через eZUS/mZUS, банк или Emp@tia.','Для учебного года 2026/2027 активность иностранца проверяется по правилам, близким к 800+; не все категории обязаны работать.','Если началась переписка с ZUS, ответь через PUE/eZUS в установленный срок.'],
+      src:[[KIDS_U.dobry,'MRPiPS: Dobry Start 2026'],['https://www.gov.pl/web/gov/skorzystaj-z-programu-dobry-start2','gov.pl: заявка']] },
+    {id:'pit',tag:'PIT · каждый год',t:'Ulga na dzieci',big:'1 112',
+      x:'1 112,04 zł в год на первого и второго, 2 000,04 на третьего, 2 700 на каждого следующего.',i:'Возврат/уменьшение PIT по шкале; на одного ребёнка часто есть лимит дохода родителей.',
+      docs:['PESEL ребёнка или дата рождения и данные документа (если нет PESEL).','PIT-37 или PIT-36 и приложение PIT/O; сведения о доходах и числе месяцев права на льготу.'],
+      how:['В годовом PIT через Twój e-PIT или налоговую декларацию добавь ulgę prorodzinną и PIT/O.','При одном ребёнке действует лимит дохода (обычно 112 000 zł для супругов вместе или одинокого родителя; для не состоящего в браке обычно 56 000 zł). На двух и более детей этот лимит не применяется.','Льгота рассчитывается по месяцам; при ryczałt без доходов по шкале её не откуда вычитать.'],
+      src:[[KIDS_U.pit,'podatki.gov.pl: ulga na dziecko']] },
+    {id:'becik',tag:'Гмина · разово',t:'Becikowe',big:'1 000',
+      x:'zł один раз при рождении, с ограничением дохода семьи.',i:'Доход до 1 922 zł нетто на человека и наблюдение беременности не позднее 10-й недели; иностранцам важно основание пребывания.',
+      docs:['Акт рождения и PESEL ребёнка, документы личности/побыта, номер счёта.','Справка от врача или поłożnej о наблюдении беременности с 10-й недели и документы о доходах семьи.'],
+      how:['Заявление в орган выплат гмины (MOPS/GOPS либо городской центр świadczeń), где живёшь, или через Emp@tia, если услуга доступна.','Подай в течение 12 месяцев после рождения; при усыновлении действуют отдельные сроки.','Обычный легальный въезд или любая виза не всегда достаточны для иностранца: проверь перечень разрешений и международных соглашений в официальных условиях.'],
+      src:[[KIDS_U.becik,'gov.pl: becikowe']] },
+    {id:'rodz',tag:'Гмина · после рождения',t:'Świadczenie rodzicielskie',big:'1 000',
+      x:'zł в месяц обычно 52 недели за одного ребёнка.',i:'Для тех, кто не получает zasiłek macierzyński или аналогичную выплату; не зависит от дохода.',
+      docs:['Акт рождения ребёнка, PESEL, документы личности/пребывания и банковский счёт.','При необходимости документы об отсутствии права на пособие по материнству и подтверждения особых обстоятельств.'],
+      how:['Подай через местный орган семейных выплат или Emp@tia при доступности; чтобы начислили с месяца рождения, подай в течение 3 месяцев.','Если получаешь zasiłek macierzyński, двойной выплаты нет. Для иностранцев действуют специальные категории права на świadczenia rodzinne.','После 3 месяцев право обычно устанавливают с месяца обращения, а не задним числом.'],
+      src:[[KIDS_U.rodz,'gov.pl: świadczenie rodzicielskie']] }
+  ];
+  function kidLocal() {
+    if (S.city === 'gdansk') return { city:'Гданьске', usc:'USC Gdańsk, ul. Partyzantów 74', uscUrl:'https://www.gdansk.pl/urzad-miejski/urzad-stanu-cywilnego',
+      nursery:'Gdański Zespół Żłobków', nurseryUrl:'https://bip.gdansk.pl/gzz/', school:'Gdańska Platforma Edukacyjna', schoolUrl:'https://cms-panel.edu.gdansk.pl/pl/page/rekrutacja-26' };
+    if (S.city === 'gdynia') return { city:'Гдыне', usc:'USC Gdynia, al. Marszałka Piłsudskiego 52/54', uscUrl:'https://www.gdyniarodzinna.pl/bede-rodzicem/urzad-stanu-cywilnego/zgloszenie-narodzin-dziecka',
+      nursery:'Gdyńskie Centrum Zdrowia / rekrutacja Nullo', nurseryUrl:'https://gcz.gdynia.pl/opieka-nad-dziecmi-do-lat-3/placowki-publiczne/', school:'Gdynia Edukacyjna', schoolUrl:'https://edukacja.gdynia.pl/rekrutacja-do-przedszkoli-w-gdyni/' };
+    return { city: CITIES[S.city] ? CITIES[S.city].loc : 'твоём городе', usc:'USC по месту рождения', uscUrl:KIDS_U.usc,
+      nursery:'Городская система записи в ясли', nurseryUrl:'https://www.gov.pl/web/rodzina/zlobki-i-kluby-dzieciece', school:'Школа/сад по месту проживания', schoolUrl:'https://www.gov.pl/web/edukacja' };
+  }
+  function kidDetails(c) {
+    return '<details id="pl-d-kid-' + c.id + '"><summary><span>Документы и как подать</span>' + ms('expand_more') + '</summary>' +
+      '<div class="pb-kid-body"><b>Документы</b><ul class="pl-list">' + c.docs.map(function (s) { return '<li>' + s + '</li>'; }).join('') +
+      '</ul><b>Порядок действий</b><ol class="pb-kid-steps">' + c.how.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol></div></details>';
+  }
+  function kidCard(c, pay) {
+    return '<article class="pl-card pb-kid-card' + (pay ? ' pl-lvlcard' : '') + '" id="pl-kid-' + c.id + '">' +
+      '<div class="top">' + (pay ? '<span class="cico" style="background:var(--red);color:#fff">' + ms('child_care') + '</span>' : '<span class="pb-kid-dot" aria-hidden="true"></span>') +
+      '<span class="tag">' + c.tag + '</span></div><div class="t">' + c.t + '</div>' +
+      (pay ? '<div class="big">' + c.big + '</div>' : '') + '<div class="x">' + c.x + '</div>' +
+      (c.i ? '<p class="i">' + c.i + '</p>' : '') + kidDetails(c) +
+      srcLine(c.src) + '<p class="pl-note">Проверено 20.11.2026.</p></article>';
+  }
   function rKids() {
-    return '<section class="pl-band pb-screen" id="pl-kids" aria-labelledby="pl-kids-h">' + head('pl-kids', 'Дети. Сады. Ясли. Выплаты', '', '', '', 'PESEL, сад, школа, 800+') +
-      '<h3 class="pl-h3" style="margin-top:40px">Деньги на детей</h3>' +
-      '<p class="pl-lead" style="margin-top:8px">Всё подаётся онлайн: PUE ZUS, mZUS, банк или Emp@tia. Aktywny Rodzic дают иностранцам с картой побыту, которая открывает рынок труда. На одного ребёнка в месяц платят только один из трёх вариантов.</p>' +
-      '<div class="pl-cards" data-fitcells="120">' + KIDS_PAY.map(function (c) {
-        return '<article class="pl-card pl-lvlcard"><div class="top"><span class="cico" style="background:var(--c-life);color:#fff">' + ms(c.ic) + '</span><span class="tag">' + c.tag + '</span></div>' +
-          '<div class="t">' + c.t + '</div><div class="big">' + c.big + '</div><div class="x">' + c.x + '</div><div class="i"' + (c.red ? ' style="color:var(--red)"' : '') + '>' + c.i + '</div>' +
-          '<p class="pl-note" style="margin-top:auto">' + link(c.u, c.s) + ', проверено 16.11.2026</p></article>';
-      }).join('') + '</div>' +
-      lifeAcc(['kids']) + '</section>';
+    var local = kidLocal();
+    var education = [
+      {id:'nursery',tag:'С 20 недель жизни',t:'Ясли и детский сад',x:'Запись в żłobek зависит от города, а dofinansowanie от ZUS оформляется отдельно.',
+       docs:['Акт рождения и PESEL ребёнка, данные родителей.','Подтверждения критериев муниципальной очереди, например работы/проживания, если их требует местный регламент.'],
+       how:['В ' + local.city + ' ориентируйся на ' + link(local.nurseryUrl,local.nursery) + '. Частный żłobek и клуб тоже нужно проверять в государственном реестре.','Подай заявку по правилам конкретного города, проверь очередь, подтверждай интерес к месту при требовании системы.','После фактического начала посещения ребёнка отдельно подай на Aktywnie w żłobku в ZUS. Для przedszkole действуют отдельные наборы и возрастные правила.'],
+       src:[[local.nurseryUrl,'официальная запись/правила яслей'],[KIDS_U.nurseryPay,'ZUS: финансирование']]},
+      {id:'school',tag:'По месту проживания',t:'Сад, zerówka, школа',x:'Набор в общественные учреждения проходит по календарю гмины; иностранный паспорт не исключает ребёнка из системы образования.',
+       docs:['Акт рождения/PESEL ребёнка, адрес проживания, документы родителей.','При необходимости: подтверждение льготных критериев, документы о предыдущем обучении, переводы.'],
+       how:['Для ' + local.city + ' проверь ' + link(local.schoolUrl,local.school) + ' и сроки именно следующего учебного года.','Przedszkole обычно для детей 3–6 лет; в 6 лет обязательна zerówka, с 7 лет начальная школа. Запись в школу по обводу и вне обвода может различаться.','При переезде сообщи школе и проверь новую placówka; адрес посещения важнее гражданства.'],
+       src:[[local.schoolUrl,'муниципальный набор'],['https://www.gov.pl/web/edukacja','gov.pl: образование']] }
+    ];
+    var area = S.city === 'gdansk' || S.city === 'gdynia';
+    return '<section class="pl-band pb-screen" id="pl-kids" aria-labelledby="pl-kids-h">' +
+      '<div class="pb-kids-head">' + head('pl-kids','Дети','','','','Беременность, документы, NFZ, сад и выплаты') + '</div>' +
+      '<p class="pb-kid-intro">От беременности до школы. У каждого шага есть документы, порядок действий и официальный источник. Город в шапке меняет местные адреса.</p>' +
+      '<div class="pb-kid-city"><b>Твой город: ' + esc(city().n) + '.</b> ' +
+      (area ? 'Если малыш родился в ' + (S.city === 'gdansk' ? 'Гданьске' : 'Гдыне') + ', регистрируй в ' + link(local.uscUrl,local.usc) + '. ' : '') +
+      'USC определяется местом рождения, а не проживания. За ВНЖ ребёнка отвечает воеводский отдел по месту проживания: ' +
+      link(VOIV[city().vo].u,VOIV[city().vo].uw + ' Urząd Wojewódzki') + '.</div>' +
+      '<h2 class="pl-h3 pb-kid-group">Беременность и первые дни</h2>' +
+      '<div class="pl-cards pb-kid-grid">' + KIDS_STEPS.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
+      '<h2 class="pl-h3 pb-kid-group">Легализация ребёнка</h2>' +
+      '<p class="pb-kid-sub">Рождение в Польше, PESEL и karta pobytu родителя не дают ребёнку собственного права пребывания автоматически. Смотри статус родителя в день рождения и подавай отдельно.</p>' +
+      '<div class="pl-cards pb-kid-grid">' + KIDS_LEGAL.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
+      '<h2 class="pl-h3 pb-kid-group">Ясли и образование</h2>' +
+      '<div class="pl-cards pb-kid-grid">' + education.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
+      '<h2 class="pl-h3 pb-kid-group">Выплаты</h2>' +
+      '<p class="pb-kid-sub">На одного ребёнка в одном месяце выбирают только один из трёх вариантов Aktywny Rodzic. 800+, налоговая льгота и выплаты гмины имеют отдельные условия.</p>' +
+      '<div class="pl-cards pb-kid-grid" data-fitcells="120">' + KIDS_PAY.map(function (c) { return kidCard(c,true); }).join('') + '</div>' +
+      '</section>';
   }
 
   function rAuto() {
