@@ -12,6 +12,12 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/bialorusini.html';
       page.on('pageerror', e => errors.push(e.message));
       page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
       await page.goto(url, { waitUntil:'domcontentloaded' });
+      // Local http.server serves /bialorusini.html; Pages rewrites /bialorusini to it.
+      // Recreate the production pathname before asking the SPA to route.
+      await page.evaluate(() => {
+        history.replaceState(null, '', '/bialorusini');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      });
       await page.waitForSelector('#pl-by .pb-col', { state:'visible' });
       await page.waitForTimeout(250);
       const r = await page.evaluate(() => ({
