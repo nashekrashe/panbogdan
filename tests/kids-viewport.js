@@ -25,20 +25,23 @@ const url=process.argv[2]||'http://127.0.0.1:8765/dzieci.html';
       await page.waitForTimeout(200);
       // Topic groups and individual cards must remember the user's choice across navigations.
       const group=page.locator('#pb-fold-kid-pregnancy > summary');
-      await group.click();
+      await group.click({position:{x:8,y:8}});
       await page.waitForTimeout(80);
       const saved=await page.evaluate(()=>{
         const state=JSON.parse(localStorage.getItem('pb-poland-v2')||'{}');
         return state.folds && state.folds['pl-kids:pb-fold-kid-pregnancy'];
       });
-      if(saved!==false)throw new Error('closed topic state not saved at '+width);
+      if(saved!==false) {
+        const d=await page.evaluate(()=>({open:document.querySelector('#pb-fold-kid-pregnancy').open,touched:document.querySelector('#pb-fold-kid-pregnancy').getAttribute('data-fold-touched'),stored:JSON.parse(localStorage.getItem('pb-poland-v2')||'{}').folds}));
+        throw new Error('closed topic state not saved at '+width+': '+JSON.stringify(d));
+      }
       await page.goto(url,{waitUntil:'domcontentloaded'});
       await page.evaluate(()=>{history.replaceState(null,'','/dzieci');window.dispatchEvent(new PopStateEvent('popstate'));});
       await page.waitForSelector('#pl-kids .pb-kid-card',{state:'attached'});
       if(await page.locator('#pb-fold-kid-pregnancy').getAttribute('open')!==null)throw new Error('saved topic state not restored at '+width);
       if (await page.locator('#pl-kid-temporary').count()!==1 || await page.locator('#pl-kid-permanent').count()!==0) throw Error('wrong legal route restored at '+width);
       if (!await page.locator('#pl-kid-temporary [data-check="kid-legal-temporary-doc-0"]').isChecked()) throw Error('document state not restored at '+width);
-      await group.click();
+      await group.click({position:{x:8,y:8}});
       await page.waitForTimeout(80);
       const r=await page.evaluate(()=>({
         win:innerWidth,doc:document.documentElement.scrollWidth,
