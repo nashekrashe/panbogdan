@@ -463,6 +463,41 @@
     { n: 'Alior', s: 1, t: 'Беларусь в списке стран высокого риска. На каждый счёт нужно отдельное согласие банка.', d: '2022', u: RP22, src: 'rp.pl' },
     { n: 'PKO BP', s: 1, t: 'Счёт открывают, но если он открыт после 24.10.2025 без карты побыту, нет приложения, BLIK и карты, пока не покажешь в отделении документ на пребывание.', d: '4.12.2025', u: 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', src: 'pkobp.pl' }
   ];
+  /* Mortgage offers: bank representative examples, not comparable individual quotes. Bank pages checked 20.11.2026.
+     All four rows use a periodically fixed nominal rate for the first five years; RRSO includes modelled costs.
+     Keep the numeric pair together and re-verify before changing either figure. */
+  var MORT_BANK_OFFERS = [
+    { n:'ING Bank Śląski', rate:'6,07%', rrso:'6,56%', down:'от 20%', example:'Jesień na swoim, Łatwy start',
+      terms:'Фиксированная ставка 5 лет. В примере: комиссия 0%, счёт ING GO, страховка жизни на 3 года, страхование недвижимости и оценка 560 zł.',
+      asof:'пример осени 2026', u:'https://www.ing.pl/indywidualni/kredyty-i-pozyczki/kredyt-hipoteczny' },
+    { n:'Bank Pekao', rate:'6,29%', rrso:'6,77%', down:'30,18% в примере', example:'Kredyt mieszkaniowy',
+      terms:'Фиксированная ставка 5 лет. В примере: ежемесячные поступления на счёт от 3 000 zł, страховка жизни первые 4 года, страхование жилья и платная дебетовая карта.',
+      asof:'пример на сайте банка', u:'https://www.pekao.com.pl/klient-indywidualny/wlasne-mieszkanie-lub-dom/kredyt-hipoteczny.html' },
+    { n:'PKO Bank Polski', rate:'6,57%', rrso:'7,93%', down:'от 10%', example:'Własny Kąt hipoteczny',
+      terms:'Фиксированная ставка 5 лет, в примере со скидкой 1 п.п. В примере: поступления на счёт от 3 000 zł/мес, страховка жизни и недвижимости, комиссия 0%.',
+      asof:'база ставки от 05.10.2026', u:'https://www.pkobp.pl/klient-indywidualny/kredyty-pozyczki/kredyt-hipoteczny' },
+    { n:'mBank', rate:'6,77%', rrso:'7,41%', down:'от 10%', example:'Stała Pewność, edycja 3, активный клиент',
+      terms:'Фиксированная ставка 5 лет. В промо: счёт с поступлениями и страховка жизни/здоровья/потери работы на 5 лет. В примере: 0% комиссия и оценка 400 zł.',
+      asof:'пример от 19.10.2026', u:'https://www.mbank.pl/indywidualny/kredyty/kredyty-hipoteczne/chce-kredyt-hipoteczny' }
+  ];
+  function rBankMortgages() {
+    return '<section class="pb-bank-mort" aria-labelledby="pb-bank-mort-h">' +
+      '<div class="pb-bank-mort-head"><h3 class="pl-h3" id="pb-bank-mort-h">Ипотека: ставки по банкам</h3>' +
+      '<span class="pl-muted pl-xs">Проверено 20.11.2026</span></div>' +
+      '<p class="pb-bank-mort-intro">Публичные репрезентативные примеры банков, не персональные предложения. Все ставки ниже фиксированы на первые 5 лет. После этого условия могут измениться.</p>' +
+      '<div class="pb-bank-mort-list">' +
+      MORT_BANK_OFFERS.map(function (b) {
+        return '<article class="pb-bank-mort-row">' +
+          '<div class="pb-bank-mort-n"><b>' + b.n + '</b><small>' + b.example + '</small></div>' +
+          '<div class="pb-bank-mort-rate"><b>' + b.rate + '</b><small>ставка, 5 лет</small></div>' +
+          '<div class="pb-bank-mort-rate pb-bank-mort-apr"><b>' + b.rrso + '</b><small>RRSO</small></div>' +
+          '<div class="pb-bank-mort-terms"><b>Взнос: ' + b.down + '</b><p>' + b.terms + '</p>' +
+          '<span class="pl-note">' + link(b.u,'Пример на сайте банка') + ' · ' + b.asof + '</span></div>' +
+        '</article>';
+      }).join('') + '</div>' +
+      '<p class="pl-note pb-bank-mort-foot">RRSO включает расходы по условиям конкретного примера: страховки, комиссии и другие затраты. Из-за разных сумм, сроков и взносов проценты нельзя считать прямым рейтингом. Получение ипотеки иностранцем банк проверяет отдельно от открытия счёта.</p>' +
+      '<a class="pb-seclink pb-bank-mort-home" href="' + hrefOf(secBy('home')) + '">Калькулятор платежа и кредитоспособности в разделе «Дом»</a></section>';
+  }
   var BANK_LBL = { 3: 'Свой', 2: 'С анкетой', 1: 'Строгий' };
   /* Mortgage capacity. KNF Rekomendacja S: the bank tests the payment at the rate + a buffer (variable: max(5 p.p. − NBP rate; 2.5 p.p.), NBP 3.75% → 2.5;
      periodically fixed for 5 years: 2.5) and over at most 25 years. Payment limit = min(DSTI × income, income − living costs) − other debts.
@@ -566,6 +601,10 @@
 
   var SOURCES = [
     ['Цены на топливо: Weekly Oil Bulletin (Еврокомиссия)', 'https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en'], ['Курс евро NBP (таблица A)', 'https://api.nbp.pl/'], ['USD/PLN: средний курс NBP, таблица A', 'https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json'],
+    ['Ипотека ING: 5-летняя ставка и RRSO, пример осени 2026', 'https://www.ing.pl/indywidualni/kredyty-i-pozyczki/kredyt-hipoteczny'],
+    ['Ипотека Pekao: 5-летняя ставка, RRSO и условия поступлений на счёт', 'https://www.pekao.com.pl/klient-indywidualny/wlasne-mieszkanie-lub-dom/kredyt-hipoteczny.html'],
+    ['Ипотека PKO BP: Własny Kąt, пример от октября 2026', 'https://www.pkobp.pl/klient-indywidualny/kredyty-pozyczki/kredyt-hipoteczny'],
+    ['Ипотека mBank: Stała Pewność ed. 3, пример 19.10.2026', 'https://www.mbank.pl/indywidualny/kredyty/kredyty-hipoteczne/chce-kredyt-hipoteczny'],
     ['Ипотеки в сентябре 2026 (BIK)', 'https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r'], ['Процент по новым ипотекам, сентябрь 2026 (NBP)', 'https://finwire.pl/artykuly/nowe-kredyty-mieszkaniowe-wrzesien-2026-nbp'],
     ['PKO BP: счета беларусов без карты побыту', 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu'], ['Санкции ЕС против Беларуси, регламент 2025/2041', 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041'],
     ['Karta Polaka: оформление в Польше', 'https://wsc.gdansk.uw.gov.pl/pl/procedury/przyznanie-karty-polaka'], ['Karta Polaka: выплата', 'https://wsc.gdansk.uw.gov.pl/pl/procedury/swiadczenie-pieniezne-dla-posiadacza-karty-polaka'],
@@ -1295,6 +1334,8 @@
           '<p>Ставка, платёж и сколько банк может дать на жильё.</p>' +
           '<a class="pb-seclink" href="' + hrefOf(secBy('home')) + '">Ипотека и калькулятор в разделе «Дом»</a></div>' +
       '</div>' +
+      rBankMortgages() +
+      '<h3 class="pl-h3 pb-bank-account-head">Открытие счёта для беларусов</h3>' +
       '<ol class="pl-banks">' + BANKS.map(function (b, i) {
         return '<li><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
           '<span class="pl-bank-s" aria-label="Лояльность ' + b.s + ' из 3: ' + BANK_LBL[b.s] + '"><span class="pl-dots">' + [1, 2, 3].map(function (k) { return '<i' + (k <= b.s ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' + BANK_LBL[b.s] + '</span>' +
