@@ -12,7 +12,7 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/banki.html';
       const errors=[];
       page.on('pageerror', e => errors.push(e.message));
       await page.route('https://api.nbp.pl/**', route => route.fulfill({
-        status:200,contentType:'application/json',
+        status:200,contentType:'application/json',headers:{'access-control-allow-origin':'*'},
         body:JSON.stringify({table:'A',code:'USD',rates:[{effectiveDate:'2026-11-20',mid:3.9876}]})
       }));
       await page.goto(url,{waitUntil:'domcontentloaded'});
