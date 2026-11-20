@@ -5,7 +5,7 @@
 
   /* ---------- state ---------- */
   var KEY = 'pb-poland-v2';
-  var DEF = { city: 'gdansk', geo: null, cityManual: false, stage: 'arrive', legal: 'vnzh', contract: 'uop', status: {}, checks: {}, f: { brutto: '7000', pit2: true, rev: '15000', cost: '500', taxf: 'rycz', rate: '12', zusl: 'auto', mInc: '', mInc2: '0', mAd: '1', mKids: '0', mDebt: '0', mLim: '0', mOwn: '150000', mRate: '5.95', mYears: '25', mLtv: '80', mMkt: 'wt', mFirst: false, mLife: true, cons: '7', dist: '340', price: '6.00', cpath: 'std', invMonths: '1', invDeps: '0', invGuests: '1', invTrip: 'near', invRel: false }, trips: [] };
+  var DEF = { city: 'gdansk', geo: null, cityManual: false, stage: 'arrive', legal: 'vnzh', contract: 'uop', status: {}, checks: {}, folds: {}, f: { brutto: '7000', pit2: true, rev: '15000', cost: '500', taxf: 'rycz', rate: '12', zusl: 'auto', mInc: '', mInc2: '0', mAd: '1', mKids: '0', mDebt: '0', mLim: '0', mOwn: '150000', mRate: '5.95', mYears: '25', mLtv: '80', mMkt: 'wt', mFirst: false, mLife: true, cons: '7', dist: '340', price: '6.00', cpath: 'std', invMonths: '1', invDeps: '0', invGuests: '1', invTrip: 'near', invRel: false }, trips: [] };
   function load() { try { var s = JSON.parse(localStorage.getItem(KEY)); return s && typeof s === 'object' ? s : null; } catch (e) { return null; } }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
   var S = Object.assign({}, DEF, load() || {});
