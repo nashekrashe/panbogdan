@@ -2204,12 +2204,13 @@
       }
       if (host.id !== slug && !host.querySelector('[id="' + slug + '"]')) {
         var marker = document.createElement('span');
-        marker.id = slug; marker.hidden = true; marker.setAttribute('aria-hidden', 'true');
+        marker.id = slug; marker.className = 'pb-anchor-target'; marker.hidden = true; marker.setAttribute('aria-hidden', 'true');
         host.insertBefore(marker, host.firstChild);
       }
       host.classList.add('pb-share-host');
       var title = host.matches('h2,h3,h4,dt,b,.pl-lab,.pl-eyebrow') ? host :
         host.querySelector(':scope > summary .t, :scope > summary h2, :scope > summary h3, :scope > .pl-tool-h, :scope > .pb-col-h h3, :scope > .pb-bank-mort-head h3, :scope > .pb-bank-mort-n b, :scope > .pb-bank-label, :scope > .pl-bank-n, :scope > .pb-nw-h, :scope > .pl-h3, :scope > .t, :scope > h2, :scope > h3, :scope > dt, :scope > .pb-mine-h h2');
+      if (host.classList.contains('pb-by-group')) title = host.querySelector(':scope > summary p') || title;
       if (!title) title = host.querySelector('.pl-h3, .pl-tool-h, .pl-eyebrow, .pl-lab, .t, h3, h2, dt');
       if (title && !title.querySelector('.pb-anchor-copy')) {
         var name = title.textContent.trim().replace(/\s+/g, ' ').slice(0, 90);
@@ -2320,7 +2321,7 @@
     if (ni > -1) { nwpOpen(ni); return; }
     nwpHide();
     if (r.el) {
-      var target = r.el.closest('[data-share]') || r.el;
+      var target = r.el.classList && r.el.classList.contains('pb-anchor-target') ? (r.el.closest('[data-share]') || r.el) : r.el;
       /* Selecting an inner step also selects its legalisation tab. */
       var panel = target.closest('[role="tabpanel"][id^="pl-panel-"]');
       if (panel && panel.id !== 'pl-panel-' + S.legal) {
@@ -2328,7 +2329,7 @@
       }
       /* Hidden tax card: switch to a contract for which the card applies. */
       var byContract = target.closest('[data-w]');
-      if (byContract && byContract.hidden) {
+      if (byContract && byContract.getAttribute('data-w').split(' ').indexOf(S.contract) < 0) {
         var contract = (byContract.getAttribute('data-w') || '').split(' ')[0];
         if (CONTRACTS[contract]) { S.contract = contract; save(); applyTabs(); }
       }
