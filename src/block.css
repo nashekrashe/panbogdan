@@ -1156,3 +1156,37 @@ html.pb-nwp-on{overflow:hidden}
   .pb-by-heading p{margin-top:6px}
   .pb-by-group .pb-col{padding:20px 0}
 }
+
+
+/* Children: concise right-hand subtitle, expandable practical cards */
+.pb-kids-head .pl-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px 24px;flex-wrap:wrap}
+.pb-kids-head .pl-head .pl-small{font-size:12px;line-height:1.4;max-width:320px;text-align:right;margin-left:auto}
+.pb-kid-intro{font-size:clamp(15px,1.15vw,18px);max-width:780px;color:var(--mut);margin-top:16px;line-height:1.5}
+.pb-kid-city{margin-top:24px;border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:14px;line-height:1.55;overflow-wrap:anywhere}
+.pb-kid-group{margin-top:clamp(36px,4.5vw,64px);padding-bottom:12px;border-bottom:1px solid var(--line)}
+.pb-kid-sub{margin-top:12px;font-size:14px;color:var(--mut);max-width:760px;line-height:1.5}
+.pb-kid-grid{margin-top:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));align-items:stretch}
+.pb-kid-card{gap:12px;overflow-wrap:anywhere}
+.pb-kid-card .top{min-height:32px}
+.pb-kid-card .top .tag{text-align:right;line-height:1.35}
+.pb-kid-card .t{font-size:clamp(18px,1.45vw,22px)}
+.pb-kid-card .x{line-height:1.5}
+.pb-kid-card .i{font-size:13px;font-style:normal;line-height:1.45}
+.pb-kid-card .big{font-size:clamp(50px,5vw,86px);line-height:.93}
+.pb-kid-dot{display:block;width:9px;height:9px;background:var(--red);border-radius:50%;flex:0 0 auto}
+.pb-kid-card details{margin-top:auto;padding-top:6px}
+.pb-kid-card details summary{gap:10px;font-size:14px;min-height:36px;line-height:1.3}
+.pb-kid-card details summary .ms{font-size:20px;transition:transform .2s;flex:0 0 auto}
+.pb-kid-body{padding:12px 0 8px;font-size:13px;line-height:1.55}
+.pb-kid-body b{display:block;font-size:13px;margin:10px 0 4px}
+.pb-kid-body .pl-list{margin:0 0 12px;padding:0 0 0 18px}
+.pb-kid-body .pl-list li,.pb-kid-steps li{margin:0 0 8px}
+.pb-kid-steps{list-style:decimal!important;margin:0;padding-left:20px}
+.pb-kid-card>.pl-note{font-size:12px;line-height:1.5;margin-top:0}
+.pb-kid-card>.pl-note a{overflow-wrap:anywhere}
+@media (max-width:600px){
+ .pb-kids-head .pl-head{align-items:flex-start}
+ .pb-kids-head .pl-head .pl-small{width:100%;max-width:none;text-align:left;margin:0;font-size:12px}
+ .pb-kid-grid{gap:12px}
+ .pb-kid-card{padding:18px}
+}
