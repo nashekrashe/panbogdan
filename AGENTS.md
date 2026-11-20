@@ -12,7 +12,7 @@ panbogdan.com: ироничный геймифицированный гайд н
 - В текстах сайта и в дизайне **нет длинных тире** (—). Тест `t15.js` это проверяет.
 - Только проверенная информация. У каждого блока источник и дата проверки (`srcLine`, `SOURCES`). Цифры не по памяти: найди, открой, сверь. Нет пруфа, не пиши.
 - **Не ссылаться** на ресурсы, запрещённые или «экстремистские» в Беларуси: nashaniva, zerkalo, belsat, euroradio, mostmedia, dev.by / devby.io, reform.news, belarus-nau, charter97, svaboda. Это риск для читателей.
-- Написание: «беларус», «по-беларуски», «беларуский» (одна «с»). Polski dokument podróży называется «Документ Подружи».
+- Написание: «беларус», «по-беларуски», «беларуский» (одна «с»). В пользовательском интерфейсе использовать термин «dokument podróży» вместо русского «документ путешествия» или прозвища «Документ Подружи».
 - Пароли не вводить. Покупки, регистрации, оплаты и действия в панелях Cloudflare/GitHub с логином делает Павел.
 - Ничего не удалять безвозвратно. Файлы скачивать только с подтверждения. `git push --force` и переписывание истории запрещены.
 - **Прод (`main`) только после явного «заливай» или «лей»** на конкретное изменение. `redesign` и `staging` можно без спроса.
@@ -49,7 +49,7 @@ git merge-base --is-ancestor origin/main HEAD && git push origin HEAD:main
 - `python3 build/mksite.py`: `site/` со страницей на каждый раздел (`/legalizacja`, `/aktualnosci`, `/bialorusini`, `/pieniadze`, `/banki`, `/dzieci`, `/dom`, `/auto`, `/pomoc`, `/slownik`), пререндер текста через `build/prerender.js`.
 - Тесты jsdom: `NODE_PATH=build/node_modules node tests/t5.js` (и t9, t13, t14, t15). `node tests/mortval.js` проверяет модель ипотеки.
 - `tests/tm1–tm5.js` на Playwright: нужен `npm i playwright && npx playwright install chromium`.
-- Известное на 20.11.2026: в `t15.js` падает одна проверка «full document list plus timing rows» (сроки Документа Подружи есть только для 4 воеводств). Остальное зелёное.
+- Известное на 20.11.2026: в `t15.js` падает одна проверка «full document list plus timing rows» (сроки dokument podróży есть только для 4 воеводств). Остальное зелёное.
 
 ## Как устроен код (коротко)
 
