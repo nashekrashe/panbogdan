@@ -5,7 +5,7 @@
 
   /* ---------- state ---------- */
   var KEY = 'pb-poland-v2';
-  var DEF = { city: 'gdansk', geo: null, cityManual: false, stage: 'arrive', legal: 'vnzh', contract: 'uop', status: {}, checks: {}, folds: {}, f: { brutto: '7000', pit2: true, rev: '15000', cost: '500', taxf: 'rycz', rate: '12', zusl: 'auto', mInc: '', mInc2: '0', mAd: '1', mKids: '0', mDebt: '0', mLim: '0', mOwn: '150000', mRate: '5.95', mYears: '25', mLtv: '80', mMkt: 'wt', mFirst: false, mLife: true, cons: '7', dist: '340', price: '6.00', cpath: 'std', invMonths: '1', invDeps: '0', invGuests: '1', invTrip: 'near', invRel: false }, trips: [] };
+  var DEF = { city: 'gdansk', geo: null, cityManual: false, kidPath: '', stage: 'arrive', legal: 'vnzh', contract: 'uop', status: {}, checks: {}, folds: {}, f: { brutto: '7000', pit2: true, rev: '15000', cost: '500', taxf: 'rycz', rate: '12', zusl: 'auto', mInc: '', mInc2: '0', mAd: '1', mKids: '0', mDebt: '0', mLim: '0', mOwn: '150000', mRate: '5.95', mYears: '25', mLtv: '80', mMkt: 'wt', mFirst: false, mLife: true, cons: '7', dist: '340', price: '6.00', cpath: 'std', invMonths: '1', invDeps: '0', invGuests: '1', invTrip: 'near', invRel: false }, trips: [] };
   function load() { try { var s = JSON.parse(localStorage.getItem(KEY)); return s && typeof s === 'object' ? s : null; } catch (e) { return null; } }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
   var S = Object.assign({}, DEF, load() || {});
@@ -14,6 +14,7 @@
   if (['uop', 'zlec', 'dzielo', 'b2b'].indexOf(S.contract) < 0) S.contract = 'uop';
   S.status = S.status || {}; S.checks = S.checks || {}; S.trips = Array.isArray(S.trips) ? S.trips : [];
   S.folds = S.folds && typeof S.folds === 'object' && !Array.isArray(S.folds) ? S.folds : {};
+  if (['citizen', 'temporary', 'permanent', 'pending'].indexOf(S.kidPath) < 0) S.kidPath = '';
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -334,10 +335,10 @@
     { id: 'life', t: 'Жизнь и поездки', s: 'Авто, дети и официальная информация' }
   ];
   var BELARUS = [
-    { g: 'docs', ic: 'luggage', t: 'Документ Подружи', s: 'Polski dokument podróży dla cudzoziemca', b: [
+    { g: 'docs', ic: 'luggage', t: 'dokument podróży', s: 'Polski dokument podróży dla cudzoziemca', b: [
       'Польская замена паспорту, если свой истёк, потерян, испорчен или его никогда не было, а в посольство нельзя. Подтверждает личность и гражданство, по нему можно много раз пересекать границу. Действует 1 год. Это не польский паспорт и не гражданство, и по упрощённому порядку для беларусов не нужно доказывать, что свой паспорт невозможно получить.',
       'Кому: беларусам с ВНЖ на любом основании, ПМЖ, rezydentem UE, гуманитаркой или ochroną uzupełniającą. Доказывать, что в Беларуси паспорт не получить, не надо. По упрощённым правилам заявление надо подать до 31.12.2026. Для беларусов бесплатно, обычная цена 350 zł.',
-      'Для поездок за границу проверь требования страны назначения. Документ Подружи сам по себе не заменяет карту побыту или визу для возвращения и пребывания. Отдельная проблема: членам семьи граждан ЕС на особом основании пребывания этот документ может быть недоступен.',
+      'Для поездок за границу проверь требования страны назначения. dokument podróży сам по себе не заменяет карту побыту или визу для возвращения и пребывания. Отдельная проблема: членам семьи граждан ЕС на особом основании пребывания этот документ может быть недоступен.',
       '<div class="pl-acc"><details><summary><span class="t">Полный список документов</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><div class="pl-checks pl-docs">' + [
         '<b>Wniosek o wydanie/wymianę polskiego dokumentu podróży dla cudzoziemca</b>, 1 экземпляр. Бланк на сайте ужонда или в MOS.',
         '<b>2 биометрические фотографии</b> как на польский паспорт, не старше 6 месяцев, подписанные.',
@@ -437,7 +438,7 @@
       'Если ребёнок остался без возможности оформить паспорт, сохрани подтверждения обстоятельств и обратись за правовой консультацией до подачи заявления.'
     ], src: [['https://www.gov.pl/web/gov/zglos-urodzenie-dziecka', 'gov.pl: рождение'], ['https://mos.cudzoziemcy.gov.pl/kategorie-informacji/mozliwosci-legalizacji/spoza-ue-kontynuacja-pobytu/zezwolenie-czasowy/pobyt-z-rodzina/dziecko-cudzoziemca-urodzone-w-pl/', 'MOS: ребёнок'], ['https://wsc.gdansk.uw.gov.pl/pl/procedury/maloletnie-dziecko-cudzoziemca', 'Поморский ужонд: ребёнок']], checked: '20.11.2026' },
     { g: 'life', ic: 'language', t: 'Официально по-беларуски', s: 'Правительственный портал', b: [
-      'На gov.pl есть материалы по-беларуски. Часть инструкций там устаревает: например, старые страницы ещё показывают прежние сроки Документа Подружи. Всегда сравни дату публикации с текущими сообщениями UdSC и MOS.',
+      'На gov.pl есть материалы по-беларуски. Часть инструкций там устаревает: например, старые страницы ещё показывают прежние сроки dokument podróży. Всегда сравни дату публикации с текущими сообщениями UdSC и MOS.',
       'Основные юридические условия проверяй на польских страницах ужонда и в действующих нормативных актах.'
     ], src: [['https://www.gov.pl/web/by', 'gov.pl/web/by'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'UdSC: новая дата']], checked: '20.11.2026' }
   ];
@@ -758,8 +759,8 @@
           '<select data-city-sel id="pl-city" aria-label="Твой город" aria-describedby="pl-geo-msg"><option value="__geo">Определить по геолокации</option>' + CITY_ORDER.map(function (id) {
             return '<option value="' + id + '"' + (id === S.city ? ' selected' : '') + '>' + CITIES[id].n + '</option>';
           }).join('') + '</select></label></span>' +
-        '<span class="pb-dd"><label class="pb-pill">' + (set ? '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>' : '<span>Где ты сейчас?</span>') + chev() +
-          '<select data-stage-sel aria-label="Где ты сейчас">' + (set ? '' : '<option value="" selected disabled>Где ты сейчас?</option>') + STAGES.map(function (s) {
+        '<span class="pb-dd"><label class="pb-pill">' + (set ? '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>' : '<span>На каком ты свете?</span>') + chev() +
+          '<select data-stage-sel aria-label="Где ты сейчас">' + (set ? '' : '<option value="" selected disabled>На каком ты свете?</option>') + STAGES.map(function (s) {
             return '<option value="' + s.id + '"' + (set && s.id === S.stage ? ' selected' : '') + '>' + s.n + '</option>';
           }).join('') + '</select></label></span>' +
       '</div>' +
@@ -1365,33 +1366,84 @@
       docs:['PESEL ребёнка и его данные из акта рождения.','Данные родителя, за счёт которого оформляется страхование; для выбора POZ нужна декларация.'],
       how:['При umowa o pracę или zlecenie передай работодателю данные для ZUS ZCNA. При JDG подай ZCNA самостоятельно. На это 7 дней после присвоения PESEL.','В отдельной placówka POZ подай декларации: lekarz POZ, pielęgniarka POZ, położna POZ. Можно выбрать не по прописке; при наличии услуги также через IKP.','Убедись, что ребёнок отображается в mojeIKP. Обновление данных после ZCNA может занять до 21 дня; одного акта рождения для зачисления в NFZ недостаточно.'],
       src:[[KIDS_U.nfz,'pacjent.gov.pl: страхование ребёнка'],['https://pacjent.gov.pl/system-zdrowia/podstawowa-opieka-zdrowotna','pacjent.gov.pl: выбор POZ']] },
-    { id:'passport', tag:'Для иностранного ребёнка', t:'Гражданство и документ для поездок',
+    { id:'passport', tag:'Для иностранного ребёнка', t:'Гражданство и dokument podróży',
       x:'Польское свидетельство о рождении само по себе не заменяет национальный паспорт.',
       docs:['Польский odpis aktu urodzenia, документы личности и гражданства родителей.','Согласия и дополнительные документы для консульства по правилам государства гражданства ребёнка.'],
-      how:['Уточни в консульстве государства гражданства родителей, как оформить гражданство и первый паспорт ребёнка. Требования зависят от страны.','Перед заявлением на pobyt приготовь действующий документ путешествия ребёнка либо уточни в ужонде допустимое исключение.','Не планируй выезд только с PESEL, актом рождения или UPO: они не заменяют паспорт/проездной документ и право на повторный въезд.'],
+      how:['Уточни в консульстве государства гражданства родителей, как оформить гражданство и первый паспорт ребёнка. Требования зависят от страны.','Перед заявлением на pobyt приготовь действующий dokument podróży ребёнка либо уточни в ужонде допустимое исключение.','Не планируй выезд только с PESEL, актом рождения или UPO: они не заменяют паспорт/проездной документ и право на повторный въезд.'],
       src:[[KIDS_U.passport,'MOS: документ ребёнка и явка'],[KIDS_U.usc,'gov.pl: акт рождения']] }
   ];
+  /* The four distinct routes. Status of parent at birth can decide legal basis. Checked 20.11.2026. */
   var KIDS_LEGAL = [
-    { id:'citizen', tag:'Один родитель поляк', t:'Ребёнок с польским гражданством',
-      x:'Если хотя бы один родитель гражданин Польши на день рождения, ребёнок получает польское гражданство по происхождению.',
-      docs:['Польский акт рождения, документ польского родителя.','Подтверждение родства; при необходимости документы иностранного родителя.'],
-      how:['Зарегистрируй рождение через USC, как обычно.','Оформи ребёнку польский паспорт или dowód osobisty по правилам для граждан. ВНЖ ему не нужен.','Если родители не в браке, уладь признание отцовства, чтобы родство было отражено в акте.'],
-      src:[[KIDS_U.polish,'Ustawa o obywatelstwie polskim, art. 14'],[KIDS_U.usc,'gov.pl: USC']] },
-    { id:'temporary', tag:'Родитель: виза D / временный ВНЖ', t:'Ребёнку временный pobyt',
-      x:'Специальная процедура для родившихся в Польше в период действия национальной визы или выданного временного ВНЖ родителя.',
-      docs:['Акт рождения ребёнка и его документ путешествия.','Решение/карта временного ВНЖ родителя или паспорт с действовавшей национальной визой D.','Подтверждения страховки, дохода/содержания и прочие приложения, если требует основание.'],
-      how:['Проверь, что родитель имел национальную визу D или временный ВНЖ в день рождения и продолжает пребывать на том же основании на день решения. Если статус сменился, этот специальный путь может не подойти.','Родитель подаёт отдельное заявление на pobyt czasowy ребёнка через MOS. С 27.04.2026 заявления на pobyt только электронные; старые инструкции ужондов о почтовой подаче устарели.','Следи за wezwanie: для ребёнка до 6 лет обычно явится родитель с документом малыша. Действие разрешения ограничивается сроком визы/разрешения родителя, максимум 3 года.'],
-      src:[[KIDS_U.temporary,'Поморский ужонд: ребёнок и виза/ВНЖ'],[KIDS_U.mos,'UdSC: подача в MOS']] },
-    { id:'permanent', tag:'Родитель: ПМЖ / резидент ЕС', t:'Когда ребёнку доступен pobyt stały',
-      x:'Важны дата рождения и история разрешений родителя; наличие ПМЖ сейчас не даёт ребёнку ПМЖ автоматически.',
-      docs:['Акт рождения ребёнка, его документ путешествия.','Решение о pobyt stały или rezydent długoterminowy UE у родителя.','Подтверждение статуса родителя в день рождения (если тогда был временный ВНЖ или защита).'],
-      how:['Если ребёнок родился уже после получения родителем ПМЖ/резидента ЕС, можно подавать на pobyt stały ребёнка.','Если родился раньше, это также возможно при некоторых статусах родителя на момент рождения: действовавший временный ВНЖ, гуманитарный/толерированный pobyt, статус беженца или дополнительная защита.','Если условия не выполняются, проверь маршрут временного ВНЖ. Заявление ребёнку отдельно через MOS, а не по карте родителя.'],
-      src:[[KIDS_U.permanent,'Поморский ужонд: pobyt stały ребёнка'],[KIDS_U.mos,'UdSC: MOS']] },
-    { id:'pending', tag:'Родитель: ждёт решение / иные документы', t:'Штамп, UPO, безвиз, защита',
-      x:'Само ожидание решения родителя, PESEL ребёнка или его рождение в Польше не легализуют малыша.',
-      docs:['Акт рождения и документ путешествия ребёнка (если доступен).','Паспорт родителя, подтверждение подачи и UPO, документы о его текущем законном пребывании.','Документы о доходе/страховании/семье по выбранному основанию.'],
-      how:['Если в день родов был только статус ожидания по заявлению, безвиз, шенгенская виза или истёкшая карта, не считай это автоматически равным действующей визе D или разрешению на pobyt czasowy.','Проверь индивидуальное основание, в том числе art. 187 pkt 6/7, либо семейный pobyt; точный путь зависит от текущего статуса обоих родителей. При международной защите потребуется отдельная оценка прав ребёнка.','Обращайся в отдел иностранцев по воеводству проживания и подавай подходящее заявление в MOS. Не выезжай с ребёнком до прояснения документов на возвращение.'],
-      src:[[KIDS_U.other,'MOS: другие основания для ребёнка'],[KIDS_U.mos,'UdSC: MOS'],[KIDS_U.permanent,'Поморский ужонд: ограничения по ПМЖ']] }
+    { id:'citizen', tag:'Родитель гражданин Польши', t:'Ребёнок с польским гражданством',
+      x:'Если один родитель был гражданином Польши в день рождения, ребёнок получает польское гражданство по происхождению. ВНЖ ему не нужен.',
+      docs:[
+        'Польский акт рождения (odpis aktu urodzenia) ребёнка и PESEL, если присвоен.',
+        'Документ польского родителя, подтверждение родства; при необходимости документы второго родителя.',
+        'Фотография ребёнка для dowodu или паспорта и согласие второго родителя, если требуется по процедуре.'
+      ],
+      how:[
+        'Зарегистрируй рождение в USC по месту рождения. Проверь, что в акт внесены оба родителя и признание отцовства, если оно требуется.',
+        'Для dowód osobisty подай заявление через gov.pl либо в любом urząd gminy. Проверь требования к фотографии, возрасту и личному присутствию ребёнка.',
+        'Для паспорта обратись в выбранный пункт паспортного обслуживания или используй доступную электронную процедуру для ребёнка. Проверь согласие родителей и оплату.',
+        'Получи документ. Для ребёнка с польским гражданством заявление на pobyt через MOS не подают.'
+      ],
+      where:'USC по месту рождения, затем ' + link('https://www.gov.pl/web/gov/uzyskaj-dowod-osobisty-dla-dziecka-lub-podopiecznego','gov.pl: dowód dziecka') + ' / ' + link('https://www.gov.pl/web/gov/uzyskaj-paszport-dla-dziecka','gov.pl: paszport dziecka') + '.',
+      src:[[KIDS_U.polish,'Закон: гражданство по родителю'],[KIDS_U.usc,'gov.pl: регистрация рождения'],
+        ['https://www.gov.pl/web/gov/uzyskaj-dowod-osobisty-dla-dziecka-lub-podopiecznego','gov.pl: dowód'],
+        ['https://www.gov.pl/web/gov/uzyskaj-paszport-dla-dziecka','gov.pl: паспорт']] },
+    { id:'temporary', tag:'Родитель: виза D / временный ВНЖ', t:'Pobyt czasowy ребёнка',
+      x:'Основание art. 160 pkt 2 для родившихся в Польше при визе D или выданном временном ВНЖ родителя. Важно основание родителя в день рождения и в день решения.',
+      docs:[
+        'Польский odpis aktu urodzenia ребёнка; для иностранного акта также присяжный перевод на польский.',
+        'Действующий dokument podróży ребёнка (сканы для MOS, оригинал по вызову). Если получить невозможно, объясни причины и подготовь другой документ личности по указанию ужонда.',
+        'Фотография ребёнка по требованиям MOS, подтверждение внесения соответствующей opłata skarbowa.',
+        'Национальная виза D родителя либо решение о выданном pobyt czasowy, действовавшие при рождении, и подтверждение того же основания на день решения.',
+        'Дополнительные доказательства, запрошенные воеводой для конкретной ситуации.'
+      ],
+      how:[
+        'Проверь оба момента: день рождения и будущий день решения. Родитель должен находиться в Польше на том же основании визы D или разрешения pobyt czasowy, что действовало при рождении.',
+        'Подготовь акт рождения, dokument podróży, фото и подтверждение основания родителя. Проверь реквизиты оплаты у своего воеводы.',
+        'Родитель войдёт в MOS через login.gov.pl, добавит подчинённый профиль ребёнка в «Dane osobowe» → «Dodaj konto», затем выберет wniosek o pobyt czasowy для ребёнка.',
+        'Заполни форму по-польски, приложи документы, подпиши и отправь через MOS. Сохрани UPO. С 27.04.2026 обычную бумажную заявку вместо MOS не принимают.',
+        'Следи за запросами воеводы: родитель явится с оригиналом dokument podróży ребёнка и документами, когда получит wezwanie. Если ребёнку исполнилось 6 лет, возможна обязательная явка для отпечатков.'
+      ],
+      where:'Электронно через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '; дело ведёт ' + link(city().uwUrl,city().uw) + ' по месту проживания. Не отправляй бумажное заявление по старым инструкциям.',
+      src:[[KIDS_U.other,'MOS: ребёнок, родившийся в Польше'],[KIDS_U.mos,'UdSC: новый MOS'],['https://www.gov.pl/web/udsc/mos-qa','UdSC: подача за ребёнка']] },
+    { id:'permanent', tag:'Родитель: ПМЖ / резидент ЕС', t:'Pobyt stały ребёнка',
+      x:'Не автоматически. Подходит при определённых сочетаниях даты рождения и разрешения родителя, у которого уже есть ПМЖ или статус долгосрочного резидента ЕС.',
+      docs:[
+        'Акт рождения ребёнка, а если он выдан за пределами Польши, также присяжный перевод.',
+        'Действующий dokument podróży ребёнка (сканы для MOS и оригинал по wezwanie). При невозможности получить документ узнай допустимую замену.',
+        'Фотографии по требованиям MOS, подтверждение соответствующей opłata skarbowa.',
+        'Копия решения родителя о pobyt stały или rezydent długoterminowy UE и, если необходимо, документы о статусе родителя в день рождения.'
+      ],
+      how:[
+        'Сверь условие: ребёнок родился после получения родителем ПМЖ/резидента ЕС либо во время действовавшего временного ВНЖ, гуманитарного/толерированного пребывания или защиты родителя, который затем получил ПМЖ/резидента ЕС.',
+        'Собери акт рождения, dokument podróży и решение родителя. Если срок или статус при рождении не подходит, этот путь может быть недоступен.',
+        'В MOS через аккаунт родителя добавь профиль ребёнка и выбери wniosek o pobyt stały. Подпиши электронно, отправь приложения, сохрани UPO.',
+        'При вызове воеводы принеси оригиналы. Если ребёнку исполнилось 6 лет, потребуется его присутствие при выполнении предусмотренных процедур.',
+        'После положительного решения оформи карту ребёнку; сам факт ПМЖ родителя не заменяет решение для малыша.'
+      ],
+      where:'Заявление через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '; рассмотрение у ' + link(city().uwUrl,city().uw) + ' по адресу проживания.',
+      src:[[KIDS_U.permanent,'Поморский ужонд: условия pobyt stały ребёнка'],
+        ['https://www.gov.pl/web/udsc/info-mos','UdSC: электронная подача'],['https://www.gov.pl/web/udsc/mos-qa','UdSC: профиль ребёнка']] },
+    { id:'pending', tag:'Родитель: ждёт решение / иной статус', t:'Пока нет подтверждённого основания',
+      x:'Штамп, UPO, PESEL или рождение в Польше сами по себе не дают ребёнку права пребывания. Это маршрут проверки, а не готовое основание для заявления.',
+      docs:[
+        'Акт рождения ребёнка и его dokument podróży, если получен; при невозможности получить документ подготовь объяснение.',
+        'Паспорта родителей, подтверждение их фактического законного пребывания, решения по pobyt и UPO/документы о поданных заявлениях.',
+        'Подтверждения семейной связи, совместного проживания и содержания ребёнка; дополнительные документы зависят от выбранного правового основания.'
+      ],
+      how:[
+        'Установи статусы обоих родителей именно на день рождения ребёнка и сейчас. Ожидание решения или штамп не равны действующей национальной визе D либо уже выданному pobyt czasowy.',
+        'Проверь допустимый вариант: art. 187 pkt 6/7, подходящее семейное основание либо специальный режим защиты. У каждого свои условия, решение не автоматическое.',
+        'Сверь основание с информацией MOS и с отделом иностранцев воеводства. До выбора конкретного основания нельзя безопасно составить универсальную заявку.',
+        'После подтверждения основания подготовь требуемые приложения, создай профиль ребёнка в MOS, подай подходящий вид электронного заявления и сохрани UPO.',
+        'Не планируй выезд только по свидетельству о рождении или UPO: это не заменяет dokument podróży и право на повторный въезд.'
+      ],
+      where:'Уточни индивидуальное основание в ' + link(city().uwUrl,city().uw) + '; после определения процедуры подавай через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '. При международной защите правила могут отличаться.',
+      src:[[KIDS_U.other,'MOS: основания для детей'],['https://www.gov.pl/web/udsc/mos-qa','UdSC: вопросы MOS'],
+        [KIDS_U.permanent,'Поморский ужонд: когда ПМЖ недоступен']] }
   ];
   var KIDS_PAY = [
     {id:'800',tag:'ZUS · до 18 лет',t:'800+',big:'800',x:'zł в месяц на каждого ребёнка, без проверки дохода семьи.',
@@ -1456,6 +1508,36 @@
       (c.i ? '<p class="i">' + c.i + '</p>' : '') + kidDetails(c) +
       srcLine(c.src) + '<p class="pl-note">Проверено 20.11.2026.</p></article>';
   }
+  function kidLegalRoute(c) {
+    var docId = 'kid-legal-' + c.id + '-doc-', stepId = 'kid-legal-' + c.id + '-step-';
+    function item(txt, key) {
+      return '<label class="pb-kid-route-check"><input type="checkbox" data-check="' + key + '"' + (S.checks[key] ? ' checked' : '') +
+        '><span>' + txt + '</span></label>';
+    }
+    return '<article class="pb-kid-route" id="pl-kid-' + c.id + '">' +
+      '<div class="pb-kid-route-top"><span class="pb-kid-path-chip">Выбран путь: ' + esc(c.tag) + '</span>' +
+        '<button type="button" class="pb-kid-route-change" data-kid-path="">Сменить путь</button></div>' +
+      '<h3 class="pl-h3">' + c.t + '</h3><p class="pb-kid-route-desc">' + c.x + '</p>' +
+      '<div class="pb-kid-route-place"><b>Куда подавать</b><p>' + c.where + '</p></div>' +
+      '<div class="pb-kid-route-cols"><div><h4>Список документов</h4><div class="pb-kid-route-list">' +
+        c.docs.map(function (t,i) { return item(t,docId+i); }).join('') + '</div></div>' +
+      '<div><h4>Как подавать. Шаг за шагом</h4><div class="pb-kid-route-steps">' +
+        c.how.map(function (t,i) { return '<div class="pb-kid-route-step"><span class="n">' + (i+1) + '</span>' + item(t,stepId+i) + '</div>'; }).join('') + '</div></div></div>' +
+      srcLine(c.src) + '<p class="pl-note">Проверено 20.11.2026. Требования могут зависеть от индивидуального основания и воеводства.</p></article>';
+  }
+  function rKidLegal() {
+    var chosen = KIDS_LEGAL.filter(function (c) { return c.id === S.kidPath; })[0];
+    return '<p class="pb-kid-sub">Сначала выбери основание по статусу родителя. Выбор сохранится на этом устройстве. Далее появятся документы, адрес подачи и шаги только для выбранного пути.</p>' +
+      (chosen ? '<div class="pb-kid-path-selected">Твой путь: <strong>' + esc(chosen.tag) + '</strong></div>' : '') +
+      '<div class="pb-kid-choice-grid" role="group" aria-label="Выбери основание легализации ребёнка">' +
+      KIDS_LEGAL.map(function (c) {
+        return '<button type="button" class="pb-kid-choice' + (c.id === S.kidPath ? ' is-active' : '') +
+          '" data-kid-path="' + c.id + '" aria-pressed="' + (c.id === S.kidPath ? 'true' : 'false') + '">' +
+          '<span class="pb-kid-choice-tag">' + esc(c.tag) + '</span>' +
+          '<span class="pb-kid-choice-name">' + esc(c.t) + '</span></button>';
+      }).join('') + '</div>' +
+      (chosen ? kidLegalRoute(chosen) : '<p class="pb-kid-choose-hint">Выбери путь выше. Пока не выбран путь, общий список документов не показывается.</p>');
+  }
   function rKids() {
     var local = kidLocal();
     var education = [
@@ -1479,8 +1561,7 @@
       foldSection('kid-pregnancy', 'Беременность и первые дни',
         '<div class="pl-cards pb-kid-grid">' + KIDS_STEPS.map(function (c) { return kidCard(c,false); }).join('') + '</div>') +
       foldSection('kid-legal', 'Легализация ребёнка',
-        '<div class="pl-cards pb-kid-grid">' + KIDS_LEGAL.map(function (c) { return kidCard(c,false); }).join('') + '</div>',
-        '<p class="pb-kid-sub">Рождение в Польше, PESEL и karta pobytu родителя не дают ребёнку собственного права пребывания автоматически. Смотри статус родителя в день рождения и подавай отдельно.</p>') +
+        '<div data-o="kidLegal">' + rKidLegal() + '</div>') +
       foldSection('kid-education', 'Ясли и образование',
         '<div class="pl-cards pb-kid-grid">' + education.map(function (c) { return kidCard(c,false); }).join('') + '</div>') +
       foldSection('kid-benefits', 'Выплаты',
@@ -2267,6 +2348,7 @@
     else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; var mh = $('.pb-mhead'); if (mh) m.style.setProperty('--mh', Math.round(mh.getBoundingClientRect().bottom) + 'px'); m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
     else if (b.hasAttribute('data-fb')) { var mm = $('#pb-more'); if (mm && !mm.hidden) { var mb = $('[data-more]'); if (mb) mb.click(); } fbOpen(); }
     else if (b.hasAttribute('data-phrase')) { var t = b.querySelector('.pashaby-t'); t.classList.add('out'); setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160); }
+    else if (d.kidPath != null) { S.kidPath = KIDS_LEGAL.some(function (c) { return c.id === d.kidPath; }) ? d.kidPath : ''; save(); out('kidLegal', rKidLegal()); var selected = $('[data-kid-path="' + S.kidPath + '"]'); if (selected && S.kidPath) selected.focus({ preventScroll:true }); }
     else if (d.legal) { S.legal = d.legal; save(); applyTabs(); }
     else if (d.contract) { S.contract = CONTRACTS[d.contract] ? d.contract : 'uop'; save(); updateTools(); applyTabs(); }
     else if (d.cycle) { setStatus(d.cycle); }
