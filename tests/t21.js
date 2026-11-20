@@ -29,7 +29,7 @@ let b=boot('2021-08-01');
 assert(!!b.card,'rezydent 5-year counter rendered');
 assert(b.card.querySelector('.pl-big').textContent==='-111','111 days overdue displays -111 instead of zero');
 assert(b.card.querySelector('.pl-lab').textContent==='дней после 5 лет для rezydenta UE','overdue label describes elapsed days');
-assert(!b.card.querySelector('.pb-rd-tooltip') && !b.card.hasAttribute('aria-describedby'),'native tooltip absent');
+assert(!b.card.hasAttribute('title'),'native tooltip absent');
 assert(b.card.querySelector('.pb-rd-tooltip').textContent==='уже 111 дней как должен податься, поднимай дупу!','custom popup shows exact overdue hint');
 assert(b.card.getAttribute('aria-describedby')===b.card.querySelector('.pb-rd-tooltip').id && b.card.tabIndex===0,'tooltip available via aria-describedby and keyboard');
 assert(b.card.querySelector('.pl-sub').textContent==='Срок уже есть, проверь выезды','caveat about eligibility and trips stays');
