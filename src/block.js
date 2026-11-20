@@ -1884,7 +1884,8 @@
       html += '<div><div class="pl-big">' + n0(pd) + '</div><div class="pl-lab">' + plural(pd, 'день', 'дня', 'дней') + ' ты поляк по паспорту</div><div class="pl-sub">По акценту пока нет. С ' + fmtD(passGot) + '</div></div>';
     } else if (!citizen && since && since <= t) {
       var toRd = days(t, addY(since, 5)), toPass = days(t, addY(since, 8));
-      html += '<div><div class="pl-big">' + (toRd > 0 ? n0(toRd) : '0') + '</div><div class="pl-lab">' + dWord(Math.max(0, toRd)) + ' до 5 лет для rezydenta UE</div><div class="pl-sub">' + (toRd > 0 ? fmtD(addY(since, 5)) : 'Срок уже есть, проверь выезды') + '</div></div>' +
+      var rdLate = toRd < 0, rdHint = rdLate ? 'уже ' + n0(-toRd) + ' ' + dWord(-toRd) + ' как должен податься, поднимай дупу!' : '';
+      html += '<div class="pb-rd-count"' + (rdLate ? ' title="' + rdHint + '" tabindex="0" aria-label="' + rdHint + '"' : '') + '><div class="pl-big">' + n0(toRd) + '</div><div class="pl-lab">' + dWord(Math.abs(toRd)) + (rdLate ? ' после 5 лет для rezydenta UE' : ' до 5 лет для rezydenta UE') + '</div><div class="pl-sub">' + (toRd > 0 ? fmtD(addY(since, 5)) : 'Срок уже есть, проверь выезды') + '</div></div>' +
         '<div><div class="pl-big" style="color:var(--red)">' + (toPass > 0 ? n0(toPass) : '0') + '</div><div class="pl-lab">' + dWord(Math.max(0, toPass)) + ' до паспорта обычным путём</div><div class="pl-sub">Если всё пойдёт по плану. Ха</div></div>';
     }
     out('me', html);
