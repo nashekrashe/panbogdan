@@ -2240,6 +2240,22 @@
       copy.textContent = '#'; header.appendChild(copy);
     });
   }
+  function positionResidentTooltip(card) {
+    var tip = card && card.querySelector('.pb-rd-tooltip');
+    if (!tip) return;
+    tip.style.left = '0px';
+    var rect = card.getBoundingClientRect(), width = tip.getBoundingClientRect().width;
+    var left = Math.max(12 - rect.left, Math.min(0, innerWidth - 12 - rect.left - width));
+    tip.style.left = Math.round(left) + 'px';
+  }
+  root.addEventListener('pointerover', function (event) {
+    var card = event.target.closest && event.target.closest('.pb-rd-count[aria-describedby]');
+    if (card) positionResidentTooltip(card);
+  });
+  root.addEventListener('focusin', function (event) {
+    var card = event.target.closest && event.target.closest('.pb-rd-count[aria-describedby]');
+    if (card) positionResidentTooltip(card);
+  });
   var anchorNoticeTimer = null, activeAnchorButton = null, anchorCopyRequest = 0;
   function positionAnchorNotice() {
     var notice = root.querySelector('.pb-anchor-inline-notice'), btn = activeAnchorButton;
