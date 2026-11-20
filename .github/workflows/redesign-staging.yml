@@ -59,6 +59,7 @@ jobs:
           python3 -m http.server 8765 --directory site >/tmp/panbogdan-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
           node tests/by-viewport.js http://127.0.0.1:8765/bialorusini.html
           node tests/kids-viewport.js http://127.0.0.1:8765/dzieci.html
       - name: Save screenshots
