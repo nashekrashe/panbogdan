@@ -1371,10 +1371,11 @@
       '<div role="tabpanel" id="pl-cp" aria-labelledby="pl-ct-' + S.contract + '"><div class="pl-split">' + side + '<div class="pl-main">' + calc + '</div></div>' + taxes + zus + dl + '</div></section>';
   }
 
+  var LIFE_SHARE = { d30:'pierwsze-30-dni',home:'wynajem-i-meldunek',health:'nfz-i-zdrowie',kids:'dzieci-i-szkola',lang:'jezyk-polski',money:'przelewy-z-bialorusi' };
   function lifeAcc(ids) {
     return '<div class="pl-acc" style="margin-top:36px">' + LIFE.filter(function (l) { return ids.indexOf(l.id) > -1; }).map(function (l) {
       var body = l.checks ? checks(l.checks) : '<ul class="pl-list">' + l.list.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>';
-      return '<details id="pl-d-' + l.id + '"' + (l.id === 'd30' || ids.length === 1 ? ' open' : '') + '><summary>' + ms(l.ic, 'lead-ico') + '<span class="t">' + l.t + '<small>' + l.s + '</small></span>' + (l.checks ? '<span class="pl-cnt" data-o="lc-' + l.id + '"></span>' : '') + ms('expand_more', 'chev') + '</summary><div class="body">' + body +
+      return '<details id="pl-d-' + l.id + '" data-share="' + LIFE_SHARE[l.id] + '"' + (l.id === 'd30' || ids.length === 1 ? ' open' : '') + '><summary>' + ms(l.ic, 'lead-ico') + '<span class="t">' + l.t + '<small>' + l.s + '</small></span>' + (l.checks ? '<span class="pl-cnt" data-o="lc-' + l.id + '"></span>' : '') + ms('expand_more', 'chev') + '</summary><div class="body">' + body +
         (l.u ? '<p class="pl-note">Источник: ' + link(l.u, l.s2) + '</p>' : '') + '</div></details>';
     }).join('') + '</div>';
   }
@@ -1679,7 +1680,7 @@
         return '<div><div class="pb-fuel-k">' + f[0] + '</div><div class="pl-big" data-o="' + f[1] + '">—</div><div class="pl-lab">zł за литр, в среднем по Польше</div><div class="pl-sub">' + f[2] + '</div></div>';
       }).join('') + '</div>' +
       '<p class="pl-note" style="margin-top:20px"><span data-o="fuelNote"></span> Где дешевле ' + CITIES[c].loc + ': ' + link('https://www.e-petrol.pl', 'e-petrol.pl') + '</p>' +
-      '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('local_gas_station') + 'Сколько стоит доехать</div><div class="pl-row">' + routes + '</div>' +
+      '<div class="pl-tool" data-share="kalkulator-podrozy" aria-live="polite"><div class="pl-tool-h">' + ms('local_gas_station') + 'Сколько стоит доехать</div><div class="pl-row">' + routes + '</div>' +
       '<div class="pl-fields">' + field('dist', 'Расстояние, км', 'number', ' inputmode="decimal" min="0"') + field('cons', 'Расход, л/100 км', 'number', ' inputmode="decimal" min="0" step="0.1"') + field('price', 'Цена литра, zł', 'number', ' inputmode="decimal" min="0" step="0.01"') + '</div>' +
       '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="tripCost">0</div><div class="k">zł в одну сторону</div><div class="d" data-o="tripL"></div></div><div><div class="v" data-o="tripBack">0</div><div class="k">zł туда и обратно</div></div></div>' +
       '<p class="pl-note" data-o="priceNote">Цена в поле для примера. Подставь сегодняшнюю.</p></div>' +
@@ -1688,7 +1689,7 @@
         ['swap_horiz', 'Авто на беларуских номерах', 'Санкции ЕС с 1.07.2024', ['Легковые авто на беларуских номерах нельзя ввозить в ЕС (регламент 2024/1865). Для личного автомобиля возможен въезд по исключению при соблюдении условий, включая присутствие владельца и отсутствие коммерческого использования. Уполномоченные органы могут разрешить въезд, это не автоматическое право.', 'Литва, Латвия и Эстония применяют запрет жёстче, проверь маршрут заранее.'], 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas'],
         ['shield', 'Przegląd и OC', 'Обязательное', ['OC обязательно с первого дня. Без него штрафы неприятно круглые.', 'Техосмотр легковой машины: у новой первый до 3 лет с первой регистрации, второй до 5 лет, дальше каждый год.'], 'https://lexlege.pl/prawo-o-ruchu-drogowym/art-81/', 'art. 81 PoRD']
       ].map(function (a, i) {
-        return '<details id="pl-d-au' + i + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
+        return '<details id="pl-d-au' + i + '" data-share="' + ['wymiana-prawa-jazdy','auto-na-bialoruskich-numerach','oc-i-przeglad'][i] + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
       }).join('') + '</div></section>';
   }
 
