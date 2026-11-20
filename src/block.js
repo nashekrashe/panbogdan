@@ -2167,6 +2167,83 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCounts);
 
   /* All disclosures remember their state locally, scoped by screen and stable id/position. */
+  /* Stable shareable anchors. Keep legacy IDs (pl-d-*, pb-fold-*) untouched.
+     Each slug has one canonical owning screen even though all screens coexist in the DOM.
+     Duplicated guides (LIFE) get a deterministic screen prefix; never derive published slugs from translated titles. */
+  var STATIC_SHARE = [
+    ['#pl-me .pb-hero .pl-lab','czas-oczekiwania'],
+    ['#pl-me .pb-mine-h h2','moje-daty'],
+    ['#pl-me .pb-next .pl-eyebrow','nastepne-kroki'],
+    ['#pl-me .pb-about .pl-eyebrow','co-gdzie'],
+    ['#pl-bank .pb-bank-by-note > b','hipoteka-dla-bialorusinow'],
+    ['#pl-home > .pl-counts','hipoteka-w-liczbach']
+  ];
+  function registerAnchors(scope) {
+    scope = scope || root;
+    STATIC_SHARE.forEach(function (a) {
+      var node = root.querySelector(a[0]);
+      if (node && !node.hasAttribute('data-share')) node.setAttribute('data-share', a[1]);
+    });
+    var hosts = [];
+    if (scope.matches && scope.matches('[data-share]')) hosts.push(scope);
+    Array.prototype.forEach.call(scope.querySelectorAll('[data-share]'), function (h) { hosts.push(h); });
+    hosts.forEach(function (host) {
+      if (host.hasAttribute('data-share-ready')) return;
+      var slug = host.getAttribute('data-share');
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return;
+      var prior = document.getElementById(slug), sec = host.closest('.pb-screen');
+      if (prior && prior !== host && !host.contains(prior)) {
+        var part = sec && SECTIONS.filter(function (x) { return x.id === sec.id; })[0];
+        slug = (part && part.p ? part.p : 'start') + '-' + slug;
+        var base = slug, n = 2;
+        while (document.getElementById(slug)) slug = base + '-' + n++;
+        host.setAttribute('data-share', slug);
+      }
+      if (host.id !== slug && !host.querySelector('[id="' + slug + '"]')) {
+        var marker = document.createElement('span');
+        marker.id = slug; marker.hidden = true; marker.setAttribute('aria-hidden', 'true');
+        host.insertBefore(marker, host.firstChild);
+      }
+      host.classList.add('pb-share-host');
+      var title = host.matches('h2,h3,h4,dt,b,.pl-lab,.pl-eyebrow') ? host :
+        host.querySelector(':scope > summary .t, :scope > summary h2, :scope > summary h3, :scope > .pl-tool-h, :scope > .pb-col-h h3, :scope > .pb-bank-mort-head h3, :scope > .pb-bank-mort-n b, :scope > .pb-bank-label, :scope > .pl-bank-n, :scope > .pb-nw-h, :scope > .pl-h3, :scope > .t, :scope > h2, :scope > h3, :scope > dt, :scope > .pb-mine-h h2');
+      if (!title) title = host.querySelector('.pl-h3, .pl-tool-h, .pl-eyebrow, .pl-lab, .t, h3, h2, dt');
+      if (title && !title.querySelector('.pb-anchor-copy')) {
+        var name = title.textContent.trim().replace(/\s+/g, ' ').slice(0, 90);
+        var copy = document.createElement('button');
+        copy.type = 'button'; copy.className = 'pb-anchor-copy';
+        copy.setAttribute('data-copy-anchor', slug);
+        copy.setAttribute('aria-label', 'Скопировать ссылку: ' + name);
+        copy.setAttribute('title', 'Скопировать прямую ссылку');
+        copy.textContent = '#';
+        title.appendChild(copy);
+      }
+      host.setAttribute('data-share-ready', '1');
+    });
+  }
+  function copyAnchorUrl(slug, btn) {
+    var host = btn.closest('.pb-share-host'), sc = host && host.closest('.pb-screen');
+    var part = sc && SECTIONS.filter(function (x) { return x.id === sc.id; })[0];
+    if (!part || !slug) return;
+    var path = PATHS ? hrefOf(part) : location.pathname;
+    var url = location.origin + path + '#' + encodeURIComponent(slug);
+    function done(ok) {
+      if (!btn.isConnected) return;
+      btn.textContent = ok ? 'Скопировано' : 'Не удалось';
+      btn.setAttribute('aria-label', ok ? 'Ссылка скопирована' : 'Ссылка не скопирована');
+      setTimeout(function () { if (btn.isConnected) { btn.textContent = '#'; btn.setAttribute('aria-label', 'Скопировать прямую ссылку'); } }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try { navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); }); } catch (err) { done(false); }
+    } else {
+      var field = document.createElement('textarea'); field.value = url;
+      field.setAttribute('readonly', ''); field.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(field); field.select();
+      var ok = false;
+      try { ok = !!document.execCommand && document.execCommand('copy'); } catch (err) {}
+      field.remove(); done(ok);
+    }
+  }
   function restoreFolds() {
     var order = {};
     $$('details').forEach(function (d) {
@@ -2182,6 +2259,7 @@
     var y = window.scrollY;
     root.innerHTML = rMHead() + '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
       rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback() + rNewsPop();
+    registerAnchors(root);
     restoreFolds();
     updateUsdRate();
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
