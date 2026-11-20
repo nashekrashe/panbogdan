@@ -30,13 +30,22 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/banki.html';
           quote:quote.textContent, href: mortgage && mortgage.getAttribute('href'),
           rateRows:rows.length, rateValues:rows.map(row=>row.querySelector('.pb-bank-mort-rate b').textContent),
           mortgageHref:mortgageHome && mortgageHome.getAttribute('href'),
+          calculatorTile: mortgageHome && mortgageHome.classList.contains('pb-bank-calc-card'),
+          foreignerRules: rows.filter(row=>row.querySelector('.pb-bank-mort-by')).length,
+          erste:rows.some(row=>row.querySelector('.pb-bank-mort-n').textContent.includes('Erste Bank Polska')),
           visible:!bank.hidden};
       });
       await page.screenshot({path:path.join(folder,'banki-'+width+'.png'),fullPage:true});
       console.log(width,result,'errors:',errors);
       if (result.doc>result.win+1) throw Error('horizontal overflow at '+width);
-      if (result.subtitlePx !== 12 || result.href !== '/dom' || result.quote !== '3,9876' || result.rateRows !== 4 || result.mortgageHref !== '/dom' || !result.visible) throw Error('bank content or styles at '+width);
+      if (result.subtitlePx !== 12 || result.href !== '/dom' || result.quote !== '3,9876' || result.rateRows !== 11 || !result.erste || result.foreignerRules !== 11 || !result.calculatorTile || result.mortgageHref !== '/dom' || !result.visible) throw Error('bank content or styles at '+width);
       if (errors.length) throw Error('page JS errors at '+width+': '+errors.join('; '));
+      if (width===375) {
+        await page.locator('a.pb-bank-calc-card').click();
+        await page.waitForSelector('#pl-home',{state:'visible'});
+        const route=await page.evaluate(()=>location.pathname);
+        if(route!=='/dom') throw Error('calculator link did not navigate to /dom: '+route);
+      }
       await page.close();
     }
     console.log('Responsive Banks PASS');
