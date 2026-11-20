@@ -38,12 +38,19 @@ function page(rate) {
   assert($('#pl-bank .pb-bank-info a[href*="api.nbp.pl"]'), 'official NBP source linked');
   assert($('#pl-bank .pb-bank-info a[href="#dom"]'), 'mortgage links to Home in preview routing');
   const offers=[...w.document.querySelectorAll('#pl-bank .pb-bank-mort-row')];
-  assert(offers.length===4, 'four bank mortgage offers with official representative examples');
+  assert(offers.length===11, 'eleven bank mortgage examples including Erste');
   const expected=[
     ['ING Bank Śląski','6,07%','6,56%','от 20%','ing.pl'],
     ['Bank Pekao','6,29%','6,77%','30,18%','pekao.com.pl'],
     ['PKO Bank Polski','6,57%','7,93%','от 10%','pkobp.pl'],
-    ['mBank','6,77%','7,41%','от 10%','mbank.pl']
+    ['mBank','6,77%','7,41%','от 10%','mbank.pl'],
+    ['Erste Bank Polska','6,97%','7,69%','от 10%','erste.pl'],
+    ['BNP Paribas','5,95%','6,93%','43,5%','bnpparibas.pl'],
+    ['Alior Bank','6,58%','7,15%','23,89%','aliorbank.pl'],
+    ['Bank Millennium','5,65%','6,49%','37,30%','bankmillennium.pl'],
+    ['Credit Agricole','6,29%','6,79%','46%','credit-agricole.pl'],
+    ['VeloBank','6,92%','7,31%','25,28%','velobank.pl'],
+    ['BOŚ Bank','6,15%','7,08%','уточнить','bosbank.pl']
   ];
   expected.forEach((x,i)=>{
     const row=offers[i];
@@ -53,8 +60,20 @@ function page(rate) {
     assert(row.querySelector('.pb-bank-mort-terms').textContent.includes(x[3]), 'down payment detail: '+x[0]);
     assert(row.querySelector('.pb-bank-mort-terms a').hostname.endsWith(x[4]), 'official bank URL: '+x[0]);
   });
-  assert($('#pl-bank .pb-bank-mort-home[href="#dom"]'), 'mortgage comparison links to Home calculator');
-  assert($('#pl-bank .pb-bank-mort-foot').textContent.includes('разных сумм'), 'rates labelled as non-comparable representative examples');
+  const calc = $('#pl-bank a.pb-bank-calc-card.pb-bank-mort-home[href="#dom"]');
+  assert(calc && calc.querySelector('strong').textContent==='Калькулятор ипотеки', 'calculator is a full clickable tile linking to Home');
+  assert(calc.textContent.includes('платёж'), 'calculator tile explains its purpose');
+  assert(offers.every(row => !!row.querySelector('.pb-bank-mort-by')), 'every bank has a section about Belarusian eligibility');
+  const first = offers.find(x=>x.querySelector('.pb-bank-mort-n').textContent.includes('mBank'));
+  const alior = offers.find(x=>x.querySelector('.pb-bank-mort-n').textContent.includes('Alior'));
+  const erste = offers.find(x=>x.querySelector('.pb-bank-mort-n').textContent.includes('Erste'));
+  assert(first.querySelector('.pb-bank-mort-by').textContent.includes('PESEL') && first.querySelector('.pb-bank-mort-by a[href*="regulamin"]'), 'mBank explicit immigration criteria from mortgage regulation');
+  assert(alior.querySelector('.pb-bank-mort-by').textContent.includes('meldunek') && alior.querySelector('.pb-bank-mort-by a[href*="03112026"]'), 'Alior accepts foreign clients with Polish income and meldunek');
+  assert(erste.querySelector('.pb-bank-mort-by').textContent.includes('нет') && !erste.querySelector('.pb-bank-mort-by').textContent.includes('гарантирует'), 'Erste has no fabricated Belarus-specific eligibility');
+  assert(offers.filter(row=>row.querySelector('.pb-bank-mort-by>b').textContent.includes('правило банка')).length===2, 'only two banks have officially verified foreigner eligibility');
+  assert(offers.find(x=>x.querySelector('.pb-bank-mort-n').textContent.includes('Credit Agricole')).querySelector('.pb-bank-mort-rate small').textContent.includes('7 лет'), 'Credit Agricole seven-year fixed period');
+  assert($('#pl-bank .pb-bank-by-note').textContent.includes('PESEL'), 'cross-bank Belarusian preparation notice');
+  assert($('#pl-bank .pb-bank-mort-foot').textContent.includes('Суммы, сроки и взносы различаются'), 'rates labelled as non-comparable representative examples');
   assert($('#pl-bank .pb-bank-account-head').textContent.includes('Открытие счёта'), 'deposit-account rankings are separate from mortgage comparison');
 
   assert(!!$('#pl-home .pl-section-intro') && !!$('#pl-by .pl-section-intro'), 'page intros share consistent styles');
@@ -62,7 +81,7 @@ function page(rate) {
   city.value='gdynia';
   city.dispatchEvent(new w.Event('change',{bubbles:true}));
   assert($('#pl-bank [data-o="usdRate"]').textContent === '3,9876', 'rate survives a section rerender');
-  assert(w.document.querySelectorAll('#pl-bank .pb-bank-mort-row').length===4, 'all mortgage offers survive city rerender');
+  assert(w.document.querySelectorAll('#pl-bank .pb-bank-mort-row').length===11, 'all mortgage offers survive city rerender');
   w.close();
 
   const invalid = page({table:'C',code:'USD',rates:[{effectiveDate:'2026-11-20',mid:3.9876}]});
