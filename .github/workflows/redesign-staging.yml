@@ -45,6 +45,7 @@ jobs:
           node tests/t14.js
           node tests/t15.js
           node tests/t16.js
+          node tests/t17.js
           node tests/mortval.js
       - name: Install Chromium for layout tests
         run: |
@@ -59,12 +60,15 @@ jobs:
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
           node tests/by-viewport.js http://127.0.0.1:8765/bialorusini.html
+          node tests/kids-viewport.js http://127.0.0.1:8765/dzieci.html
       - name: Save screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bialorusini-width-checks
-          path: dist/by-screenshots/*.png
+          name: children-and-bialorusini-width-checks
+          path: |
+            dist/by-screenshots/*.png
+            dist/kids-screenshots/*.png
           if-no-files-found: ignore
           retention-days: 7
       - name: Commit built site and push redesign + staging
@@ -74,7 +78,7 @@ jobs:
           git config user.email "panbogdan-build@users.noreply.github.com"
           git add -A site/
           if ! git diff --cached --quiet; then
-            git commit -m "Сайт: собрать раздел Беларусам для staging"
+            git commit -m "Сайт: собрать раздел Дети для staging"
           fi
           git fetch origin redesign staging main
           git merge-base --is-ancestor origin/staging HEAD
