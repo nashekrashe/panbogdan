@@ -46,6 +46,7 @@ jobs:
           node tests/t15.js
           node tests/t16.js
           node tests/t17.js
+          node tests/t18.js
           node tests/mortval.js
       - name: Install Chromium for layout tests
         run: |
