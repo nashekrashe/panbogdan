@@ -1025,12 +1025,13 @@
     var t = $('[data-mypath]'); if (t) t.checked = myPath();
   }
 
+  var LEGAL_STEP_SHARE = { vnzh:['wybor-podstawy-wniosek','pesel-i-profil-zaufany','wniosek-mos','odciski-palcow','oczekiwanie-na-decyzje','decyzja-i-karta'], pmzh:['podstawa-pobytu-stalego','sprawdz-termin','jezyk-polski-b1','dokumenty-na-pobyt-staly','wniosek-o-pobyt-staly','karta-stalego-pobytu'], paszport:['wybor-drogi-obywatelstwo','okres-pobytu','certyfikat-b1','dochod-i-mieszkanie','wniosek-o-obywatelstwo','paszport-i-dowod'] };
   function rStep(tab, s, i) {
     var key = tab + i, st = stepState(tab, i), v = st.v;
     var docs = (s.docs || []).map(function (d, j) { return [docKey(tab, i, s, j), d]; });
     return '<div class="pl-step ' + v + (st.past ? ' pl-past" inert' : '"') + ' data-step="' + key + '">' +
       '<button type="button" class="pl-chk" data-cycle="' + key + '"' + (st.past ? ' disabled' : '') + ' aria-label="' + esc(s.t) + ': ' + (st.past ? 'пройдено' : LBL[v] + '. Сменить статус') + '">' + box(v) + '</button>' +
-      '<details id="pl-d-' + key + '"><summary><span class="t"><span class="n">0' + (i + 1) + '</span>' + s.t + '<small>' + s.s + '</small></span><span class="pl-st">' + (st.past ? 'Пройдено' : LBL[v]) + '</span><span class="pl-gain" data-gain="' + key + '"></span>' + (docs.length ? '<span class="pl-cnt" data-o="dc-' + key + '"></span>' : '') + ms('expand_more', 'chev') + '</summary>' +
+      '<details id="pl-d-' + key + '" data-share="' + LEGAL_STEP_SHARE[tab][i] + '"><summary><span class="t"><span class="n">0' + (i + 1) + '</span>' + s.t + '<small>' + s.s + '</small></span><span class="pl-st">' + (st.past ? 'Пройдено' : LBL[v]) + '</span><span class="pl-gain" data-gain="' + key + '"></span>' + (docs.length ? '<span class="pl-cnt" data-o="dc-' + key + '"></span>' : '') + ms('expand_more', 'chev') + '</summary>' +
       '<div class="body">' + s.b.map(function (p) { return p.charAt(0) === '<' ? p : '<p>' + p + '</p>'; }).join('') +
         (docs.length ? '<div><div class="pl-eyebrow" style="margin-bottom:4px">Документы</div>' + checks(docs, tab) + '</div>' : '') +
         (s.tip ? tipHtml(s.tip) : '') + (s.warn ? tipHtml(s.warn, 1) : '') + srcLine(s.src) +
@@ -1152,8 +1153,9 @@
       '<div class="pb-section-b">' + (note || '') + body + '</div></details>';
   }
   /* a card that starts folded: the summary keeps the title and a one-line status */
+  var TOP_CARD_SHARE = { 'pl-d-uz':'twoj-urzad', 'pl-d-pass':'paszport-cudzoziemca', 'pl-d-inv':'zaproszenie' };
   function card(id, icon, title, sumKey, body, cls) {
-    return '<details class="pl-tool pb-fold' + (cls ? ' ' + cls : '') + '" id="' + id + '"><summary class="pb-fold-h">' + icon +
+    return '<details class="pl-tool pb-fold' + (cls ? ' ' + cls : '') + '" id="' + id + '" data-share="' + (TOP_CARD_SHARE[id] || id) + '"><summary class="pb-fold-h">' + icon +
       '<span class="t">' + title + '<small data-o="' + sumKey + '"></small></span>' +
       foldToggle() + '</summary>' +
       '<div class="pb-fold-b">' + body + '</div></details>';
