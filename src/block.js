@@ -467,49 +467,49 @@
      Checked 20.11.2026. Only publish rate/RRSO pairs from verified sources; some examples are older.
      "by" is explicit mortgage evidence status, never extrapolated from rules for opening accounts. */
   var MORT_BANK_OFFERS = [
-    { n:'ING Bank Śląski', rate:'6,07%', rrso:'6,56%', fixed:'5 лет', down:'от 20%', example:'Jesień na swoim, Łatwy start',
+    { n:'ING Bank Śląski', slug:'ing', rate:'6,07%', rrso:'6,56%', fixed:'5 лет', down:'от 20%', example:'Jesień na swoim, Łatwy start',
       terms:'Комиссия 0% в примере, счёт ING GO, страховка жизни на 3 года, страхование недвижимости, оценка 560 zł.',
       asof:'осень 2026', u:'https://www.ing.pl/indywidualni/kredyty-i-pozyczki/kredyt-hipoteczny' },
-    { n:'Bank Pekao', rate:'6,29%', rrso:'6,77%', fixed:'5 лет', down:'30,18% в примере', example:'Kredyt mieszkaniowy',
+    { n:'Bank Pekao', slug:'pekao', rate:'6,29%', rrso:'6,77%', fixed:'5 лет', down:'30,18% в примере', example:'Kredyt mieszkaniowy',
       terms:'Поступления на счёт от 3 000 zł в месяц, страховка жизни первые 4 года, страхование жилья, дебетовая карта.',
       asof:'пример банка, 2026', u:'https://www.pekao.com.pl/klient-indywidualny/wlasne-mieszkanie-lub-dom/kredyt-hipoteczny.html' },
-    { n:'PKO Bank Polski', rate:'6,57%', rrso:'7,93%', fixed:'5 лет', down:'от 10%', example:'Własny Kąt hipoteczny',
+    { n:'PKO Bank Polski', slug:'pko-bp', rate:'6,57%', rrso:'7,93%', fixed:'5 лет', down:'от 10%', example:'Własny Kąt hipoteczny',
       terms:'Ставка в примере со скидкой 1 п.п.; поступления на счёт от 3 000 zł/мес, страховки жизни и недвижимости, комиссия 0%.',
       asof:'пример 05.10.2026', u:'https://www.pkobp.pl/klient-indywidualny/kredyty-pozyczki/kredyt-hipoteczny',
       by:'Для граждан Беларуси без документа на законное пребывание PKO отдельно ограничивает обслуживание счетов. Для ипотек нет публичной гарантии одобрения: сначала уточни допустимость заявки.', byU:'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu',byType:'account' },
-    { n:'mBank', rate:'6,77%', rrso:'7,41%', fixed:'5 лет', down:'от 10%', example:'Stała Pewność, edycja 3',
+    { n:'mBank', slug:'mbank', rate:'6,77%', rrso:'7,41%', fixed:'5 лет', down:'от 10%', example:'Stała Pewność, edycja 3',
       terms:'Промо для активного клиента: счёт с поступлениями и страховка жизни, здоровья и потери работы на 5 лет; комиссия 0% в примере.',
       asof:'пример 19.10.2026', u:'https://www.mbank.pl/indywidualny/kredyty/kredyty-hipoteczne/chce-kredyt-hipoteczny',
       by:'Публичный регламент допускает иностранцев с разрешением на временный или постоянный pobyt. Нужны PESEL, документированный доход и кредитоспособность. Гражданство само по себе не гарантирует кредит.',
       byU:'https://pdf.mbank.pl/mbankpl/of/regulaminy/kredyty/regulamin_udzielania_kredytow_i_pozyczek_hipotecznych_dla_of-_obowiazuje_od_28.05.2025.pdf',byType:'mortgage' },
-    { n:'Erste Bank Polska', rate:'6,97%', rrso:'7,69%', fixed:'5 лет', down:'от 10%', example:'Kredyt mieszkaniowy, бывший Santander',
+    { n:'Erste Bank Polska', slug:'erste', rate:'6,97%', rrso:'7,69%', fixed:'5 лет', down:'от 10%', example:'Kredyt mieszkaniowy, бывший Santander',
       terms:'В сентябрьском примере ставка на 5 лет, затем POLSTR 1M с маржей. Скидки зависят от счёта и поступлений, кредитной карты и страховок; без страховки Spokojna Hipoteka комиссия может отличаться.',
       asof:'пример 26.09.2026', u:'https://www.erste.pl/klient-indywidualny/kredyty/kredyt-mieszkaniowy',
       by:'Банк предлагает ипотеку в PLN при доходах в PLN. Публичных правил приёма именно беларусов с временным ВНЖ, ПМЖ или в ожидании решения нет; проверить допустимость заявки до оценки.',
       byU:'https://www.erste.pl/klient-indywidualny/kredyty/kredyt-mieszkaniowy',byType:'unverified' },
-    { n:'BNP Paribas', rate:'5,95%', rrso:'6,93%', fixed:'5 лет', down:'43,5% в примере', example:'Kredyt hipoteczny z niską marżą',
+    { n:'BNP Paribas', slug:'bnp-paribas', rate:'5,95%', rrso:'6,93%', fixed:'5 лет', down:'43,5% в примере', example:'Kredyt hipoteczny z niską marżą',
       terms:'Комиссия 0% в примере, Konto Otwarte na Ciebie и карта, регулярный доход на счёт; страхование жизни, недвижимости и оценка 400 zł.',
       asof:'пример 10.09.2026', u:'https://www.bnpparibas.pl/klienci-indywidualni/kredyty/kredyt-hipoteczny-z-niska-marza' },
-    { n:'Alior Bank', rate:'6,58%', rrso:'7,15%', fixed:'5 лет', down:'23,89% в примере', example:'Megahipoteka',
+    { n:'Alior Bank', slug:'alior', rate:'6,58%', rrso:'7,15%', fixed:'5 лет', down:'23,89% в примере', example:'Megahipoteka',
       terms:'В примере: счёт, дебетовая карта и мобильный банк. При низком взносе возможно дополнительное страховое обеспечение.',
       asof:'пример, 2026', u:'https://www.aliorbank.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-z-okresowo-stala-stopa-oprocentowania.html',
       by:'По регламенту от 03.11.2026 иностранец должен получать доход в Польше и иметь meldunek на pobyt stały или czasowy; нужны приемлемый доход и положительное кредитное решение.',
       byU:'https://www.aliorbank.pl/dam/jcr%3A213bf45d-8adb-4894-b806-42c13f8b8410/regulamin-udzielenia-i-obslugi-kredytow-zabezpieczonych-na-nieruchomosci-megahipoteka-od-03112026.pdf',byType:'mortgage' },
-    { n:'Bank Millennium', rate:'5,65%', rrso:'6,49%', fixed:'5 лет', down:'37,30% в примере', example:'Kredyt hipoteczny',
+    { n:'Bank Millennium', slug:'millennium', rate:'5,65%', rrso:'6,49%', fixed:'5 лет', down:'37,30% в примере', example:'Kredyt hipoteczny',
       terms:'В примере: Millennium 360°, поступления зарплаты и траты картой от 500 zł/мес в течение 55 месяцев, страхование жизни 36 месяцев.',
       asof:'пример 05.03.2026, может устареть', u:'https://www.bankmillennium.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-hipoteczny' },
-    { n:'Credit Agricole', rate:'6,29%', rrso:'6,79%', fixed:'7 лет', down:'46% в примере', example:'Hipoteka Prime',
+    { n:'Credit Agricole', slug:'credit-agricole', rate:'6,29%', rrso:'6,79%', fixed:'7 лет', down:'46% в примере', example:'Hipoteka Prime',
       terms:'Условия примера: продукты банка, страховки жизни и жилья, оценка недвижимости. Фиксация ставки на 7 лет, не на 5.',
       asof:'пример 01.08.2026, может устареть', u:'https://www.credit-agricole.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-na-mieszkanie' },
-    { n:'VeloBank', rate:'6,92%', rrso:'7,31%', fixed:'5 лет', down:'25,28% в примере', example:'VeloDom',
+    { n:'VeloBank', slug:'velobank', rate:'6,92%', rrso:'7,31%', fixed:'5 лет', down:'25,28% в примере', example:'VeloDom',
       terms:'Кредит до 90% стоимости жилья. В примере: поступления на счёт от 3 000 zł/мес, e-korespondencja и страховка VeloBezpieczny на 5 лет.',
       asof:'пример 02.10.2026', u:'https://www.velobank.pl/klienci-indywidualni/kredyty/kredyt-hipoteczny.html' },
-    { n:'BOŚ Bank', rate:'6,15%', rrso:'7,08%', fixed:'5 лет', down:'уточнить; пример 500 000 zł', example:'Twój Dom PLUS',
+    { n:'BOŚ Bank', slug:'bos', rate:'6,15%', rrso:'7,08%', fixed:'5 лет', down:'уточнить; пример 500 000 zł', example:'Twój Dom PLUS',
       terms:'В примере: поступления на счёт от 6 000 zł/мес, комиссия 0%, страхование недвижимости; не путать со ставкой рефинансирования.',
       asof:'пример 19.06.2026, может устареть', u:'https://www.bosbank.pl/klient-indywidualny/pozyczki-i-kredyty/eko-hipoteka/kredyt-hipoteczny' }
   ];
   function rBankMortgages() {
-    return '<section class="pb-bank-mort" aria-labelledby="pb-bank-mort-h">' +
+    return '<section class="pb-bank-mort" data-share="hipoteka" aria-labelledby="pb-bank-mort-h">' +
       '<div class="pb-bank-mort-head"><h3 class="pl-h3" id="pb-bank-mort-h">Ипотека: проценты и условия</h3>' +
       '<span class="pl-muted pl-xs">Проверено 20.11.2026</span></div>' +
       '<p class="pb-bank-mort-intro">11 банков. Публичные примеры, не персональные предложения. Ставка фиксирована первые 5 лет, у Credit Agricole 7 лет. У части банков пример старый: перед заявлением сверяй актуальную оферту.</p>' +
@@ -518,7 +518,7 @@
         var byVerified = b.byType === 'mortgage';
         var by = b.by || 'Публичных отдельных условий выдачи ипотеки гражданам Беларуси на странице банка нет. Тип ВНЖ, срок действия карты, доход и допустимость заявки проверяй индивидуально; открытие счёта не подтверждает одобрение ипотеки.';
         var src = b.byU ? ' ' + link(b.byU, byVerified ? 'Правила ипотеки банка' : b.byType === 'account' ? 'Правила по счетам, не ипотеке' : 'Ипотечная страница') : '';
-        return '<article class="pb-bank-mort-row">' +
+        return '<article class="pb-bank-mort-row" data-share="' + b.slug + '">' +
           '<div class="pb-bank-mort-n"><b>' + b.n + '</b><small>' + b.example + '</small></div>' +
           '<div class="pb-bank-mort-rate"><b>' + b.rate + '</b><small>ставка, ' + b.fixed + '</small></div>' +
           '<div class="pb-bank-mort-rate pb-bank-mort-apr"><b>' + b.rrso + '</b><small>RRSO</small></div>' +
@@ -1242,14 +1242,15 @@
       '<div class="pl-legal-bar">' + tabs + '<label class="pl-toggle pl-mypath"><input type="checkbox" data-mypath' + (myPath() ? ' checked' : '') + '><span>Мой путь<small class="pl-xs pl-muted">пройденное по «Где ты сейчас» и датам в «Своё»</small></span></label></div>' +
       panels + '</section>';
   }
+  var BELARUS_SHARE = ['dokument-podrozy','ochrona-miedzynarodowa','dokumenty-bialoruskie','karta-polaka','wyplaty-karta-polaka','banki-i-sankcje','praca-bez-zezwolenia','pieniadze-z-bialorusi','staz-i-emerytura','prawo-jazdy-auto','dzieci-bialorusinow','oficjalnie-po-bialorusku'];
   function rBy() {
     return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
       '<p class="pl-section-intro">Паспорт, Karta Polaka, защита, работа и документы. У каждой темы источники и дата проверки.</p>' +
       '<div class="pb-by-groups">' + BELARUS_GROUPS.map(function (g) {
-        return '<details class="pb-by-group pb-section" id="pb-fold-by-' + g.id + '" open><summary class="pb-by-heading pb-section-h"><h2 id="pl-by-g-' + g.id + '">' + g.t + '</h2><p>' + g.s + '</p>' + foldToggle() + '</summary><div class="pb-section-b">' +
+        return '<details class="pb-by-group pb-section" id="pb-fold-by-' + g.id + '" data-share="' + ({docs:'dokumenty-i-status',kp:'karta-polaka-info',money:'praca-i-finanse',life:'zycie-i-podroze'}[g.id]) + '" open><summary class="pb-by-heading pb-section-h"><h2 id="pl-by-g-' + g.id + '">' + g.t + '</h2><p>' + g.s + '</p>' + foldToggle() + '</summary><div class="pb-section-b">' +
           '<div class="pb-cols">' + BELARUS.map(function (b, i) {
             if (b.g !== g.id) return '';
-            return '<article class="pb-col" id="pl-d-by' + i + '"><div class="pb-col-h">' + ms(b.ic, 'lead-ico') + '<h3>' + b.t + '<small>' + b.s + '</small></h3></div>' +
+            return '<article class="pb-col" id="pl-d-by' + i + '" data-share="' + BELARUS_SHARE[i] + '"><div class="pb-col-h">' + ms(b.ic, 'lead-ico') + '<h3>' + b.t + '<small>' + b.s + '</small></h3></div>' +
               b.b.map(function (p) { return p.charAt(0) === '<' ? p : '<p>' + p + '</p>'; }).join('') +
               (b.more && b.more.length ? '<div class="pl-acc pb-by-more"><details><summary><span class="t">Что делать</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><ul class="pl-list">' + b.more.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul></div></details></div>' : '') +
               srcLine(b.src) + '<p class="pl-note">Проверено ' + b.checked + '.</p></article>';
