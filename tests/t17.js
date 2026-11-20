@@ -30,7 +30,7 @@ assert(cards.every(c => c.querySelector('.pb-kid-body .pb-kid-steps li')), 'ever
 assert(cards.every(c => c.querySelector('.pl-note a[href]')), 'every card cites official source');
 assert(cards.every(c => /Проверено 20\.11\.2026/.test(c.textContent)), 'verification date per card');
 assert(['pregnancy','afterbirth','usc','nfz','passport'].every(id => $('#pl-kid-'+id)), 'full birth timeline');
-assert($('#pl-kids [data-kid-path]').filter(el => el.classList.contains('pb-kid-choice')).length === 4, 'four legal routes available to choose');
+assert($$('#pl-kids [data-kid-path]').filter(el => el.classList.contains('pb-kid-choice')).length === 4, 'four legal routes available to choose');
 assert(!$('#pl-kids .pb-kid-route'), 'do not render unmatched legal document lists before selection');
 $('#pl-kids [data-kid-path="temporary"]').click();
 assert($('#pl-kid-temporary'), 'selected temporary residence instructions appear');
