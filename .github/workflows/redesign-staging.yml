@@ -1,0 +1,81 @@
+name: Redesign - сборка, тесты, staging
+
+on:
+  push:
+    branches: [redesign]
+    paths:
+      - 'src/**'
+      - 'build/**'
+      - 'tests/**'
+      - '.github/workflows/redesign-staging.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: panbogdan-redesign-staging
+  cancel-in-progress: false
+
+jobs:
+  build-and-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: redesign
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install build dependencies
+        run: npm ci --prefix build
+      - name: Build preview and site
+        run: bash build/build.sh
+      - name: JS DOM and mortgage regression tests
+        env:
+          NODE_PATH: ${{ github.workspace }}/build/node_modules
+        run: |
+          set -e
+          node --check src/block.js
+          node tests/t5.js
+          node tests/t9.js
+          node tests/t13.js
+          node tests/t14.js
+          node tests/t15.js
+          node tests/t16.js
+          node tests/mortval.js
+      - name: Install Chromium for layout tests
+        run: |
+          npm install --prefix build --no-save playwright
+          cd build
+          npx playwright install --with-deps chromium
+      - name: Browser smoke tests, 320 to 1440 px
+        env:
+          NODE_PATH: ${{ github.workspace }}/build/node_modules
+        run: |
+          python3 -m http.server 8765 --directory site >/tmp/panbogdan-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          node tests/by-viewport.js http://127.0.0.1:8765/bialorusini.html
+      - name: Save screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bialorusini-width-checks
+          path: dist/by-screenshots/*.png
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Commit built site and push redesign + staging
+        run: |
+          set -e
+          git config user.name "panbogdan-build"
+          git config user.email "panbogdan-build@users.noreply.github.com"
+          git add -A site/
+          if ! git diff --cached --quiet; then
+            git commit -m "Сайт: собрать раздел Беларусам для staging"
+          fi
+          git fetch origin redesign staging main
+          git merge-base --is-ancestor origin/staging HEAD
+          git push origin HEAD:redesign HEAD:staging
