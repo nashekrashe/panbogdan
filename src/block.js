@@ -1039,14 +1039,14 @@
   }
 
   function rToolVnzh() {
-    return '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('timer') + 'Таймер ожидания</div>' +
+    return '<div class="pl-tool" data-share="kalkulator-oczekiwania" aria-live="polite"><div class="pl-tool-h">' + ms('timer') + 'Таймер ожидания</div>' +
       '<div class="pl-fields">' + field('filed', 'Подал заявление', 'date') + field('cardExp', 'Карта или виза до', 'date') + '</div>' +
       '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="waitDays">0</div><div class="k">' + 'дней жду' + '</div><div class="d">среднее <span data-bind="loc"></span>: <span data-bind="wait"></span></div></div>' +
         '<div><div class="v" data-o="cardLeft">—</div><div class="k">дней до конца карты или визы</div><div class="d" data-o="cardMsg">Укажи дату</div></div></div>' +
       '<div class="pl-prog" data-o="waitBar"><i></i></div><div class="pl-msg" data-o="waitMsg"></div><p class="pl-note" data-o="lawMsg"></p></div>';
   }
   function rToolPmzh() {
-    return '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('luggage') + 'Стаж и выезды для rezydenta UE</div>' +
+    return '<div class="pl-tool" data-share="kalkulator-pobytu" aria-live="polite"><div class="pl-tool-h">' + ms('luggage') + 'Стаж и выезды для rezydenta UE</div>' +
       '<div class="pl-fields">' + field('since', 'Легально в Польше с', 'date', '', 'since2') + '</div>' +
       '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="stY">0</div><div class="k" data-o="stK">дней из 1 826</div><div class="d" data-o="stDate">Укажи дату</div></div>' +
         '<div><div class="v" data-o="trTot">0</div><div class="k">дней за границей из ~304</div><div class="d">лимит 10 месяцев за 5 лет</div></div>' +
@@ -1057,7 +1057,7 @@
   }
   function rToolPass() {
     var p = S.f.cpath || 'std';
-    return '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('event') + 'Когда можно на гражданство</div>' +
+    return '<div class="pl-tool" data-share="kalkulator-obywatelstwa" aria-live="polite"><div class="pl-tool-h">' + ms('event') + 'Когда можно на гражданство</div>' +
       '<div class="pl-fields"><div class="pl-field"><label class="pl-eyebrow" for="pl-f-cpath">Мой путь</label><select class="pl-input pl-sel" id="pl-f-cpath" data-f="cpath">' +
         [['std', 'Обычный: 3 года на ПМЖ'], ['mar', 'Брак с гражданином: 2 года'], ['kp', 'Karta Polaka: 1 год']].map(function (o) { return '<option value="' + o[0] + '"' + (p === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') +
       '</select></div>' + field('staly', 'ПМЖ или rezydent UE с', 'date') + '</div>' +
@@ -1354,13 +1354,13 @@
       }).join('') + '</div>' +
       tipHtml('2027: Сейм и Сенат приняли шкалу 12% до 130 000 zł, 24% до 150 000 zł и 32% сверх. Для B2B там же ryczałt только при выручке до 250 тысяч евро и danina solidarnościowa 5%. Закон ждёт подписи президента, мы считаем по правилам 2026. ' + link('https://www.money.pl/podatki/zmiany-w-podatkach-senat-zdecydowal-teraz-czas-na-ruch-prezydenta-7348086529518048a.html', 'money.pl') + ', ' + link('https://biznes.wprost.pl/twoj-portfel/12495919/zmiany-podatkowe-w-rekach-prezydenta-co-zrobi-karol-nawrocki.html', 'wprost.pl') + ', 16.11.2026') +
       srcLine([['https://ksiegowosc.infor.pl/podatki/pit/pit/rozliczenia/5650306,wspolne-rozliczenie-malzonkow.html', 'infor.pl: совместный PIT'], ['https://www.pit.pl/?p=17211', 'pit.pl: ulga na dzieci'], ['https://www.pit.pl/?p=13682', 'pit.pl: ulga и ryczałt']]);
-    var zus = '<div data-w="b2b"><h3 class="pl-h3" style="margin-top:56px">ZUS</h3><p class="pl-lead" style="margin-top:8px">Взносы владельца JDG растут по уровням, как в игре. Только награды нет.</p>' +
-      '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('emoji_events') + 'Мой уровень ZUS</div><div class="pl-fields">' + field('jdg', 'Открыл JDG', 'date') + '</div>' +
+    var zus = '<div data-w="b2b"><h3 class="pl-h3" data-share="zus" style="margin-top:56px">ZUS</h3><p class="pl-lead" style="margin-top:8px">Взносы владельца JDG растут по уровням, как в игре. Только награды нет.</p>' +
+      '<div class="pl-tool" data-share="kalkulator-zus" aria-live="polite"><div class="pl-tool-h">' + ms('emoji_events') + 'Мой уровень ZUS</div><div class="pl-fields">' + field('jdg', 'Открыл JDG', 'date') + '</div>' +
       '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="zLv" data-nofit style="font-size:clamp(36px,3.4vw,72px)">—</div><div class="k">сейчас</div></div><div><div class="v" data-o="zLeft">—</div><div class="k" data-o="zNext">дней до следующего уровня</div></div></div><div class="pl-prog" data-o="zBar"><i></i></div></div>' +
       '<div class="pl-cards" data-fitcells="120">' + ZUS_LV.map(function (c) {
-        return '<article class="pl-card pl-lvlcard" data-zlv="' + c.id + '"><span class="pl-here" hidden>ты здесь</span><div class="top"><span class="cico" style="background:var(--c-money);color:#141414">' + ms('shield') + '</span><span class="tag">' + c.tag + '</span></div><div class="t">' + c.t + '</div><div class="big' + (/[а-яё]/i.test(c.big) ? ' txt' : '') + '">' + c.big + '</div><div class="x">' + c.x + '</div><div class="i">' + c.i + '</div></article>';
+        return '<article class="pl-card pl-lvlcard" data-zlv="' + c.id + '" data-share="' + ['ulga-na-start','preferencyjny-zus','maly-zus-plus','pelny-zus'][c.id] + '"><span class="pl-here" hidden>ты здесь</span><div class="top"><span class="cico" style="background:var(--c-money);color:#141414">' + ms('shield') + '</span><span class="tag">' + c.tag + '</span></div><div class="t">' + c.t + '</div><div class="big' + (/[а-яё]/i.test(c.big) ? ' txt' : '') + '">' + c.big + '</div><div class="x">' + c.x + '</div><div class="i">' + c.i + '</div></article>';
       }).join('') + '</div><p class="pl-note" style="margin-top:16px">Источники: ' + link('https://norman.finance/pl/pomoc/zus-dla-jdg', 'norman.finance') + ', ' + link('https://www.ifirma.pl/blog/maly-zus-plus-2026-kto-moze-skorzystac-i-jak-dlugo/', 'ifirma.pl') + '</p></div>';
-    var dl = '<h3 class="pl-h3" style="margin-top:56px">Дедлайны</h3><p class="pl-lead" style="margin-top:8px">Дни, которые лучше не пропускать. Считаются от сегодняшней даты.</p><div class="pl-dl" data-fitcells="150">' +
+    var dl = '<h3 class="pl-h3" data-share="terminy-podatkowe" style="margin-top:56px">Дедлайны</h3><p class="pl-lead" style="margin-top:8px">Дни, которые лучше не пропускать. Считаются от сегодняшней даты.</p><div class="pl-dl" data-fitcells="150">' +
       '<div data-w="uop zlec dzielo"><span class="v" data-o="dlEpit"></span><span class="k">дней до 15 февраля: Twój e-PIT появится в e-Urzędzie Skarbowym</span></div>' +
       '<div data-w="uop zlec dzielo"><span class="v" data-o="dlP11"></span><span class="k">дней до конца февраля: PIT-11 от работодателя или заказчика</span></div>' +
       '<div data-w="b2b"><span class="v" data-o="dl20"></span><span class="k">дней до 20-го: ZUS и аванс PIT</span></div>' +
@@ -1676,7 +1676,7 @@
       return '<button type="button" class="pl-chip" data-dist="' + k + '">' + CITIES[c].n + ' → ' + CITIES[x].n + ' <span class="pl-muted" style="font-weight:400">≈' + k + ' км</span></button>';
     }).join('');
     return '<section class="pl-band pb-screen" id="pl-auto" aria-labelledby="pl-auto-h">' + head('pl-auto', 'Авто. Топливо. Права. Учет. Страховка. Техосмотр', 'directions_car', 'var(--c-auto)', '#141414', 'Топливо: средние цены по Польше, раз в неделю') +
-      '<div class="pl-counts" data-fitcells="200" style="margin-top:40px">' + [['PB 95', 'fuelPb', 'Зарплата обновляется реже.'], ['ON · дизель', 'fuelOn', 'Дизель снова дороже бензина. Или нет. Смотри цифру.'], ['LPG', 'fuelLpg', 'Газовики смотрят на всех свысока.']].map(function (f) {
+      '<div class="pl-counts" data-share="ceny-paliwa" data-fitcells="200" style="margin-top:40px">' + [['PB 95', 'fuelPb', 'Зарплата обновляется реже.'], ['ON · дизель', 'fuelOn', 'Дизель снова дороже бензина. Или нет. Смотри цифру.'], ['LPG', 'fuelLpg', 'Газовики смотрят на всех свысока.']].map(function (f) {
         return '<div><div class="pb-fuel-k">' + f[0] + '</div><div class="pl-big" data-o="' + f[1] + '">—</div><div class="pl-lab">zł за литр, в среднем по Польше</div><div class="pl-sub">' + f[2] + '</div></div>';
       }).join('') + '</div>' +
       '<p class="pl-note" style="margin-top:20px"><span data-o="fuelNote"></span> Где дешевле ' + CITIES[c].loc + ': ' + link('https://www.e-petrol.pl', 'e-petrol.pl') + '</p>' +
