@@ -564,7 +564,7 @@
   ];
 
   var SOURCES = [
-    ['Цены на топливо: Weekly Oil Bulletin (Еврокомиссия)', 'https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en'], ['Курс евро NBP (таблица A)', 'https://api.nbp.pl/'],
+    ['Цены на топливо: Weekly Oil Bulletin (Еврокомиссия)', 'https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en'], ['Курс евро NBP (таблица A)', 'https://api.nbp.pl/'], ['USD/PLN: средний курс NBP, таблица A', 'https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json'],
     ['Ипотеки в сентябре 2026 (BIK)', 'https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r'], ['Процент по новым ипотекам, сентябрь 2026 (NBP)', 'https://finwire.pl/artykuly/nowe-kredyty-mieszkaniowe-wrzesien-2026-nbp'],
     ['PKO BP: счета беларусов без карты побыту', 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu'], ['Санкции ЕС против Беларуси, регламент 2025/2041', 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041'],
     ['Karta Polaka: оформление в Польше', 'https://wsc.gdansk.uw.gov.pl/pl/procedury/przyznanie-karty-polaka'], ['Karta Polaka: выплата', 'https://wsc.gdansk.uw.gov.pl/pl/procedury/swiadczenie-pieniezne-dla-posiadacza-karty-polaka'],
@@ -1154,7 +1154,7 @@
   }
   function rBy() {
     return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
-      '<p class="pl-lead">Паспорт, Karta Polaka, защита, работа и документы. У каждой темы источники и дата проверки.</p>' +
+      '<p class="pl-section-intro">Паспорт, Karta Polaka, защита, работа и документы. У каждой темы источники и дата проверки.</p>' +
       '<div class="pb-by-groups">' + BELARUS_GROUPS.map(function (g) {
         return '<details class="pb-by-group pb-section" id="pb-fold-by-' + g.id + '" open><summary class="pb-by-heading pb-section-h"><h2 id="pl-by-g-' + g.id + '">' + g.t + '</h2><p>' + g.s + '</p>' + foldToggle() + '</summary><div class="pb-section-b">' +
           '<div class="pb-cols">' + BELARUS.map(function (b, i) {
@@ -1285,7 +1285,15 @@
   /* «Банки»: who is friendly to Belarusians, and money from Belarus */
   function rBank() {
     return '<section class="pl-band pb-screen" id="pl-bank" aria-labelledby="pl-bank-h">' + head('pl-bank', 'Банки. Счета. Санкции', '', '', '', 'Кто как относится к беларусам') +
-            '<p class="pl-lead" style="margin-top:8px">Насколько легко открыть счёт и пользоваться им без карты побыту. С картой побыту проще почти везде.</p>' +
+            '<p class="pl-section-intro">Насколько легко открыть счёт и пользоваться им без карты побыту. С картой побыту проще почти везде.</p>' +
+      '<div class="pb-bank-extra">' +
+        '<div class="pb-bank-info"><div class="pb-bank-label">Курс USD / PLN</div>' +
+          '<p class="pb-bank-quote">1 USD = <strong data-o="usdRate">—</strong> zł</p>' +
+          '<p class="pl-note"><span data-o="usdDate">Загружается</span>. ' + link('https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json', 'NBP, таблица A') + '</p></div>' +
+        '<div class="pb-bank-info"><div class="pb-bank-label">Ипотека</div>' +
+          '<p>Ставка, платёж и сколько банк может дать на жильё.</p>' +
+          '<a class="pb-seclink" href="' + hrefOf(secBy('home')) + '">Ипотека и калькулятор в разделе «Дом»</a></div>' +
+      '</div>' +
       '<ol class="pl-banks">' + BANKS.map(function (b, i) {
         return '<li><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
           '<span class="pl-bank-s" aria-label="Лояльность ' + b.s + ' из 3: ' + BANK_LBL[b.s] + '"><span class="pl-dots">' + [1, 2, 3].map(function (k) { return '<i' + (k <= b.s ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' + BANK_LBL[b.s] + '</span>' +
@@ -1298,7 +1306,7 @@
   /* «Дом»: mortgage numbers, the calculator, renting */
   function rHome() {
     return '<section class="pl-band pb-screen" id="pl-home" aria-labelledby="pl-home-h">' + head('pl-home', 'Аренда. Ипотека. Кредиты. Прописка', '', '', '', 'Ипотека в цифрах, сколько дадут и аренда') +
-      '<p class="pl-lead">Средние по всей Польше, по городам официальных данных нет.</p>' +
+      '<p class="pl-section-intro">Средние по всей Польше, по городам официальных данных нет.</p>' +
       '<div class="pl-counts" data-fitcells="200">' +
         '<div><div class="pl-big">486 500</div><div class="pl-lab">zł: средняя ипотека</div><div class="pl-sub">BIK, сентябрь 2026. На 8,3% больше, чем год назад</div></div>' +
         '<div><div class="pl-big" style="color:var(--red)">5,95%</div><div class="pl-lab">средний процент по новым ипотекам в злотых</div><div class="pl-sub">NBP, сентябрь 2026</div></div>' +
@@ -1995,6 +2003,7 @@
     root.innerHTML = rMHead() + '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
       rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback() + rNewsPop();
     restoreFolds();
+    updateUsdRate();
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
     if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
     rendered = 1;
@@ -2421,8 +2430,29 @@
     }).catch(function () {});
   }
 
+  /* Official NBP table A: most recently published mid-market USD/PLN rate, not a retail bank quote. */
+  var USD_RATE = null, USD_FAILED = false;
+  function updateUsdRate() {
+    out('usdRate', USD_RATE ? USD_RATE.mid.toFixed(4).replace('.', ',') : '—');
+    out('usdDate', USD_RATE ? 'Курс на ' + USD_RATE.effectiveDate.split('-').reverse().join('.') :
+      USD_FAILED ? 'Курс NBP временно недоступен' : 'Загружается');
+  }
+  function loadUsdRate() {
+    if (!window.fetch) { USD_FAILED = true; updateUsdRate(); return; }
+    fetch('https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json', { credentials: 'omit' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var r = j && j.code === 'USD' && j.table === 'A' && j.rates && j.rates[0];
+        if (r && Number.isFinite(r.mid) && r.mid > 0 && /^\d{4}-\d{2}-\d{2}$/.test(r.effectiveDate)) {
+          USD_RATE = r;
+        } else USD_FAILED = true;
+        updateUsdRate();
+      }).catch(function () { USD_FAILED = true; updateUsdRate(); });
+  }
+
   render();
   loadFuel();
+  loadUsdRate();
 
   /* auto: if the visitor already allowed location for this site and never picked a city by hand */
   if (!S.cityManual && navigator.permissions && navigator.permissions.query) {
