@@ -463,41 +463,82 @@
     { n: 'Alior', s: 1, t: 'Беларусь в списке стран высокого риска. На каждый счёт нужно отдельное согласие банка.', d: '2022', u: RP22, src: 'rp.pl' },
     { n: 'PKO BP', s: 1, t: 'Счёт открывают, но если он открыт после 24.10.2025 без карты побыту, нет приложения, BLIK и карты, пока не покажешь в отделении документ на пребывание.', d: '4.12.2025', u: 'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', src: 'pkobp.pl' }
   ];
-  /* Mortgage offers: bank representative examples, not comparable individual quotes. Bank pages checked 20.11.2026.
-     All four rows use a periodically fixed nominal rate for the first five years; RRSO includes modelled costs.
-     Keep the numeric pair together and re-verify before changing either figure. */
+  /* Mortgage offers: representative examples, not bank decisions for Belarusian applicants.
+     Checked 20.11.2026. Only publish rate/RRSO pairs from verified sources; some examples are older.
+     "by" is explicit mortgage evidence status, never extrapolated from rules for opening accounts. */
   var MORT_BANK_OFFERS = [
-    { n:'ING Bank Śląski', rate:'6,07%', rrso:'6,56%', down:'от 20%', example:'Jesień na swoim, Łatwy start',
-      terms:'Фиксированная ставка 5 лет. В примере: комиссия 0%, счёт ING GO, страховка жизни на 3 года, страхование недвижимости и оценка 560 zł.',
-      asof:'пример осени 2026', u:'https://www.ing.pl/indywidualni/kredyty-i-pozyczki/kredyt-hipoteczny' },
-    { n:'Bank Pekao', rate:'6,29%', rrso:'6,77%', down:'30,18% в примере', example:'Kredyt mieszkaniowy',
-      terms:'Фиксированная ставка 5 лет. В примере: ежемесячные поступления на счёт от 3 000 zł, страховка жизни первые 4 года, страхование жилья и платная дебетовая карта.',
-      asof:'пример на сайте банка', u:'https://www.pekao.com.pl/klient-indywidualny/wlasne-mieszkanie-lub-dom/kredyt-hipoteczny.html' },
-    { n:'PKO Bank Polski', rate:'6,57%', rrso:'7,93%', down:'от 10%', example:'Własny Kąt hipoteczny',
-      terms:'Фиксированная ставка 5 лет, в примере со скидкой 1 п.п. В примере: поступления на счёт от 3 000 zł/мес, страховка жизни и недвижимости, комиссия 0%.',
-      asof:'база ставки от 05.10.2026', u:'https://www.pkobp.pl/klient-indywidualny/kredyty-pozyczki/kredyt-hipoteczny' },
-    { n:'mBank', rate:'6,77%', rrso:'7,41%', down:'от 10%', example:'Stała Pewność, edycja 3, активный клиент',
-      terms:'Фиксированная ставка 5 лет. В промо: счёт с поступлениями и страховка жизни/здоровья/потери работы на 5 лет. В примере: 0% комиссия и оценка 400 zł.',
-      asof:'пример от 19.10.2026', u:'https://www.mbank.pl/indywidualny/kredyty/kredyty-hipoteczne/chce-kredyt-hipoteczny' }
+    { n:'ING Bank Śląski', rate:'6,07%', rrso:'6,56%', fixed:'5 лет', down:'от 20%', example:'Jesień na swoim, Łatwy start',
+      terms:'Комиссия 0% в примере, счёт ING GO, страховка жизни на 3 года, страхование недвижимости, оценка 560 zł.',
+      asof:'осень 2026', u:'https://www.ing.pl/indywidualni/kredyty-i-pozyczki/kredyt-hipoteczny' },
+    { n:'Bank Pekao', rate:'6,29%', rrso:'6,77%', fixed:'5 лет', down:'30,18% в примере', example:'Kredyt mieszkaniowy',
+      terms:'Поступления на счёт от 3 000 zł в месяц, страховка жизни первые 4 года, страхование жилья, дебетовая карта.',
+      asof:'пример банка, 2026', u:'https://www.pekao.com.pl/klient-indywidualny/wlasne-mieszkanie-lub-dom/kredyt-hipoteczny.html' },
+    { n:'PKO Bank Polski', rate:'6,57%', rrso:'7,93%', fixed:'5 лет', down:'от 10%', example:'Własny Kąt hipoteczny',
+      terms:'Ставка в примере со скидкой 1 п.п.; поступления на счёт от 3 000 zł/мес, страховки жизни и недвижимости, комиссия 0%.',
+      asof:'пример 05.10.2026', u:'https://www.pkobp.pl/klient-indywidualny/kredyty-pozyczki/kredyt-hipoteczny',
+      by:'Для граждан Беларуси без документа на законное пребывание PKO отдельно ограничивает обслуживание счетов. Для ипотек нет публичной гарантии одобрения: сначала уточни допустимость заявки.', byU:'https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu',byType:'account' },
+    { n:'mBank', rate:'6,77%', rrso:'7,41%', fixed:'5 лет', down:'от 10%', example:'Stała Pewność, edycja 3',
+      terms:'Промо для активного клиента: счёт с поступлениями и страховка жизни, здоровья и потери работы на 5 лет; комиссия 0% в примере.',
+      asof:'пример 19.10.2026', u:'https://www.mbank.pl/indywidualny/kredyty/kredyty-hipoteczne/chce-kredyt-hipoteczny',
+      by:'Публичный регламент допускает иностранцев с разрешением на временный или постоянный pobyt. Нужны PESEL, документированный доход и кредитоспособность. Гражданство само по себе не гарантирует кредит.',
+      byU:'https://pdf.mbank.pl/mbankpl/of/regulaminy/kredyty/regulamin_udzielania_kredytow_i_pozyczek_hipotecznych_dla_of-_obowiazuje_od_28.05.2025.pdf',byType:'mortgage' },
+    { n:'Erste Bank Polska', rate:'6,97%', rrso:'7,69%', fixed:'5 лет', down:'от 10%', example:'Kredyt mieszkaniowy, бывший Santander',
+      terms:'В сентябрьском примере ставка на 5 лет, затем POLSTR 1M с маржей. Скидки зависят от счёта и поступлений, кредитной карты и страховок; без страховки Spokojna Hipoteka комиссия может отличаться.',
+      asof:'пример 26.09.2026', u:'https://www.erste.pl/klient-indywidualny/kredyty/kredyt-mieszkaniowy',
+      by:'Банк предлагает ипотеку в PLN при доходах в PLN. Публичных правил приёма именно беларусов с временным ВНЖ, ПМЖ или в ожидании решения нет; проверить допустимость заявки до оценки.',
+      byU:'https://www.erste.pl/klient-indywidualny/kredyty/kredyt-mieszkaniowy',byType:'unverified' },
+    { n:'BNP Paribas', rate:'5,95%', rrso:'6,93%', fixed:'5 лет', down:'43,5% в примере', example:'Kredyt hipoteczny z niską marżą',
+      terms:'Комиссия 0% в примере, Konto Otwarte na Ciebie и карта, регулярный доход на счёт; страхование жизни, недвижимости и оценка 400 zł.',
+      asof:'пример 10.09.2026', u:'https://www.bnpparibas.pl/klienci-indywidualni/kredyty/kredyt-hipoteczny-z-niska-marza' },
+    { n:'Alior Bank', rate:'6,58%', rrso:'7,15%', fixed:'5 лет', down:'23,89% в примере', example:'Megahipoteka',
+      terms:'В примере: счёт, дебетовая карта и мобильный банк. При низком взносе возможно дополнительное страховое обеспечение.',
+      asof:'пример, 2026', u:'https://www.aliorbank.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-z-okresowo-stala-stopa-oprocentowania.html',
+      by:'По регламенту от 03.11.2026 иностранец должен получать доход в Польше и иметь meldunek на pobyt stały или czasowy; нужны приемлемый доход и положительное кредитное решение.',
+      byU:'https://www.aliorbank.pl/dam/jcr%3A213bf45d-8adb-4894-b806-42c13f8b8410/regulamin-udzielenia-i-obslugi-kredytow-zabezpieczonych-na-nieruchomosci-megahipoteka-od-03112026.pdf',byType:'mortgage' },
+    { n:'Bank Millennium', rate:'5,65%', rrso:'6,49%', fixed:'5 лет', down:'37,30% в примере', example:'Kredyt hipoteczny',
+      terms:'В примере: Millennium 360°, поступления зарплаты и траты картой от 500 zł/мес в течение 55 месяцев, страхование жизни 36 месяцев.',
+      asof:'пример 05.03.2026, может устареть', u:'https://www.bankmillennium.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-hipoteczny' },
+    { n:'Credit Agricole', rate:'6,29%', rrso:'6,79%', fixed:'7 лет', down:'46% в примере', example:'Hipoteka Prime',
+      terms:'Условия примера: продукты банка, страховки жизни и жилья, оценка недвижимости. Фиксация ставки на 7 лет, не на 5.',
+      asof:'пример 01.08.2026, может устареть', u:'https://www.credit-agricole.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-na-mieszkanie' },
+    { n:'VeloBank', rate:'6,92%', rrso:'7,31%', fixed:'5 лет', down:'25,28% в примере', example:'VeloDom',
+      terms:'Кредит до 90% стоимости жилья. В примере: поступления на счёт от 3 000 zł/мес, e-korespondencja и страховка VeloBezpieczny на 5 лет.',
+      asof:'пример 02.10.2026', u:'https://www.velobank.pl/klienci-indywidualni/kredyty/kredyt-hipoteczny.html' },
+    { n:'BOŚ Bank', rate:'6,15%', rrso:'7,08%', fixed:'5 лет', down:'уточнить; пример 500 000 zł', example:'Twój Dom PLUS',
+      terms:'В примере: поступления на счёт от 6 000 zł/мес, комиссия 0%, страхование недвижимости; не путать со ставкой рефинансирования.',
+      asof:'пример 19.06.2026, может устареть', u:'https://www.bosbank.pl/klient-indywidualny/pozyczki-i-kredyty/eko-hipoteka/kredyt-hipoteczny' }
   ];
   function rBankMortgages() {
     return '<section class="pb-bank-mort" aria-labelledby="pb-bank-mort-h">' +
-      '<div class="pb-bank-mort-head"><h3 class="pl-h3" id="pb-bank-mort-h">Ипотека: ставки по банкам</h3>' +
+      '<div class="pb-bank-mort-head"><h3 class="pl-h3" id="pb-bank-mort-h">Ипотека: проценты и условия</h3>' +
       '<span class="pl-muted pl-xs">Проверено 20.11.2026</span></div>' +
-      '<p class="pb-bank-mort-intro">Публичные репрезентативные примеры банков, не персональные предложения. Все ставки ниже фиксированы на первые 5 лет. После этого условия могут измениться.</p>' +
+      '<p class="pb-bank-mort-intro">11 банков. Публичные примеры, не персональные предложения. Ставка фиксирована первые 5 лет, у Credit Agricole 7 лет. У части банков пример старый: перед заявлением сверяй актуальную оферту.</p>' +
       '<div class="pb-bank-mort-list">' +
       MORT_BANK_OFFERS.map(function (b) {
+        var byVerified = b.byType === 'mortgage';
+        var by = b.by || 'Публичных отдельных условий выдачи ипотеки гражданам Беларуси на странице банка нет. Тип ВНЖ, срок действия карты, доход и допустимость заявки проверяй индивидуально; открытие счёта не подтверждает одобрение ипотеки.';
+        var src = b.byU ? ' ' + link(b.byU, byVerified ? 'Правила ипотеки банка' : b.byType === 'account' ? 'Правила по счетам, не ипотеке' : 'Ипотечная страница') : '';
         return '<article class="pb-bank-mort-row">' +
           '<div class="pb-bank-mort-n"><b>' + b.n + '</b><small>' + b.example + '</small></div>' +
-          '<div class="pb-bank-mort-rate"><b>' + b.rate + '</b><small>ставка, 5 лет</small></div>' +
+          '<div class="pb-bank-mort-rate"><b>' + b.rate + '</b><small>ставка, ' + b.fixed + '</small></div>' +
           '<div class="pb-bank-mort-rate pb-bank-mort-apr"><b>' + b.rrso + '</b><small>RRSO</small></div>' +
           '<div class="pb-bank-mort-terms"><b>Взнос: ' + b.down + '</b><p>' + b.terms + '</p>' +
-          '<span class="pl-note">' + link(b.u,'Пример на сайте банка') + ' · ' + b.asof + '</span></div>' +
+          '<span class="pl-note">' + link(b.u,'Пример на сайте банка') + ' · ' + b.asof + '</span>' +
+          '<div class="pb-bank-mort-by"><b>' + (byVerified ? 'Иностранцу: правило банка' : 'Беларусам: уточнить в банке') + '</b>' +
+          '<p>' + by + src + '</p></div></div>' +
         '</article>';
       }).join('') + '</div>' +
-      '<p class="pl-note pb-bank-mort-foot">RRSO включает расходы по условиям конкретного примера: страховки, комиссии и другие затраты. Из-за разных сумм, сроков и взносов проценты нельзя считать прямым рейтингом. Получение ипотеки иностранцем банк проверяет отдельно от открытия счёта.</p>' +
-      '<a class="pb-seclink pb-bank-mort-home" href="' + hrefOf(secBy('home')) + '">Калькулятор платежа и кредитоспособности в разделе «Дом»</a></section>';
+      '<div class="pb-bank-by-note"><b>Беларусам: что подготовить для ипотеки</b>' +
+        '<p>ВНЖ или другой документ законного пребывания, PESEL, доход в Польше, историю работы, подтверждение первоначального взноса и происхождения денег. Срок карты побыту и допустимость конкретного статуса проверяет банк. Гражданство Беларуси само по себе не означает ни автоматического отказа, ни одобрения.</p>' +
+        '<p>Проверенные публичные условия есть у ' + link('https://pdf.mbank.pl/mbankpl/of/regulaminy/kredyty/regulamin_udzielania_kredytow_i_pozyczek_hipotecznych_dla_of-_obowiazuje_od_28.05.2025.pdf','mBank') + ' и ' +
+        link('https://www.aliorbank.pl/dam/jcr%3A213bf45d-8adb-4894-b806-42c13f8b8410/regulamin-udzielenia-i-obslugi-kredytow-zabezpieczonych-na-nieruchomosci-megahipoteka-od-03112026.pdf','Alior') + '. Санкционные правила и документы для открытия счёта не равны ипотечным критериям: ' +
+        link('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041','ЕС, регламент 2025/2041') + '.</p></div>' +
+      '<p class="pl-note pb-bank-mort-foot">RRSO включает расходы по условиям конкретного примера: страховки, комиссии и другие затраты. Суммы, сроки и взносы различаются, поэтому проценты нельзя считать прямым рейтингом. «Взнос в примере» не означает минимальный взнос банка.</p>' +
+      '<a class="pb-bank-calc-card pb-bank-mort-home" href="' + hrefOf(secBy('home')) + '">' +
+        '<span class="pb-bank-calc-label">Раздел «Дом»</span><strong>Калькулятор ипотеки</strong>' +
+        '<span>Посчитать платёж, взнос и ориентировочную кредитоспособность</span></a></section>';
   }
+
   var BANK_LBL = { 3: 'Свой', 2: 'С анкетой', 1: 'Строгий' };
   /* Mortgage capacity. KNF Rekomendacja S: the bank tests the payment at the rate + a buffer (variable: max(5 p.p. − NBP rate; 2.5 p.p.), NBP 3.75% → 2.5;
      periodically fixed for 5 years: 2.5) and over at most 25 years. Payment limit = min(DSTI × income, income − living costs) − other debts.
@@ -601,6 +642,15 @@
 
   var SOURCES = [
     ['Цены на топливо: Weekly Oil Bulletin (Еврокомиссия)', 'https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en'], ['Курс евро NBP (таблица A)', 'https://api.nbp.pl/'], ['USD/PLN: средний курс NBP, таблица A', 'https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json'],
+    ['Ипотека Erste: кредит mieszkaniowy, ставка и RRSO, 2026', 'https://www.erste.pl/klient-indywidualny/kredyty/kredyt-mieszkaniowy'],
+    ['Ипотека BNP Paribas: ставка и RRSO, 2026', 'https://www.bnpparibas.pl/klienci-indywidualni/kredyty/kredyt-hipoteczny-z-niska-marza'],
+    ['Ипотека Alior: ставка и RRSO, 2026', 'https://www.aliorbank.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-z-okresowo-stala-stopa-oprocentowania.html'],
+    ['Ипотека Millennium: ставка и RRSO, пример 05.03.2026', 'https://www.bankmillennium.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-hipoteczny'],
+    ['Ипотека Credit Agricole: 7-летняя ставка, RRSO, 2026', 'https://www.credit-agricole.pl/klienci-indywidualni/kredyty-hipoteczne/kredyt-na-mieszkanie'],
+    ['Ипотека VeloBank: VeloDom, 02.10.2026', 'https://www.velobank.pl/klienci-indywidualni/kredyty/kredyt-hipoteczny.html'],
+    ['Ипотека BOŚ: Twój Dom PLUS, пример 19.06.2026', 'https://www.bosbank.pl/klient-indywidualny/pozyczki-i-kredyty/eko-hipoteka/kredyt-hipoteczny'],
+    ['Ипотека mBank: иностранцы с czasowy/stały pobyt по регламенту', 'https://pdf.mbank.pl/mbankpl/of/regulaminy/kredyty/regulamin_udzielania_kredytow_i_pozyczek_hipotecznych_dla_of-_obowiazuje_od_28.05.2025.pdf'],
+    ['Ипотека Alior: регламент для иностранцев 03.11.2026', 'https://www.aliorbank.pl/dam/jcr%3A213bf45d-8adb-4894-b806-42c13f8b8410/regulamin-udzielenia-i-obslugi-kredytow-zabezpieczonych-na-nieruchomosci-megahipoteka-od-03112026.pdf'],
     ['Ипотека ING: 5-летняя ставка и RRSO, пример осени 2026', 'https://www.ing.pl/indywidualni/kredyty-i-pozyczki/kredyt-hipoteczny'],
     ['Ипотека Pekao: 5-летняя ставка, RRSO и условия поступлений на счёт', 'https://www.pekao.com.pl/klient-indywidualny/wlasne-mieszkanie-lub-dom/kredyt-hipoteczny.html'],
     ['Ипотека PKO BP: Własny Kąt, пример от октября 2026', 'https://www.pkobp.pl/klient-indywidualny/kredyty-pozyczki/kredyt-hipoteczny'],
