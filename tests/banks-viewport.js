@@ -22,16 +22,20 @@ const url = process.argv[2] || 'http://127.0.0.1:8765/banki.html';
       const result=await page.evaluate(() => {
         const bank=document.querySelector('#pl-bank'), note=bank.querySelector('.pl-head .pl-small'),
           mortgage=bank.querySelector('.pb-bank-info a[href="/dom"]'),
-          quote=bank.querySelector('[data-o="usdRate"]');
+          quote=bank.querySelector('[data-o="usdRate"]'),
+          rows=[...bank.querySelectorAll('.pb-bank-mort-row')],
+          mortgageHome=bank.querySelector('.pb-bank-mort-home');
         return {win:innerWidth,doc:document.documentElement.scrollWidth,
           subtitlePx:parseFloat(getComputedStyle(note).fontSize),
           quote:quote.textContent, href: mortgage && mortgage.getAttribute('href'),
+          rateRows:rows.length, rateValues:rows.map(row=>row.querySelector('.pb-bank-mort-rate b').textContent),
+          mortgageHref:mortgageHome && mortgageHome.getAttribute('href'),
           visible:!bank.hidden};
       });
       await page.screenshot({path:path.join(folder,'banki-'+width+'.png'),fullPage:true});
       console.log(width,result,'errors:',errors);
       if (result.doc>result.win+1) throw Error('horizontal overflow at '+width);
-      if (result.subtitlePx !== 12 || result.href !== '/dom' || result.quote !== '3,9876' || !result.visible) throw Error('bank content or styles at '+width);
+      if (result.subtitlePx !== 12 || result.href !== '/dom' || result.quote !== '3,9876' || result.rateRows !== 4 || result.mortgageHref !== '/dom' || !result.visible) throw Error('bank content or styles at '+width);
       if (errors.length) throw Error('page JS errors at '+width+': '+errors.join('; '));
       await page.close();
     }
