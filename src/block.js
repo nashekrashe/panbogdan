@@ -1457,7 +1457,7 @@
       '<div class="pb-kid-city"><b>Твой город: ' + esc(city().n) + '.</b> ' +
       (area ? 'Если малыш родился в ' + (S.city === 'gdansk' ? 'Гданьске' : 'Гдыне') + ', регистрируй в ' + link(local.uscUrl,local.usc) + '. ' : '') +
       'USC определяется местом рождения, а не проживания. За ВНЖ ребёнка отвечает воеводский отдел по месту проживания: ' +
-      link(VOIV[city().vo].u,VOIV[city().vo].uw + ' Urząd Wojewódzki') + '. По NFZ: ' + link(local.pozUrl,local.poz) + '. За becikowe и świadczenie rodzicielskie: ' + link(local.benefitsUrl,local.benefits) + '.</div>' +
+      link(city().uwUrl,city().uw) + '. По NFZ: ' + link(local.pozUrl,local.poz) + '. За becikowe и świadczenie rodzicielskie: ' + link(local.benefitsUrl,local.benefits) + '.</div>' +
       '<h2 class="pl-h3 pb-kid-group">Беременность и первые дни</h2>' +
       '<div class="pl-cards pb-kid-grid">' + KIDS_STEPS.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
       '<h2 class="pl-h3 pb-kid-group">Легализация ребёнка</h2>' +
