@@ -25,11 +25,18 @@ function boot(url, state, paths=true) {
   assert(a.$('#erste').closest('.pb-bank-mort-row').textContent.includes('Erste'), 'Erste anchor belongs to correct mortgage row');
   assert(a.$('#pl-bank .pb-section-copy'), 'top-level section has separate copy control');
   assert(a.$('#pl-bank-h').textContent.includes('Банки')&&!a.$('#pl-bank-h').textContent.includes('#'), 'section H1 remains unchanged');
+  a.w.history.replaceState(null,'','/banki');
   a.$('#pl-bank [data-copy-anchor="erste"]').click();
-  a.$('#pl-bank [data-copy-section="bank"]').click();
+  assert(a.w.location.pathname+a.w.location.hash==='/banki#erste', 'click updates browser URL synchronously to exact card anchor');
   await Promise.resolve();
   assert(a.copied[0]==='https://panbogdan.com/banki#erste','Erste copy produces canonical URL');
+  assert(a.$('.pb-anchor-toast').textContent==='copied: https://panbogdan.com/banki#erste', 'copy toast shows actual full card URL');
+  assert(a.$('#pl-bank [data-copy-anchor="erste"]').textContent==='#','copy feedback does not expand the header');
+  a.$('#pl-bank [data-copy-section="bank"]').click();
+  assert(a.w.location.pathname+a.w.location.hash==='/banki','section copy switches address bar to canonical page URL');
+  await Promise.resolve();
   assert(a.copied[1]==='https://panbogdan.com/banki','section copy produces short canonical path');
+  assert(a.$('.pb-anchor-toast').textContent==='copied: https://panbogdan.com/banki', 'section copy toast displays its exact URL');
   const shares=[...a.w.document.querySelectorAll('[data-share-ready]')];
   assert(shares.length>=70,'major cards, tools, topics and dictionary entries have share anchors');
   const slugs=shares.map(el=>el.getAttribute('data-share'));
@@ -45,8 +52,17 @@ function boot(url, state, paths=true) {
   assert(a.$('#dokument-podrozy').closest('#pl-d-by0'), 'Belarus card keeps legacy ID and adds friendly alias');
   const before=a.$('#pb-fold-by-docs').open;
   a.$('#pb-fold-by-docs .pb-by-heading [data-copy-anchor]').click();
+  assert(a.w.location.hash==='#dokumenty-i-status', 'nested copy changes address bar without opening a new page');
   assert(a.$('#pb-fold-by-docs').open===before,'copy button inside a summary does not toggle accordion');
   assert(a.errors.length===0,'no errors on Belarus direct route');
+  a.w.close();
+
+  a=boot('https://panbogdan.com/banki');
+  Object.defineProperty(a.w.navigator,'clipboard',{configurable:true,value:{writeText:()=>Promise.reject(new Error('permission denied'))}});
+  a.$('#pl-bank [data-copy-anchor="mbank"]').click();
+  assert(a.w.location.pathname+a.w.location.hash==='/banki#mbank','address bar changes immediately even if clipboard access fails');
+  await Promise.resolve();
+  assert(a.$('.pb-anchor-toast').textContent==='copy failed: https://panbogdan.com/banki#mbank','failed clipboard does not falsely claim copied');
   a.w.close();
 
   a=boot('https://panbogdan.com/dzieci#pobyt-czasowy',{kidPath:'pending',folds:{'pl-kids:pb-fold-kid-legal':false}});
@@ -86,7 +102,9 @@ function boot(url, state, paths=true) {
 
   a=boot('https://panbogdan.com/preview.html#erste',null,false);
   assert(!a.$('#pl-bank').hidden && a.$('#erste'),'preview hash-only routing still supports deep links');
+  a.w.history.replaceState(null,'','#banki');
   a.$('#pl-bank [data-copy-anchor="erste"]').click();
+  assert(a.w.location.hash==='#erste','preview browser URL switches to share anchor without changing pathname');
   assert(a.copied[0]==='https://panbogdan.com/preview.html#erste','preview copies its actual preview address');
   a.w.close();
 
