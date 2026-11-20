@@ -326,10 +326,17 @@
   var LBL = { todo: 'to-do', prog: 'в процессе', done: 'готово' };
   var CHECK = 'M3.75 9L7.25 12.375L14.25 5.625', DASH = 'M4.13859 8.91161L13.8613 9.08839';
 
+  var BELARUS_GROUPS = [
+    { id: 'docs', t: 'Документы и статус', s: 'Паспорт, защита и бумаги из Беларуси' },
+    { id: 'kp', t: 'Karta Polaka', s: 'Основания, ПМЖ, гражданство и выплаты' },
+    { id: 'money', t: 'Деньги и работа', s: 'Банки, трудоустройство и страховой стаж' },
+    { id: 'life', t: 'Жизнь и поездки', s: 'Авто, дети и официальная информация' }
+  ];
   var BELARUS = [
-    { ic: 'luggage', t: 'Документ Подружи', s: 'Polski dokument podróży dla cudzoziemca', b: [
-      'Польская замена паспорту, если свой истёк, потерян, испорчен или его никогда не было, а в посольство нельзя. Подтверждает личность и гражданство, по нему можно много раз пересекать границу. Действует 1 год. Это не польский паспорт и не гражданство, и он не отменяет попыток получить свой паспорт.',
+    { g: 'docs', ic: 'luggage', t: 'Документ Подружи', s: 'Polski dokument podróży dla cudzoziemca', b: [
+      'Польская замена паспорту, если свой истёк, потерян, испорчен или его никогда не было, а в посольство нельзя. Подтверждает личность и гражданство, по нему можно много раз пересекать границу. Действует 1 год. Это не польский паспорт и не гражданство, и по упрощённому порядку для беларусов не нужно доказывать, что свой паспорт невозможно получить.',
       'Кому: беларусам с ВНЖ на любом основании, ПМЖ, rezydentem UE, гуманитаркой или ochroną uzupełniającą. Доказывать, что в Беларуси паспорт не получить, не надо. По упрощённым правилам заявление надо подать до 31.12.2026. Для беларусов бесплатно, обычная цена 350 zł.',
+      'Для поездок за границу проверь требования страны назначения. Документ Подружи сам по себе не заменяет карту побыту или визу для возвращения и пребывания. Отдельная проблема: членам семьи граждан ЕС на особом основании пребывания этот документ может быть недоступен.',
       '<div class="pl-acc"><details><summary><span class="t">Полный список документов</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><div class="pl-checks pl-docs">' + [
         '<b>Wniosek o wydanie/wymianę polskiego dokumentu podróży dla cudzoziemca</b>, 1 экземпляр. Бланк на сайте ужонда или в MOS.',
         '<b>2 биометрические фотографии</b> как на польский паспорт, не старше 6 месяцев, подписанные.',
@@ -346,11 +353,92 @@
       '<p><b>Твой ужонд, <span data-bind="uw"></span>:</b> <span data-o="pdpcUw"></span></p>' +
       '<ul class="pl-list" data-o="pdpcAll"></ul>' +
       '<p class="pl-note">Срок считают с момента, когда у ужонда полный комплект документов.</p></div></details></div>'
-    ], src: [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi', 'bip.lubuskie.uw.gov.pl'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'gov.pl/web/udsc'], ['https://www.mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/', 'mos.cudzoziemcy.gov.pl'], ['https://migrant.wsc.mazowieckie.pl/pl/procedury/polski-dokument-podrozy', 'migrant.wsc.mazowieckie.pl'], ['https://migrant.poznan.uw.gov.pl/pl/checklist/1356', 'migrant.poznan.uw.gov.pl'], ['https://www.pomocprawna.org/polski-dokument-podrozy-dla-cudzoziemca', 'pomocprawna.org']], checked: '17.11.2026' },
-    { ic: 'account_balance', t: 'Банки и санкции', s: 'Счета, карты, происхождение денег', b: ['Санкции ЕС (регламент 2025/2041): если у тебя нет карты побыту и счёт открыт после 24.10.2025, банк отключает онлайн-банкинг, BLIK и карту. Счётом можно пользоваться только в отделении. Решение: показать в банке карту побыту или другой документ на пребывание.', 'Держи документы о происхождении денег: банки обязаны проверять крупные поступления, и без бумаг перевод могут остановить.'], src: [['https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', 'pkobp.pl']] },
-    { ic: 'verified', t: 'Karta Polaka', s: 'Короткий путь', b: ['Даёт ПМЖ, а через 1 год на ПМЖ по Karcie Polaka можно подавать на uznanie. B1 всё равно нужен.'], src: [['https://www.gov.pl/web/uw-zachodniopomorski/uznanie-za-obywatela-polskiego2', 'gov.pl']] },
-    { ic: 'directions_car', t: 'Права и авто', s: '6 месяцев после ВНЖ', b: ['Беларуские права действуют 6 месяцев после получения ВНЖ или ПМЖ, дальше обмен: 100 zł, перевод присяжного, starostwo по месту жительства.', 'С 1.07.2024 авто на беларуских номерах нельзя ввозить в ЕС. Исключение: личная машина, владелец сам за рулём или в салоне, у него виза или ВНЖ.'], src: [['https://powroty.gov.pl/prawo-jazdy-5285/', 'powroty.gov.pl'], ['https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas']] },
-    { ic: 'language', t: 'Официально по-беларуски', s: 'gov.pl/web/by', b: ['У правительства есть раздел на беларуском языке. Начни со страницы «Першыя крокі» о том, как легально находиться в Польше.'], src: [['https://www.gov.pl/web/by/piersyja-kroki', 'gov.pl/web/by']] }
+    ], src: [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi', 'bip.lubuskie.uw.gov.pl'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'gov.pl/web/udsc'], ['https://www.mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/', 'mos.cudzoziemcy.gov.pl'], ['https://migrant.wsc.mazowieckie.pl/pl/procedury/polski-dokument-podrozy', 'migrant.wsc.mazowieckie.pl'], ['https://migrant.poznan.uw.gov.pl/pl/checklist/1356', 'migrant.poznan.uw.gov.pl'], ['https://www.pomocprawna.org/polski-dokument-podrozy-dla-cudzoziemca', 'pomocprawna.org']], checked: '20.11.2026' },
+
+    { g: 'docs', ic: 'verified', t: 'Международная защита', s: 'TZTC, статусы, поездки', b: [
+      'Заявление о международной защите подают через Straż Graniczna. Пока дело рассматривается, TZTC подтверждает личность и право находиться в Польше, но не служит документом для пересечения границы.',
+      'Статус беженца, ochrona uzupełniająca и zgoda na pobyt ze względów humanitarnych различаются по условиям и документам. Возвращение в Беларусь может поставить под вопрос основания защиты или гуманитарного пребывания.'
+    ], more: [
+      'Не путай TZTC с картой побыту. При проблемах с открытием счёта по TZTC сохрани письменный отказ: этим вопросом занимаются RPO и KNF.',
+      'По статусу беженца и дополнительной защите обращайся к UdSC. Гуманитарное пребывание оформляется в другом порядке, в связи с процедурой возвращения.',
+      'Перед поездкой за пределы Польши уточни последствия для статуса и документы для обратного въезда, особенно если собираешься в страну происхождения.'
+    ], src: [['https://www.gov.pl/web/udsc/procedura-uchodzcza', 'UdSC: процедура'], ['https://www.gov.pl/web/udsc/prawa-i-obowiazki--wnioskodawca', 'UdSC: TZTC'], ['https://www.gov.pl/web/udsc/pozbawienie-ochrony-miedzynarodowej', 'UdSC: потеря защиты'], ['https://mos.cudzoziemcy.gov.pl/kategorie-informacji/zobowiazanie-i-zakaz-ponownego-wjazdu/zobowiazanie-do-powrotu/', 'MOS: гуманитарный статус']], checked: '20.11.2026' },
+    { g: 'docs', ic: 'luggage', t: 'Беларуские документы', s: 'ЗАГС, переводы, апостиль', b: [
+      'Для польского ужонда часто нужны свидетельства о рождении и браке, архивные документы и присяжный перевод на польский (tłumacz przysięgły). Уточняй требования к конкретному документу.',
+      'Польша и Беларусь участвуют в Гаагской конвенции об апостиле, но также действует двусторонний договор о правовой помощи 1994 года. Не стоит заказывать апостиль на любой документ автоматически: значение имеет вид бумаги и процедура.'
+    ], more: [
+      'Начни с перечня документов на странице своего ужонда и уточни, примут ли оригинал без апостиля на основании двустороннего договора.',
+      'Проверь цепочку родства: если менялись фамилии, понадобятся документы, связывающие старые и новые данные.',
+      'При отказе принять документ попроси указать письменное правовое основание требования.'
+    ], src: [['https://www.gov.pl/web/bialorus/apostille', 'gov.pl: апостиль'], ['https://eli.sejm.gov.pl/eli/DU/1995/619/ogl', 'договор 1994 года']], checked: '20.11.2026' },
+    { g: 'kp', ic: 'verified', t: 'Karta Polaka', s: 'Как получить и что даёт', b: [
+      'Карта поляка подтверждает принадлежность к польскому народу, но не является визой, картой побыту или польским гражданством. С ней можно подать на ПМЖ при намерении постоянно жить в Польше.',
+      'Для беларусов заявление о выдаче или продлении Karty Polaka принимают польские воеводские ужонды. Нужны основания, документы и личное собеседование на польском.'
+    ], more: [
+      'Основание: польская национальность твоя, одного из родителей или дедов/бабушек, либо двоих прадедов/прабабушек. Есть и другие предусмотренные законом варианты, например подтверждённая деятельность в польской организации или решение о польском происхождении.',
+      'Для заявления подготовь бланк, фотографию, документ личности, подтверждения польской национальности и родства. На собеседовании проверяют язык, традиции и связь с польскостью.',
+      'Детям: отдельное заявление и согласие родителей в случаях, предусмотренных законом. Порядок зависит от наличия Karty Polaka у родителей.',
+      'После получения ПМЖ на основании Karty Polaka и одного года непрерывного пребывания на нём можно при соблюдении остальных условий подаваться на uznanie za obywatela polskiego. Подтверждение польского языка обычно не ниже B1 обязательно.'
+    ], src: [['https://wsc.gdansk.uw.gov.pl/pl/procedury/przyznanie-karty-polaka', 'Поморский ужонд: как получить'], ['https://wsc.gdansk.uw.gov.pl/pl/node/383', 'Поморский ужонд: ПМЖ'], ['https://www.gov.pl/web/uw-pomorski/uznanie-za-obywatela-polskiego', 'gov.pl: гражданство']], checked: '20.11.2026' },
+    { g: 'kp', ic: 'account_balance', t: 'Выплаты по Karcie Polaka', s: 'До 9 месяцев, не гарантированы', b: [
+      'Если подал заявление на ПМЖ по Karcie Polaka, можешь также обратиться за świadczenie pieniężne на обустройство в Польше. Первое заявление нужно подать в течение 3 месяцев после заявления на ПМЖ.',
+      'Помощь могут назначить максимум на 9 месяцев. Выплаты зависят от бюджета: рассмотрение заявлений могут приостанавливать, поэтому не считай эти деньги гарантированными.'
+    ], more: [
+      'В первые три месяца расчёт привязан к 50% минимальной зарплаты для заявителя и супруга, для ребёнка применяется отдельная доля. С четвёртого по девятый месяц ставки ниже.',
+      'В ужонде попросят подтвердить заявление на ПМЖ, данные семьи и намерение жить в Польше постоянно. Следи за сроками и официальными сообщениями о финансировании.',
+      'Не путай эту выплату с 800+ или другими общими пособиями.'
+    ], src: [['https://wsc.gdansk.uw.gov.pl/pl/procedury/swiadczenie-pieniezne-dla-posiadacza-karty-polaka', 'Поморский ужонд: выплата'], ['https://www.gov.pl/web/uw-lodzki/swiadczenia-pieniezne-dla-posiadaczy-karty-polaka-osiedlajacych-sie-w-polsce2', 'Лодзинский ужонд: правила']], checked: '20.11.2026' },
+    { g: 'money', ic: 'account_balance', t: 'Банки и санкции', s: 'Зависит от банка и документов', b: [
+      'Санкции ЕС ужесточили проверки. Но блокировка карты и BLIK, описанная PKO BP 4.12.2025, относится к его клиентам из Беларуси и России, открывшим счёт после 24.10.2025 без карты побыту. Это не универсальное правило для каждого банка.',
+      'PKO BP просит прийти в отделение с картой побыту или другим документом, разрешающим пребывание в Польше. Заявители на международную защиту с TZTC могут сталкиваться с отказами в других банках, о проблеме сообщает RPO.'
+    ], more: [
+      'Если банк просит подтвердить легальное пребывание, уточни, какие документы он принимает, и проси перечень письменно.',
+      'Сохраняй подтверждения происхождения средств (договоры, PIT, справки о зарплате, продаже имущества). Наличие документа не гарантирует проведение перевода: действуют санкции и банковские процедуры.',
+      'Сравнение отдельных банков и переводов из Беларуси находится в разделе «Банки».'
+    ], src: [['https://www.pkobp.pl/aktualnosci/informacja-dla-obywateli-bialorusi-i-rosji-ktorzy-otworzyli-konta-w-pko-banku-polskim-po-24102025-r-bez-karty-pobytu', 'PKO BP, 04.12.2025'], ['https://bip.brpo.gov.pl/pl/content/rpo-bialorusini-ochrona-miedzynarodowa-konta-bankowe-knf-odpowiedz-kolejne', 'RPO и KNF'], ['https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041', 'регламент ЕС']], checked: '20.11.2026' },
+    { g: 'money', ic: 'verified', t: 'Работа без разрешения', s: 'Oświadczenie и исключения', b: [
+      'Для граждан Беларуси работодатель может оформить oświadczenie o powierzeniu pracy cudzoziemcowi на срок до 24 месяцев вместо обычного разрешения на работу, если работа не сезонная и соблюдены условия процедуры.',
+      'С действующей Kartą Polaka отдельное разрешение на работу не требуется. Для отдельных статусов пребывания, включая гуманитарные основания, тоже действуют исключения, но проверь право работать именно по своему документу.'
+    ], more: [
+      'Oświadczenie подаёт работодатель в powiatowy urząd pracy через официальный портал. Работник сам себе oświadczenie не оформляет.',
+      'Действительное основание пребывания в Польше нужно отдельно: одно oświadczenie само по себе не легализует нахождение.',
+      'Проверь сроки, вид работы и обязанности работодателя до подписания договора.'
+    ], src: [['https://psz.praca.gov.pl/pl/dla-pracodawcow-i-przedsiebiorcow/zatrudnianie-cudzoziemcow/powierzenie-pracy-na-podstawie-oswiadczenia', 'Ministerstwo Pracy'], ['https://wsc.gdansk.uw.gov.pl/pl/procedury/przyznanie-karty-polaka', 'Поморский ужонд: Karta Polaka']], checked: '20.11.2026' },
+    { g: 'money', ic: 'account_balance', t: 'Деньги из Беларуси', s: 'Переводы и наличные', b: [
+      'При переводе денег из Беларуси польский банк может запросить документы о происхождении средств и проверить операцию на соответствие санкциям. Заранее сохрани договоры, выписки и подтверждения получения денег.',
+      'При въезде в ЕС или выезде из ЕС с наличными и приравненными средствами на сумму от 10 000 евро нужно подать декларацию. Правило касается суммы в эквиваленте разных валют.'
+    ], more: [
+      'Не рассчитывай на конкретный способ перевода без предварительной проверки требований банка и санкций на дату операции.',
+      'Для наличных и банковских переводов действуют разные правила: декларация наличных не заменяет банковскую проверку происхождения денег.',
+      'Подробности и сравнение банков находятся в разделе «Банки».'
+    ], src: [['https://taxation-customs.ec.europa.eu/customs/prohibitions-restrictions/eu-cash-controls_en', 'Еврокомиссия: наличные'], ['https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041', 'санкции ЕС']], checked: '20.11.2026' },
+    { g: 'money', ic: 'verified', t: 'Стаж и пенсия', s: 'Договор с Беларусью действует', b: [
+      'Соглашение Польши и Беларуси о социальном обеспечении действует с 1 апреля 2022 года. Оно учитывает страховые периоды для отдельных пенсионных и социальных выплат, но у каждой страны свои условия и расчёт.',
+      'Важно: польское министерство прямо сообщает, что исполнение соглашения затруднено, поскольку беларуская сторона не ответила на предложенные процедуры.'
+    ], more: [
+      'Сохраняй беларуские трудовые документы и подтверждения страховых периодов, а польские периоды проверяй в ZUS.',
+      'Для индивидуального расчёта и обращения используй ZUS. Не считай, что зарубежный стаж автоматически добавляет сумму к польской пенсии.',
+      'Ограничения практического обмена данными могут повлиять на сроки подтверждения стажа.'
+    ], src: [['https://www.zus.pl/swiadczenia/emerytury-i-renty-dla-osob-pracujacych/zamieszkalych-za-granica/zasady-przyznawania-emerytur-i-rent-dla-osob-pracujacych-w-panstwach-umownych/umowa-z-bialorusia-o-zabezpieczeniu-spolecznym/informacje-podstawowe', 'ZUS'], ['https://www.gov.pl/web/rodzina/bialorus', 'Министерство: сложности исполнения']], checked: '20.11.2026' },
+    { g: 'life', ic: 'directions_car', t: 'Права и авто', s: 'Обмен и машины на беларуских номерах', b: [
+      'Срок действия подходящих иностранных водительских прав в Польше ограничен 6 месяцами от начала постоянного или временного проживания в стране, а не от получения карты побыту. Для обмена обращаются в starostwo или urząd miasta.',
+      'Ввоз авто на беларуских номерах ограничен санкциями с 1.07.2024. Для личной машины возможны исключения при соблюдении условий, в частности присутствии владельца и отсутствии коммерческого использования. Разрешение на въезд не гарантировано.'
+    ], more: [
+      'При обмене прав уточни список документов и необходимость перевода в своём отделе коммуникации. Правило 185 дней для выдачи польского удостоверения нельзя путать с шестимесячным сроком действия иностранных прав.',
+      'Перед поездкой на беларуских номерах проверяй правила въезда именно той страны ЕС, через которую едешь, и документы на автомобиль.'
+    ], src: [['https://eli.gov.pl/api/acts/DU/2024/1210/text.html', 'закон о водителях, art. 14'], ['https://www.gov.pl/web/gov/wymien-zagraniczne-prawo-jazdy-na-polskie', 'gov.pl: обмен прав'], ['https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'KAS: санкции']], checked: '20.11.2026' },
+    { g: 'life', ic: 'verified', t: 'Дети беларусов', s: 'Рождение, PESEL, пребывание', b: [
+      'Рождение ребёнка в Польше у родителей-иностранцев само по себе не даёт ему польское гражданство или автоматическое право на пребывание. Зарегистрируй рождение в USC в течение 21 дня, получи польский акт рождения и PESEL.',
+      'Дальше проверь основание пребывания ребёнка с учётом статуса родителей. Если паспорт Беларуси получить невозможно, в некоторых процедурах MOS допускает другой документ личности, но это не универсальное исключение.'
+    ], more: [
+      'У ребёнка, родившегося в Польше в период действия визы или временного ВНЖ родителя, может быть основание для временного пребывания. Для детей владельцев ПМЖ или rezydenta UE могут действовать другие правила.',
+      'Отдельно уточни документы для выезда: польский акт рождения и PESEL не заменяют заграничный документ ребёнка.',
+      'Если ребёнок остался без возможности оформить паспорт, сохрани подтверждения обстоятельств и обратись за правовой консультацией до подачи заявления.'
+    ], src: [['https://www.gov.pl/web/gov/zglos-urodzenie-dziecka', 'gov.pl: рождение'], ['https://mos.cudzoziemcy.gov.pl/kategorie-informacji/mozliwosci-legalizacji/spoza-ue-kontynuacja-pobytu/zezwolenie-czasowy/pobyt-z-rodzina/dziecko-cudzoziemca-urodzone-w-pl/', 'MOS: ребёнок'], ['https://wsc.gdansk.uw.gov.pl/pl/procedury/maloletnie-dziecko-cudzoziemca', 'Поморский ужонд: ребёнок']], checked: '20.11.2026' },
+    { g: 'life', ic: 'language', t: 'Официально по-беларуски', s: 'Правительственный портал', b: [
+      'На gov.pl есть материалы по-беларуски. Часть инструкций там устаревает: например, старые страницы ещё показывают прежние сроки Документа Подружи. Всегда сравни дату публикации с текущими сообщениями UdSC и MOS.',
+      'Основные юридические условия проверяй на польских страницах ужонда и в действующих нормативных актах.'
+    ], src: [['https://www.gov.pl/web/by', 'gov.pl/web/by'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'UdSC: новая дата']], checked: '20.11.2026' }
   ];
 
   /* Dokument podróży: what each voivode's page says about timing (checked 17.11.2026). Missing key = not collected yet */
@@ -1049,9 +1137,16 @@
   }
   function rBy() {
     return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
-      '<div class="pb-cols">' + BELARUS.map(function (b, i) {
-        return '<article class="pb-col" id="pl-d-by' + i + '"><div class="pb-col-h">' + ms(b.ic, 'lead-ico') + '<h3>' + b.t + '<small>' + b.s + '</small></h3></div>' +
-          b.b.map(function (p) { return p.charAt(0) === '<' ? p : '<p>' + p + '</p>'; }).join('') + srcLine(b.src) + (b.checked ? '<p class="pl-note">Проверено ' + b.checked + '.</p>' : '') + '</article>';
+      '<p class="pl-lead">Паспорт, Karta Polaka, защита, работа и документы. У каждой темы источники и дата проверки.</p>' +
+      '<div class="pb-by-groups">' + BELARUS_GROUPS.map(function (g) {
+        return '<section class="pb-by-group" aria-labelledby="pl-by-g-' + g.id + '"><div class="pb-by-heading"><h2 id="pl-by-g-' + g.id + '">' + g.t + '</h2><p>' + g.s + '</p></div>' +
+          '<div class="pb-cols">' + BELARUS.map(function (b, i) {
+            if (b.g !== g.id) return '';
+            return '<article class="pb-col" id="pl-d-by' + i + '"><div class="pb-col-h">' + ms(b.ic, 'lead-ico') + '<h3>' + b.t + '<small>' + b.s + '</small></h3></div>' +
+              b.b.map(function (p) { return p.charAt(0) === '<' ? p : '<p>' + p + '</p>'; }).join('') +
+              (b.more && b.more.length ? '<div class="pl-acc pb-by-more"><details><summary><span class="t">Что делать</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><ul class="pl-list">' + b.more.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul></div></details></div>' : '') +
+              srcLine(b.src) + '<p class="pl-note">Проверено ' + b.checked + '.</p></article>';
+          }).join('') + '</div></section>';
       }).join('') + '</div></section>';
   }
 
@@ -1239,8 +1334,8 @@
       '<div class="pl-out" data-fitcells="150"><div><div class="v" data-o="tripCost">0</div><div class="k">zł в одну сторону</div><div class="d" data-o="tripL"></div></div><div><div class="v" data-o="tripBack">0</div><div class="k">zł туда и обратно</div></div></div>' +
       '<p class="pl-note" data-o="priceNote">Цена в поле для примера. Подставь сегодняшнюю.</p></div>' +
       '<div class="pl-acc" style="margin-top:36px">' + [
-        ['badge', 'Обмен прав', '6 месяцев после ВНЖ', ['Иностранные права перестают действовать через 6 месяцев после получения ВНЖ или ПМЖ. Обмен: 100 zł, заявление, фото, медсправка при необходимости, перевод прав у присяжного переводчика.', 'Подают в starostwo, в городе на правах повята в urząd miasta, в Варшаве в urząd dzielnicy. Готово примерно за 9 рабочих дней после подтверждения данных, статус на info-car.pl.'], 'https://powroty.gov.pl/prawo-jazdy-5285/', 'powroty.gov.pl'],
-        ['swap_horiz', 'Авто на беларуских номерах', 'Санкции ЕС с 1.07.2024', ['Легковые авто на беларуских номерах нельзя ввозить в ЕС (регламент 2024/1865). Исключение: машина для личного пользования, владелец сам за рулём или в салоне, у него виза или ВНЖ. Возить в ней товары нельзя.', 'Литва, Латвия и Эстония применяют запрет жёстче, проверь маршрут заранее.'], 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas'],
+        ['badge', 'Обмен прав', '6 месяцев от начала проживания', ['Соответствующие иностранные права действуют в Польше 6 месяцев от начала постоянного или временного проживания, а не от выдачи карты побыту. Обмен: заявление, фото, иностранное удостоверение, другие документы по требованиям ужонда. Уточни актуальную пошлину и нужен ли перевод.', 'Подают в starostwo, в городе на правах повята в urząd miasta, в Варшаве в urząd dzielnicy. Готово примерно за 9 рабочих дней после подтверждения данных, статус на info-car.pl.'], 'https://www.gov.pl/web/gov/wymien-zagraniczne-prawo-jazdy-na-polskie', 'gov.pl'],
+        ['swap_horiz', 'Авто на беларуских номерах', 'Санкции ЕС с 1.07.2024', ['Легковые авто на беларуских номерах нельзя ввозить в ЕС (регламент 2024/1865). Для личного автомобиля возможен въезд по исключению при соблюдении условий, включая присутствие владельца и отсутствие коммерческого использования. Уполномоченные органы могут разрешить въезд, это не автоматическое право.', 'Литва, Латвия и Эстония применяют запрет жёстче, проверь маршрут заранее.'], 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas'],
         ['shield', 'Przegląd и OC', 'Обязательное', ['OC обязательно с первого дня. Без него штрафы неприятно круглые.', 'Техосмотр легковой машины: у новой первый до 3 лет с первой регистрации, второй до 5 лет, дальше каждый год.'], 'https://lexlege.pl/prawo-o-ruchu-drogowym/art-81/', 'art. 81 PoRD']
       ].map(function (a, i) {
         return '<details id="pl-d-au' + i + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
