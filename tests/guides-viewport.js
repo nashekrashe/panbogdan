@@ -29,7 +29,8 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       }));
       if(Number(city.median.replace(/\D/g,''))!==2800||city.doc>city.win+1)
         throw Error('city change/overflow at '+width+': '+JSON.stringify(city));
-      await page.goto(origin+'/dom.html',{waitUntil:'domcontentloaded'});
+      await page.goto(origin+'/dom.html#zezwolenie-na-zakup-nieruchomosci',{waitUntil:'domcontentloaded'});
+      await page.locator('#pl-home').waitFor({state:'visible'});
       await page.locator('label.pl-check:has([data-check="home-permit-0"])').click();
       const persisted=await page.evaluate(()=>!!JSON.parse(localStorage.getItem('pb-poland-v2')).checks['home-permit-0']);
       if(!persisted)throw Error('permit checklist is not saved at '+width);
