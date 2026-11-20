@@ -988,7 +988,7 @@
   function newsChecked() { return 'Проверено ' + NEWS_CHECKED + (newsCheck && newsCheck.checked ? ', робот открыл все ссылки ' + newsCheck.checked : ', ссылки робот проверяет раз в неделю'); }
   function rNewsList() {
     return NEWS.map(function (n, i) {
-      return '<article class="pb-nw' + (i === 0 ? ' lead' : '') + (n.red ? ' red' : '') + '" id="' + n.id + '"><div class="pb-nw-m"><time>' + n.d + '</time><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span></div>' +
+      return '<article data-share="' + n.id + '" class="pb-nw' + (i === 0 ? ' lead' : '') + (n.red ? ' red' : '') + '" id="' + n.id + '"><div class="pb-nw-m"><time>' + n.d + '</time><span class="pl-tag' + (n.red ? ' red' : '') + '">' + n.tag + '</span></div>' +
         '<h3 class="pb-nw-h"><a class="pb-nw-a" href="' + newsHref(n) + '">' + n.h + '</a></h3><p class="pb-nw-t">' + n.t + '</p>' +
         (n.more ? '<span class="pb-nw-more" aria-hidden="true">Читать полностью</span>' : '') + newsSrc(n) + '</article>';
     }).join('');
@@ -1286,7 +1286,7 @@
     }).join('') + '</div>';
     var row = function (k, o, cls) { return '<div' + (cls ? ' class="' + cls + '"' : '') + ' data-mr="' + o + '"><span data-o="' + o + 'K">' + k + '</span><b data-o="' + o + '"></b></div>'; };
     var chk = function (id, label) { return '<label class="pl-toggle" data-mt="' + id + '"><input type="checkbox" data-f="' + id + '"' + (S.f[id] ? ' checked' : '') + '>' + label + '</label>'; };
-    return '<div class="pl-tool" aria-live="polite" style="margin-top:40px"><div class="pl-tool-h">' + ms('calculate') + 'Сколько дадут на ипотеку</div>' +
+    return '<div class="pl-tool" data-share="kalkulator-hipoteki" aria-live="polite" style="margin-top:40px"><div class="pl-tool-h">' + ms('calculate') + 'Сколько дадут на ипотеку</div>' +
       '<div class="pl-field"><span class="pl-eyebrow">Твой договор, общий с «Бабками»</span>' + seg + '<p class="pl-note" data-o="mSrc" style="margin-top:10px"></p></div>' +
       '<div class="pl-fields">' + field('mInc', 'Твой доход на руки, zł', 'number', ' inputmode="decimal" min="0" step="500"') +
         field('mInc2', 'Доход второго заёмщика, zł', 'number', ' inputmode="decimal" min="0" step="500"').replace('<div class="pl-field"', '<div class="pl-field" data-m2') +
@@ -1328,7 +1328,7 @@
         '<div class="pl-fees">' + c.fees.map(function (f) { return '<span class="pl-fee"><span>' + f[0] + '</span>' + f[1] + '</span>'; }).join('') + '</div>' +
         '<ul class="pl-list" style="--dotc:var(--c-money);margin-top:8px">' + c.more.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul></div>';
     }).join('');
-    var calc = '<div class="pl-tool" aria-live="polite"><div class="pl-tool-h">' + ms('calculate') + '<span data-w="uop zlec dzielo">Brutto → на руки</span><span data-w="b2b">Выручка → на руки</span></div>' +
+    var calc = '<div class="pl-tool" data-share="kalkulator-wynagrodzenia" aria-live="polite"><div class="pl-tool-h">' + ms('calculate') + '<span data-w="uop zlec dzielo">Brutto → на руки</span><span data-w="b2b">Выручка → на руки</span></div>' +
       '<div class="pl-fields">' +
         only('uop zlec dzielo', field('brutto', 'Brutto в месяц, zł', 'number', ' inputmode="decimal" min="0" step="100"')) +
         only('b2b', field('rev', 'Выручка в месяц без VAT, zł', 'number', ' inputmode="decimal" min="0" step="500"')) +
@@ -1344,11 +1344,11 @@
       '<div class="pl-rows"><div data-r="cost"><span>Расходы фирмы</span><b data-o="rCost"></b></div><div data-r="soc"><span data-o="rSocK"></span><b data-o="soc"></b></div><div data-r="hea"><span data-o="rHeaK"></span><b data-o="hea"></b></div><div data-r="pit"><span data-o="rPitK"></span><b data-o="pit"></b></div><div class="tot"><span>На руки</span><b data-o="net2"></b></div></div>' +
       '<p class="pl-note" data-o="calcNote"></p>' +
       only('b2b', srcLine([['https://www.infakt.pl/blog/?p=81462', 'infakt.pl: składka zdrowotna 2026'], ['https://norman.finance/pl/pomoc/zus-dla-jdg', 'norman.finance: ZUS 2026']])) + '</div>';
-    var taxes = '<h3 class="pl-h3" style="margin-top:56px">Налог</h3>' +
+    var taxes = '<h3 class="pl-h3" data-share="podatki" style="margin-top:56px">Налог</h3>' +
       '<p class="pl-lead" style="margin-top:8px" data-w="uop zlec dzielo">Здесь всегда шкала. Аванс PIT каждый месяц удерживает работодатель или заказчик, итог в годовом PIT.</p>' +
       '<p class="pl-lead" style="margin-top:8px" data-w="b2b">PIT в 2026. Форму налога выбирают раз в год, передумать можно в следующем январе-феврале.</p>' +
       '<div class="pl-cards" data-fitcells="120">' + TAXES.map(function (c) {
-        return '<article class="pl-card pl-lvlcard" data-w="' + c.w + '" data-taxcard="' + c.id + '"><span class="pl-here" hidden>в расчёте</span><div class="top"><span class="cico" style="background:var(--c-money);color:#141414">' + ms(c.ic) + '</span><span class="tag">' + c.tag + '</span></div>' +
+        return '<article class="pl-card pl-lvlcard" data-w="' + c.w + '" data-taxcard="' + c.id + '" data-share="' + ({skala:'skala-podatkowa',kwota:'kwota-wolna',ulga:'ulga-dla-mlodych',kup:'koszty-uzyskania-przychodu',lin:'podatek-liniowy',rycz:'ryczalt',malz:'wspolne-rozliczenie',kids:'ulga-na-dzieci'}[c.id]) + '"><span class="pl-here" hidden>в расчёте</span><div class="top"><span class="cico" style="background:var(--c-money);color:#141414">' + ms(c.ic) + '</span><span class="tag">' + c.tag + '</span></div>' +
           '<div class="t">' + c.t + '</div><div class="big' + (/[а-яё]/i.test(c.big) ? ' txt' : '') + '">' + c.big + '</div><div class="x">' + c.x + '</div><div class="i">' + c.i + '</div>' +
           '<details><summary>Подробнее' + ms('expand_more') + '</summary><ul class="pl-list" style="--dotc:var(--c-money)">' + c.more.map(function (m) { return '<li>' + m + '</li>'; }).join('') + '</ul></details></article>';
       }).join('') + '</div>' +
@@ -1379,21 +1379,22 @@
     }).join('') + '</div>';
   }
   /* «Банки»: who is friendly to Belarusians, and money from Belarus */
+  var BANK_ACCOUNT_SHARE = { 'mBank':'konto-mbank', Pekao:'konto-pekao', 'Credit Agricole':'konto-credit-agricole', 'BNP Paribas':'konto-bnp-paribas', Erste:'konto-erste', Alior:'konto-alior', 'PKO BP':'konto-pko-bp' };
   function rBank() {
     return '<section class="pl-band pb-screen" id="pl-bank" aria-labelledby="pl-bank-h">' + head('pl-bank', 'Банки. Счета. Санкции', '', '', '', 'Кто как относится к беларусам') +
             '<p class="pl-section-intro">Насколько легко открыть счёт и пользоваться им без карты побыту. С картой побыту проще почти везде.</p>' +
       '<div class="pb-bank-extra">' +
-        '<div class="pb-bank-info"><div class="pb-bank-label">Курс USD / PLN</div>' +
+        '<div class="pb-bank-info" data-share="kurs-usd-pln"><div class="pb-bank-label">Курс USD / PLN</div>' +
           '<p class="pb-bank-quote">1 USD = <strong data-o="usdRate">—</strong> zł</p>' +
           '<p class="pl-note"><span data-o="usdDate">Загружается</span>. ' + link('https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json', 'NBP, таблица A') + '</p></div>' +
-        '<div class="pb-bank-info"><div class="pb-bank-label">Ипотека</div>' +
+        '<div class="pb-bank-info" data-share="hipoteka-link"><div class="pb-bank-label">Ипотека</div>' +
           '<p>Ставка, платёж и сколько банк может дать на жильё.</p>' +
           '<a class="pb-seclink" href="' + hrefOf(secBy('home')) + '">Ипотека и калькулятор в разделе «Дом»</a></div>' +
       '</div>' +
       rBankMortgages() +
-      '<h3 class="pl-h3 pb-bank-account-head">Открытие счёта для беларусов</h3>' +
+      '<h3 class="pl-h3 pb-bank-account-head" data-share="konta-dla-bialorusinow">Открытие счёта для беларусов</h3>' +
       '<ol class="pl-banks">' + BANKS.map(function (b, i) {
-        return '<li><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
+        return '<li data-share="' + BANK_ACCOUNT_SHARE[b.n] + '"><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
           '<span class="pl-bank-s" aria-label="Лояльность ' + b.s + ' из 3: ' + BANK_LBL[b.s] + '"><span class="pl-dots">' + [1, 2, 3].map(function (k) { return '<i' + (k <= b.s ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' + BANK_LBL[b.s] + '</span>' +
           '<span class="pl-bank-t">' + b.t + ' <span class="pl-muted pl-xs">' + link(b.u, b.src) + ', ' + b.d + '</span></span></li>';
       }).join('') + '</ol>' +
@@ -1413,7 +1414,7 @@
       '</div>' +
       '<p class="pl-note" style="margin-top:20px">Источники: ' + link('https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r', 'BIK о рынке в сентябре 2026') + ', ' + link('https://finwire.pl/artykuly/nowe-kredyty-mieszkaniowe-wrzesien-2026-nbp', 'данные NBP за сентябрь 2026') + '</p>' +
       rMort() +
-      '<h3 class="pl-h3" style="margin-top:56px">Ипотека иностранцу</h3>' +
+      '<h3 class="pl-h3" data-share="hipoteka-dla-cudzoziemca" style="margin-top:56px">Ипотека иностранцу</h3>' +
       '<ul class="pl-list" style="margin-top:12px">' +
         '<li>Без карты побыту ипотеку почти не дают. Временную карту принимают не все банки, и она часто должна действовать ещё 6–12 месяцев после заявки.</li>' +
         '<li>Собственный взнос обычно от 20%.</li>' +
