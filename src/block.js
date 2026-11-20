@@ -1143,8 +1143,11 @@
   function foldToggle() {
     return '<span class="pb-tog" aria-hidden="true">' + svg18('expand', 18, 'pb-tog-e') + svg18('collapse', 18, 'pb-tog-c') + '</span>';
   }
+  var KID_GROUP_SHARE = { 'kid-pregnancy':'ciaza-i-pierwsze-dni', 'kid-legal':'legalizacja-dziecka', 'kid-education':'edukacja-dziecka', 'kid-benefits':'swiadczenia-na-dzieci' };
+  var KID_CARD_SHARE = { pregnancy:'ciaza', afterbirth:'po-porodzie', usc:'akt-urodzenia-i-pesel', nfz:'nfz-dziecka', passport:'dokument-podrozy-dziecka', nursery:'zlobek', school:'przedszkole-i-szkola', '800':'800-plus', work:'aktywni-rodzice-w-pracy', nurseryPay:'aktywnie-w-zlobku', home:'aktywnie-w-domu', dobry:'dobry-start', pit:'ulga-na-dziecko', becik:'becikowe', rodz:'swiadczenie-rodzicielskie' };
+  var KID_PATH_SHARE = { citizen:'obywatelstwo-dziecka', temporary:'pobyt-czasowy', permanent:'pobyt-staly', pending:'inna-sytuacja' };
   function foldSection(id, title, body, note) {
-    return '<details class="pb-section pb-kid-section" id="pb-fold-' + id + '" open>' +
+    return '<details class="pb-section pb-kid-section" id="pb-fold-' + id + '" data-share="' + KID_GROUP_SHARE[id] + '" open>' +
       '<summary class="pb-section-h"><h2 class="pl-h3 pb-kid-group">' + title + '</h2>' + foldToggle() + '</summary>' +
       '<div class="pb-section-b">' + (note || '') + body + '</div></details>';
   }
@@ -1593,7 +1596,7 @@
       '</ul><b>Порядок действий</b><ol class="pb-kid-steps">' + c.how.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ol></div></details>';
   }
   function kidCard(c, pay) {
-    return '<article class="pl-card pb-kid-card' + (pay ? ' pl-lvlcard' : '') + '" id="pl-kid-' + c.id + '">' +
+    return '<article class="pl-card pb-kid-card' + (pay ? ' pl-lvlcard' : '') + '" id="pl-kid-' + c.id + '" data-share="' + KID_CARD_SHARE[c.id] + '">' +
       '<div class="top">' + (pay ? '<span class="cico" style="background:var(--red);color:#fff">' + ms('child_care') + '</span>' : '<span class="pb-kid-dot" aria-hidden="true"></span>') +
       '<span class="tag">' + c.tag + '</span></div><div class="t">' + c.t + '</div>' +
       (pay ? '<div class="big">' + c.big + '</div>' : '') + '<div class="x">' + c.x + '</div>' +
@@ -1606,7 +1609,7 @@
       return '<label class="pb-kid-route-check"><input type="checkbox" data-check="' + key + '"' + (S.checks[key] ? ' checked' : '') +
         '><span>' + txt + '</span></label>';
     }
-    return '<article class="pb-kid-route" id="pl-kid-' + c.id + '">' +
+    return '<article class="pb-kid-route" id="pl-kid-' + c.id + '" data-share="' + KID_PATH_SHARE[c.id] + '">' +
       '<div class="pb-kid-route-top"><span class="pb-kid-path-chip">Выбран путь: ' + esc(c.tag) + '</span>' +
         '<button type="button" class="pb-kid-route-change" data-kid-path="">Сменить путь</button></div>' +
       '<h3 class="pl-h3">' + c.t + '</h3><p class="pb-kid-route-desc">' + c.x + '</p>' +
