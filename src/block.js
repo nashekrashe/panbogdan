@@ -1331,16 +1331,16 @@
       x:'Гинеколог NFZ без направления. Выбери położna POZ заранее, она же поможет после родов.',
       docs:['Паспорт или другой документ личности, PESEL при наличии, подтверждение права на NFZ.','Karta ciąży и результаты обследований для дальнейших визитов.'],
       how:['Проверь свой страховой статус. Бесплатная помощь иностранке без страхования не гарантирована только из-за беременности: всё зависит от основания пребывания и страховки.','Запишись к гинекологу по NFZ без skierowania. Пренатальные обследования обсуждай с врачом, направление на них выдаётся по показаниям и правилам программы.','Выбери położna POZ отдельной декларацией; с 21-й недели доступна бесплатная дородовая подготовка по NFZ.'],
-      src:[[KIDS_U.poz,'pacjent.gov.pl: беременность и поłożna'],['https://pacjent.gov.pl/artykul/opieka-nad-kobieta-w-ciazy','pacjent.gov.pl: наблюдение беременности']] },
+      src:[[KIDS_U.poz,'pacjent.gov.pl: беременность и поłożna'],['https://pacjent.gov.pl/system-opieki-zdrowotnej/jakie-sa-kompetencje-poloznej-poz','pacjent.gov.pl: położna POZ']] },
     { id:'afterbirth', tag:'Роддом и первые недели', t:'Сразу после рождения',
       x:'Получить документы из роддома, связаться с POZ и назначить первую домашнюю патронажную встречу.',
       docs:['Książeczka zdrowia dziecka и karta informacyjna ze szpitala.','Результаты скринингов, информация о прививках, документы матери.'],
-      how:['Роддом передаёт kartę urodzenia в USC. Родители не заменяют её выпиской из больницы.','После выписки сообщи выбранной położna POZ: первая патронажная встреча не позднее 48 часов после выписки, затем всего 4–6 визитов за первые два месяца.','Запиши ребёнка к врачу POZ на первый профилактический осмотр; согласуй следующие прививки. Первые дозы BCG и гепатита B обычно делают в роддоме.'],
+      how:['Роддом передаёт kartę urodzenia в USC. Родители не заменяют её выпиской из больницы.','После выписки сообщи выбранной położna POZ: первая патронажная встреча должна состояться не позднее 48 часов после выписки, затем обычно 4–6 визитов за первые два месяца.','Запиши ребёнка к врачу POZ на первый профилактический осмотр; согласуй следующие прививки. Первые дозы BCG и гепатита B обычно делают в роддоме.'],
       src:[[KIDS_U.usc,'gov.pl: карта рождения'],[KIDS_U.poz,'pacjent.gov.pl: визиты położnej'],[KIDS_U.vacc,'pacjent.gov.pl: календарь прививок']] },
     { id:'usc', tag:'До 21 дня', t:'USC, акт рождения и PESEL',
       x:'Регистрируй ребёнка в USC города рождения, а не города проживания. Получишь польский акт рождения и, как правило, PESEL.',
       docs:['Документ личности родителя, который заявляет о рождении.','При необходимости: иностранный акт брака/документы о семейном положении и их переводы.','Если родители не в браке: uznanie ojcostwa до регистрации, чтобы отец смог заявить о рождении.'],
-      how:['Проверь, что роддом отправил kartę urodzenia. На регистрацию даётся 21 день.','Заяви рождение в USC по месту родов или через gov.pl: онлайн с 2026 года используется e-Doręczenia и электронная подпись.','Бесплатно получи один сокращённый odpis aktu urodzenia, уведомление о PESEL и, если применимо, регистрацию адреса. PESEL не равен гражданству или ВНЖ.'],
+      how:['Проверь, что роддом отправил kartę urodzenia. На регистрацию даётся 21 день.','Заяви рождение в USC по месту родов или через gov.pl, если доступна электронная подача с подтверждением личности.','Бесплатно получи один сокращённый odpis aktu urodzenia, уведомление о PESEL и, если применимо, регистрацию адреса. PESEL не равен гражданству или ВНЖ.'],
       src:[[KIDS_U.usc,'gov.pl: регистрация рождения']] },
     { id:'nfz', tag:'После PESEL · 7 дней', t:'NFZ для ребёнка',
       x:'Вписать ребёнка в страховку родителя и выбрать врача, медсестру и położna POZ.',
@@ -1421,7 +1421,7 @@
     if (S.city === 'gdansk') return { city:'Гданьске', usc:'USC Gdańsk, ul. Partyzantów 74', uscUrl:'https://www.gdansk.pl/urzad-miejski/urzad-stanu-cywilnego',
       nursery:'Gdański Zespół Żłobków', nurseryUrl:'https://bip.gdansk.pl/gzz/', school:'Gdańska Platforma Edukacyjna', schoolUrl:'https://cms-panel.edu.gdansk.pl/pl/page/rekrutacja-26' };
     if (S.city === 'gdynia') return { city:'Гдыне', usc:'USC Gdynia, al. Marszałka Piłsudskiego 52/54', uscUrl:'https://www.gdyniarodzinna.pl/bede-rodzicem/urzad-stanu-cywilnego/zgloszenie-narodzin-dziecka',
-      nursery:'Gdyńskie Centrum Zdrowia / rekrutacja Nullo', nurseryUrl:'https://gcz.gdynia.pl/opieka-nad-dziecmi-do-lat-3/placowki-publiczne/', school:'Gdynia Edukacyjna', schoolUrl:'https://edukacja.gdynia.pl/rekrutacja-do-przedszkoli-w-gdyni/' };
+      nursery:'электронная запись Gdynia Nullo', nurseryUrl:'https://gdynia-zlobki.nullo.pl/nullo-public/', school:'Gdynia Edukacyjna', schoolUrl:'https://edukacja.gdynia.pl/rekrutacja-do-przedszkoli-w-gdyni/' };
     return { city: 'твоём городе', usc:'USC по месту рождения', uscUrl:KIDS_U.usc,
       nursery:'Городская система записи в ясли', nurseryUrl:'https://www.gov.pl/web/rodzina/zlobki-i-kluby-dzieciece', school:'Школа/сад по месту проживания', schoolUrl:'https://www.gov.pl/web/edukacja' };
   }
