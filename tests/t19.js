@@ -36,7 +36,7 @@ function page(rate) {
   assert($('#pl-bank [data-o="usdRate"]').textContent === '3,9876', 'NBP USD rate rendered to four decimals');
   assert($('#pl-bank [data-o="usdDate"]').textContent.includes('20.11.2026'), 'NBP publication date displayed');
   assert($('#pl-bank .pb-bank-info a[href*="api.nbp.pl"]'), 'official NBP source linked');
-  assert($('#pl-bank .pb-bank-info a[href="#dom"]'), 'mortgage links to Home in preview routing');
+  assert($('#pl-bank .pb-bank-info a[href="#kalkulator-hipoteki"]'), 'mortgage links to Home in preview routing');
   const offers=[...w.document.querySelectorAll('#pl-bank .pb-bank-mort-row')];
   assert(offers.length===11, 'eleven bank mortgage examples including Erste');
   const expected=[
@@ -60,7 +60,7 @@ function page(rate) {
     assert(row.querySelector('.pb-bank-mort-terms').textContent.includes(x[3]), 'down payment detail: '+x[0]);
     assert(row.querySelector('.pb-bank-mort-terms a').hostname.endsWith(x[4]), 'official bank URL: '+x[0]);
   });
-  const calc = $('#pl-bank a.pb-bank-calc-card.pb-bank-mort-home[href="#dom"]');
+  const calc = $('#pl-bank a.pb-bank-calc-card.pb-bank-mort-home[href="#kalkulator-hipoteki"]');
   assert(calc && calc.querySelector('strong').textContent==='Калькулятор ипотеки', 'calculator is a full clickable tile linking to Home');
   assert(calc.textContent.includes('платёж'), 'calculator tile explains its purpose');
   assert(offers.every(row => !!row.querySelector('.pb-bank-mort-by')), 'every bank has a section about Belarusian eligibility');
