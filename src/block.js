@@ -1885,7 +1885,7 @@
     } else if (!citizen && since && since <= t) {
       var toRd = days(t, addY(since, 5)), toPass = days(t, addY(since, 8));
       var rdLate = toRd < 0, rdHint = rdLate ? 'уже ' + n0(-toRd) + ' ' + dWord(-toRd) + ' как должен податься, поднимай дупу!' : '';
-      html += '<div class="pb-rd-count"' + (rdLate ? ' title="' + rdHint + '" tabindex="0" aria-label="' + rdHint + '"' : '') + '><div class="pl-big">' + n0(toRd) + '</div><div class="pl-lab">' + dWord(Math.abs(toRd)) + (rdLate ? ' после 5 лет для rezydenta UE' : ' до 5 лет для rezydenta UE') + '</div><div class="pl-sub">' + (toRd > 0 ? fmtD(addY(since, 5)) : 'Срок уже есть, проверь выезды') + '</div></div>' +
+      html += '<div class="pb-rd-count"' + (rdLate ? ' tabindex="0" aria-describedby="pb-rd-tooltip"' : '') + '><div class="pl-big">' + n0(toRd) + '</div><div class="pl-lab">' + dWord(Math.abs(toRd)) + (rdLate ? ' после 5 лет для rezydenta UE' : ' до 5 лет для rezydenta UE') + '</div><div class="pl-sub">' + (toRd > 0 ? fmtD(addY(since, 5)) : 'Срок уже есть, проверь выезды') + '</div>' + (rdLate ? '<span id="pb-rd-tooltip" class="pb-rd-tooltip" role="tooltip">' + rdHint + '</span>' : '') + '</div>' +
         '<div><div class="pl-big" style="color:var(--red)">' + (toPass > 0 ? n0(toPass) : '0') + '</div><div class="pl-lab">' + dWord(Math.max(0, toPass)) + ' до паспорта обычным путём</div><div class="pl-sub">Если всё пойдёт по плану. Ха</div></div>';
     }
     out('me', html);
@@ -2240,21 +2240,51 @@
       copy.textContent = '#'; header.appendChild(copy);
     });
   }
-  var anchorToastTimer = null;
-  function anchorCopyNotice(ok, url) {
-    var toast = root.querySelector('.pb-anchor-toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.className = 'pb-anchor-toast';
-      toast.setAttribute('role', 'status');
-      toast.setAttribute('aria-live', 'polite');
-      toast.setAttribute('aria-atomic', 'true');
-      root.appendChild(toast);
+  var anchorNoticeTimer = null, activeAnchorButton = null, anchorCopyRequest = 0;
+  function positionAnchorNotice() {
+    var notice = root.querySelector('.pb-anchor-inline-notice'), btn = activeAnchorButton;
+    if (!notice || notice.hidden || !btn || !btn.isConnected || !btn.getClientRects().length) return;
+    var rect = btn.getBoundingClientRect(), w = notice.offsetWidth, h = notice.offsetHeight, gap = 8;
+    var x, y = rect.top + (rect.height - h) / 2;
+    if (innerWidth - rect.right - 12 >= w + gap) x = rect.right + gap;
+    else if (rect.left - 12 >= w + gap) x = rect.left - w - gap;
+    else { x = Math.max(12, Math.min(rect.left, innerWidth - w - 12)); y = rect.bottom + gap; }
+    if (y + h > innerHeight - 8) y = Math.max(8, rect.top - h - gap);
+    if (y < 8) y = 8;
+    notice.style.left = Math.round(x) + 'px';
+    notice.style.top = Math.round(y) + 'px';
+  }
+  window.addEventListener('scroll', positionAnchorNotice, { passive: true });
+  window.addEventListener('resize', positionAnchorNotice);
+  function anchorCopyNotice(ok, url, btn) {
+    var notice = root.querySelector('.pb-anchor-inline-notice');
+    if (!notice) {
+      notice = document.createElement('div');
+      notice.className = 'pb-anchor-inline-notice';
+      notice.setAttribute('role', 'status');
+      notice.setAttribute('aria-live', 'polite');
+      notice.setAttribute('aria-atomic', 'true');
+      root.appendChild(notice);
     }
-    clearTimeout(anchorToastTimer);
-    toast.textContent = (ok ? 'copied: ' : 'copy failed: ') + url;
-    toast.hidden = false;
-    anchorToastTimer = setTimeout(function () { if (toast.isConnected) toast.hidden = true; }, 4500);
+    if (activeAnchorButton && activeAnchorButton !== btn) {
+      activeAnchorButton.classList.remove('is-copied', 'is-copy-error');
+      if (activeAnchorButton.isConnected) activeAnchorButton.setAttribute('aria-label', activeAnchorButton.getAttribute('data-copy-default-label') || 'Скопировать прямую ссылку');
+    }
+    activeAnchorButton = btn;
+    btn.classList.toggle('is-copied', ok);
+    btn.classList.toggle('is-copy-error', !ok);
+    notice.textContent = (ok ? 'copied: ' : 'copy failed: ') + url;
+    notice.hidden = false;
+    positionAnchorNotice();
+    clearTimeout(anchorNoticeTimer);
+    anchorNoticeTimer = setTimeout(function () {
+      if (notice.isConnected) notice.hidden = true;
+      if (btn.isConnected) {
+        btn.classList.remove('is-copied', 'is-copy-error');
+        btn.setAttribute('aria-label', btn.getAttribute('data-copy-default-label') || 'Скопировать прямую ссылку');
+      }
+      if (activeAnchorButton === btn) activeAnchorButton = null;
+    }, 5000);
   }
   function copyAnchorUrl(slug, btn) {
     var host = btn.closest('.pb-share-host') || btn.closest('.pb-screen'), sc = host && host.closest('.pb-screen');
@@ -2266,13 +2296,12 @@
     /* Update the address bar synchronously, even if clipboard permission is delayed or denied.
        replaceState keeps repeated copy clicks from polluting browser Back history and does not scroll. */
     try { history.replaceState(history.state, '', relative); } catch (err) {}
+    var request = ++anchorCopyRequest;
     function done(ok) {
-      if (!btn.isConnected) return;
+      if (!btn.isConnected || request !== anchorCopyRequest) return;
+      if (!btn.hasAttribute('data-copy-default-label')) btn.setAttribute('data-copy-default-label', btn.getAttribute('aria-label'));
       btn.setAttribute('aria-label', ok ? 'Скопирована ссылка: ' + url : 'Не удалось скопировать: ' + url);
-      anchorCopyNotice(ok, url);
-      setTimeout(function () {
-        if (btn.isConnected) btn.setAttribute('aria-label', 'Скопировать прямую ссылку');
-      }, 4500);
+      anchorCopyNotice(ok, url, btn);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       try { navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); }); } catch (err) { done(false); }
