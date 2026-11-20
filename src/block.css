@@ -1190,3 +1190,29 @@ html.pb-nwp-on{overflow:hidden}
  .pb-kid-grid{gap:12px}
  .pb-kid-card{padding:18px}
 }
+
+/* Collapsible topic sections. Same 18px symbols as the legal cards. */
+.pb-section{min-width:0}
+.pb-section-h{list-style:none;cursor:pointer}
+.pb-section-h::-webkit-details-marker{display:none}
+.pb-section-h::marker{content:""}
+.pb-section-h:focus-visible{outline:2px solid var(--red);outline-offset:4px;border-radius:4px}
+.pb-section-h:hover .pb-tog{border-color:var(--ink)}
+.pl .pb-section[open]>.pb-section-h .pb-tog-e{display:none}
+.pl .pb-section[open]>.pb-section-h .pb-tog-c{display:block}
+.pb-kid-section{margin-top:clamp(36px,4.5vw,64px)}
+.pb-kid-section .pb-section-h{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.pb-kid-section .pb-kid-group{margin:0;padding:0;border:0;flex:1;min-width:0}
+.pb-kid-section .pb-section-b{min-width:0}
+.pb-by-heading.pb-section-h{display:grid;grid-template-columns:max-content minmax(0,1fr) 30px;align-items:center;gap:8px 24px}
+.pb-by-heading.pb-section-h h2{min-width:0}
+.pb-by-heading.pb-section-h p{min-width:0}
+.pb-by-heading.pb-section-h .pb-tog{justify-self:end}
+.pb-section[open]>.pb-section-b{animation:pbFold .3s ease}
+@media(prefers-reduced-motion:reduce){.pb-section[open]>.pb-section-b{animation:none}}
+@media(max-width:850px){
+ .pb-by-heading.pb-section-h{display:grid;grid-template-columns:minmax(0,1fr) 30px;gap:6px 12px}
+ .pb-by-heading.pb-section-h h2{grid-column:1;grid-row:1}
+ .pb-by-heading.pb-section-h p{grid-column:1;grid-row:2;margin-top:0}
+ .pb-by-heading.pb-section-h .pb-tog{grid-column:2;grid-row:1/3}
+}
