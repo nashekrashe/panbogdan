@@ -2244,6 +2244,7 @@
     if (!d.isConnected || !d.hasAttribute('data-fold-key')) return;
     S.folds[d.getAttribute('data-fold-key')] = !!d.open;
     save();
+    if (d.open) setTimeout(fitCounts, 0);
   }, true);
 
   /* ---------- events ---------- */
