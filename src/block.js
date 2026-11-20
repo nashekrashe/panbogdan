@@ -352,7 +352,7 @@
       '<details><summary><span class="t">Сроки по воеводствам</span>' + ms('expand_more', 'chev') + '</summary><div class="body">' +
       '<p><b>Твой ужонд, <span data-bind="uw"></span>:</b> <span data-o="pdpcUw"></span></p>' +
       '<ul class="pl-list" data-o="pdpcAll"></ul>' +
-      '<p class="pl-note">Срок считают с момента, когда у ужонда полный комплект документов.</p></div></details></div>'
+      '<p class="pl-note">Показаны все 16 воеводств. Там, где срок не опубликован или ещё не проверен, даём ссылку на отдел вместо выдуманных цифр. Срок считают с момента, когда у ужонда полный комплект документов.</p></div></details></div>'
     ], src: [['https://bip.lubuskie.uw.gov.pl/sprawy_obywatelskie/polski-dokument-podrozy-dla-obywateli-bialorusi', 'bip.lubuskie.uw.gov.pl'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'gov.pl/web/udsc'], ['https://www.mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/', 'mos.cudzoziemcy.gov.pl'], ['https://migrant.wsc.mazowieckie.pl/pl/procedury/polski-dokument-podrozy', 'migrant.wsc.mazowieckie.pl'], ['https://migrant.poznan.uw.gov.pl/pl/checklist/1356', 'migrant.poznan.uw.gov.pl'], ['https://www.pomocprawna.org/polski-dokument-podrozy-dla-cudzoziemca', 'pomocprawna.org']], checked: '20.11.2026' },
 
     { g: 'docs', ic: 'verified', t: 'Международная защита', s: 'TZTC, статусы, поездки', b: [
@@ -1452,7 +1452,7 @@
     out('uzhond', rUzhond());
     var vk = (CITIES[S.city] || CITIES.gdansk).vo;
     out('pdpcUw', pdpcTxt(vk));
-    out('pdpcAll', Object.keys(VOIV).filter(function (k) { return PDPC_UW[k]; }).map(function (k) { return '<li><span><b>' + VOIV[k].v + ':</b> ' + pdpcTxt(k) + '</span></li>'; }).join(''));
+    out('pdpcAll', Object.keys(VOIV).map(function (k) { return '<li><span><b>' + VOIV[k].v + ':</b> ' + pdpcTxt(k) + '</span></li>'; }).join(''));
     var map = { wait: n0(c.wait), waitFmt: n0(c.wait), dayword: dWord(c.wait), loc: c.loc, uw: c.uw, waitMonths: Math.round(c.wait / 30.4) + ' ' + plural(Math.round(c.wait / 30.4), 'месяц', 'месяца', 'месяцев'), cityNote: c.note };
     $$('[data-bind]').forEach(function (el) { var k = el.getAttribute('data-bind'); if (k in map) { el.textContent = map[k]; if (k === 'cityNote' && el.parentNode) el.parentNode.hidden = !map[k]; } });
   }
