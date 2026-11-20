@@ -30,13 +30,17 @@ function boot(url, state, paths=true) {
   assert(a.w.location.pathname+a.w.location.hash==='/banki#erste', 'click updates browser URL synchronously to exact card anchor');
   await Promise.resolve();
   assert(a.copied[0]==='https://panbogdan.com/banki#erste','Erste copy produces canonical URL');
-  assert(a.$('.pb-anchor-toast').textContent==='copied: https://panbogdan.com/banki#erste', 'copy toast shows actual full card URL');
+  assert(a.$('.pb-anchor-inline-notice').textContent==='copied: https://panbogdan.com/banki#erste', 'copy toast shows actual full card URL');
   assert(a.$('#pl-bank [data-copy-anchor="erste"]').textContent==='#','copy feedback does not expand the header');
+  assert(a.$('#pl-bank [data-copy-anchor="erste"]').classList.contains('is-copied'),'copied icon stays highlighted');
+  assert(!a.$('.pb-anchor-toast'),'no duplicate bottom toast');
   a.$('#pl-bank [data-copy-section="bank"]').click();
   assert(a.w.location.pathname+a.w.location.hash==='/banki','section copy switches address bar to canonical page URL');
   await Promise.resolve();
   assert(a.copied[1]==='https://panbogdan.com/banki','section copy produces short canonical path');
-  assert(a.$('.pb-anchor-toast').textContent==='copied: https://panbogdan.com/banki', 'section copy toast displays its exact URL');
+  assert(a.$('.pb-anchor-inline-notice').textContent==='copied: https://panbogdan.com/banki', 'section copy notice displays its exact URL');
+  assert(a.$('#pl-bank .pb-section-copy').classList.contains('is-copied'),'section copy icon highlighted');
+  assert(!a.$('#pl-bank [data-copy-anchor="erste"]').classList.contains('is-copied'),'previous copy icon reset');
   const shares=[...a.w.document.querySelectorAll('[data-share-ready]')];
   assert(shares.length>=70,'major cards, tools, topics and dictionary entries have share anchors');
   const slugs=shares.map(el=>el.getAttribute('data-share'));
@@ -62,7 +66,8 @@ function boot(url, state, paths=true) {
   a.$('#pl-bank [data-copy-anchor="mbank"]').click();
   assert(a.w.location.pathname+a.w.location.hash==='/banki#mbank','address bar changes immediately even if clipboard access fails');
   await Promise.resolve();
-  assert(a.$('.pb-anchor-toast').textContent==='copy failed: https://panbogdan.com/banki#mbank','failed clipboard does not falsely claim copied');
+  assert(a.$('.pb-anchor-inline-notice').textContent==='copy failed: https://panbogdan.com/banki#mbank','failed clipboard does not falsely claim copied');
+  assert(!a.$('#pl-bank [data-copy-anchor="mbank"]').classList.contains('is-copied'),'failed clipboard not highlighted as success');
   a.w.close();
 
   a=boot('https://panbogdan.com/dzieci#pobyt-czasowy',{kidPath:'pending',folds:{'pl-kids:pb-fold-kid-legal':false}});

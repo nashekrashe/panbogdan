@@ -23,18 +23,24 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       const result=await card.evaluate(node=>({
         value:node.querySelector('.pl-big').textContent,
         label:node.querySelector('.pl-lab').textContent,
-        hint:node.getAttribute('title'),
-        aria:node.getAttribute('aria-label'),
+        hint:node.querySelector('.pb-rd-tooltip')?.textContent,
+        aria:node.getAttribute('aria-describedby'),
+        nativeTitle:node.hasAttribute('title'),
         tabIndex:node.tabIndex,
         win:innerWidth,doc:document.documentElement.scrollWidth
       }));
       if(result.value!=='-111'||result.label!=='дней после 5 лет для rezydenta UE'||
         result.hint!=='уже 111 дней как должен податься, поднимай дупу!'||
-        result.aria!==result.hint||result.tabIndex!==0||result.doc>result.win+1){
+        result.aria!=='pb-rd-tooltip'||result.nativeTitle||result.tabIndex!==0||result.doc>result.win+1){
         throw Error('rezydent negative count / tooltip / viewport at '+width+': '+JSON.stringify(result));
       }
+      const tip=card.locator('.pb-rd-tooltip');
+      if(await tip.evaluate(el=>getComputedStyle(el).visibility)!=='hidden')throw Error('tooltip not initially hidden at '+width);
       await card.hover();
+      if(await tip.evaluate(el=>getComputedStyle(el).visibility)!=='visible')throw Error('custom popup missing on hover at '+width);
+      if(!await tip.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1;}))throw Error('custom popup overflow at '+width);
       await card.focus();
+      if(await tip.evaluate(el=>getComputedStyle(el).visibility)!=='visible')throw Error('custom popup missing on focus at '+width);
       if(!await card.evaluate(node=>document.activeElement===node))throw Error('rezydent hint not keyboard focusable at '+width);
       await page.screenshot({path:path.resolve(__dirname,'../dist/rezydent-screenshots/rezydent-'+width+'.png'),fullPage:true});
       if(errors.length)throw Error('page errors at '+width+': '+errors.join('; '));

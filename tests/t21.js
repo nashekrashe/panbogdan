@@ -29,20 +29,21 @@ let b=boot('2021-08-01');
 assert(!!b.card,'rezydent 5-year counter rendered');
 assert(b.card.querySelector('.pl-big').textContent==='-111','111 days overdue displays -111 instead of zero');
 assert(b.card.querySelector('.pl-lab').textContent==='дней после 5 лет для rezydenta UE','overdue label describes elapsed days');
-assert(b.card.getAttribute('title')==='уже 111 дней как должен податься, поднимай дупу!','hover shows exact 111-day tooltip');
-assert(b.card.getAttribute('aria-label')===b.card.title && b.card.tabIndex===0,'tooltip is also discoverable by keyboard');
+assert(!b.card.querySelector('.pb-rd-tooltip') && !b.card.hasAttribute('aria-describedby'),'native tooltip absent');
+assert(b.card.querySelector('.pb-rd-tooltip').textContent==='уже 111 дней как должен податься, поднимай дупу!','custom popup shows exact overdue hint');
+assert(b.card.getAttribute('aria-describedby')===b.card.querySelector('.pb-rd-tooltip').id && b.card.tabIndex===0,'tooltip available via aria-describedby and keyboard');
 assert(b.card.querySelector('.pl-sub').textContent==='Срок уже есть, проверь выезды','caveat about eligibility and trips stays');
 b.w.close();
 
 b=boot('2021-11-20');
 assert(b.card.querySelector('.pl-big').textContent==='0','five-year anniversary shows zero');
 assert(b.card.querySelector('.pl-lab').textContent==='дней до 5 лет для rezydenta UE','anniversary keeps standard label');
-assert(!b.card.hasAttribute('title'),'no overdue tooltip on exact anniversary');
+assert(!b.card.querySelector('.pb-rd-tooltip') && !b.card.hasAttribute('aria-describedby'),'no overdue tooltip on exact anniversary');
 b.w.close();
 
 b=boot('2022-11-20');
 assert(b.card.querySelector('.pl-big').textContent==='365','future five-year anniversary shows positive countdown');
-assert(!b.card.hasAttribute('title'),'no overdue tooltip before five years');
+assert(!b.card.querySelector('.pb-rd-tooltip') && !b.card.hasAttribute('aria-describedby'),'no overdue tooltip before five years');
 assert(b.card.querySelector('.pl-sub').textContent.includes('2027'),'future date still shown');
 b.w.close();
 

@@ -25,20 +25,22 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       if(info.sectionHidden || info.path!=='/banki#erste'||info.win+1<info.doc||info.anchor<0||info.anchor>180)throw Error('bank direct route/scroll/width at '+width+': '+JSON.stringify(info));
       await page.evaluate(()=>history.replaceState(null,'','/banki'));
       await page.locator('#pl-bank [data-copy-anchor="erste"]').click();
-      await page.waitForFunction(()=>document.querySelector('.pb-anchor-toast')?.textContent.startsWith('copied: '));
+      await page.waitForFunction(()=>document.querySelector('.pb-anchor-inline-notice')?.textContent.startsWith('copied: '));
       const result=await page.evaluate(()=>({
         copied:window.__copiedAnchor,
         address:location.pathname+location.hash,
-        toast:document.querySelector('.pb-anchor-toast').textContent,
+        toast:document.querySelector('.pb-anchor-inline-notice').textContent,
         doc:document.documentElement.scrollWidth,win:innerWidth
       }));
+      if(!await page.locator('#pl-bank [data-copy-anchor="erste"]').evaluate(el=>el.classList.contains('is-copied')))throw Error('copied icon not highlighted at '+width);
+      if(!await page.locator('.pb-anchor-inline-notice').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth+1 && r.top>=0 && r.bottom<=innerHeight+1;}))throw Error('near-icon copy notice outside viewport at '+width);
       if(result.copied!==origin+'/banki#erste'||result.address!=='/banki#erste'||result.toast!=='copied: '+result.copied||result.doc>result.win+1)
         throw Error('copy feedback / URL / mobile overflow at '+width+': '+JSON.stringify(result));
       await page.locator('#pl-bank [data-copy-section="bank"]').click();
       const section=await page.evaluate(()=>({
         copied:window.__copiedAnchor,
         address:location.pathname+location.hash,
-        toast:document.querySelector('.pb-anchor-toast').textContent,
+        toast:document.querySelector('.pb-anchor-inline-notice').textContent,
         doc:document.documentElement.scrollWidth,win:innerWidth
       }));
       if(section.copied!==origin+'/banki'||section.address!=='/banki'||section.toast!=='copied: '+section.copied||section.doc>section.win+1)
@@ -50,7 +52,7 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       const before=await page.locator('#pb-fold-by-docs').evaluate(d=>d.open);
       await page.locator('#pb-fold-by-docs [data-copy-anchor="dokumenty-i-status"]').click();
       const after=await page.locator('#pb-fold-by-docs').evaluate(d=>d.open);
-      const byCopied=await page.evaluate(()=>({address:location.pathname+location.hash,toast:document.querySelector('.pb-anchor-toast').textContent,doc:document.documentElement.scrollWidth,win:innerWidth}));
+      const byCopied=await page.evaluate(()=>({address:location.pathname+location.hash,toast:document.querySelector('.pb-anchor-inline-notice').textContent,doc:document.documentElement.scrollWidth,win:innerWidth}));
       if(!before||!after||byCopied.address!=='/bialorusini#dokumenty-i-status'||byCopied.toast!=='copied: '+origin+'/bialorusini#dokumenty-i-status'||byCopied.doc>byCopied.win+1)
         throw Error('nested Belarus topic/copy/overflow at '+width+': '+JSON.stringify(byCopied));
 
@@ -69,7 +71,7 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       const pathShare=await page.evaluate(()=>({
         address:location.pathname+location.hash,
         copied:window.__copiedAnchor,
-        toast:document.querySelector('.pb-anchor-toast').textContent,
+        toast:document.querySelector('.pb-anchor-inline-notice').textContent,
         doc:document.documentElement.scrollWidth,win:innerWidth
       }));
       if(pathShare.address!=='/dzieci#pobyt-czasowy'||pathShare.copied!==origin+'/dzieci#pobyt-czasowy'||pathShare.toast!=='copied: '+pathShare.copied||pathShare.doc>pathShare.win+1)
