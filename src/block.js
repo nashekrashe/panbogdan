@@ -1419,11 +1419,11 @@
   ];
   function kidLocal() {
     if (S.city === 'gdansk') return { city:'Гданьске', usc:'USC Gdańsk, ul. Partyzantów 74', uscUrl:'https://www.gdansk.pl/urzad-miejski/urzad-stanu-cywilnego',
-      nursery:'Gdański Zespół Żłobków', nurseryUrl:'https://bip.gdansk.pl/gzz/', school:'Gdańska Platforma Edukacyjna', schoolUrl:'https://cms-panel.edu.gdansk.pl/pl/page/rekrutacja-26' };
+      nursery:'Gdański Zespół Żłobków', nurseryUrl:'https://bip.gdansk.pl/gzz/', poz:'Поморский NFZ: выбор врача, медсестры и położnej', pozUrl:'https://www.nfz-gdansk.pl/71-podstawowa-opieka-zdrowotna/262-opieka-lekarza-poz/4073-prawo-wyboru-lekarza-poz-pielegniarki-poz-i-poloznej-poz/', benefits:'Gdańskie Centrum Świadczeń, ul. Kartuska 32/34', benefitsUrl:'https://gcs.gda.pl/swiadczenia/jednorazowa-zapomoga-z-tytulu-urodzenia-sie-dziecka-becikowe/', school:'Gdańska Platforma Edukacyjna', schoolUrl:'https://cms-panel.edu.gdansk.pl/pl/page/rekrutacja-26' };
     if (S.city === 'gdynia') return { city:'Гдыне', usc:'USC Gdynia, al. Marszałka Piłsudskiego 52/54', uscUrl:'https://www.gdyniarodzinna.pl/bede-rodzicem/urzad-stanu-cywilnego/zgloszenie-narodzin-dziecka',
-      nursery:'электронная запись Gdynia Nullo', nurseryUrl:'https://gdynia-zlobki.nullo.pl/nullo-public/', school:'Gdynia Edukacyjna', schoolUrl:'https://edukacja.gdynia.pl/rekrutacja-do-przedszkoli-w-gdyni/' };
+      nursery:'электронная запись Gdynia Nullo', nurseryUrl:'https://gdynia-zlobki.nullo.pl/nullo-public/', poz:'Gdyńskie Centrum Zdrowia: список POZ по NFZ', pozUrl:'https://gcz.gdynia.pl/zdrowie/gdynskie-placowki-zdrowia/przychodnie-narodowy-fundusz-zdrowia/', benefits:'Wydział Spraw Społecznych UM Gdyni', benefitsUrl:'https://www.gdyniarodzinna.pl/informacje-ogolne', school:'Gdynia Edukacyjna', schoolUrl:'https://edukacja.gdynia.pl/rekrutacja-do-przedszkoli-w-gdyni/' };
     return { city: 'твоём городе', usc:'USC по месту рождения', uscUrl:KIDS_U.usc,
-      nursery:'Городская система записи в ясли', nurseryUrl:'https://www.gov.pl/web/rodzina/zlobki-i-kluby-dzieciece', school:'Школа/сад по месту проживания', schoolUrl:'https://www.gov.pl/web/edukacja' };
+      nursery:'Городская система записи в ясли', nurseryUrl:'https://www.gov.pl/web/rodzina/zlobki-i-kluby-dzieciece', poz:'Выбор lekarz, pielęgniarka и położna POZ', pozUrl:'https://pacjent.gov.pl/jak-zostac-pacjentem-wybranej-przychodni', benefits:'Семейные выплаты в гмине проживания', benefitsUrl:'https://www.gov.pl/web/gov/uzyskaj-becikowe', school:'Школа/сад по месту проживания', schoolUrl:'https://www.gov.pl/web/edukacja' };
   }
   function kidDetails(c) {
     return '<details id="pl-d-kid-' + c.id + '"><summary><span>Документы и как подать</span>' + ms('expand_more') + '</summary>' +
@@ -1457,7 +1457,7 @@
       '<div class="pb-kid-city"><b>Твой город: ' + esc(city().n) + '.</b> ' +
       (area ? 'Если малыш родился в ' + (S.city === 'gdansk' ? 'Гданьске' : 'Гдыне') + ', регистрируй в ' + link(local.uscUrl,local.usc) + '. ' : '') +
       'USC определяется местом рождения, а не проживания. За ВНЖ ребёнка отвечает воеводский отдел по месту проживания: ' +
-      link(VOIV[city().vo].u,VOIV[city().vo].uw + ' Urząd Wojewódzki') + '.</div>' +
+      link(VOIV[city().vo].u,VOIV[city().vo].uw + ' Urząd Wojewódzki') + '. По NFZ: ' + link(local.pozUrl,local.poz) + '. За becikowe и świadczenie rodzicielskie: ' + link(local.benefitsUrl,local.benefits) + '.</div>' +
       '<h2 class="pl-h3 pb-kid-group">Беременность и первые дни</h2>' +
       '<div class="pl-cards pb-kid-grid">' + KIDS_STEPS.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
       '<h2 class="pl-h3 pb-kid-group">Легализация ребёнка</h2>' +
