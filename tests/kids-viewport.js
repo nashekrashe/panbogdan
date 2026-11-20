@@ -18,6 +18,21 @@ const url=process.argv[2]||'http://127.0.0.1:8765/dzieci.html';
       await page.waitForSelector('#pl-kids .pb-kid-card',{state:'visible'});
       await page.locator('#pl-kids .pb-kid-card details summary').first().click();
       await page.waitForTimeout(200);
+      // Topic groups and individual cards must remember the user's choice across navigations.
+      const group=page.locator('#pb-fold-kid-pregnancy > summary');
+      await group.click();
+      await page.waitForTimeout(80);
+      const saved=await page.evaluate(()=>{
+        const state=JSON.parse(localStorage.getItem('pb-poland-v2')||'{}');
+        return state.folds && state.folds['pl-kids:pb-fold-kid-pregnancy'];
+      });
+      if(saved!==false)throw new Error('closed topic state not saved at '+width);
+      await page.goto(url,{waitUntil:'domcontentloaded'});
+      await page.evaluate(()=>{history.replaceState(null,'','/dzieci');window.dispatchEvent(new PopStateEvent('popstate'));});
+      await page.waitForSelector('#pl-kids .pb-kid-card',{state:'attached'});
+      if(await page.locator('#pb-fold-kid-pregnancy').getAttribute('open')!==null)throw new Error('saved topic state not restored at '+width);
+      await group.click();
+      await page.waitForTimeout(80);
       const r=await page.evaluate(()=>({
         win:innerWidth,doc:document.documentElement.scrollWidth,
         cards:document.querySelectorAll('#pl-kids .pb-kid-card').length,
