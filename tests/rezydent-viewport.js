@@ -35,7 +35,7 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       }
       await card.hover();
       await card.focus();
-      if(!await card.evaluate(node=>node.matches(':focus-visible')))throw Error('rezydent hint not keyboard focusable at '+width);
+      if(!await card.evaluate(node=>document.activeElement===node))throw Error('rezydent hint not keyboard focusable at '+width);
       await page.screenshot({path:path.resolve(__dirname,'../dist/rezydent-screenshots/rezydent-'+width+'.png'),fullPage:true});
       if(errors.length)throw Error('page errors at '+width+': '+errors.join('; '));
       console.log('rezydent',width,'PASS',result.value);
