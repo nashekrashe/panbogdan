@@ -13,6 +13,7 @@
   Object.keys(DEF.f).forEach(function (k) { if (S.f[k] === '' && typeof DEF.f[k] === 'string' && DEF.f[k] !== '') S.f[k] = DEF.f[k]; });
   if (['uop', 'zlec', 'dzielo', 'b2b'].indexOf(S.contract) < 0) S.contract = 'uop';
   S.status = S.status || {}; S.checks = S.checks || {}; S.trips = Array.isArray(S.trips) ? S.trips : [];
+  S.folds = S.folds && typeof S.folds === 'object' && !Array.isArray(S.folds) ? S.folds : {};
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -1048,11 +1049,20 @@
     fetch('/data/pay-check.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j && j.v) { payCheck = j; out('uzhond', rUzhond()); } }).catch(function () {});
   }
 
+  /* Reuse the supplied 18px expand/collapse pair for section and card headers. */
+  function foldToggle() {
+    return '<span class="pb-tog" aria-hidden="true">' + svg18('expand', 18, 'pb-tog-e') + svg18('collapse', 18, 'pb-tog-c') + '</span>';
+  }
+  function foldSection(id, title, body, note) {
+    return '<details class="pb-section pb-kid-section" id="pb-fold-' + id + '" open>' +
+      '<summary class="pb-section-h"><h2 class="pl-h3 pb-kid-group">' + title + '</h2>' + foldToggle() + '</summary>' +
+      '<div class="pb-section-b">' + (note || '') + body + '</div></details>';
+  }
   /* a card that starts folded: the summary keeps the title and a one-line status */
   function card(id, icon, title, sumKey, body, cls) {
     return '<details class="pl-tool pb-fold' + (cls ? ' ' + cls : '') + '" id="' + id + '"><summary class="pb-fold-h">' + icon +
       '<span class="t">' + title + '<small data-o="' + sumKey + '"></small></span>' +
-      '<span class="pb-tog" aria-hidden="true">' + svg18('expand', 18, 'pb-tog-e') + svg18('collapse', 18, 'pb-tog-c') + '</span></summary>' +
+      foldToggle() + '</summary>' +
       '<div class="pb-fold-b">' + body + '</div></details>';
   }
   /* invitation (zaproszenie): an inviting foreigner needs 5 years of legal, unbroken stay right before filing, or stały pobyt / rezydent UE */
@@ -1146,14 +1156,14 @@
     return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
       '<p class="pl-lead">Паспорт, Karta Polaka, защита, работа и документы. У каждой темы источники и дата проверки.</p>' +
       '<div class="pb-by-groups">' + BELARUS_GROUPS.map(function (g) {
-        return '<section class="pb-by-group" aria-labelledby="pl-by-g-' + g.id + '"><div class="pb-by-heading"><h2 id="pl-by-g-' + g.id + '">' + g.t + '</h2><p>' + g.s + '</p></div>' +
+        return '<details class="pb-by-group pb-section" id="pb-fold-by-' + g.id + '" open><summary class="pb-by-heading pb-section-h"><h2 id="pl-by-g-' + g.id + '">' + g.t + '</h2><p>' + g.s + '</p>' + foldToggle() + '</summary><div class="pb-section-b">' +
           '<div class="pb-cols">' + BELARUS.map(function (b, i) {
             if (b.g !== g.id) return '';
             return '<article class="pb-col" id="pl-d-by' + i + '"><div class="pb-col-h">' + ms(b.ic, 'lead-ico') + '<h3>' + b.t + '<small>' + b.s + '</small></h3></div>' +
               b.b.map(function (p) { return p.charAt(0) === '<' ? p : '<p>' + p + '</p>'; }).join('') +
               (b.more && b.more.length ? '<div class="pl-acc pb-by-more"><details><summary><span class="t">Что делать</span>' + ms('expand_more', 'chev') + '</summary><div class="body"><ul class="pl-list">' + b.more.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul></div></details></div>' : '') +
               srcLine(b.src) + '<p class="pl-note">Проверено ' + b.checked + '.</p></article>';
-          }).join('') + '</div></section>';
+          }).join('') + '</div></div></details>';
       }).join('') + '</div></section>';
   }
 
@@ -1458,16 +1468,16 @@
       (area ? 'Если малыш родился в ' + (S.city === 'gdansk' ? 'Гданьске' : 'Гдыне') + ', регистрируй в ' + link(local.uscUrl,local.usc) + '. ' : '') +
       'USC определяется местом рождения, а не проживания. За ВНЖ ребёнка отвечает воеводский отдел по месту проживания: ' +
       link(city().uwUrl,city().uw) + '. По NFZ: ' + link(local.pozUrl,local.poz) + '. За becikowe и świadczenie rodzicielskie: ' + link(local.benefitsUrl,local.benefits) + '.</div>' +
-      '<h2 class="pl-h3 pb-kid-group">Беременность и первые дни</h2>' +
-      '<div class="pl-cards pb-kid-grid">' + KIDS_STEPS.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
-      '<h2 class="pl-h3 pb-kid-group">Легализация ребёнка</h2>' +
-      '<p class="pb-kid-sub">Рождение в Польше, PESEL и karta pobytu родителя не дают ребёнку собственного права пребывания автоматически. Смотри статус родителя в день рождения и подавай отдельно.</p>' +
-      '<div class="pl-cards pb-kid-grid">' + KIDS_LEGAL.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
-      '<h2 class="pl-h3 pb-kid-group">Ясли и образование</h2>' +
-      '<div class="pl-cards pb-kid-grid">' + education.map(function (c) { return kidCard(c,false); }).join('') + '</div>' +
-      '<h2 class="pl-h3 pb-kid-group">Выплаты</h2>' +
-      '<p class="pb-kid-sub">На одного ребёнка в одном месяце выбирают только один из трёх вариантов Aktywny Rodzic. 800+, налоговая льгота и выплаты гмины имеют отдельные условия.</p>' +
-      '<div class="pl-cards pb-kid-grid" data-fitcells="120">' + KIDS_PAY.map(function (c) { return kidCard(c,true); }).join('') + '</div>' +
+      foldSection('kid-pregnancy', 'Беременность и первые дни',
+        '<div class="pl-cards pb-kid-grid">' + KIDS_STEPS.map(function (c) { return kidCard(c,false); }).join('') + '</div>') +
+      foldSection('kid-legal', 'Легализация ребёнка',
+        '<div class="pl-cards pb-kid-grid">' + KIDS_LEGAL.map(function (c) { return kidCard(c,false); }).join('') + '</div>',
+        '<p class="pb-kid-sub">Рождение в Польше, PESEL и karta pobytu родителя не дают ребёнку собственного права пребывания автоматически. Смотри статус родителя в день рождения и подавай отдельно.</p>') +
+      foldSection('kid-education', 'Ясли и образование',
+        '<div class="pl-cards pb-kid-grid">' + education.map(function (c) { return kidCard(c,false); }).join('') + '</div>') +
+      foldSection('kid-benefits', 'Выплаты',
+        '<div class="pl-cards pb-kid-grid" data-fitcells="120">' + KIDS_PAY.map(function (c) { return kidCard(c,true); }).join('') + '</div>',
+        '<p class="pb-kid-sub">На одного ребёнка в одном месяце выбирают только один из трёх вариантов Aktywny Rodzic. 800+, налоговая льгота и выплаты гмины имеют отдельные условия.</p>') +
       '</section>';
   }
 
@@ -1968,13 +1978,23 @@
   var fitT; window.addEventListener('resize', function () { clearTimeout(fitT); fitT = setTimeout(fitCounts, 120); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCounts);
 
+  /* All disclosures remember their state locally, scoped by screen and stable id/position. */
+  function restoreFolds() {
+    var order = {};
+    $('details').forEach(function (d) {
+      var screen = d.closest('.pb-screen'), scope = screen ? screen.id : 'footer';
+      var n = order[scope] || 0; order[scope] = n + 1;
+      var key = scope + ':' + (d.id || 'details-' + n);
+      d.setAttribute('data-fold-key', key);
+      if (Object.prototype.hasOwnProperty.call(S.folds, key)) d.open = !!S.folds[key];
+    });
+  }
   function render() {
     closeCal();
-    var open = $$('details[open]').map(function (d) { return d.id; }).filter(Boolean);
     var y = window.scrollY;
     root.innerHTML = rMHead() + '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
       rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback() + rNewsPop();
-    if (open.length) $$('details').forEach(function (d) { if (d.id && open.indexOf(d.id) > -1) d.open = true; });
+    restoreFolds();
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
     if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
     rendered = 1;
@@ -2209,6 +2229,22 @@
   root.addEventListener('pointerover', function (e) { if (e.target.closest && e.target.closest('.pl-date')) loadAdp().catch(function () {}); });
   if (window.requestIdleCallback) window.requestIdleCallback(function () { loadAdp().catch(function () {}); }, { timeout: 5000 });
   else setTimeout(function () { loadAdp().catch(function () {}); }, 2500);
+
+  /* A details toggle can also be triggered by render or stage changes. Persist user actions only. */
+  root.addEventListener('click', function (e) {
+    var summary = e.target.closest && e.target.closest('summary');
+    if (!summary || !root.contains(summary)) return;
+    var d = summary.parentElement;
+    if (d && d.tagName === 'DETAILS' && d.hasAttribute('data-fold-key')) d.setAttribute('data-fold-touched', '1');
+  }, true);
+  root.addEventListener('toggle', function (e) {
+    var d = e.target;
+    if (!d || d.tagName !== 'DETAILS' || !d.hasAttribute('data-fold-touched')) return;
+    d.removeAttribute('data-fold-touched');
+    if (!d.isConnected || !d.hasAttribute('data-fold-key')) return;
+    S.folds[d.getAttribute('data-fold-key')] = !!d.open;
+    save();
+  }, true);
 
   /* ---------- events ---------- */
   var resetArmed = 0;
