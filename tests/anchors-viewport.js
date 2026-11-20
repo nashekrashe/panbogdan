@@ -23,9 +23,26 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
         win:innerWidth,doc:document.documentElement.scrollWidth
       }));
       if(info.sectionHidden || info.path!=='/banki#erste'||info.win+1<info.doc||info.anchor<0||info.anchor>180)throw Error('bank direct route/scroll/width at '+width+': '+JSON.stringify(info));
+      await page.evaluate(()=>history.replaceState(null,'','/banki'));
       await page.locator('#pl-bank [data-copy-anchor="erste"]').click();
-      const copied=await page.evaluate(()=>window.__copiedAnchor);
-      if(copied!==origin+'/banki#erste')throw Error('copy broken at '+width+': '+copied);
+      await page.waitForFunction(()=>document.querySelector('.pb-anchor-toast')?.textContent.startsWith('copied: '));
+      const result=await page.evaluate(()=>({
+        copied:window.__copiedAnchor,
+        address:location.pathname+location.hash,
+        toast:document.querySelector('.pb-anchor-toast').textContent,
+        doc:document.documentElement.scrollWidth,win:innerWidth
+      }));
+      if(result.copied!==origin+'/banki#erste'||result.address!=='/banki#erste'||result.toast!=='copied: '+result.copied||result.doc>result.win+1)
+        throw Error('copy feedback / URL / mobile overflow at '+width+': '+JSON.stringify(result));
+      await page.locator('#pl-bank [data-copy-section="bank"]').click();
+      const section=await page.evaluate(()=>({
+        copied:window.__copiedAnchor,
+        address:location.pathname+location.hash,
+        toast:document.querySelector('.pb-anchor-toast').textContent,
+        doc:document.documentElement.scrollWidth,win:innerWidth
+      }));
+      if(section.copied!==origin+'/banki'||section.address!=='/banki'||section.toast!=='copied: '+section.copied||section.doc>section.win+1)
+        throw Error('section share feedback at '+width+': '+JSON.stringify(section));
 
       await page.goto(origin+'/bialorusini.html#dokument-podrozy',{waitUntil:'domcontentloaded'});
       await page.waitForSelector('#pl-by #dokument-podrozy',{state:'attached'});
@@ -33,7 +50,9 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       const before=await page.locator('#pb-fold-by-docs').evaluate(d=>d.open);
       await page.locator('#pb-fold-by-docs [data-copy-anchor="dokumenty-i-status"]').click();
       const after=await page.locator('#pb-fold-by-docs').evaluate(d=>d.open);
-      if(!before||!after)throw Error('nested Belarus topic collapsed from copy at '+width);
+      const byCopied=await page.evaluate(()=>({address:location.pathname+location.hash,toast:document.querySelector('.pb-anchor-toast').textContent,doc:document.documentElement.scrollWidth,win:innerWidth}));
+      if(!before||!after||byCopied.address!=='/bialorusini#dokumenty-i-status'||byCopied.toast!=='copied: '+origin+'/bialorusini#dokumenty-i-status'||byCopied.doc>byCopied.win+1)
+        throw Error('nested Belarus topic/copy/overflow at '+width+': '+JSON.stringify(byCopied));
 
       await page.goto(origin+'/dzieci.html#pobyt-czasowy',{waitUntil:'domcontentloaded'});
       await page.waitForSelector('#pl-kid-temporary .pb-kid-route-list',{state:'visible'});
@@ -45,6 +64,16 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
         win:innerWidth,doc:document.documentElement.scrollWidth
       }));
       if(!kid.open||!kid.route||kid.other||kid.saved!=='temporary'||kid.doc>kid.win+1)throw Error('kids route/layout at '+width+': '+JSON.stringify(kid));
+      await page.evaluate(()=>history.replaceState(null,'','/dzieci'));
+      await page.locator('#pl-kid-temporary [data-copy-anchor="pobyt-czasowy"]').click();
+      const pathShare=await page.evaluate(()=>({
+        address:location.pathname+location.hash,
+        copied:window.__copiedAnchor,
+        toast:document.querySelector('.pb-anchor-toast').textContent,
+        doc:document.documentElement.scrollWidth,win:innerWidth
+      }));
+      if(pathShare.address!=='/dzieci#pobyt-czasowy'||pathShare.copied!==origin+'/dzieci#pobyt-czasowy'||pathShare.toast!=='copied: '+pathShare.copied||pathShare.doc>pathShare.win+1)
+        throw Error('child pathway share at '+width+': '+JSON.stringify(pathShare));
 
       await page.goto(origin+'/dom.html#kalkulator-hipoteki',{waitUntil:'domcontentloaded'});
       await page.waitForSelector('#pl-home #kalkulator-hipoteki',{state:'attached'});
