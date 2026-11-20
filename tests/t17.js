@@ -16,6 +16,8 @@ const $ = q => w.document.querySelector(q);
 const $$ = q => [...w.document.querySelectorAll(q)];
 function assert(yes, msg) { if (!yes) throw new Error('FAIL: ' + msg); console.log('ok  ' + msg); }
 assert(errs.length === 0, 'no runtime errors: ' + errs.join('; '));
+assert(src.includes('На каком ты свете?') && !src.includes('Где ты сейчас?'), 'stage prompt uses requested wording');
+assert(!/Документ Подружи|документ путешествия|документа путешествия/i.test(src), 'legacy travel document wording removed');
 assert($('#pl-kids'), '/dzieci is rendered');
 assert($('#pl-kids-h').textContent.trim() === 'Дети', 'short primary header');
 assert(!$('#pl-kids').textContent.includes('Деньги на детей'), 'obsolete heading removed');
