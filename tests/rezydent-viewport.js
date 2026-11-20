@@ -37,7 +37,11 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       const tip=card.locator('.pb-rd-tooltip');
       if(await tip.evaluate(el=>getComputedStyle(el).visibility)!=='hidden')throw Error('tooltip not initially hidden at '+width);
       await card.hover();
-      if(await tip.evaluate(el=>getComputedStyle(el).visibility)!=='visible')throw Error('custom popup missing on hover at '+width);
+      await page.waitForTimeout(220);
+      if(await tip.evaluate(el=>getComputedStyle(el).visibility)!=='visible') {
+        const dbg=await tip.evaluate(el=>({visibility:getComputedStyle(el).visibility,opacity:getComputedStyle(el).opacity,hover:el.parentElement.matches(':hover'),focus:el.parentElement===document.activeElement,css:document.querySelector('style')?.textContent.includes('.pb-rd-tooltip')}));
+        throw Error('custom popup missing on hover at '+width+': '+JSON.stringify(dbg));
+      }
       if(!await tip.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1;}))throw Error('custom popup overflow at '+width);
       await card.focus();
       if(await tip.evaluate(el=>getComputedStyle(el).visibility)!=='visible')throw Error('custom popup missing on focus at '+width);
