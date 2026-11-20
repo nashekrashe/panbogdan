@@ -1407,7 +1407,7 @@
         'Заполни форму по-польски, приложи документы, подпиши и отправь через MOS. Сохрани UPO. С 27.04.2026 обычную бумажную заявку вместо MOS не принимают.',
         'Следи за запросами воеводы: родитель явится с оригиналом dokument podróży ребёнка и документами, когда получит wezwanie. Если ребёнку исполнилось 6 лет, возможна обязательная явка для отпечатков.'
       ],
-      where:'Электронно через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '; дело ведёт ' + link(city().uwUrl,city().uw) + ' по месту проживания. Не отправляй бумажное заявление по старым инструкциям.',
+      where:function () { return 'Электронно через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '; дело ведёт ' + link(city().uwUrl,city().uw) + ' по месту проживания. Не отправляй бумажное заявление по старым инструкциям.'; },
       src:[[KIDS_U.other,'MOS: ребёнок, родившийся в Польше'],[KIDS_U.mos,'UdSC: новый MOS'],['https://www.gov.pl/web/udsc/mos-qa','UdSC: подача за ребёнка']] },
     { id:'permanent', tag:'Родитель: ПМЖ / резидент ЕС', t:'Pobyt stały ребёнка',
       x:'Не автоматически. Подходит при определённых сочетаниях даты рождения и разрешения родителя, у которого уже есть ПМЖ или статус долгосрочного резидента ЕС.',
@@ -1424,7 +1424,7 @@
         'При вызове воеводы принеси оригиналы. Если ребёнку исполнилось 6 лет, потребуется его присутствие при выполнении предусмотренных процедур.',
         'После положительного решения оформи карту ребёнку; сам факт ПМЖ родителя не заменяет решение для малыша.'
       ],
-      where:'Заявление через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '; рассмотрение у ' + link(city().uwUrl,city().uw) + ' по адресу проживания.',
+      where:function () { return 'Заявление через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '; рассмотрение у ' + link(city().uwUrl,city().uw) + ' по адресу проживания.'; },
       src:[[KIDS_U.permanent,'Поморский ужонд: условия pobyt stały ребёнка'],
         ['https://www.gov.pl/web/udsc/info-mos','UdSC: электронная подача'],['https://www.gov.pl/web/udsc/mos-qa','UdSC: профиль ребёнка']] },
     { id:'pending', tag:'Родитель: ждёт решение / иной статус', t:'Пока нет подтверждённого основания',
@@ -1441,7 +1441,7 @@
         'После подтверждения основания подготовь требуемые приложения, создай профиль ребёнка в MOS, подай подходящий вид электронного заявления и сохрани UPO.',
         'Не планируй выезд только по свидетельству о рождении или UPO: это не заменяет dokument podróży и право на повторный въезд.'
       ],
-      where:'Уточни индивидуальное основание в ' + link(city().uwUrl,city().uw) + '; после определения процедуры подавай через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '. При международной защите правила могут отличаться.',
+      where:function () { return 'Уточни индивидуальное основание в ' + link(city().uwUrl,city().uw) + '; после определения процедуры подавай через ' + link('https://mos.cudzoziemcy.gov.pl','MOS') + '. При международной защите правила могут отличаться.'; },
       src:[[KIDS_U.other,'MOS: основания для детей'],['https://www.gov.pl/web/udsc/mos-qa','UdSC: вопросы MOS'],
         [KIDS_U.permanent,'Поморский ужонд: когда ПМЖ недоступен']] }
   ];
@@ -1518,7 +1518,7 @@
       '<div class="pb-kid-route-top"><span class="pb-kid-path-chip">Выбран путь: ' + esc(c.tag) + '</span>' +
         '<button type="button" class="pb-kid-route-change" data-kid-path="">Сменить путь</button></div>' +
       '<h3 class="pl-h3">' + c.t + '</h3><p class="pb-kid-route-desc">' + c.x + '</p>' +
-      '<div class="pb-kid-route-place"><b>Куда подавать</b><p>' + c.where + '</p></div>' +
+      '<div class="pb-kid-route-place"><b>Куда подавать</b><p>' + (typeof c.where === 'function' ? c.where() : c.where) + '</p></div>' +
       '<div class="pb-kid-route-cols"><div><h4>Список документов</h4><div class="pb-kid-route-list">' +
         c.docs.map(function (t,i) { return item(t,docId+i); }).join('') + '</div></div>' +
       '<div><h4>Как подавать. Шаг за шагом</h4><div class="pb-kid-route-steps">' +
