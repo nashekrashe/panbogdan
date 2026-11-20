@@ -2277,6 +2277,13 @@
     if (h == null) return null;
     h = String(h).replace(/^[#/]+|\/+$/g, '');
     if (!h || h === 'start' || h === 'me') return { k: 'me' };
+    /* Route-sensitive child legalisation: the requested scenario may not exist in DOM yet. */
+    var kidRoute = Object.keys(KID_PATH_SHARE).filter(function (id) { return KID_PATH_SHARE[id] === h; })[0];
+    if (!kidRoute) { var legacy = /^pl-kid-(citizen|temporary|permanent|pending)$/.exec(h); if (legacy) kidRoute = legacy[1]; }
+    if (kidRoute && S.kidPath !== kidRoute) {
+      S.kidPath = kidRoute; save(); out('kidLegal', rKidLegal());
+      var kids = $('#pl-kids'); if (kids) registerAnchors(kids);
+    }
     for (var i = 0; i < SECTIONS.length; i++) { var x = SECTIONS[i]; if (x.p === h || x.k === h || x.id === h) return { k: x.k }; }
     if (SCREEN_ALIAS[h]) return { k: SCREEN_ALIAS[h] };
     var el = document.getElementById(h), sec = el && el.closest && el.closest('.pb-screen');
@@ -2296,8 +2303,22 @@
     if (ni > -1) { nwpOpen(ni); return; }
     nwpHide();
     if (r.el) {
-      var d = r.el.tagName === 'DETAILS' ? r.el : r.el.closest('details'); if (d) d.open = true;
-      setTimeout(function () { r.el.scrollIntoView({ block: 'start' }); }, 0);
+      var target = r.el.closest('[data-share]') || r.el;
+      /* Selecting an inner step also selects its legalisation tab. */
+      var panel = target.closest('[role="tabpanel"][id^="pl-panel-"]');
+      if (panel && panel.id !== 'pl-panel-' + S.legal) {
+        S.legal = panel.id.replace('pl-panel-', ''); save(); applyTabs();
+      }
+      /* Hidden tax card: switch to a contract for which the card applies. */
+      var byContract = target.closest('[data-w]');
+      if (byContract && byContract.hidden) {
+        var contract = (byContract.getAttribute('data-w') || '').split(' ')[0];
+        if (CONTRACTS[contract]) { S.contract = contract; save(); applyTabs(); }
+      }
+      /* Open every containing disclosure, not just the nearest one. */
+      var d = target.closest('details');
+      while (d) { d.open = true; d = d.parentElement && d.parentElement.closest('details'); }
+      setTimeout(function () { if (target.isConnected && target.scrollIntoView) target.scrollIntoView({ block: 'start' }); }, 0);
     } else if (scroll && changed) window.scrollTo(0, 0);
   }
   /* what the current address points at */
@@ -2332,6 +2353,8 @@
   root.addEventListener('cancel', function (e) { if (e.target && e.target.id === 'pb-nwp') { e.preventDefault(); nwpClose(); } }, true);
   root.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var shared = e.target.closest && e.target.closest('[data-copy-anchor]');
+    if (shared) { e.preventDefault(); e.stopPropagation(); copyAnchorUrl(shared.getAttribute('data-copy-anchor'), shared); return; }
     var nc = e.target.closest && e.target.closest('[data-nwp-close]'); if (nc) { e.preventDefault(); nwpClose(); return; }
     var cp = e.target.closest && e.target.closest('[data-nwp-copy]');
     if (cp) {
@@ -2499,6 +2522,7 @@
 
   /* A details toggle can also be triggered by render or stage changes. Persist user actions only. */
   root.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-copy-anchor]')) return;
     var summary = e.target.closest && e.target.closest('summary');
     if (!summary || !root.contains(summary)) return;
     var d = summary.parentElement;
@@ -2525,7 +2549,7 @@
     else if (b.hasAttribute('data-more')) { var m = $('#pb-more'), o = m.hidden; var mh = $('.pb-mhead'); if (mh) m.style.setProperty('--mh', Math.round(mh.getBoundingClientRect().bottom) + 'px'); m.hidden = !o; b.setAttribute('aria-expanded', String(o)); }
     else if (b.hasAttribute('data-fb')) { var mm = $('#pb-more'); if (mm && !mm.hidden) { var mb = $('[data-more]'); if (mb) mb.click(); } fbOpen(); }
     else if (b.hasAttribute('data-phrase')) { var t = b.querySelector('.pashaby-t'); t.classList.add('out'); setTimeout(function () { t.textContent = nextPhrase(); fitPhrase(t); t.classList.remove('out'); }, 160); }
-    else if (d.kidPath != null) { S.kidPath = KIDS_LEGAL.some(function (c) { return c.id === d.kidPath; }) ? d.kidPath : ''; save(); out('kidLegal', rKidLegal()); var selected = $('[data-kid-path="' + S.kidPath + '"]'); if (selected && S.kidPath) selected.focus({ preventScroll:true }); }
+    else if (d.kidPath != null) { S.kidPath = KIDS_LEGAL.some(function (c) { return c.id === d.kidPath; }) ? d.kidPath : ''; save(); out('kidLegal', rKidLegal()); registerAnchors($('#pl-kids')); var selected = $('[data-kid-path="' + S.kidPath + '"]'); if (selected && S.kidPath) selected.focus({ preventScroll:true }); if (activeNow === 'kids') { var kidHash = S.kidPath ? '#' + KID_PATH_SHARE[S.kidPath] : ''; try { history.replaceState(null, '', (PATHS ? hrefOf(secBy('kids')) : '#dzieci') + (PATHS ? kidHash : (S.kidPath ? '' : ''))); if (!PATHS && S.kidPath) history.replaceState(null, '', '#' + KID_PATH_SHARE[S.kidPath]); } catch (err) {} } }
     else if (d.legal) { S.legal = d.legal; save(); applyTabs(); }
     else if (d.contract) { S.contract = CONTRACTS[d.contract] ? d.contract : 'uop'; save(); updateTools(); applyTabs(); }
     else if (d.cycle) { setStatus(d.cycle); }
