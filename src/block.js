@@ -1701,12 +1701,12 @@
     var c = city();
     var help = (c.uwUrl ? [{ n: c.uw, d: 'Официальный сайт твоего ужонда: объявления, запись, контакты', u: c.uwUrl, h: c.uwUrl.replace('https://www.', ''), ic: 'gavel' }] : []).concat(c.help);
     return '<section class="pl-band pb-screen" id="pl-help" aria-labelledby="pl-help-h">' + head('pl-help', 'Бесплатная информация и поддержка', '', '', '', 'Бесплатная помощь, официальные сайты и быт без паники') +
-      '<h3 class="pl-eyebrow" style="margin-top:40px">Бесплатная помощь ' + c.loc + '</h3><div class="pl-links">' + help.map(function (h) { return linkCard(h, h.ic || 'volunteer_activism'); }).join('') + '</div>' +
+      '<h3 class="pl-eyebrow" data-share="pomoc-w-miescie" style="margin-top:40px">Бесплатная помощь ' + c.loc + '</h3><div class="pl-links">' + help.map(function (h) { return linkCard(h, h.ic || 'volunteer_activism'); }).join('') + '</div>' +
       (c.help.length ? '' : '<p class="pl-note" style="margin-top:12px">Местных организаций по ' + c.voiv + ' в официальной базе пока нет. Контакты ниже работают по всей Польше.</p>') +
-      '<h3 class="pl-eyebrow" style="margin-top:40px">Официально</h3><div class="pl-links">' + OFFICIAL.map(function (o) { return linkCard(o); }).join('') + '</div>' +
+      '<h3 class="pl-eyebrow" data-share="oficjalne-zrodla" style="margin-top:40px">Официально</h3><div class="pl-links">' + OFFICIAL.map(function (o) { return linkCard(o); }).join('') + '</div>' +
       '<p class="pl-note" style="margin-top:16px">Zielona Linia: <b class="pl-num" style="color:var(--ink)">19 524</b> <button type="button" class="pl-btn" data-copy="19 524" style="height:28px;padding:0 8px;margin-left:6px">' + ms('content_copy') + '<span>Копировать</span></button></p>' +
     
-      '<h3 class="pl-eyebrow" style="margin-top:56px">Быт без паники</h3>' + lifeAcc(['d30', 'health', 'lang']).replace('margin-top:36px', 'margin-top:12px') +
+      '<h3 class="pl-eyebrow" data-share="zycie-codzienne" style="margin-top:56px">Быт без паники</h3>' + lifeAcc(['d30', 'health', 'lang']).replace('margin-top:36px', 'margin-top:12px') +
       '</section>';
   }
 
