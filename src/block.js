@@ -1318,6 +1318,23 @@
         ['https://api.sejm.gov.pl/eli/acts/DU/2020/1473/text.html', 'такса нотариуса'], ['https://powroty.gov.pl/nieruchomosci-nie-wymagajace-zezwolenia-9953/', 'покупка без разрешения'], ['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'кредит с картой побыту'],
         ['https://freenance.io/kredyty/ukryte-koszty-kredytu-hipotecznego-2026-prowizje-ubezpieczenia-notariusz-realny-RRSO/', 'расходы на ипотеку'], ['https://rankomat.pl/finanse/poradniki/karta-kredytowa-a-kredyt-hipoteczny/', 'лимиты карт']]) + '</div>';
   }
+  /* ---------- next feature drafts: verified 20.11.2026 ---------- */
+  var PKD_2025_EXAMPLES = [
+    ['62.10.B', 'Программирование', 'Разработка приложений, сайтов и систем. В новой классификации игры выделены в 62.10.A.'],
+    ['74.12.Z', 'Графический и визуальный дизайн', 'Брендинг, графика сайтов, интерфейсы и коммуникационный дизайн. Не путать с разработкой кода.'],
+    ['70.20.Z', 'Бизнес-консалтинг и управление', 'Консультации по управлению, процессам и организации работы компаний. Не общий код для всех услуг.']
+  ];
+  function rPkd2025() {
+    return '<section class="pb-guide" data-share="pkd-2025"><h3 class="pl-h3">PKD 2025: проверь коды бизнеса</h3>' +
+      '<p class="pl-lead">Классификация действует с 1 января 2025 года. Если у тебя старая запись PKD 2007, проверь её в CEIDG и подай бесплатное изменение до 31 декабря 2026 года. Если уже указано PKD 2025, повторная смена не нужна.</p>' +
+      '<div class="pb-guide-grid">' + PKD_2025_EXAMPLES.map(function (r) {
+        return '<article class="pb-guide-card"><span class="pb-guide-code">' + r[0] + '</span><h4>' + r[1] + '</h4><p>' + r[2] + '</p></article>';
+      }).join('') + '</div>' +
+      '<p class="pl-note">Интернет-магазин: старое 47.91.Z нельзя просто перенести. В PKD 2025 торговлю классифицируют по тому, что продаёшь, а не по наличию сайта. Один старый код может соответствовать нескольким новым. PKD не определяет автоматически ставку ryczałtu.</p>' +
+      srcLine([['https://www.gov.pl/web/rozwoj-technologia/nowe-kody-pkd--sprawdz-swoj-wpis-i-juz-dzis-wprowadz-zmiane-samodzielnie', 'Ministerstwo Rozwoju, 2026'], ['https://biznes.gov.pl/pl/portal/037205', 'Biznes.gov.pl: вопросы о PKD 2025'], ['https://bip.stat.gov.pl/dzialalnosc-statystyki-publicznej/rejestr-regon/pkd-2025', 'GUS: классификация и ключи перехода']]) +
+      '</section>';
+  }
+
   function rMoney() {
     var tabs = '<div class="pl-seg" role="tablist" aria-label="Вид договора">' + C_ORDER.map(function (k) {
       return '<button type="button" role="tab" id="pl-ct-' + k + '" aria-controls="pl-cp" data-contract="' + k + '" aria-selected="' + (k === S.contract) + '">' + CONTRACTS[k].tab + '</button>';
@@ -1368,7 +1385,7 @@
       '<div data-w="b2b"><span class="v" data-o="dlForm"></span><span class="k">дней до 20 февраля: сменить форму налога на год</span></div>' +
       '<div><span class="v" data-o="dlPit"></span><span class="k">дней до 30 апреля: годовой PIT</span></div></div>';
     return '<section class="pl-band pb-screen" id="pl-money" aria-labelledby="pl-money-h">' + head('pl-money', 'Деньги, курсы, зарплаты, налоги', 'payments', 'var(--c-money)', '#141414', 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя.') + tabs +
-      '<div role="tabpanel" id="pl-cp" aria-labelledby="pl-ct-' + S.contract + '"><div class="pl-split">' + side + '<div class="pl-main">' + calc + '</div></div>' + taxes + zus + dl + '</div></section>';
+      '<div role="tabpanel" id="pl-cp" aria-labelledby="pl-ct-' + S.contract + '"><div class="pl-split">' + side + '<div class="pl-main">' + calc + '</div></div>' + taxes + zus + dl + rPkd2025() + '</div></section>';
   }
 
   var LIFE_SHARE = { d30:'pierwsze-30-dni',home:'wynajem-i-meldunek',health:'nfz-i-zdrowie',kids:'dzieci-i-szkola',lang:'jezyk-polski',money:'przelewy-z-bialorusi' };
@@ -1404,9 +1421,54 @@
       lifeAcc(['money']) + '</section>';
   }
   /* «Дом»: mortgage numbers, the calculator, renting */
+  /* Identical sample, fixed 30.06.2026: Seeki active rent offers, NOT signed lease medians. */
+  var RENT_MEDIAN_JUNE_2026 = {
+    warszawa: 3650, gdansk: 3000, krakow: 2900, wroclaw: 2800, gdynia: 2800,
+    szczecin: 2600, poznan: 2500, lublin: 2500, zielonagora: 2360,
+    rzeszow: 2300, katowice: 2250, lodz: 2200, bydgoszcz: 2152,
+    torun: 2100, bialystok: 2100, kielce: 2000
+  };
+  function rRental2026() {
+    var town = CITIES[S.city] || CITIES.gdansk, med = RENT_MEDIAN_JUNE_2026[S.city];
+    return '<section class="pb-guide" data-share="mediana-najmu" id="pb-rent-guide"><h3 class="pl-h3">Сколько стоит аренда ' + town.loc + '</h3>' +
+      '<div class="pb-rent-stat"><div class="pb-rent-number">' + (med ? n0(med) : 'Нет данных') + '</div>' +
+      '<div><b>' + (med ? 'zł в месяц: медиана объявлений' : 'Недостаточно сопоставимых объявлений') + '</b>' +
+      '<p>Срез Seeki за 30.06.2026. Это цена предложения, а не средняя по договорам. Размер жилья и дополнительные платежи отличаются. Не сравнивай только итоговую сумму без метража.</p></div></div>' +
+      '<p class="pl-note">Источники: ' + link('https://seeki.eu/pl/blog/rynek-najmu-mieszkan-w-polsce-2026','Seeki: выборка активных объявлений, 30.06.2026') + '. Данные не обновляются в реальном времени.</p>' +
+      '<h4 class="pb-guide-sub">Три вида договоров</h4><div class="pb-guide-grid">' +
+      [['Обычный najem','Стандартный договор аренды. Нет обязательного нотариального заявления об освобождении квартиры. Проверь сроки, kaucja, czynsz administracyjny и коммунальные платежи.'],
+       ['Najem okazjonalny','Обычно частный собственник, срочный договор до 10 лет. Нотариальное заявление нанимателя, альтернативный адрес для выезда и согласие владельца этого адреса. Хозяин сообщает о найме в US в течение 14 дней после начала.'],
+       ['Najem instytucjonalny','Арендодатель профессионально сдаёт жильё в рамках бизнеса. Нужна нотариальная декларация нанимателя. В отличие от okazjonalny, альтернативный адрес не является обязательным приложением.']
+      ].map(function (a) { return '<article class="pb-guide-card"><h4>' + a[0] + '</h4><p>' + a[1] + '</p></article>'; }).join('') + '</div>' +
+      srcLine([['https://eli.gov.pl/api/acts/DU/2023/725/text.html', 'Закон о защите прав нанимателей, art. 19a-19j']]) +
+      '</section>';
+  }
+  var HOME_PERMIT_DOCS = [
+    'Определи, нужно ли разрешение: самостоятельная квартира вне пограничной зоны обычно освобождена; участок или дом проверь отдельно.',
+    'Составь заявление с данными покупателя, объекта, продавца, назначением покупки, источником денег и формой собственности.',
+    'Подготовь заверенную копию документа личности с гражданством.',
+    'Приложи подтверждение связей с Польшей: действующая karta pobytu, работа или другие подходящие основания.',
+    'Возьми odpis zwykły księgi wieczystej для покупаемой недвижимости.',
+    'Получить wypis z rejestru gruntów (для земельного участка).',
+    'Получить wyrys z mapy ewidencyjnej (для земельного участка).',
+    'Получить документ о miejscowy plan zagospodarowania przestrzennego или об отсутствии плана (для участка).',
+    'Приложи актуальное согласие продавца: oświadczenie zbywcy или предварительный / девелоперский договор.',
+    'Собери подтверждение денег: PIT с UPO, трудовой договор, решение по кредиту или другие документы; приложи подтверждение госпошлины.'
+  ];
+  function rHomePermit() {
+    return '<section class="pb-guide" data-share="zezwolenie-na-zakup-nieruchomosci">' +
+      '<h3 class="pl-h3">Разрешение MSWiA без платного посредника</h3>' +
+      '<div class="pb-rent-stat pb-permit-price"><div class="pb-rent-number">1 570 zł</div><div><b>Государственная пошлина за zezwolenie na nabycie nieruchomości</b>' +
+      '<p>Не обязательно покупать услугу посредника за 8 000 zł, чтобы подать заявление. Но нотариальные копии, справки и присяжные переводы могут стоить дополнительно. Подача сама по себе не гарантирует решения.</p></div></div>' +
+      '<p class="pl-note">Это 10 групп подготовки, а не утверждённый законом перечень ровно из десяти документов: состав зависит от недвижимости и оснований. Для отдельного жилья вне приграничной зоны разрешение часто вообще не требуется. Для земли и дома проверь исключения.</p>' +
+      '<div class="pb-permit-checks">' + checks(HOME_PERMIT_DOCS.map(function (t, i) { return ['home-permit-' + i, t]; })) + '</div>' +
+      '<p class="pl-note">Земельные выписки и планы обычно должны быть не старше 6 месяцев; копии заверяются, иностранные документы переводятся присяжным переводчиком. Подача в MSWiA лично, почтой, через ePUAP или e-Doręczenia, не обычным email. Если не супруги покупают в долях, нужны отдельные заявления.</p>' +
+      srcLine([['https://www.gov.pl/web/mswia/uzyskaj-zezwolenie-na-nabycie-nieruchomosci-akcji-udzialow-przez-cudzoziemcow', 'MSWiA: требования, документы, пошлина и исключения, 19.05.2026']]) + '</section>';
+  }
+
   function rHome() {
     return '<section class="pl-band pb-screen" id="pl-home" aria-labelledby="pl-home-h">' + head('pl-home', 'Аренда. Ипотека. Кредиты. Прописка', '', '', '', 'Ипотека в цифрах, сколько дадут и аренда') +
-      '<p class="pl-section-intro">Средние по всей Польше, по городам официальных данных нет.</p>' +
+      '<p class="pl-section-intro">Ипотека: статистика по Польше. Аренда: отдельная медиана объявлений по выбранному городу.</p>' +
       '<div class="pl-counts" data-fitcells="200">' +
         '<div><div class="pl-big">486 500</div><div class="pl-lab">zł: средняя ипотека</div><div class="pl-sub">BIK, сентябрь 2026. На 8,3% больше, чем год назад</div></div>' +
         '<div><div class="pl-big" style="color:var(--red)">5,95%</div><div class="pl-lab">средний процент по новым ипотекам в злотых</div><div class="pl-sub">NBP, сентябрь 2026</div></div>' +
@@ -1414,7 +1476,7 @@
         '<div><div class="pl-big">116,4</div><div class="pl-lab">млрд zł ипотек за 9 месяцев 2026</div><div class="pl-sub">BIK. Почти треть: рефинансирование</div></div>' +
       '</div>' +
       '<p class="pl-note" style="margin-top:20px">Источники: ' + link('https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r', 'BIK о рынке в сентябре 2026') + ', ' + link('https://finwire.pl/artykuly/nowe-kredyty-mieszkaniowe-wrzesien-2026-nbp', 'данные NBP за сентябрь 2026') + '</p>' +
-      rMort() +
+      rRental2026() + rHomePermit() + rMort() +
       '<h3 class="pl-h3" data-share="hipoteka-dla-cudzoziemca" style="margin-top:56px">Ипотека иностранцу</h3>' +
       '<ul class="pl-list" style="margin-top:12px">' +
         '<li>Без карты побыту ипотеку почти не дают. Временную карту принимают не все банки, и она часто должна действовать ещё 6–12 месяцев после заявки.</li>' +
@@ -1669,6 +1731,20 @@
       '</section>';
   }
 
+  function rAutoFormalities() {
+    return '<section class="pb-guide" data-share="kupno-sprzedaz-i-rejestracja-auta"><h3 class="pl-h3">Покупка, продажа и регистрация авто</h3>' +
+      '<div class="pb-guide-grid">' +
+      '<article class="pb-guide-card" data-share="rejestracja-samochodu"><span class="pb-guide-code">30 дней</span><h4>Купил: поставь на учёт</h4>' +
+      '<p>С 2024 года покупатель подаёт wniosek o rejestrację в wydział komunikacji по месту проживания. Возьми договор или фактуру, dowód rejestracyjny, старые номера (если есть), OC и документы по ситуации. При замене обычных номеров: 80 zł за таблички, 66,50 zł за dowód и 13,50 zł за временное разрешение, обычно 160 zł суммарно.</p></article>' +
+      '<article class="pb-guide-card" data-share="sprzedaz-samochodu"><span class="pb-guide-code">30 / 14 дней</span><h4>Продал: сообщи вовремя</h4>' +
+      '<p>За 30 дней уведомь starostę о продаже (zgłoszenie zbycia). В течение 14 дней сообщи страховщику OC. Покупатель должен проверить непрерывность OC и при обычной покупке у частного лица без VAT: PCC 2% и PCC-3, как правило, в течение 14 дней, если нет освобождения.</p></article>' +
+      '<article class="pb-guide-card" data-share="zolte-tablice"><span class="pb-guide-code">ŻÓŁTE</span><h4>Жёлтые номера: zabytkowy</h4>' +
+      '<p>Это не просто старый автомобиль. Нужна историческая ценность, подтверждённая wpisem do rejestru или wojewódzkiej ewidencji zabytków, либо инвентарём музея, документация и отдельный техосмотр. Возрастные критерии и оригинальность оценивает консерватор воеводства; в ряде регионов правила ужесточили в 2026 году. Проверь требования именно своего WUOZ.</p></article>' +
+      '</div>' +
+      '<p class="pl-note">Если машина уже зарегистрирована в Польше и номера читаемые и соответствуют правилам, их можно сохранить. Для ввезённых машин, лизинга и наследства нужны дополнительные процедуры.</p>' +
+      srcLine([['https://www.gov.pl/web/gov/zarejestruj-pojazd','Gov.pl: регистрация авто'],['https://www.gov.pl/web/gov/zglos-zbycie-lub-nabycie-pojazdu-na-przyklad-sprzedaz-kupno-darowizne','Gov.pl: сообщение о продаже'],['https://rf.gov.pl/oc-komunikacyjne-5-wskazowek-dla-zbywcy-pojazdu/','Rzecznik Finansowy: OC при продаже, 2026'],['https://podatki.gov.pl/podatki-osobiste/pcc/stawki-i-limity','podatki.gov.pl: PCC'],['https://www.gov.pl/web/wuoz-w-lublinie/pojazdy','WUOZ: жёлтые номера и региональные правила, 2026']]) + '</section>';
+  }
+
   function rAuto() {
     var c = CITIES[S.city] ? S.city : 'gdansk';
     var routes = HUBS.filter(function (x) { return x !== c; }).slice(0, 4).map(function (x) {
@@ -1690,7 +1766,7 @@
         ['shield', 'Przegląd и OC', 'Обязательное', ['OC обязательно с первого дня. Без него штрафы неприятно круглые.', 'Техосмотр легковой машины: у новой первый до 3 лет с первой регистрации, второй до 5 лет, дальше каждый год.'], 'https://lexlege.pl/prawo-o-ruchu-drogowym/art-81/', 'art. 81 PoRD']
       ].map(function (a, i) {
         return '<details id="pl-d-au' + i + '" data-share="' + ['wymiana-prawa-jazdy','auto-na-bialoruskich-numerach','oc-i-przeglad'][i] + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
-      }).join('') + '</div></section>';
+      }).join('') + '</div>' + rAutoFormalities() + '</section>';
   }
 
   function linkCard(x, ic) {
@@ -1860,13 +1936,17 @@
   }
 
   /* one waiting counter: days from filing to decision (or to today), compared with the regional average or the legal term */
-  function waitCard(what, f, g, avg, ref) {
+  function waitCard(what, f, g, avg, ref, regional) {
     var a = parseD(S.f[f]), b = parseD(S.f[g]), t = today();
     if (!a || a > t || (b && b < a)) return '';
     var done = !!b, n = days(a, done ? b : t), d = n - avg, sub;
     if (done) sub = Math.abs(d) <= 7 ? 'Ровно ' + ref + '. Статистически идеален.' : d < 0 ? 'На ' + n0(-d) + ' ' + dWord(-d) + ' быстрее, чем ' + ref + '. Везунчик.' : 'На ' + n0(d) + ' ' + dWord(d) + ' дольше, чем ' + ref + '. Закалка.';
     else sub = d < 0 ? ref.charAt(0).toUpperCase() + ref.slice(1) + '. Осталось около ' + n0(-d) + ' ' + dGen(-d) + '.' : 'Уже на ' + n0(d) + ' ' + dWord(d) + ' дольше, чем ' + ref + '. Это ачивка.';
-    return '<div><div class="pl-big"' + (done ? '' : ' style="color:var(--red)"') + '>' + n0(n) + '</div><div class="pl-lab">' + plural(n, 'день', 'дня', 'дней') + (done ? ' ждал ' : ' ждёшь ') + what + '</div><div class="pl-sub">' + sub + '</div></div>';
+    var compare = regional ? '<div class="pb-voiv-compare" aria-label="Твой срок ' + n + ' дней, средний срок ' + avg + ' дней">' +
+      '<div class="pb-voiv-pair"><span><small>ТВОЙ СРОК</small><b>' + n0(n) + '</b></span><span><small>ПО ВОЕВОДСТВУ</small><b>' + n0(avg) + '</b></span></div>' +
+      '<div class="pb-voiv-track"><span style="width:' + Math.min(100, Math.round(n / avg * 100)) + '%"></span></div>' +
+      '<p>' + (d > 0 ? '+' : d < 0 ? '-' : '') + n0(Math.abs(d)) + ' ' + dWord(Math.abs(d)) + (d > 0 ? ' сверх среднего' : d < 0 ? ' до среднего' : ' разницы') + (done ? ', до решения' : ', ожидание ещё идёт') + '</p></div>' : '';
+    return '<div><div class="pl-big"' + (done ? '' : ' style="color:var(--red)"') + '>' + n0(n) + '</div><div class="pl-lab">' + plural(n, 'день', 'дня', 'дней') + (done ? ' ждал ' : ' ждёшь ') + what + '</div><div class="pl-sub">' + sub + '</div>' + compare + '</div>';
   }
   function updateMe() {
     var since = parseD(S.f.since), t = today(), c = city(), html = '';
@@ -1876,8 +1956,8 @@
       html += '<div><div class="pl-big">' + n0(d) + '</div><div class="pl-lab">' + dWord(d) + ' в Польше</div><div class="pl-sub">С ' + fmtD(since) + '</div></div>';
     }
     var vAvg = 'в среднем по ' + c.voiv + ' (' + n0(c.wait) + ')';
-    html += waitCard('ВНЖ', 'filed', 'vnzhGot', c.wait, vAvg);
-    html += waitCard('ПМЖ', 'pmzhFiled', 'staly', c.pmzh || 183, c.pmzh ? 'в среднем по ' + c.voiv + ' (' + n0(c.pmzh) + ')' : 'по закону (6 месяцев)');
+    html += waitCard('ВНЖ', 'filed', 'vnzhGot', c.wait, vAvg, true);
+    html += waitCard('ПМЖ', 'pmzhFiled', 'staly', c.pmzh || 183, c.pmzh ? 'в среднем по ' + c.voiv + ' (' + n0(c.pmzh) + ')' : 'по закону (6 месяцев)', !!c.pmzh);
     html += waitCard('паспорт', 'passFiled', 'passGot', 183, 'по закону (6 месяцев)');
     if (citizen && passGot && passGot <= t) {
       var pd = days(passGot, t);
