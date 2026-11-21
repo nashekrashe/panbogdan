@@ -536,9 +536,8 @@
         link('https://www.aliorbank.pl/dam/jcr%3A213bf45d-8adb-4894-b806-42c13f8b8410/regulamin-udzielenia-i-obslugi-kredytow-zabezpieczonych-na-nieruchomosci-megahipoteka-od-03112026.pdf','Alior') + '. Санкционные правила и документы для открытия счёта не равны ипотечным критериям: ' +
         link('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041','ЕС, регламент 2025/2041') + '.</p></div>' +
       '<p class="pl-note pb-bank-mort-foot">RRSO включает расходы по условиям конкретного примера: страховки, комиссии и другие затраты. Суммы, сроки и взносы различаются, поэтому проценты нельзя считать прямым рейтингом. «Взнос в примере» не означает минимальный взнос банка.</p>' +
-      '<a class="pb-bank-calc-card pb-bank-mort-home" href="' + (PATHS ? '/dom#kalkulator-hipoteki' : '#kalkulator-hipoteki') + '">' +
-        '<span class="pb-bank-calc-label">Раздел «Дом»</span><strong>Калькулятор ипотеки</strong>' +
-        '<span>Посчитать платёж, взнос и ориентировочную кредитоспособность</span></a></section>';
+      '<a class="pb-bank-calc-card pb-bank-mort-home" data-share="hipoteka-link" href="' + (PATHS ? '/dom#kalkulator-hipoteki' : '#kalkulator-hipoteki') + '">' +
+        '<strong>Калькулятор ипотеки</strong><span>Посчитать платёж, взнос и ориентировочную кредитоспособность в «Доме»</span></a></section>';
   }
 
   var BANK_LBL = { 3: 'Свой', 2: 'С анкетой', 1: 'Строгий' };
@@ -1342,6 +1341,14 @@
       '</section>';
   }
 
+  function rMoneyRate() {
+    return '<div class="pb-money-fx" data-share="kurs-usd-pln" aria-live="polite">' +
+      '<span class="pb-money-fx-label">Курс USD / PLN</span>' +
+      '<strong>1 USD = <span data-o="usdRate">—</span> zł</strong>' +
+      '<span class="pb-money-fx-source"><span data-o="usdDate">Загружается</span> · ' +
+      link('https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json', 'NBP, таблица A') + '</span>' +
+      '</div>';
+  }
   function rMoney() {
     var tabs = '<div class="pl-seg" role="tablist" aria-label="Вид договора">' + C_ORDER.map(function (k) {
       return '<button type="button" role="tab" id="pl-ct-' + k + '" aria-controls="pl-cp" data-contract="' + k + '" aria-selected="' + (k === S.contract) + '">' + CONTRACTS[k].tab + '</button>';
@@ -1391,7 +1398,7 @@
       '<div data-w="b2b"><span class="v" data-o="dlMzp"></span><span class="k">дней до 31 января: заявка на Mały ZUS Plus</span></div>' +
       '<div data-w="b2b"><span class="v" data-o="dlForm"></span><span class="k">дней до 20 февраля: сменить форму налога на год</span></div>' +
       '<div><span class="v" data-o="dlPit"></span><span class="k">дней до 30 апреля: годовой PIT</span></div></div>';
-    return '<section class="pl-band pb-screen" id="pl-money" aria-labelledby="pl-money-h">' + head('pl-money', 'Деньги, курсы, зарплаты, налоги', 'payments', 'var(--c-money)', '#141414', 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя.') + tabs +
+    return '<section class="pl-band pb-screen" id="pl-money" aria-labelledby="pl-money-h">' + head('pl-money', 'Деньги, курсы, зарплаты, налоги', 'payments', 'var(--c-money)', '#141414', 'Цифры на 2026. Каждый январь всё дорожает, кроме тебя.') + rMoneyRate() + tabs +
       '<div role="tabpanel" id="pl-cp" aria-labelledby="pl-ct-' + S.contract + '"><div class="pl-split">' + side + '<div class="pl-main">' + calc + '</div></div>' + taxes + zus + dl + rPkd2025() + '</div></section>';
   }
 
@@ -1408,15 +1415,6 @@
   function rBank() {
     return '<section class="pl-band pb-screen" id="pl-bank" aria-labelledby="pl-bank-h">' + head('pl-bank', 'Банки. Счета. Санкции', '', '', '', 'Кто как относится к беларусам') +
             '<p class="pl-section-intro">Насколько легко открыть счёт и пользоваться им без карты побыту. С картой побыту проще почти везде.</p>' +
-      '<div class="pb-bank-extra">' +
-        '<div class="pb-bank-info" data-share="kurs-usd-pln"><div class="pb-bank-label">Курс USD / PLN</div>' +
-          '<p class="pb-bank-quote">1 USD = <strong data-o="usdRate">—</strong> zł</p>' +
-          '<p class="pl-note"><span data-o="usdDate">Загружается</span>. ' + link('https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json', 'NBP, таблица A') + '</p></div>' +
-        '<div class="pb-bank-info" data-share="hipoteka-link"><div class="pb-bank-label">Ипотека</div>' +
-          '<p>Ставка, платёж и сколько банк может дать на жильё.</p>' +
-          '<a class="pb-seclink" href="' + (PATHS ? '/dom#kalkulator-hipoteki' : '#kalkulator-hipoteki') + '">Ипотека и калькулятор в разделе «Дом»</a></div>' +
-      '</div>' +
-      rBankMortgages() +
       '<h3 class="pl-h3 pb-bank-account-head" data-share="konta-dla-bialorusinow">Открытие счёта для беларусов</h3>' +
       '<ol class="pl-banks">' + BANKS.map(function (b, i) {
         return '<li data-share="' + BANK_ACCOUNT_SHARE[b.n] + '"><span class="pl-bank-n"><span class="pl-xs pl-muted">' + (i + 1) + '</span>' + b.n + '</span>' +
@@ -1425,7 +1423,7 @@
       }).join('') + '</ol>' +
       '<p class="pl-note" style="margin-top:16px">Данные 2022 года собраны до санкций 2025-го, перед походом в банк уточни. По ING и Millennium проверенных правил нет: знаешь, как там сейчас, напиши нам.</p>' +
       tipHtml('С 24.10.2025 санкции ЕС (' + link('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32025R2041', 'регламент 2025/2041') + ') заставляют банки строже проверять беларусов без карты побыту. С отказами по TZTC в 2026 году разбираются ' + link('https://bip.brpo.gov.pl/pl/content/rpo-bialorusini-ochrona-miedzynarodowa-konta-bankowe-knf-odpowiedz-kolejne', 'омбудсмен и KNF') + '.', 1) +
-      lifeAcc(['money']) + '</section>';
+      rBankMortgages() + lifeAcc(['money']) + '</section>';
   }
   /* «Дом»: mortgage numbers, the calculator, renting */
   /* Identical sample, fixed 30.06.2026: Seeki active rent offers, NOT signed lease medians. */

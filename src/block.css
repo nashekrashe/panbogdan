@@ -1225,17 +1225,13 @@ html.pb-nwp-on{overflow:hidden}
   .pl-head .pl-small{width:100%;max-width:none;text-align:left;margin-left:0}
 }
 
-/* Bank reference rate and mortgage cross-link. */
-.pb-bank-extra{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}
-.pb-bank-info{min-width:0;border:1px solid var(--line);border-radius:10px;padding:20px;background:var(--tint);font-size:15px;line-height:1.45}
-.pb-bank-label{font-size:13px;font-weight:700;letter-spacing:.01em;margin-bottom:10px}
-.pb-bank-quote{font-size:clamp(23px,2.4vw,38px);font-stretch:80%;font-weight:600;line-height:1.1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:12px 0}
-.pb-bank-quote strong{font-weight:700;white-space:nowrap}
-.pb-bank-info .pl-note{font-size:12px;margin-top:12px}
-.pb-bank-info .pl-note a{overflow-wrap:anywhere}
-.pb-bank-info .pb-seclink{margin-top:16px}
-@media(max-width:700px){.pb-bank-extra{grid-template-columns:minmax(0,1fr);gap:12px;margin-top:20px}.pb-bank-info{padding:16px}}
-
+/* NBP USD/PLN quotation now lives in Money, above contract tabs. */
+.pb-money-fx{display:flex;align-items:baseline;gap:8px 20px;flex-wrap:wrap;min-width:0;padding:15px 19px;margin:22px 0 25px;border:1px solid var(--line);border-radius:10px;background:var(--tint)}
+.pb-money-fx-label{font-weight:650;font-size:14px}
+.pb-money-fx>strong{font-size:clamp(20px,2.5vw,29px);font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pb-money-fx-source{font-size:12px;line-height:1.5;color:var(--mut);flex:1 1 190px;min-width:0}
+.pb-money-fx-source a{overflow-wrap:anywhere}
+@media(max-width:420px){.pb-money-fx{padding:13px 14px;gap:6px 12px}.pb-money-fx-source{flex-basis:100%}}
 
 /* Child immigration: saved route choice with one specific document/filing guide. */
 .pb-kid-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
@@ -1439,3 +1435,11 @@ html.pb-nwp-on{overflow:hidden}
  .pb-auto-register .pb-fold-h{padding:14px}
  .pb-auto-register .pb-fold-b{padding:0 14px 20px}
 }
+
+/* Banks: account-opening list first, then mortgage rates and one compact calculator link. */
+#pl-bank .pb-bank-account-head{margin:29px 0 10px}
+#pl-bank .pb-bank-mort{margin-top:52px}
+#pl-bank .pb-bank-mort-home{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:7px 20px;width:100%;padding:15px 20px;margin-top:18px}
+#pl-bank .pb-bank-mort-home strong{font-size:16px;line-height:1.3}
+#pl-bank .pb-bank-mort-home>span:last-child{font-size:13px;line-height:1.45;flex:1 1 215px}
+@media(max-width:480px){#pl-bank .pb-bank-mort{margin-top:40px}#pl-bank .pb-bank-mort-home{padding:13px 15px;gap:5px}}
