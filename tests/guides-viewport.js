@@ -28,7 +28,7 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
         auto:!!document.querySelector('#pl-auto [data-share="zolte-tablice"]'),
         doc:document.documentElement.scrollWidth,win:innerWidth
       }));
-      if(!data.compare||!data.pkd||!data.auto||data.permit!==10||data.permitDocs!==9||data.eligCount!==3||!data.permitFolded||!data.homeOrder||!data.calculatorTitle||!data.foreignerInside||Number(data.rent.replace(/\D/g,''))!==3000||data.doc>data.win+1)
+      if(!data.compare||!data.pkd||!data.auto||data.permit!==12||data.permitDocs!==9||data.eligCount!==3||!data.permitFolded||!data.homeOrder||!data.calculatorTitle||!data.foreignerInside||Number(data.rent.replace(/\D/g,''))!==3000||data.doc>data.win+1)
         throw Error('guides content/overflow at '+width+': '+JSON.stringify(data));
       await page.locator('[data-city-sel]').selectOption('gdynia');
       const city=await page.evaluate(()=>({
