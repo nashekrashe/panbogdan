@@ -1379,3 +1379,25 @@ html.pb-nwp-on{overflow:hidden}
 .pb-permit-checks{margin:20px 0;border:1px solid var(--line);border-radius:12px;padding:18px 22px;min-width:0}
 .pb-permit-checks .pl-checks{margin:0}
 @media(max-width:700px){.pb-rent-stat{flex-direction:column;align-items:flex-start;padding:20px}.pb-guide-card{padding:18px}.pb-permit-checks{padding:14px}.pb-rent-number{white-space:normal}}
+
+/* Home mortgage moves directly below national stats; eligibility and MSWiA docs reuse standard folds. */
+.pb-home-mort{margin-top:24px}
+.pb-mort-foreign{padding:14px 18px;border-left:3px solid var(--red);background:var(--paper);border-radius:0 10px 10px 0}
+.pb-mort-foreign h3{margin:0 0 7px;font-size:15px;font-weight:700;line-height:1.25}
+.pb-mort-foreign ul{margin:0;padding-left:19px;font-size:13px;line-height:1.55;display:flex;flex-direction:column;gap:3px}
+.pb-mort-foreign .pl-note{font-size:12px;line-height:1.5;margin:8px 0 0;overflow-wrap:anywhere}
+.pb-home-permit{margin-top:clamp(30px,4vw,56px)}
+.pb-home-permit .pb-fold-b{gap:18px;min-width:0}
+.pb-home-permit .pb-fold-b>p{margin:0}
+.pb-permit-elig{margin:0}
+.pb-permit-elig .body{max-width:none;gap:10px;padding-left:0}
+.pb-permit-elig .body>.pl-note{margin:0}
+.pb-permit-elig .pl-checks{gap:5px}
+.pb-permit-elig summary .t{font-size:17px}
+.pb-permit-doc-h{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;margin:0;font-size:18px}
+.pb-permit-doc-h small{font-size:12px;color:var(--mut);font-weight:400}
+.pb-permit-docs .pl-note{margin:4px 0 14px}
+.pb-permit-docs .pl-docs{gap:8px}
+.pb-permit-docs .pl-doc-key{min-width:0}
+.pb-permit-docs .pl-doc-key .pl-doc-t{overflow-wrap:anywhere}
+@media(max-width:480px){.pb-mort-foreign{padding:12px 14px}.pb-home-permit .pb-fold-h{padding:16px}.pb-home-permit .pb-fold-b{padding:0 16px 20px}}
