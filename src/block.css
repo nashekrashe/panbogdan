@@ -1454,7 +1454,7 @@ html.pb-nwp-on{overflow:hidden}
 @media(max-width:420px){.pb-usd-tooltip{padding:16px 18px 19px;min-width:min(245px,calc(100vw - 20px))}.pb-usd-tooltip-label{font-size:11px;letter-spacing:.16em}}
 
 /* Home: primary stage action and one rotating contextual hint, no card container. */
-#pl-me .pb-home{grid-template-areas:"hero card";grid-template-rows:auto}
+#pl-me .pb-home{grid-template-areas:"hero card" "hero about";grid-template-rows:auto auto}
 #pl-me .pb-hero-next{margin-top:24px;max-width:340px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.45}
 #pl-me .pb-hero-next a{color:var(--red);text-decoration:underline;text-underline-offset:3px;font-weight:600}
 #pl-me .pb-hero-quote{
@@ -1487,13 +1487,23 @@ html.pb-nwp-on{overflow:hidden}
   #pl-me .pb-quote-inner{padding-left:20px}
   #pl-me .pb-quote-mark{font-size:26px}
 }
-@media(max-width:900px){#pl-me .pb-home{grid-template-areas:"hero" "card";grid-template-rows:none}}
+@media(max-width:900px){#pl-me .pb-home{grid-template-areas:"hero" "card" "about";grid-template-rows:none}}
 
-/* Currency hint: separate the dotted underline from large numerals. */
-.pl-big .pb-usd-price,
-.pb-stat .pl-big .pb-usd-price,
-.pb-hero .pl-big .pb-usd-price{
-  text-decoration-color:#E4E4E4;
-  text-underline-offset:.18em;
-  text-decoration-thickness:.095em;
+/* Currency hint on large numerals (including .pl-big.pb-usd-price itself). */
+.pl-big.pb-usd-price,
+.pl-big .pb-usd-price{
+  position:relative;
+  text-decoration:none;
+}
+.pl-big .pb-usd-price{display:inline-block}
+.pl-big.pb-usd-price::after,
+.pl-big .pb-usd-price::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-11px;
+  height:8px;
+  background:radial-gradient(circle,#E4E4E4 3.5px,transparent 3.7px) left center/16px 8px repeat-x;
+  pointer-events:none;
 }
