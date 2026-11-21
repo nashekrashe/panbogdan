@@ -1818,6 +1818,38 @@
       return [prefix + i, '<b>' + (i + 1) + '.</b> ' + t];
     })) + '</div>';
   }
+  /* Vehicle registration is handled by the municipal/powiat transport office, not the voivodeship immigration desk. Only verified service addresses are displayed. */
+  var AUTO_REG_OFFICES = {
+    gdansk: ['Urząd Miejski w Gdańsku, Wydział Komunikacji', 'ul. Milskiego 1, Gdańsk', 'https://media.gdansk.pl/komunikaty/637499/nowy-zespol-obslugi-mieszkancow-gotowy-na-przyjecie-klientow'],
+    gdynia: ['Urząd Miasta Gdyni, Wydział Spraw Obywatelskich', 'al. Marszałka Piłsudskiego 52/54, Gdynia', 'https://cyfrowyurzad.um.gdynia.pl/cu/Service/getServiceCard/id,31.html']
+  };
+  function autoRegDocs(plate) {
+    var base = [0,1,2,4,6];
+    var extra = plate === 'foreign' ? [3,7] : plate === 'new' ? [5] : [3];
+    return '<div class="pl-checks pl-docs pb-auto-docs">' + base.concat(extra).sort(function(a,b){return a-b;}).map(function(i) {
+      var key = 'auto-reg-doc-' + i, box = '<input type="checkbox" data-check="' + key + '"' + (S.checks[key] ? ' checked' : '') + '>';
+      return docRow({k:'file'}, AUTO_REG_DOCS[i], box, key);
+    }).join('') + '</div>';
+  }
+  function autoRegOffice() {
+    var id = CITIES[S.city] ? S.city : 'gdansk', c = CITIES[id], o = AUTO_REG_OFFICES[id];
+    if (o) return '<p class="pl-note"><b>Куда подавать в ' + esc(c.n) + ':</b> ' + esc(o[0]) + ', <b>' + esc(o[1]) + '</b>. ' + link(o[2],'Официальная страница адреса') + '.</p>';
+    if (id === 'warszawa') return '<p class="pl-note"><b>Варшава:</b> подавай в Delegatura Biura Administracji i Spraw Obywatelskich <b>своего района zameldowania</b>, единого адреса для всего города нет. ' + link('https://warszawa19115.pl/-/komunikat-w-sprawie-rejestracji-pojazd%C3%B3w-przez-cudzoziemc%C3%B3w','Адрес по району и требования для иностранцев') + '.</p>';
+    return '<p class="pl-note"><b>' + esc(c.n) + ':</b> подача в wydział komunikacji городского или повятового ужонда по месту проживания. Конкретный адрес пока не подтверждён; не путай с воеводским ужондом для карты побыту. ' + link('https://www.gov.pl/web/gov/zarejestruj-pojazd','Правила выбора ужонда (Gov.pl)') + '.</p>';
+  }
+  function autoRegDetail() {
+    var plate = S.autoRegPlate || 'pl';
+    var msg = plate === 'pl' ? 'Польские номера можно сохранить, если машина уже зарегистрирована в Польше, таблички соответствуют действующему образцу, читаемы и в хорошем состоянии. При сохранении не платишь 80 zł за новые таблички.' :
+      plate === 'foreign' ? 'Иностранные номера нельзя сохранить как польскую регистрацию: потребуются польские таблички. Для ввезённой машины предъяви иностранные документы и, по ситуации, подтверждение акциза, таможни и переводы.' :
+      'Для машины из салона без польской регистрации выдадут новые номера. Попроси у салона faktura и świadectwo zgodności (CoC); можно уполномочить салон подать заявление.';
+    var cost = plate === 'pl' ? '80 zł без замены номеров' : '160 zł с обычными новыми номерами';
+    return '<p class="pl-note">' + msg + '</p>' +
+      '<div class="pb-auto-reg-cost"><b>' + cost + '</b><span>Dowód и знаки легализации: 66,50 zł; разрешение временное: 13,50 zł; новые обычные таблички: ещё 80 zł. Для индивидуальных табличек и иных случаев сумма отличается.</span></div>' +
+      '<h4>Шаги регистрации</h4>' + autoSteps('auto-reg-step-', AUTO_REG_STEPS) +
+      '<h4>Документы для выбранного варианта</h4>' + autoRegDocs(plate) +
+      '<h4>Куда подавать</h4>' + autoRegOffice() +
+      '<p class="pl-note">Чеклист сохраняется в браузере. Дополнительные документы зависят от истории машины, владельцев и ужонда.</p>';
+  }
   function rAutoFormalities() {
     return '<section class="pb-guide pb-auto-buy" data-share="kupno-sprzedaz-i-rejestracja-auta">' +
       '<h3 class="pl-h3">Покупка, продажа и регистрация авто</h3>' +
@@ -1839,10 +1871,13 @@
         '<summary class="pb-fold-h">' + svg18('file',24) + '<span class="t">Регистрация автомобиля<small>Сроки, порядок и документы для нового и подержанного</small></span>' + foldToggle() + '</summary>' +
         '<div class="pb-fold-b">' +
           '<p class="pl-note">Подержанный автомобиль, купленный в Польше: заявление обычно в течение 30 календарных дней. Новый автомобиль нужно зарегистрировать до выезда на дорогу; салон может помочь с подачей. С 2026 года оформление через салон идёт через e-Doręczenia.</p>' +
-          '<div class="pb-auto-reg-cost"><b>Обычно 160 zł</b><span>С новыми обычными номерами: 80 zł таблички, 66,50 zł dowód и знаки легализации, 13,50 zł временное разрешение. С сохранёнными подходящими номерами расходы ниже.</span></div>' +
-          '<h4>Шаги регистрации</h4>' + autoSteps('auto-reg-step-', AUTO_REG_STEPS) +
-          '<h4>Документы</h4>' + autoDocRows('auto-reg-doc-', AUTO_REG_DOCS) +
-          '<p class="pl-note">Точный комплект зависит от типа машины и ужонда. Выделенные условия «для нового», «для подержанного» и «для ввезённого» не нужно собирать одновременно. Чеклист сохраняется только в твоём браузере.</p>' +
+          '<label class="pl-note" for="pb-auto-reg-plate"><b>Какие номера у машины?</b></label>' +
+          '<select id="pb-auto-reg-plate" data-auto-reg-plate aria-label="Номера автомобиля">' +
+            '<option value="pl"' + ((!S.autoRegPlate || S.autoRegPlate === 'pl') ? ' selected' : '') + '>Польские</option>' +
+            '<option value="foreign"' + (S.autoRegPlate === 'foreign' ? ' selected' : '') + '>Не польские (ввезённая машина)</option>' +
+            '<option value="new"' + (S.autoRegPlate === 'new' ? ' selected' : '') + '>Номеров нет (новая из салона)</option>' +
+          '</select>' +
+          '<div data-o="autoRegDetail">' + autoRegDetail() + '</div>' +
         '</div></details>' +
       '<div class="pb-guide-grid pb-auto-other-grid">' +
         '<article class="pb-guide-card" data-share="sprzedaz-samochodu"><span class="pb-guide-code">30 / 14</span><h4>Продал машину</h4>' +
@@ -2629,7 +2664,7 @@
       usdPopover.id = 'pb-usd-tooltip';
       usdPopover.className = 'pb-usd-tooltip';
       usdPopover.setAttribute('role', 'tooltip');
-      usdPopover.innerHTML = '<span class="pb-usd-tooltip-label">примерно в долларах</span><strong></strong>';
+      usdPopover.innerHTML = '<span class="pb-usd-tooltip-label">в наших примерно</span><strong></strong>';
       usdPopover.hidden = true;
       document.body.appendChild(usdPopover);
     }
@@ -3015,6 +3050,7 @@
   root.addEventListener('change', function (e) {
     var el = e.target;
     if (el.matches('[data-stage-sel]')) { if (STAGE_LBL[el.value]) setStage(el.value); return; }
+    if (el.matches('[data-auto-reg-plate]')) { S.autoRegPlate = el.value; save(); out('autoRegDetail', autoRegDetail()); refreshUsdPrices(); return; }
     if (el.matches('[data-city-sel]')) { if (el.value === '__geo') { el.value = S.city; locate(false); return; } if (!CITIES[el.value]) return; S.city = el.value; S.geo = null; S.cityManual = true; geoErr = ''; save(); render(); var ns = $('#pl-city'); if (ns) ns.focus({ preventScroll: true }); return; }
     if (el.matches('[data-pmzh-path]')) { S.pmzhPath = el.value; save(); render(); var ps = $('#pl-pmzh-path'); if (ps) ps.focus({ preventScroll: true }); return; }
     if (el.matches('[data-mypath]')) { S.myPath = el.checked; save(); updatePath(); updateProgress(); return; }
