@@ -60,10 +60,22 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       if(result.doc>result.win+1)throw Error('home horizontal overflow at '+width);
       await page.goto(origin+'/auto.html#wymiana-prawa-jazdy',{waitUntil:'domcontentloaded'});
       await page.locator('#pl-auto').waitFor({state:'visible'});
+      const guide=await page.evaluate(()=>{
+        const x=document.querySelector('#pl-auto .pb-auto-license'), c=[...x.querySelectorAll('.pb-auto-license-choices label')],r=document.querySelector('#pl-auto [data-share="rejestracja-samochodu"]'), buy=document.querySelector('#pl-auto [data-share="kupno-sprzedaz-i-rejestracja-auta"]');
+        return {choices:c.length,sameRow:c.length===2&&Math.abs(c[0].getBoundingClientRect().top-c[1].getBoundingClientRect().top)<3,
+          headingClean:!x.querySelector('summary [data-auto-license]'),licenseSteps:x.querySelectorAll('[data-check^="auto-license-step-"]').length,
+          licenseDocs:x.querySelectorAll('.pb-auto-docs [data-check^="auto-license-doc-"]').length,
+          registration:r?.tagName,regSteps:r?.querySelectorAll('[data-check^="auto-reg-step-"]').length,regDocs:r?.querySelectorAll('[data-check^="auto-reg-doc-"]').length,
+          tax:buy?.textContent.includes('23% VAT')&&buy?.textContent.includes('2% PCC')&&buy?.textContent.includes('VAT-marża')};});
+      if(guide.choices!==2||!guide.sameRow||!guide.headingClean||guide.licenseSteps!==5||guide.licenseDocs!==8||guide.registration!=='DETAILS'||guide.regSteps!==5||guide.regDocs!==8||!guide.tax)
+        throw Error('auto guide layout at '+width+': '+JSON.stringify(guide));
       const licenseBefore=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
       const swapped=page.locator('#pl-auto [data-auto-license="swapped"]'), absent=page.locator('#pl-auto [data-auto-license="absent"]');
       if(!await swapped.isVisible()||!await absent.isVisible()||await swapped.isChecked()||await absent.isChecked())
         throw Error('license checkboxes missing or preselected at '+width);
+      const licenseFold=page.locator('#pl-d-au0');
+      if(!await licenseFold.evaluate(el=>el.open))await licenseFold.locator(':scope > summary').click();
+      await page.locator('label.pl-check:has([data-check="auto-license-doc-0"])').click();
       await swapped.check();
       const licenseAfter=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
       if(licenseAfter!==licenseBefore+2)throw Error('swapped licence bonus not +2 at '+width+': '+licenseBefore+' -> '+licenseAfter);
@@ -74,9 +86,19 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       await page.goto(origin+'/auto.html#wymiana-prawa-jazdy',{waitUntil:'domcontentloaded'});
       await page.locator('#pl-auto').waitFor({state:'visible'});
       if(await swapped.isChecked()||!await absent.isChecked())throw Error('licence choice not persisted at '+width);
+      const savedDoc=await page.evaluate(()=>JSON.parse(localStorage.getItem('pb-poland-v2')).checks['auto-license-doc-0']);
+      if(!savedDoc)throw Error('licence documents not saved at '+width);
       await absent.uncheck();
       const licenseReset=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
       if(licenseReset!==licenseBefore)throw Error('licence XP not reversible at '+width);
+      await page.goto(origin+'/auto.html#rejestracja-samochodu',{waitUntil:'domcontentloaded'});
+      await page.locator('#pl-auto').waitFor({state:'visible'});
+      const regFold=page.locator('#pl-d-auto-reg');
+      if(!await regFold.evaluate(el=>el.open))await regFold.locator(':scope > summary').click();
+      await page.locator('label.pl-check:has([data-check="auto-reg-doc-0"])').click();
+      await page.goto(origin+'/auto.html#rejestracja-samochodu',{waitUntil:'domcontentloaded'});
+      await page.locator('#pl-auto').waitFor({state:'visible'});
+      if(!await page.locator('[data-check="auto-reg-doc-0"]').isChecked())throw Error('registration documents not saved at '+width);
       const licenseOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
       if(licenseOverflow)throw Error('licence layout overflows at '+width);
       await page.screenshot({path:path.join(out,'guides-'+width+'.png'),fullPage:true});
