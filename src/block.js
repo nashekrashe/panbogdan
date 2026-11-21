@@ -1286,7 +1286,13 @@
     }).join('') + '</div>';
     var row = function (k, o, cls) { return '<div' + (cls ? ' class="' + cls + '"' : '') + ' data-mr="' + o + '"><span data-o="' + o + 'K">' + k + '</span><b data-o="' + o + '"></b></div>'; };
     var chk = function (id, label) { return '<label class="pl-toggle" data-mt="' + id + '"><input type="checkbox" data-f="' + id + '"' + (S.f[id] ? ' checked' : '') + '>' + label + '</label>'; };
-    return '<div class="pl-tool" data-share="kalkulator-hipoteki" aria-live="polite" style="margin-top:40px"><div class="pl-tool-h">' + ms('calculate') + 'Сколько дадут на ипотеку</div>' +
+    return '<div class="pl-tool pb-home-mort" data-share="kalkulator-hipoteki" aria-live="polite"><div class="pl-tool-h">' + ms('calculate') + 'Калькулятор Ипотеки</div>' +
+      '<div class="pb-mort-foreign" data-share="hipoteka-dla-cudzoziemca"><h3>Ипотека иностранцу</h3>' +
+        '<ul><li>Карта побыту: временную принимают не все банки, иногда требуют запас действия 6–12 месяцев.</li>' +
+        '<li>Первый взнос: обычно от 20%, отдельные предложения от 10%.</li>' +
+        '<li>Покупка: отдельная квартира вне приграничной зоны часто без MSWiA. Для дома или участка ' +
+          '<a href="' + (PATHS ? '/dom#zezwolenie-na-zakup-nieruchomosci' : '#zezwolenie-na-zakup-nieruchomosci') + '">проверь разрешение MSWiA</a>.</li></ul>' +
+        srcLine([['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'rankomat.pl: карта побыту'], ['https://pawelpietras.pl/blog/kredyt-hipoteczny-dla-obcokrajowca-z-karta-czasowego-pobytu', 'pawelpietras.pl: условия'], ['https://powroty.gov.pl/nieruchomosci-nie-wymagajace-zezwolenia-9953/', 'powroty.gov.pl: исключения MSWiA']]) + '</div>' +
       '<div class="pl-field"><span class="pl-eyebrow">Твой договор, общий с «Бабками»</span>' + seg + '<p class="pl-note" data-o="mSrc" style="margin-top:10px"></p></div>' +
       '<div class="pl-fields">' + field('mInc', 'Твой доход на руки, zł', 'number', ' inputmode="decimal" min="0" step="500"') +
         field('mInc2', 'Доход второго заёмщика, zł', 'number', ' inputmode="decimal" min="0" step="500"').replace('<div class="pl-field"', '<div class="pl-field" data-m2') +
@@ -1307,7 +1313,6 @@
           row('Суд: запись собственности и ипотеки', 'mCourt') + row('Оценка квартиры для банка, примерно', 'mVal') + row('Всего своих', 'mNeed', 'tot') + '</div></div></div>' +
       '<p class="pl-note" data-o="mNote"></p>' +
       '<div class="pl-tip">' + ms('lightbulb') + '<span data-o="mCon"></span></div>' +
-      tipHtml('Квартиру иностранец покупает без разрешения MSWiA, если она не в приграничной зоне. На дом или участок разрешение нужно, пока не прожил 5 лет с ПМЖ или резидентом ЕС. С картой временного побыту часть банков ипотеку не даёт или хочет, чтобы карта действовала ещё 6–12 месяцев.') +
       '<p class="pl-note">Как считаем: по правилам KNF банк проверяет платёж при ставке выше на 2,5 п.п. и максимум на 25 лет, даже если берёшь на 30 или 35. Запас на жизнь и долю платежа в доходе мы подобрали по расчётам 12–13 банков за август и сентябрь 2026 (umowa o pracę, без других кредитов): на этих данных ошибка в среднем 2–7%. ' +
         'Страховка жизни в банке обычно 0,04–0,07% от кредита в месяц, при 500 тысячах это 200–350 zł, в итог берём середину. Свою полису с цессией на банк принимают все крупные банки, она обычно 70–140 zł. Квартира 0,085% от цены в год, середина восьми лучших предложений августа 2026. Комиссия в них 0%, у семи из восьми ставка 5,47–5,67%, но со счётом для зарплаты, картой и почти везде страховкой жизни. Нотариус по максимальной таксе: за квартиру половина ставки, за ипотеку четверть. ' +
         'Между банками разница бывает в 2–3 раза, так что считай это ориентиром, а точную сумму спроси у брокера. 800+ в доход не вписывай: часть банков его учитывает, это уже усреднено.</p>' +
@@ -1476,13 +1481,7 @@
         '<div><div class="pl-big">116,4</div><div class="pl-lab">млрд zł ипотек за 9 месяцев 2026</div><div class="pl-sub">BIK. Почти треть: рефинансирование</div></div>' +
       '</div>' +
       '<p class="pl-note" style="margin-top:20px">Источники: ' + link('https://mojebankowanie.pl/informacje-prasowe/informacje-prasowe-bankowosc/bik-dane-o-rynku-kredytowym-we-wrzesniu-2026-r', 'BIK о рынке в сентябре 2026') + ', ' + link('https://finwire.pl/artykuly/nowe-kredyty-mieszkaniowe-wrzesien-2026-nbp', 'данные NBP за сентябрь 2026') + '</p>' +
-      rRental2026() + rHomePermit() + rMort() +
-      '<h3 class="pl-h3" data-share="hipoteka-dla-cudzoziemca" style="margin-top:56px">Ипотека иностранцу</h3>' +
-      '<ul class="pl-list" style="margin-top:12px">' +
-        '<li>Без карты побыту ипотеку почти не дают. Временную карту принимают не все банки, и она часто должна действовать ещё 6–12 месяцев после заявки.</li>' +
-        '<li>Собственный взнос обычно от 20%.</li>' +
-        '<li>Дом или участок иностранцу из-за пределов ЕС покупать только с разрешением MSWiA.</li>' +
-      '</ul>' + srcLine([['https://rankomat.pl/finanse/poradniki/kredyt-dla-obcokrajowca-z-karta-czasowego-pobytu/', 'rankomat.pl'], ['https://pawelpietras.pl/blog/kredyt-hipoteczny-dla-obcokrajowca-z-karta-czasowego-pobytu', 'pawelpietras.pl']]) + lifeAcc(['home']) + '</section>';
+      rMort() + rRental2026() + rHomePermit() + lifeAcc(['home']) + '</section>';
   }
   /* «Дети»: public health, registration, immigration status, childcare and benefits. Verified 20.11.2026 */
   var KIDS_U = {
