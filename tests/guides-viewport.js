@@ -10,7 +10,7 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
     for(const width of [320,375,768,1024,1440]){
       const page=await browser.newPage({viewport:{width,height:900}});
       const errors=[];page.on('pageerror',e=>errors.push(e.message));
-      await page.addInitScript(()=>localStorage.setItem('pb-poland-v2',JSON.stringify({city:'gdansk',cityManual:true,stage:'wait',f:{filed:'2026-01-01'}})));
+      await page.addInitScript(()=>{if(!localStorage.getItem('pb-poland-v2'))localStorage.setItem('pb-poland-v2',JSON.stringify({city:'gdansk',cityManual:true,stage:'wait',f:{filed:'2026-01-01'}}));});
       await page.goto(origin+'/index.html',{waitUntil:'domcontentloaded'});
       const data=await page.evaluate(()=>({
         compare:!!document.querySelector('#pl-me .pb-voiv-sub') &&
