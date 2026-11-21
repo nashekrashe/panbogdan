@@ -1800,7 +1800,7 @@
     'Заполненное заявление wniosek o rejestrację pojazdu.',
     'Паспорт или другой документ личности; доверенность, если документы подаёт представитель.',
     'Договор покупки / faktura VAT / faktura VAT-marża; при цепочке продаж приложи предыдущие документы собственности.',
-    'Для подержанного зарегистрированного авто: dowód rejestracyjny, старые номера (если применимо).',
+    'Если машина уже была зарегистрирована: dowód rejestracyjny и прежние номера, если они есть и их нужно предъявить; при отсутствии иностранных номеров по правилам допускается заявление.',
     'Для подержанного авто: действующий техосмотр в dowód или справка о положительном badanie techniczne, если нужен новый.',
     'Для нового авто: świadectwo zgodności (CoC) и данные для регистрации, предоставляемые производителем/салоном.',
     'Подтверждения госпошлин/сборов за регистрацию; OC должно действовать.',
@@ -1885,7 +1885,7 @@
         '<article class="pb-guide-card" data-share="zolte-tablice"><span class="pb-guide-code">ŻÓŁTE</span><h4>Жёлтые номера</h4>' +
           '<p>Для zabytkowy недостаточно возраста машины. Нужна историческая ценность, включение в реестр или воеводскую ewidencję либо соответствующий музейный статус, документация и специальный техосмотр. Условия оценивает региональный консерватор.</p></article>' +
       '</div>' +
-      srcLine([['https://www.gov.pl/web/gov/zarejestruj-pojazd','Gov.pl: документы, сроки и регистрация'],['https://www.gov.pl/web/gov/zarejestruj-pojazd-za-posrednictwem-salonu-sprzedazy','Gov.pl: регистрация через салон, 2026'],['https://www.gov.pl/web/gov/sprawdz-historie-pojazdu','Gov.pl: Historia Pojazdu'],['https://podatki.gov.pl/en/vehicles-in-eu','KAS: PCC и акциз'],['https://podatki.gov.pl/podatki-firmowe/vat/stawki-i-limity','KAS: VAT 23%'],['https://podatki.gov.pl/akcyza/stawki-podatkowe','KAS: ставки акциза'],['https://www.gov.pl/web/gov/zglos-zbycie-lub-nabycie-pojazdu-na-przyklad-sprzedaz-kupno-darowizne','Gov.pl: продажа'],['https://www.gov.pl/web/wuoz-w-lublinie/pojazdy','WUOZ: исторические номера']]) +
+      srcLine([['https://www.gov.pl/web/gov/zarejestruj-pojazd','Gov.pl: документы, сроки и регистрация'],['https://media.gdansk.pl/komunikaty/637499/nowy-zespol-obslugi-mieszkancow-gotowy-na-przyjecie-klientow','Гданьск: адрес Wydział Komunikacji'],['https://cyfrowyurzad.um.gdynia.pl/cu/Service/getServiceCard/id,31.html','Гдыня: адрес ужонда'],['https://warszawa19115.pl/-/komunikat-w-sprawie-rejestracji-pojazd%C3%B3w-przez-cudzoziemc%C3%B3w','Варшава: районная подача'],['https://www.gov.pl/web/gov/zarejestruj-pojazd-za-posrednictwem-salonu-sprzedazy','Gov.pl: регистрация через салон, 2026'],['https://www.gov.pl/web/gov/sprawdz-historie-pojazdu','Gov.pl: Historia Pojazdu'],['https://podatki.gov.pl/en/vehicles-in-eu','KAS: PCC и акциз'],['https://podatki.gov.pl/podatki-firmowe/vat/stawki-i-limity','KAS: VAT 23%'],['https://podatki.gov.pl/akcyza/stawki-podatkowe','KAS: ставки акциза'],['https://www.gov.pl/web/gov/zglos-zbycie-lub-nabycie-pojazdu-na-przyklad-sprzedaz-kupno-darowizne','Gov.pl: продажа'],['https://www.gov.pl/web/wuoz-w-lublinie/pojazdy','WUOZ: исторические номера']]) +
       '<p class="pl-note">Источники проверены 21.11.2026. Отдельные правила для импорта, гибридов, наследства и лизинга отличаются.</p>' +
     '</section>';
   }
