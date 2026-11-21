@@ -23,6 +23,12 @@ check(!a.$('#pl-me .pb-voiv-compare'), 'no duplicated regional comparison cards'
 check(a.all('#pl-me .pb-voiv-sub').length===1, 'regional comparison emphasized in the existing waiting-time subtitle');
 check(a.$('#pl-me .pb-voiv-sub').textContent.includes('598'), 'Pomorskie average remains in the subtitle');
 check(a.$('#pl-money [data-share="pkd-2025"]'), 'PKD 2025 guide is in Money');
+check(a.$('#pl-money [data-share="kurs-usd-pln"]') && !a.$('#pl-bank [data-share="kurs-usd-pln"]'), 'NBP USD/PLN rate moved to Money');
+const bankIntro=a.$('#pl-bank .pb-bank-account-head'), bankMortgage=a.$('#pl-bank .pb-bank-mort');
+check(!!(bankIntro.compareDocumentPosition(bankMortgage)&a.w.Node.DOCUMENT_POSITION_FOLLOWING), 'Bank account opening above mortgage rates');
+check(!a.$('#pl-bank .pb-bank-extra') && a.all('#pl-bank a[href="/dom#kalkulator-hipoteki"]').length===1, 'Banks has no redundant top info cards and only one calculator link');
+check(a.$('#pl-bank .pb-bank-mort-home').getAttribute('data-share')==='hipoteka-link', 'original mortgage callout slug preserved');
+
 check(a.$('#pl-money [data-share="pkd-2025"]').textContent.includes('31 декабря 2026'), 'PKD transition date correct');
 check(a.$('#pl-money [data-share="pkd-2025"]').textContent.includes('74.12.Z'), 'design PKD present');
 check(a.$('#pb-rent-guide .pb-rent-number').textContent.replace(/\D/g,'')==='3000', 'Gdansk rent median from dated consistent sample');

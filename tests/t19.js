@@ -29,14 +29,14 @@ function page(rate) {
   const {w,urls} = page({table:'A',code:'USD',rates:[{effectiveDate:'2026-11-20',mid:3.9876}]});
   const $ = q => w.document.querySelector(q);
   assert(!!$('#pl-bank .pl-section-intro'), 'bank intro uses compact shared text style');
-  assert(!!$('#pl-bank .pb-bank-quote'), 'exchange rate visible in banks');
-  assert($('#pl-bank [data-o="usdRate"]').textContent === '—', 'no invented fallback exchange rate');
+  assert(!$('#pl-bank .pb-bank-extra') && !$('#pl-bank [data-o="usdRate"]'), 'no redundant currency or mortgage cards in Banks');
+  assert(!!$('#pl-money .pb-money-fx') && $('#pl-money .pb-money-fx').getAttribute('data-share')==='kurs-usd-pln', 'exchange rate moved to Money, slug unchanged');
+  assert($('#pl-money [data-o="usdRate"]').textContent === '—', 'no invented fallback exchange rate');
   await sleep(80);
   assert(urls.filter(x => x.includes('api.nbp.pl/api/exchangerates/rates/a/usd/')).length === 1, 'fetches NBP table A once');
-  assert($('#pl-bank [data-o="usdRate"]').textContent === '3,9876', 'NBP USD rate rendered to four decimals');
-  assert($('#pl-bank [data-o="usdDate"]').textContent.includes('20.11.2026'), 'NBP publication date displayed');
-  assert($('#pl-bank .pb-bank-info a[href*="api.nbp.pl"]'), 'official NBP source linked');
-  assert($('#pl-bank .pb-bank-info a[href="#kalkulator-hipoteki"]'), 'mortgage links to Home in preview routing');
+  assert($('#pl-money [data-o="usdRate"]').textContent === '3,9876', 'NBP USD rate rendered to four decimals in Money');
+  assert($('#pl-money [data-o="usdDate"]').textContent.includes('20.11.2026'), 'NBP publication date displayed');
+  assert($('#pl-money .pb-money-fx a[href*="api.nbp.pl"]'), 'official NBP source linked in Money');
   const offers=[...w.document.querySelectorAll('#pl-bank .pb-bank-mort-row')];
   assert(offers.length===11, 'eleven bank mortgage examples including Erste');
   const expected=[
@@ -61,7 +61,9 @@ function page(rate) {
     assert(row.querySelector('.pb-bank-mort-terms a').hostname.endsWith(x[4]), 'official bank URL: '+x[0]);
   });
   const calc = $('#pl-bank a.pb-bank-calc-card.pb-bank-mort-home[href="#kalkulator-hipoteki"]');
-  assert(calc && calc.querySelector('strong').textContent==='Калькулятор ипотеки', 'calculator is a full clickable tile linking to Home');
+  assert(calc && calc.querySelector('strong').textContent==='Калькулятор ипотеки', 'one compact calculator link to Home');
+  assert(calc.getAttribute('data-share')==='hipoteka-link' && w.document.querySelectorAll('#pl-bank a[href="#kalkulator-hipoteki"]').length===1, 'old mortgage-link anchor preserved without duplicate blocks');
+  assert(calc.closest('.pb-bank-mort') && !$('#pl-bank .pb-bank-info'), 'calculator link is below mortgage rates, not a separate info card');
   assert(calc.textContent.includes('платёж'), 'calculator tile explains its purpose');
   assert(offers.every(row => !!row.querySelector('.pb-bank-mort-by')), 'every bank has a section about Belarusian eligibility');
   const first = offers.find(x=>x.querySelector('.pb-bank-mort-n').textContent.includes('mBank'));
@@ -74,20 +76,21 @@ function page(rate) {
   assert(offers.find(x=>x.querySelector('.pb-bank-mort-n').textContent.includes('Credit Agricole')).querySelector('.pb-bank-mort-rate small').textContent.includes('7 лет'), 'Credit Agricole seven-year fixed period');
   assert($('#pl-bank .pb-bank-by-note').textContent.includes('PESEL'), 'cross-bank Belarusian preparation notice');
   assert($('#pl-bank .pb-bank-mort-foot').textContent.includes('Суммы, сроки и взносы различаются'), 'rates labelled as non-comparable representative examples');
-  assert($('#pl-bank .pb-bank-account-head').textContent.includes('Открытие счёта'), 'deposit-account rankings are separate from mortgage comparison');
+  const account=$('#pl-bank .pb-bank-account-head'), mort=$('#pl-bank .pb-bank-mort');
+  assert(account.textContent.includes('Открытие счёта') && !!(account.compareDocumentPosition(mort)&w.Node.DOCUMENT_POSITION_FOLLOWING), 'opening an account is before mortgage offers');
 
   assert(!!$('#pl-home .pl-section-intro') && !!$('#pl-by .pl-section-intro'), 'page intros share consistent styles');
   const city = $('[data-city-sel]');
   city.value='gdynia';
   city.dispatchEvent(new w.Event('change',{bubbles:true}));
-  assert($('#pl-bank [data-o="usdRate"]').textContent === '3,9876', 'rate survives a section rerender');
+  assert($('#pl-money [data-o="usdRate"]').textContent === '3,9876', 'Money rate survives a section rerender');
   assert(w.document.querySelectorAll('#pl-bank .pb-bank-mort-row').length===11, 'all mortgage offers survive city rerender');
   w.close();
 
   const invalid = page({table:'C',code:'USD',rates:[{effectiveDate:'2026-11-20',mid:3.9876}]});
   await sleep(70);
-  assert(invalid.w.document.querySelector('#pl-bank [data-o="usdRate"]').textContent === '—', 'invalid API payload never shown as official rate');
-  assert(invalid.w.document.querySelector('#pl-bank [data-o="usdDate"]').textContent.includes('недоступен'), 'failed rate shows unavailable message');
+  assert(invalid.w.document.querySelector('#pl-money [data-o="usdRate"]').textContent === '—', 'invalid API payload never shown as official rate');
+  assert(invalid.w.document.querySelector('#pl-money [data-o="usdDate"]').textContent.includes('недоступен'), 'failed rate shows unavailable message');
   invalid.w.close();
   console.log('Banks USD / mortgage t19 PASS');
 })().catch(e=>{console.error(e);process.exitCode=1;});
