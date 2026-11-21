@@ -1942,11 +1942,7 @@
     var done = !!b, n = days(a, done ? b : t), d = n - avg, sub;
     if (done) sub = Math.abs(d) <= 7 ? 'Ровно ' + ref + '. Статистически идеален.' : d < 0 ? 'На ' + n0(-d) + ' ' + dWord(-d) + ' быстрее, чем ' + ref + '. Везунчик.' : 'На ' + n0(d) + ' ' + dWord(d) + ' дольше, чем ' + ref + '. Закалка.';
     else sub = d < 0 ? ref.charAt(0).toUpperCase() + ref.slice(1) + '. Осталось около ' + n0(-d) + ' ' + dGen(-d) + '.' : 'Уже на ' + n0(d) + ' ' + dWord(d) + ' дольше, чем ' + ref + '. Это ачивка.';
-    var compare = regional ? '<div class="pb-voiv-compare" aria-label="Твой срок ' + n + ' дней, средний срок ' + avg + ' дней">' +
-      '<div class="pb-voiv-pair"><span><small>ТВОЙ СРОК</small><b>' + n0(n) + '</b></span><span><small>ПО ВОЕВОДСТВУ</small><b>' + n0(avg) + '</b></span></div>' +
-      '<div class="pb-voiv-track"><span style="width:' + Math.min(100, Math.round(n / avg * 100)) + '%"></span></div>' +
-      '<p>' + (d > 0 ? '+' : d < 0 ? '-' : '') + n0(Math.abs(d)) + ' ' + dWord(Math.abs(d)) + (d > 0 ? ' сверх среднего' : d < 0 ? ' до среднего' : ' разницы') + (done ? ', до решения' : ', ожидание ещё идёт') + '</p></div>' : '';
-    return '<div><div class="pl-big"' + (done ? '' : ' style="color:var(--red)"') + '>' + n0(n) + '</div><div class="pl-lab">' + plural(n, 'день', 'дня', 'дней') + (done ? ' ждал ' : ' ждёшь ') + what + '</div><div class="pl-sub">' + sub + '</div>' + compare + '</div>';
+    return '<div><div class="pl-big"' + (done ? '' : ' style="color:var(--red)"') + '>' + n0(n) + '</div><div class="pl-lab">' + plural(n, 'день', 'дня', 'дней') + (done ? ' ждал ' : ' ждёшь ') + what + '</div><div class="pl-sub' + (regional ? ' pb-voiv-sub' : '') + '">' + sub + '</div></div>';
   }
   function updateMe() {
     var since = parseD(S.f.since), t = today(), c = city(), html = '';

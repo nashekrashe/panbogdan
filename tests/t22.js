@@ -19,8 +19,9 @@ function boot(city, fields) {
   return {w,$:s=>w.document.querySelector(s),all:s=>[...w.document.querySelectorAll(s)]};
 }
 let a=boot('gdansk', {filed:'2026-01-01'});
-check(a.$('#pl-me .pb-voiv-compare'), 'voivodeship wait comparison rendered for a dated filing');
-check(a.$('#pl-me .pb-voiv-pair').textContent.includes('598'), 'Pomorskie wait comparison uses existing regional data');
+check(!a.$('#pl-me .pb-voiv-compare'), 'no duplicated regional comparison cards');
+check(a.all('#pl-me .pb-voiv-sub').length===1, 'regional comparison emphasized in the existing waiting-time subtitle');
+check(a.$('#pl-me .pb-voiv-sub').textContent.includes('598'), 'Pomorskie average remains in the subtitle');
 check(a.$('#pl-money [data-share="pkd-2025"]'), 'PKD 2025 guide is in Money');
 check(a.$('#pl-money [data-share="pkd-2025"]').textContent.includes('31 декабря 2026'), 'PKD transition date correct');
 check(a.$('#pl-money [data-share="pkd-2025"]').textContent.includes('74.12.Z'), 'design PKD present');
@@ -43,7 +44,8 @@ check(a.$('#pb-rent-guide .pb-rent-number').textContent==='Нет данных',
 a.w.close();
 
 a=boot('warszawa',{pmzhFiled:'2026-01-01'});
-check(a.all('#pl-me .pb-voiv-compare').length===1,'regional comparison only on PMZh where verified datum exists');
-check(a.$('#pl-me .pb-voiv-pair').textContent.includes('239'),'Mazowieckie PMZh uses existing regional mean');
+check(!a.$('#pl-me .pb-voiv-compare'), 'no regional comparison card for permanent residence');
+check(a.all('#pl-me .pb-voiv-sub').length===1, 'subtitle emphasis only on PMZh with a verified regional mean');
+check(a.$('#pl-me .pb-voiv-sub').textContent.includes('239'), 'Mazowieckie PMZh average appears in subtitle');
 a.w.close();
 console.log('New guides t22 PASS');

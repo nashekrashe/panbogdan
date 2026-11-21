@@ -1360,15 +1360,7 @@ html.pb-nwp-on{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.pb-rd-tooltip{transition:none}}
 
 /* November 2026 staging drafts: verified comparative metrics and guides. */
-.pb-voiv-compare{margin-top:15px;min-width:0;max-width:330px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fff}
-.pb-voiv-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.pb-voiv-pair span{display:flex;flex-direction:column;gap:5px;min-width:0}
-.pb-voiv-pair small{font-size:10px;letter-spacing:.06em;color:var(--mut);font-weight:650}
-.pb-voiv-pair b{font-size:clamp(20px,3vw,30px);line-height:1.1;font-variant-numeric:tabular-nums}
-.pb-voiv-pair span:first-child b{color:var(--red)}
-.pb-voiv-track{width:100%;height:5px;border-radius:10px;background:var(--line);overflow:hidden;margin:12px 0 7px}
-.pb-voiv-track span{display:block;height:100%;background:var(--red);border-radius:10px}
-.pb-voiv-compare p{margin:0;font-size:11px;line-height:1.45;color:var(--mut)}
+.pb-voiv-sub{color:var(--red);font-weight:650}
 .pb-guide{margin-top:clamp(36px,4vw,64px);padding-top:clamp(24px,3vw,40px);border-top:1px solid var(--line);min-width:0}
 .pb-guide .pl-h3{margin-top:0;margin-bottom:14px}
 .pb-guide .pl-lead{margin:0 0 20px;max-width:800px}

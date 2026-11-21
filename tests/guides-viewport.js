@@ -13,7 +13,9 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       await page.addInitScript(()=>localStorage.setItem('pb-poland-v2',JSON.stringify({city:'gdansk',cityManual:true,stage:'wait',f:{filed:'2026-01-01'}})));
       await page.goto(origin+'/index.html',{waitUntil:'domcontentloaded'});
       const data=await page.evaluate(()=>({
-        compare:!!document.querySelector('#pl-me .pb-voiv-compare'),
+        compare:!!document.querySelector('#pl-me .pb-voiv-sub') &&
+          !document.querySelector('#pl-me .pb-voiv-compare') &&
+          getComputedStyle(document.querySelector('#pl-me .pb-voiv-sub')).color==='rgb(215, 75, 78)',
         pkd:!!document.querySelector('#pl-money [data-share="pkd-2025"]'),
         rent:document.querySelector('#pl-home .pb-rent-number')?.textContent,
         permit:document.querySelectorAll('#pl-home [data-check^="home-permit-"]').length,
