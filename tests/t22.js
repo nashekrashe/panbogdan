@@ -42,6 +42,7 @@ check(a.$('#pl-auto [data-share="zolte-tablice"]') && a.$('#pl-auto [data-share=
 const license=a.$('#pl-auto .pb-auto-license'), reg=a.$('#pl-auto [data-share="rejestracja-samochodu"]'), purchase=a.$('#pl-auto [data-share="kupno-sprzedaz-i-rejestracja-auta"]');
 check(!!license && !!reg && !!purchase, 'auto licence and registration guides are rendered');
 check(license.querySelector('.pb-auto-license-choices').children.length===2, 'exactly two licence choices together');
+check(license.querySelector('[data-auto-license="absent"]').parentElement.textContent.includes('У меня нет прав (и водительских тоже)'), 'no-licence checkbox displays exact wording');
 check(!license.querySelector('summary [data-auto-license]'), 'no checkbox attached to licence heading');
 check(license.querySelectorAll('.pb-auto-license-choices [data-auto-license]').length===2,'licence choices are side by side, not beside heading');
 check(license.querySelectorAll('[data-check^="auto-license-step-"]').length===5, 'five exchange steps');
