@@ -893,6 +893,18 @@
     { k: 'vnzh', t: 'ВНЖ', ic: 'id_card', min: 1, f: 'filed', g: 'vnzhGot' },
     { k: 'pmzh', t: 'ПМЖ', ic: 'verified', min: 2, f: 'pmzhFiled', g: 'staly' },
     { k: 'pass', t: 'Паспорт', ic: 'emoji_events', min: 4, f: 'passFiled', g: 'passGot' }
+    { g: 'docs', ic: 'verified', t: 'Брак в Польше', s: 'С паспортом и без действующего паспорта', b: [
+      '<b>Если паспорт действует.</b> Выберите любой Urząd Stanu Cywilnego (USC), покажите паспорта и подайте zapewnienie o braku okoliczności wyłączających zawarcie małżeństwa. Для иностранца также нужен документ о возможности заключить брак по его национальному праву (zaświadczenie o zdolności prawnej do zawarcia małżeństwa). Если получить его чрезвычайно сложно, районный суд по месту жительства может освободить от его подачи; действующий паспорт от этого требования сам по себе не освобождает.',
+      '<b>Если беларуский паспорт истёк.</b> USC всё равно обязан установить личность каждого из будущих супругов. Истёкший паспорт сам по себе не является гарантированно достаточным документом. Действующий polski dokument podróży подтверждает личность и гражданство; заранее отправьте его скан в выбранный USC и получите письменное подтверждение, что примут его для регистрации брака. Карта побыту и истёкший паспорт могут помочь с установлением данных, но не означают автоматического допуска. Если действующего документа личности нет, сперва согласуйте с USC, какие документы он примет.',
+      '<b>Важно:</b> освобождение судом от справки о брачной правоспособности НЕ заменяет проверку личности. Если USC отказывает, просите письменный отказ с основанием: его можно оспорить в суде в течение 14 дней.',
+      '<b>Общие правила:</b> при необходимости USC запросит свидетельство о рождении и документы о прекращении прежнего брака. Иностранные документы переводятся присяжным переводчиком. При недостаточном польском нужен переводчик при подаче заявления и на церемонии. Госпошлина за составление акта брака 84 zł, обычно церемония не раньше месяца после zapewnienie (действует 6 месяцев).'
+    ], more: [
+      '1. Выбери USC и запроси письменный перечень документов для обоих будущих супругов, особенно если паспорт истёк.',
+      '2. Подготовь документ личности и документ о правоспособности к браку. Если второй документ невозможно получить, подай в sąd rejonowy по месту жительства wniosek o zwolnienie cudzoziemca od złożenia dokumentu stwierdzającego możność zawarcia małżeństwa.',
+      '3. Собери дополнительные акты гражданского состояния, если их запросит USC, и переводы присяжного. Отнеси документы, оплати 84 zł и подпиши zapewnienie.',
+      '4. Получи дату и уточни требования к документам личности на сам день бракосочетания. Если есть письменный отказ USC, можно обратиться в суд в течение 14 дней.'
+    ], src: [['https://www.gov.pl/web/gov/wez-slub-cywilny.', 'Gov.pl: брак, документы, сроки'], ['https://eli.gov.pl/api/acts/DU/2026/393/text.pdf', 'Prawo o aktach stanu cywilnego, 2026'], ['https://mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/wprowadzenie/', 'MOS: dokument podróży и личность'], ['https://bip.brpo.gov.pl/pl/content/rpo-cudzoziemiec-malzenstwo-zaswiadczenie-problemy-mswia', 'RPO: справка о правоспособности']], checked: '21.11.2026' },
+
   ];
   /* a home stat with a link to its section */
   function secLink(k) { var x = secBy(k); return x ? '<a class="pb-seclink" href="' + hrefOf(x) + '">' + x.n + ms('arrow_outward') + '</a>' : ''; }
@@ -1248,7 +1260,7 @@
       '<div class="pl-legal-bar">' + tabs + '<label class="pl-toggle pl-mypath"><input type="checkbox" data-mypath' + (myPath() ? ' checked' : '') + '><span>Мой путь<small class="pl-xs pl-muted">пройденное по «Где ты сейчас» и датам в «Своё»</small></span></label></div>' +
       panels + '</section>';
   }
-  var BELARUS_SHARE = ['dokument-podrozy','ochrona-miedzynarodowa','dokumenty-bialoruskie','karta-polaka','wyplaty-karta-polaka','banki-i-sankcje','praca-bez-zezwolenia','pieniadze-z-bialorusi','staz-i-emerytura','prawo-jazdy-auto','dzieci-bialorusinow','oficjalnie-po-bialorusku'];
+  var BELARUS_SHARE = ['dokument-podrozy','ochrona-miedzynarodowa','dokumenty-bialoruskie','karta-polaka','wyplaty-karta-polaka','banki-i-sankcje','praca-bez-zezwolenia','pieniadze-z-bialorusi','staz-i-emerytura','prawo-jazdy-auto','dzieci-bialorusinow','oficjalnie-po-bialorusku','malzenstwo-w-polsce'];
   function rBy() {
     return '<section class="pl-band pb-screen" id="pl-by" aria-labelledby="pl-by-h">' + head('pl-by', 'Беларусам отдельно', '', '', '', 'То, чего нет в общих гайдах') +
       '<p class="pl-section-intro">Паспорт, Karta Polaka, защита, работа и документы. У каждой темы источники и дата проверки.</p>' +
