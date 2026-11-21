@@ -13,6 +13,8 @@
   Object.keys(DEF.f).forEach(function (k) { if (S.f[k] === '' && typeof DEF.f[k] === 'string' && DEF.f[k] !== '') S.f[k] = DEF.f[k]; });
   if (['uop', 'zlec', 'dzielo', 'b2b'].indexOf(S.contract) < 0) S.contract = 'uop';
   S.status = S.status || {}; S.checks = S.checks || {}; S.trips = Array.isArray(S.trips) ? S.trips : [];
+  /* Licence choices are mutually exclusive, including for older/malformed saved states. */
+  if (S.checks.auto_license_swapped && S.checks.auto_license_absent) S.checks.auto_license_absent = false;
   S.folds = S.folds && typeof S.folds === 'object' && !Array.isArray(S.folds) ? S.folds : {};
   if (['citizen', 'temporary', 'permanent', 'pending'].indexOf(S.kidPath) < 0) S.kidPath = '';
 
@@ -1798,7 +1800,13 @@
         ['swap_horiz', 'Авто на беларуских номерах', 'Санкции ЕС с 1.07.2024', ['Легковые авто на беларуских номерах нельзя ввозить в ЕС (регламент 2024/1865). Для личного автомобиля возможен въезд по исключению при соблюдении условий, включая присутствие владельца и отсутствие коммерческого использования. Уполномоченные органы могут разрешить въезд, это не автоматическое право.', 'Литва, Латвия и Эстония применяют запрет жёстче, проверь маршрут заранее.'], 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas'],
         ['shield', 'Przegląd и OC', 'Обязательное', ['OC обязательно с первого дня. Без него штрафы неприятно круглые.', 'Техосмотр легковой машины: у новой первый до 3 лет с первой регистрации, второй до 5 лет, дальше каждый год.'], 'https://lexlege.pl/prawo-o-ruchu-drogowym/art-81/', 'art. 81 PoRD']
       ].map(function (a, i) {
-        return '<details id="pl-d-au' + i + '" data-share="' + ['wymiana-prawa-jazdy','auto-na-bialoruskich-numerach','oc-i-przeglad'][i] + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
+        var details = '<details id="pl-d-au' + i + '" data-share="' + ['wymiana-prawa-jazdy','auto-na-bialoruskich-numerach','oc-i-przeglad'][i] + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
+        if (i) return details;
+        return '<div class="pb-auto-license" role="group" aria-label="Обмен прав">' +
+          '<div class="pl-step pb-auto-license-step"><label class="pl-chk pl-check pb-auto-license-check" title="Обменял права: +2% к прогрессу">' +
+            '<input type="checkbox" data-auto-license="swapped" aria-label="Обменял водительские права"' + (S.checks.auto_license_swapped ? ' checked' : '') + '></label>' + details + '</div>' +
+          '<label class="pl-check pb-auto-license-none"><input type="checkbox" data-auto-license="absent"' + (S.checks.auto_license_absent ? ' checked' : '') + '>' +
+            '<span>У меня нет прав (и водительских тоже) <small>+2% к прогрессу</small></span></label></div>';
       }).join('') + '</div>' + rAutoFormalities() + '</section>';
   }
 
@@ -1905,7 +1913,12 @@
     return { tot: tot, got: got };
   }
   function band() { return STAGE_BAND[S.stage] || STAGE_BAND.arrive; }
-  function xp() { var b = band(), t = trackXp(b[2]); return b[0] + (b[1] - b[0]) * t.got / t.tot; }
+  function xp() {
+    var b = band(), t = trackXp(b[2]);
+    /* Optional one-off life milestone, regardless of whether driving applies. */
+    var licenseBonus = S.checks.auto_license_swapped || S.checks.auto_license_absent ? 2 : 0;
+    return b[0] + (b[1] - b[0]) * t.got / t.tot + licenseBonus;
+  }
   /* how many level percent one step of a track gives right now (only the track of your stage moves the level) */
   function stepGain(k) { var b = band(); if (b[2] !== k || b[1] === b[0]) return 0; return (b[1] - b[0]) * 10 / trackXp(k).tot; }
   function allDone(k) { return LEGAL[k].steps.every(function (s, i) { return S.status[k + i] === 'done'; }); }
@@ -2798,6 +2811,15 @@
     if (el.matches('[data-city-sel]')) { if (el.value === '__geo') { el.value = S.city; locate(false); return; } if (!CITIES[el.value]) return; S.city = el.value; S.geo = null; S.cityManual = true; geoErr = ''; save(); render(); var ns = $('#pl-city'); if (ns) ns.focus({ preventScroll: true }); return; }
     if (el.matches('[data-pmzh-path]')) { S.pmzhPath = el.value; save(); render(); var ps = $('#pl-pmzh-path'); if (ps) ps.focus({ preventScroll: true }); return; }
     if (el.matches('[data-mypath]')) { S.myPath = el.checked; save(); updatePath(); updateProgress(); return; }
+    if (el.matches('[data-auto-license]')) {
+      var choice = el.getAttribute('data-auto-license'), selected = choice === 'swapped' ? 'auto_license_swapped' : 'auto_license_absent';
+      var opposite = choice === 'swapped' ? 'auto_license_absent' : 'auto_license_swapped';
+      S.checks[selected] = el.checked;
+      if (el.checked) S.checks[opposite] = false;
+      var other = $('[data-auto-license="' + (choice === 'swapped' ? 'absent' : 'swapped') + '"]');
+      if (other) other.checked = !!S.checks[opposite];
+      save(); updateProgress(); return;
+    }
     if (el.matches('[data-check]')) { S.checks[el.getAttribute('data-check')] = el.checked; save(); updateProgress(); if (el.closest('.pb-home-permit')) updateHomePermit(el); }
     else if (el.matches('[data-f]:not([data-date])')) { var k = el.getAttribute('data-f'); if (el.type === 'checkbox' || el.tagName === 'SELECT') { S.f[k] = el.type === 'checkbox' ? el.checked : el.value; save(); } else setField(el, false); updateTools(); updateProgress(); }
   });

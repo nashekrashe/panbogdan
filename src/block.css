@@ -1401,3 +1401,14 @@ html.pb-nwp-on{overflow:hidden}
 .pb-permit-docs .pl-doc-key{min-width:0}
 .pb-permit-docs .pl-doc-key .pl-doc-t{overflow-wrap:anywhere}
 @media(max-width:480px){.pb-mort-foreign{padding:12px 14px}.pb-home-permit .pb-fold-h{padding:16px}.pb-home-permit .pb-fold-b{padding:0 16px 20px}}
+
+/* Optional driver's licence milestone in Auto: one completion path or not-applicable. */
+.pb-auto-license{border-bottom:1px solid var(--line)}
+.pb-auto-license .pb-auto-license-step details{border-bottom:0}
+.pb-auto-license-check.pl-chk{cursor:pointer;margin-top:6px}
+.pb-auto-license-check.pl-check{padding:0;align-items:center}
+.pb-auto-license-check input{margin:0}
+.pb-auto-license-none{padding:0 0 13px 40px;gap:9px;font-size:13px;color:var(--mut)}
+.pb-auto-license-none input{width:16px;height:16px;flex-basis:16px;margin-top:1px}
+.pb-auto-license-none small{color:var(--red);font-weight:650;white-space:nowrap}
+@media(max-width:420px){.pb-auto-license-none{padding-left:31px}.pb-auto-license-none small{white-space:normal}}

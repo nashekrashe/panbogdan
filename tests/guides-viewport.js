@@ -58,6 +58,26 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       if(!persisted)throw Error('permit document checklist is not saved at '+width);
       const result=await page.evaluate(()=>({doc:document.documentElement.scrollWidth,win:innerWidth}));
       if(result.doc>result.win+1)throw Error('home horizontal overflow at '+width);
+      await page.goto(origin+'/auto.html#wymiana-prawa-jazdy',{waitUntil:'domcontentloaded'});
+      await page.locator('#pl-auto').waitFor({state:'visible'});
+      const licenseBefore=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
+      const swapped=page.locator('#pl-auto [data-auto-license="swapped"]'), absent=page.locator('#pl-auto [data-auto-license="absent"]');
+      if(!await swapped.isVisible()||!await absent.isVisible()||await swapped.isChecked()||await absent.isChecked())
+        throw Error('license checkboxes missing or preselected at '+width);
+      await swapped.check();
+      const licenseAfter=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
+      if(licenseAfter!==licenseBefore+2)throw Error('swapped licence bonus not +2 at '+width+': '+licenseBefore+' -> '+licenseAfter);
+      await absent.check();
+      const licenseAlternate=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
+      if(await swapped.isChecked()||!await absent.isChecked()||licenseAlternate!==licenseAfter)
+        throw Error('licence options not exclusive, or duplicate XP at '+width);
+      await page.reload({waitUntil:'domcontentloaded'});
+      if(await swapped.isChecked()||!await absent.isChecked())throw Error('licence choice not persisted at '+width);
+      await absent.uncheck();
+      const licenseReset=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
+      if(licenseReset!==licenseBefore)throw Error('licence XP not reversible at '+width);
+      const licenseOverflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
+      if(licenseOverflow)throw Error('licence layout overflows at '+width);
       await page.screenshot({path:path.join(out,'guides-'+width+'.png'),fullPage:true});
       if(errors.length)throw Error('JS errors at '+width+': '+errors.join('; '));
       console.log('guides',width,'PASS');
