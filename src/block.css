@@ -1461,3 +1461,12 @@ html.pb-nwp-on{overflow:hidden}
 #pl-me .pb-hero-quote a{color:inherit;text-decoration:underline;text-underline-offset:4px}
 #pl-me .pb-hero-quote a:hover{color:var(--red)}
 @media(max-width:900px){#pl-me .pb-home{grid-template-areas:"hero" "card";grid-template-rows:none}}
+
+/* Currency hint: separate the dotted underline from large numerals. */
+.pl-big .pb-usd-price,
+.pb-stat .pl-big .pb-usd-price,
+.pb-hero .pl-big .pb-usd-price{
+  text-decoration-color:#E4E4E4;
+  text-underline-offset:.18em;
+  text-decoration-thickness:.095em;
+}
