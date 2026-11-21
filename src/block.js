@@ -2545,8 +2545,128 @@
       if (Object.prototype.hasOwnProperty.call(S.folds, key)) d.open = !!S.folds[key];
     });
   }
+
+  /* PLN amounts use the already-loaded official NBP USD/PLN midpoint; never guess a rate. */
+  var PLN_TEXT = /(?:\d[\d \u00a0\u202f]*(?:[,.]\d{1,2})?\s*(?:zł|PLN)|(?:zł|PLN)\s*\d[\d \u00a0\u202f]*(?:[,.]\d{1,2})?)/gi;
+  var usdHover = null, usdPopover = null, usdObserver = null;
+  function plnValue(text) {
+    var hit = String(text == null ? '' : text).match(/\d[\d \u00a0\u202f]*(?:[,.]\d{1,2})?/);
+    if (!hit) return NaN;
+    var t = hit[0].replace(/[ \u00a0\u202f]/g, '').replace(',', '.');
+    return t && isFinite(+t) ? +t : NaN;
+  }
+  function wrapPlnText(node) {
+    var parent = node.parentElement, str = node.nodeValue;
+    if (!parent || !/(zł|PLN)/i.test(str) ||
+        parent.closest('script,style,textarea,option,svg,[contenteditable],.pb-usd-price,.pb-money-fx')) return;
+    PLN_TEXT.lastIndex = 0;
+    var hit, after = 0, found = false, frag = document.createDocumentFragment();
+    while ((hit = PLN_TEXT.exec(str))) {
+      var value = plnValue(hit[0]);
+      if (!isFinite(value)) continue;
+      if (hit.index > after) frag.appendChild(document.createTextNode(str.slice(after, hit.index)));
+      var span = document.createElement('span');
+      span.className = 'pb-usd-price';
+      span.tabIndex = 0;
+      span.setAttribute('data-pln', String(value));
+      span.textContent = hit[0];
+      frag.appendChild(span);
+      after = hit.index + hit[0].length;
+      found = true;
+    }
+    if (found) {
+      if (after < str.length) frag.appendChild(document.createTextNode(str.slice(after)));
+      node.parentNode.replaceChild(frag, node);
+    }
+  }
+  function standalonePln(el) {
+    if (!el || el.closest('.pb-money-fx') ||
+        (el.parentElement && el.parentElement.closest('.pb-usd-price'))) return;
+    var text = el.textContent.trim();
+    var value = /^[\d \u00a0\u202f]+(?:[,.]\d{1,2})?$/.test(text) ? plnValue(text) : NaN;
+    if (isFinite(value)) {
+      el.classList.add('pb-usd-price', 'pb-usd-standalone');
+      el.setAttribute('data-pln', String(value));
+      el.tabIndex = 0;
+    } else if (el.classList.contains('pb-usd-standalone')) {
+      el.classList.remove('pb-usd-price', 'pb-usd-standalone');
+      el.removeAttribute('data-pln');
+      el.removeAttribute('tabindex');
+    }
+  }
+  function refreshUsdPrices() {
+    if (usdObserver) usdObserver.disconnect();
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), node, texts = [];
+    while ((node = walker.nextNode())) if (/(zł|PLN)/i.test(node.nodeValue)) texts.push(node);
+    texts.forEach(wrapPlnText);
+    /* The value and "zł" are in separate cells in calculators and fact cards. */
+    $$('.pl-out .v').forEach(function (el) {
+      var caption = el.parentElement && el.parentElement.querySelector(':scope > .k');
+      if (caption && caption.textContent.indexOf('zł') >= 0) standalonePln(el);
+    });
+    $$('#pl-money .pl-rows b[data-o], #pl-home .pb-home-mort .pl-rows b[data-o]:not([data-o="mDsti"]), #pl-home .pb-rent-number').forEach(standalonePln);
+    $$('.pl-counts > div').forEach(function (box) {
+      var unit = box.querySelector(':scope > .pl-lab');
+      var number = box.querySelector(':scope > .pl-big');
+      if (number && unit && /^\s*zł(?:\s|:|$)/.test(unit.textContent)) standalonePln(number);
+    });
+    if (usdObserver) usdObserver.observe(root, {subtree:true, childList:true, characterData:true});
+  }
+  function hideUsdPrice() {
+    if (usdHover) usdHover.removeAttribute('aria-describedby');
+    usdHover = null;
+    if (usdPopover) usdPopover.hidden = true;
+  }
+  function displayUsdPrice(el) {
+    if (!el || !el.isConnected) { hideUsdPrice(); return; }
+    var pln = plnValue(el.getAttribute('data-pln') || el.textContent);
+    if (!isFinite(pln)) { hideUsdPrice(); return; }
+    if (!usdPopover) {
+      usdPopover = document.createElement('div');
+      usdPopover.id = 'pb-usd-tooltip';
+      usdPopover.className = 'pb-usd-tooltip';
+      usdPopover.setAttribute('role', 'tooltip');
+      usdPopover.innerHTML = '<span class="pb-usd-tooltip-label">примерно в долларах</span><strong></strong>';
+      usdPopover.hidden = true;
+      document.body.appendChild(usdPopover);
+    }
+    if (usdHover && usdHover !== el) usdHover.removeAttribute('aria-describedby');
+    usdHover = el;
+    el.setAttribute('aria-describedby', 'pb-usd-tooltip');
+    var label = usdPopover.querySelector('strong');
+    label.textContent = USD_RATE && USD_RATE.mid > 0 ?
+      '$' + (pln / USD_RATE.mid).toLocaleString('ru-RU',{minimumFractionDigits:1, maximumFractionDigits:1}) :
+      (USD_FAILED ? 'Курс NBP недоступен' : 'Загружается курс NBP');
+    usdPopover.hidden = false;
+    var r = el.getBoundingClientRect(), width = usdPopover.offsetWidth, height = usdPopover.offsetHeight;
+    var left = Math.max(10, Math.min(window.innerWidth - width - 10, r.left + r.width / 2 - width / 2));
+    var top = r.top - height - 12;
+    if (top < 10) top = r.bottom + 12;
+    if (top + height > window.innerHeight - 10) top = Math.max(10, window.innerHeight - height - 10);
+    usdPopover.style.left = left + 'px';
+    usdPopover.style.top = top + 'px';
+  }
+  function initUsdPrices() {
+    if (window.MutationObserver) usdObserver = new MutationObserver(refreshUsdPrices);
+    root.addEventListener('mouseover', function (e) {
+      var p = e.target.closest && e.target.closest('.pb-usd-price');
+      if (p) displayUsdPrice(p); else hideUsdPrice();
+    });
+    root.addEventListener('mouseout', function (e) {
+      var to = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.pb-usd-price');
+      if (to && to === usdHover) return;
+      hideUsdPrice();
+    });
+    root.addEventListener('focusin', function (e) {
+      var p = e.target.closest && e.target.closest('.pb-usd-price');
+      if (p) displayUsdPrice(p);
+    });
+    root.addEventListener('focusout', function (e) { if (e.target === usdHover) hideUsdPrice(); });
+    window.addEventListener('scroll', hideUsdPrice, {passive:true});
+    window.addEventListener('resize', hideUsdPrice);
+  }
   function render() {
-    closeCal();
+    closeCal(); hideUsdPrice();
     var y = window.scrollY;
     root.innerHTML = rMHead() + '<div class="pb-app">' + rSide() + '<div class="pb-main">' + rTop() + '<main class="pb-screens" id="pb-main">' +
       rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback() + rNewsPop();
@@ -2556,6 +2676,7 @@
     updateUsdRate();
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
     if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
+    refreshUsdPrices();
     rendered = 1;
   }
 
@@ -3018,6 +3139,7 @@
   var USD_RATE = null, USD_FAILED = false;
   function updateUsdRate() {
     out('usdRate', USD_RATE ? USD_RATE.mid.toFixed(4).replace('.', ',') : '—');
+    if (usdHover) displayUsdPrice(usdHover);
     out('usdDate', USD_RATE ? 'Курс на ' + USD_RATE.effectiveDate.split('-').reverse().join('.') :
       USD_FAILED ? 'Курс NBP временно недоступен' : 'Загружается');
   }
@@ -3034,6 +3156,7 @@
       }).catch(function () { USD_FAILED = true; updateUsdRate(); });
   }
 
+  initUsdPrices();
   render();
   loadFuel();
   loadUsdRate();

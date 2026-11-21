@@ -1443,3 +1443,12 @@ html.pb-nwp-on{overflow:hidden}
 #pl-bank .pb-bank-mort-home strong{font-size:16px;line-height:1.3}
 #pl-bank .pb-bank-mort-home>span:last-child{font-size:13px;line-height:1.45;flex:1 1 215px}
 @media(max-width:480px){#pl-bank .pb-bank-mort{margin-top:40px}#pl-bank .pb-bank-mort-home{padding:13px 15px;gap:5px}}
+
+/* USD equivalent on hover/focus for PLN prices, based on NBP's published rate. */
+.pb-usd-price{cursor:help;text-decoration:underline dotted currentColor;text-decoration-color:color-mix(in srgb,currentColor 28%,transparent);text-underline-offset:3px}
+.pb-usd-price:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:2px}
+.pb-usd-tooltip{position:fixed;z-index:2000;pointer-events:none;max-width:calc(100vw - 20px);width:max-content;min-width:min(290px,calc(100vw - 20px));padding:20px 26px 22px;border-radius:18px;background:#fff;box-shadow:0 22px 55px rgba(0,0,0,.29),0 45px 105px rgba(0,0,0,.13);text-align:center;color:#1f1919}
+.pb-usd-tooltip[hidden]{display:none!important}
+.pb-usd-tooltip-label{display:block;font-size:13px;letter-spacing:.22em;color:#777;line-height:1.5;margin-bottom:7px;white-space:nowrap}
+.pb-usd-tooltip>strong{display:block;font-size:clamp(25px,5vw,52px);font-weight:750;letter-spacing:-.055em;line-height:1.15;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:420px){.pb-usd-tooltip{padding:16px 18px 19px;min-width:min(245px,calc(100vw - 20px))}.pb-usd-tooltip-label{font-size:11px;letter-spacing:.16em}}
