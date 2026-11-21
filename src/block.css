@@ -1452,3 +1452,12 @@ html.pb-nwp-on{overflow:hidden}
 .pb-usd-tooltip-label{display:block;font-size:13px;letter-spacing:.22em;color:#777;line-height:1.5;margin-bottom:7px;white-space:nowrap}
 .pb-usd-tooltip>strong{display:block;font-size:clamp(25px,5vw,52px);font-weight:750;letter-spacing:-.055em;line-height:1.15;white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:420px){.pb-usd-tooltip{padding:16px 18px 19px;min-width:min(245px,calc(100vw - 20px))}.pb-usd-tooltip-label{font-size:11px;letter-spacing:.16em}}
+
+/* Home: primary stage action and one rotating contextual hint, no card container. */
+#pl-me .pb-home{grid-template-areas:"hero card";grid-template-rows:auto}
+#pl-me .pb-hero-next{margin-top:24px;max-width:340px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.45}
+#pl-me .pb-hero-next a{color:var(--red);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+#pl-me .pb-hero-quote{max-width:340px;margin-top:24px;font-size:17px;line-height:1.45;font-style:italic}
+#pl-me .pb-hero-quote a{color:inherit;text-decoration:underline;text-underline-offset:4px}
+#pl-me .pb-hero-quote a:hover{color:var(--red)}
+@media(max-width:900px){#pl-me .pb-home{grid-template-areas:"hero" "card";grid-template-rows:none}}
