@@ -10,6 +10,8 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
     for(const width of [320,375,768,1024,1440]){
       const page=await browser.newPage({viewport:{width,height:900}});
       const errors=[];page.on('pageerror',e=>errors.push(e.message));
+      await page.route('https://api.nbp.pl/**',route=>route.fulfill({status:200,contentType:'application/json',
+        headers:{'access-control-allow-origin':'*'},body:JSON.stringify({table:'A',code:'USD',rates:[{effectiveDate:'2026-11-20',mid:4}]})}));
       await page.addInitScript(()=>{if(!localStorage.getItem('pb-poland-v2'))localStorage.setItem('pb-poland-v2',JSON.stringify({city:'gdansk',cityManual:true,stage:'wait',f:{filed:'2026-01-01'}}));});
       await page.goto(origin+'/index.html',{waitUntil:'domcontentloaded'});
       const data=await page.evaluate(()=>({
@@ -39,6 +41,16 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
         throw Error('city change/overflow at '+width+': '+JSON.stringify(city));
       await page.goto(origin+'/dom.html#zezwolenie-na-zakup-nieruchomosci',{waitUntil:'domcontentloaded'});
       await page.locator('#pl-home').waitFor({state:'visible'});
+      await page.waitForFunction(()=>document.querySelector('#pl-money [data-o="usdRate"]')?.textContent==='4,0000');
+      await page.locator('#pl-home .pl-counts .pl-big').first().hover();
+      const usd=await page.evaluate(()=>{
+        const t=document.querySelector('#pb-usd-tooltip'),rect=t?.getBoundingClientRect(),
+          p=document.querySelector('#pl-home .pl-counts .pl-big');
+        return {text:t?.querySelector('strong')?.textContent,visible:!!t&&!t.hidden,
+          left:rect?.left,right:rect?.right,pln:p?.getAttribute('data-pln')};
+      });
+      if(!usd.visible||usd.text?.replace(/\s/g,'')!=='$121625,0'||usd.pln!=='486500'||usd.left<-1||usd.right>width+1)
+        throw Error('USD price tooltip at '+width+': '+JSON.stringify(usd));
       await page.locator('label.pl-check:has([data-check="home-permit-0"])').click();
       await page.locator('label.pl-check:has([data-check="home-permit-border"])').click();
       await page.locator('label.pl-check:has([data-check="home-permit-exempt"])').click();
