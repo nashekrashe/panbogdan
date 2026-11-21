@@ -1489,16 +1489,21 @@ html.pb-nwp-on{overflow:hidden}
 }
 @media(max-width:900px){#pl-me .pb-home{grid-template-areas:"hero" "card";grid-template-rows:none}}
 
-/* Currency hint: a light dotted row with independent spacing below large numerals. */
-.pl-big .pb-usd-price,
-.pb-stat .pl-big .pb-usd-price,
-.pb-hero .pl-big .pb-usd-price{
+/* Currency hint on large numerals (including .pl-big.pb-usd-price itself). */
+.pl-big.pb-usd-price,
+.pl-big .pb-usd-price{
+  position:relative;
   text-decoration:none;
-  background-image:radial-gradient(circle,#ECECEC 3.5px,transparent 3.7px);
-  background-size:16px 8px;
-  background-repeat:repeat-x;
-  background-position:left bottom;
-  padding-bottom:.17em;
-  -webkit-box-decoration-break:clone;
-  box-decoration-break:clone;
+}
+.pl-big .pb-usd-price{display:inline-block}
+.pl-big.pb-usd-price::after,
+.pl-big .pb-usd-price::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-11px;
+  height:8px;
+  background:radial-gradient(circle,#ECECEC 3.5px,transparent 3.7px) left center/16px 8px repeat-x;
+  pointer-events:none;
 }
