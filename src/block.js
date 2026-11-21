@@ -1460,15 +1460,49 @@
     'Приложи актуальное согласие продавца: oświadczenie zbywcy или предварительный / девелоперский договор.',
     'Собери подтверждение денег: PIT с UPO, трудовой договор, решение по кредиту или другие документы; приложи подтверждение госпошлины.'
   ];
+  /* These checks confirm research, not eligibility itself. */
+  var HOME_PERMIT_ELIGIBILITY = [
+    ['home-permit-0', 'Проверил тип недвижимости: отдельная квартира, дом или участок.'],
+    ['home-permit-border', 'Проверил, находится ли недвижимость в приграничной зоне.'],
+    ['home-permit-exempt', 'Проверил исключения для своего гражданства, статуса и конкретной сделки.']
+  ];
+  function permitChecked(rows) { return rows.filter(function (r) { return !!S.checks[r[0]]; }).length; }
+  function updateHomePermit(changed) {
+    var n = permitChecked(HOME_PERMIT_ELIGIBILITY), total = HOME_PERMIT_ELIGIBILITY.length;
+    out('permitEligibilityStatus', n === total ? 'Проверено ' + n + '/' + total + '. Можно раскрыть снова' : 'Проверено ' + n + '/' + total);
+    var docs = HOME_PERMIT_DOCS.slice(1).map(function (t, i) { return ['home-permit-' + (i + 1), t]; });
+    out('permitDocsStatus', permitChecked(docs) + '/' + docs.length + ' собрано');
+    if (changed && changed.checked && HOME_PERMIT_ELIGIBILITY.some(function (x) { return x[0] === changed.getAttribute('data-check'); }) && n === total) {
+      var section = $('#pb-permit-eligibility');
+      if (section) {
+        section.open = false;
+        if (section.hasAttribute('data-fold-key')) S.folds[section.getAttribute('data-fold-key')] = false;
+        save();
+      }
+    }
+  }
   function rHomePermit() {
-    return '<section class="pb-guide" data-share="zezwolenie-na-zakup-nieruchomosci">' +
-      '<h3 class="pl-h3">Разрешение MSWiA без платного посредника</h3>' +
-      '<div class="pb-rent-stat pb-permit-price"><div class="pb-rent-number">1 570 zł</div><div><b>Государственная пошлина за zezwolenie na nabycie nieruchomości</b>' +
-      '<p>Не обязательно покупать услугу посредника за 8 000 zł, чтобы подать заявление. Но нотариальные копии, справки и присяжные переводы могут стоить дополнительно. Подача сама по себе не гарантирует решения.</p></div></div>' +
-      '<p class="pl-note">Это 10 групп подготовки, а не утверждённый законом перечень ровно из десяти документов: состав зависит от недвижимости и оснований. Для отдельного жилья вне приграничной зоны разрешение часто вообще не требуется. Для земли и дома проверь исключения.</p>' +
-      '<div class="pb-permit-checks">' + checks(HOME_PERMIT_DOCS.map(function (t, i) { return ['home-permit-' + i, t]; })) + '</div>' +
-      '<p class="pl-note">Земельные выписки и планы обычно должны быть не старше 6 месяцев; копии заверяются, иностранные документы переводятся присяжным переводчиком. Подача в MSWiA лично, почтой, через ePUAP или e-Doręczenia, не обычным email. Если не супруги покупают в долях, нужны отдельные заявления.</p>' +
-      srcLine([['https://www.gov.pl/web/mswia/uzyskaj-zezwolenie-na-nabycie-nieruchomosci-akcji-udzialow-przez-cudzoziemcow', 'MSWiA: требования, документы, пошлина и исключения, 19.05.2026']]) + '</section>';
+    var docs = HOME_PERMIT_DOCS.slice(1).map(function (t, i) { return ['home-permit-' + (i + 1), t]; });
+    return '<details class="pl-tool pb-fold pb-home-permit" id="pl-d-home-permit" data-share="zezwolenie-na-zakup-nieruchomosci">' +
+      '<summary class="pb-fold-h">' + svg18('file', 24) + '<span class="t">Разрешение MSWiA' +
+        '<small>1 570 zł пошлина. Проверка необходимости и документы</small></span>' + foldToggle() + '</summary>' +
+      '<div class="pb-fold-b">' +
+        '<p class="pl-note">Заявление можно подать самостоятельно, без платного посредника. К пошлине добавятся расходы на справки, копии и переводы. Решение не гарантировано.</p>' +
+        '<div class="pl-acc pb-permit-elig"><details id="pb-permit-eligibility"' + (permitChecked(HOME_PERMIT_ELIGIBILITY) === HOME_PERMIT_ELIGIBILITY.length ? '' : ' open') + '>' +
+          '<summary><span class="t">Нужно ли тебе разрешение?<small data-o="permitEligibilityStatus"></small></span>' + ms('expand_more', 'chev') + '</summary>' +
+          '<div class="body wide"><p class="pl-note">Отмечай после проверки, а не как ответ «да». Отдельная квартира вне приграничной зоны обычно освобождена. Для дома или участка проверь исключения.</p>' +
+            checks(HOME_PERMIT_ELIGIBILITY) + '</div>' +
+        '</details></div>' +
+        '<div class="pb-permit-docs"><h3 class="pb-permit-doc-h">Документы <small data-o="permitDocsStatus"></small></h3>' +
+          '<p class="pl-note">Группы подготовки, а не универсальный официальный перечень. Точный состав зависит от недвижимости и основания.</p>' +
+          '<div class="pl-checks pl-docs">' + docs.map(function (d) {
+            var box = '<input type="checkbox" data-check="' + d[0] + '"' + (S.checks[d[0]] ? ' checked' : '') + '>';
+            return docRow({ k: 'file' }, d[1], box, d[0]);
+          }).join('') + '</div>' +
+        '</div>' +
+        '<p class="pl-note">Земельные выписки и планы обычно не старше 6 месяцев; иностранные документы переводятся присяжным переводчиком. Подача в MSWiA лично, почтой, через ePUAP или e-Doręczenia, не обычным email. Несупругам, покупающим в долях, нужны отдельные заявления.</p>' +
+        srcLine([['https://www.gov.pl/web/mswia/uzyskaj-zezwolenie-na-nabycie-nieruchomosci-akcji-udzialow-przez-cudzoziemcow', 'MSWiA: документы, пошлина и исключения, 19.05.2026']]) +
+      '</div></details>';
   }
 
   function rHome() {
@@ -2422,6 +2456,7 @@
       rMe() + rLegal() + rNews() + rBy() + rMoney() + rBank() + rKids() + rHome() + rAuto() + rHelp() + rDict() + '</main>' + rFoot() + '</div></div>' + rTabs() + rFeedback() + rNewsPop();
     registerAnchors(root);
     restoreFolds();
+    updateHomePermit();
     updateUsdRate();
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
     if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
@@ -2763,7 +2798,7 @@
     if (el.matches('[data-city-sel]')) { if (el.value === '__geo') { el.value = S.city; locate(false); return; } if (!CITIES[el.value]) return; S.city = el.value; S.geo = null; S.cityManual = true; geoErr = ''; save(); render(); var ns = $('#pl-city'); if (ns) ns.focus({ preventScroll: true }); return; }
     if (el.matches('[data-pmzh-path]')) { S.pmzhPath = el.value; save(); render(); var ps = $('#pl-pmzh-path'); if (ps) ps.focus({ preventScroll: true }); return; }
     if (el.matches('[data-mypath]')) { S.myPath = el.checked; save(); updatePath(); updateProgress(); return; }
-    if (el.matches('[data-check]')) { S.checks[el.getAttribute('data-check')] = el.checked; save(); updateProgress(); }
+    if (el.matches('[data-check]')) { S.checks[el.getAttribute('data-check')] = el.checked; save(); updateProgress(); if (el.closest('.pb-home-permit')) updateHomePermit(el); }
     else if (el.matches('[data-f]:not([data-date])')) { var k = el.getAttribute('data-f'); if (el.type === 'checkbox' || el.tagName === 'SELECT') { S.f[k] = el.type === 'checkbox' ? el.checked : el.value; save(); } else setField(el, false); updateTools(); updateProgress(); }
   });
 
