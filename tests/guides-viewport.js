@@ -71,7 +71,8 @@ const origin=process.argv[2]||'http://127.0.0.1:8765';
       const licenseAlternate=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
       if(await swapped.isChecked()||!await absent.isChecked()||licenseAlternate!==licenseAfter)
         throw Error('licence options not exclusive, or duplicate XP at '+width);
-      await page.reload({waitUntil:'domcontentloaded'});
+      await page.goto(origin+'/auto.html#wymiana-prawa-jazdy',{waitUntil:'domcontentloaded'});
+      await page.locator('#pl-auto').waitFor({state:'visible'});
       if(await swapped.isChecked()||!await absent.isChecked())throw Error('licence choice not persisted at '+width);
       await absent.uncheck();
       const licenseReset=await page.evaluate(()=>parseInt(document.querySelector('[data-o="lvlPct"]').textContent,10));
