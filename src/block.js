@@ -442,7 +442,18 @@
     { g: 'life', ic: 'language', t: 'Официально по-беларуски', s: 'Правительственный портал', b: [
       'На gov.pl есть материалы по-беларуски. Часть инструкций там устаревает: например, старые страницы ещё показывают прежние сроки dokument podróży. Всегда сравни дату публикации с текущими сообщениями UdSC и MOS.',
       'Основные юридические условия проверяй на польских страницах ужонда и в действующих нормативных актах.'
-    ], src: [['https://www.gov.pl/web/by', 'gov.pl/web/by'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'UdSC: новая дата']], checked: '20.11.2026' }
+    ], src: [['https://www.gov.pl/web/by', 'gov.pl/web/by'], ['https://www.gov.pl/web/udsc/ulatwienia-dla-obywateli-bialorusi-dotyczace-wydawania-polskich-dokumentow-podrozy-dla-cudzoziemca---przedluzenie-do-31-grudnia-2026-r', 'UdSC: новая дата']], checked: '20.11.2026' },
+    { g: 'docs', ic: 'verified', t: 'Брак в Польше', s: 'С паспортом и без действующего паспорта', b: [
+      '<b>Если паспорт действует.</b> Выберите любой Urząd Stanu Cywilnego (USC), покажите паспорта и подайте zapewnienie o braku okoliczności wyłączających zawarcie małżeństwa. Для иностранца также нужен документ о возможности заключить брак по его национальному праву (zaświadczenie o zdolności prawnej do zawarcia małżeństwa). Если получить его чрезвычайно сложно, районный суд по месту жительства может освободить от его подачи; действующий паспорт от этого требования сам по себе не освобождает.',
+      '<b>Если беларуский паспорт истёк.</b> USC всё равно обязан установить личность каждого из будущих супругов. Истёкший паспорт сам по себе не является гарантированно достаточным документом. Действующий polski dokument podróży подтверждает личность и гражданство; заранее отправьте его скан в выбранный USC и получите письменное подтверждение, что примут его для регистрации брака. Карта побыту и истёкший паспорт могут помочь с установлением данных, но не означают автоматического допуска. Если действующего документа личности нет, сперва согласуйте с USC, какие документы он примет.',
+      '<b>Важно:</b> освобождение судом от справки о брачной правоспособности НЕ заменяет проверку личности. Если USC отказывает, просите письменный отказ с основанием: его можно оспорить в суде в течение 14 дней.',
+      '<b>Общие правила:</b> при необходимости USC запросит свидетельство о рождении и документы о прекращении прежнего брака. Иностранные документы переводятся присяжным переводчиком. При недостаточном польском нужен переводчик при подаче заявления и на церемонии. Госпошлина за составление акта брака 84 zł, обычно церемония не раньше месяца после zapewnienie (действует 6 месяцев).'
+    ], more: [
+      '1. Выбери USC и запроси письменный перечень документов для обоих будущих супругов, особенно если паспорт истёк.',
+      '2. Подготовь документ личности и документ о правоспособности к браку. Если второй документ невозможно получить, подай в sąd rejonowy по месту жительства wniosek o zwolnienie cudzoziemca od złożenia dokumentu stwierdzającego możność zawarcia małżeństwa.',
+      '3. Собери дополнительные акты гражданского состояния, если их запросит USC, и переводы присяжного. Отнеси документы, оплати 84 zł и подпиши zapewnienie.',
+      '4. Получи дату и уточни требования к документам личности на сам день бракосочетания. Если есть письменный отказ USC, можно обратиться в суд в течение 14 дней.'
+    ], src: [['https://www.gov.pl/web/gov/wez-slub-cywilny.', 'Gov.pl: брак, документы, сроки'], ['https://eli.gov.pl/api/acts/DU/2026/393/text.pdf', 'Prawo o aktach stanu cywilnego, 2026'], ['https://mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/wprowadzenie/', 'MOS: dokument podróży и личность'], ['https://bip.brpo.gov.pl/pl/content/rpo-cudzoziemiec-malzenstwo-zaswiadczenie-problemy-mswia', 'RPO: справка о правоспособности']], checked: '21.11.2026' }
   ];
 
   /* Dokument podróży: what each voivode's page says about timing (checked 17.11.2026). Missing key = not collected yet */
@@ -893,17 +904,6 @@
     { k: 'vnzh', t: 'ВНЖ', ic: 'id_card', min: 1, f: 'filed', g: 'vnzhGot' },
     { k: 'pmzh', t: 'ПМЖ', ic: 'verified', min: 2, f: 'pmzhFiled', g: 'staly' },
     { k: 'pass', t: 'Паспорт', ic: 'emoji_events', min: 4, f: 'passFiled', g: 'passGot' }
-    { g: 'docs', ic: 'verified', t: 'Брак в Польше', s: 'С паспортом и без действующего паспорта', b: [
-      '<b>Если паспорт действует.</b> Выберите любой Urząd Stanu Cywilnego (USC), покажите паспорта и подайте zapewnienie o braku okoliczności wyłączających zawarcie małżeństwa. Для иностранца также нужен документ о возможности заключить брак по его национальному праву (zaświadczenie o zdolności prawnej do zawarcia małżeństwa). Если получить его чрезвычайно сложно, районный суд по месту жительства может освободить от его подачи; действующий паспорт от этого требования сам по себе не освобождает.',
-      '<b>Если беларуский паспорт истёк.</b> USC всё равно обязан установить личность каждого из будущих супругов. Истёкший паспорт сам по себе не является гарантированно достаточным документом. Действующий polski dokument podróży подтверждает личность и гражданство; заранее отправьте его скан в выбранный USC и получите письменное подтверждение, что примут его для регистрации брака. Карта побыту и истёкший паспорт могут помочь с установлением данных, но не означают автоматического допуска. Если действующего документа личности нет, сперва согласуйте с USC, какие документы он примет.',
-      '<b>Важно:</b> освобождение судом от справки о брачной правоспособности НЕ заменяет проверку личности. Если USC отказывает, просите письменный отказ с основанием: его можно оспорить в суде в течение 14 дней.',
-      '<b>Общие правила:</b> при необходимости USC запросит свидетельство о рождении и документы о прекращении прежнего брака. Иностранные документы переводятся присяжным переводчиком. При недостаточном польском нужен переводчик при подаче заявления и на церемонии. Госпошлина за составление акта брака 84 zł, обычно церемония не раньше месяца после zapewnienie (действует 6 месяцев).'
-    ], more: [
-      '1. Выбери USC и запроси письменный перечень документов для обоих будущих супругов, особенно если паспорт истёк.',
-      '2. Подготовь документ личности и документ о правоспособности к браку. Если второй документ невозможно получить, подай в sąd rejonowy по месту жительства wniosek o zwolnienie cudzoziemca od złożenia dokumentu stwierdzającego możność zawarcia małżeństwa.',
-      '3. Собери дополнительные акты гражданского состояния, если их запросит USC, и переводы присяжного. Отнеси документы, оплати 84 zł и подпиши zapewnienie.',
-      '4. Получи дату и уточни требования к документам личности на сам день бракосочетания. Если есть письменный отказ USC, можно обратиться в суд в течение 14 дней.'
-    ], src: [['https://www.gov.pl/web/gov/wez-slub-cywilny.', 'Gov.pl: брак, документы, сроки'], ['https://eli.gov.pl/api/acts/DU/2026/393/text.pdf', 'Prawo o aktach stanu cywilnego, 2026'], ['https://mos.cudzoziemcy.gov.pl/kategorie-informacji/dokumenty/dokumenty-op3/pdpc/wprowadzenie/', 'MOS: dokument podróży и личность'], ['https://bip.brpo.gov.pl/pl/content/rpo-cudzoziemiec-malzenstwo-zaswiadczenie-problemy-mswia', 'RPO: справка о правоспособности']], checked: '21.11.2026' },
 
   ];
   /* a home stat with a link to its section */
@@ -915,7 +915,8 @@
     return '<section class="pl-band pb-screen" id="pl-me" aria-labelledby="pl-h1">' +
       '<h1 class="sr" id="pl-h1">Pan Bogdan: Польша пошагово</h1>' +
       '<div class="pb-home">' +
-        '<div class="pb-hero" data-fitcells="300"><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', ' + link('https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body', 'данные MSWiA') + ' на ' + c.waitDate + '</div></div>' +
+        '<div class="pb-hero" data-fitcells="300"><div class="pl-big" style="color:var(--red)" data-bind="waitFmt"></div><div class="pl-lab">дней в среднем ждут решения по ВНЖ ' + c.loc + '</div><div class="pl-sub">По закону 60. ' + c.uw + ', ' + link('https://api.sejm.gov.pl/sejm/term10/interpellations/18089/reply/DWDJHZ/body', 'данные MSWiA') + ' на ' + c.waitDate + '</div>' +
+          '<div class="pb-hero-next" data-o="heroNext"></div><div class="pb-hero-quote" data-o="heroQuote"></div></div>' +
         '<div class="pb-card pb-mine">' +
           '<div class="pb-mine-h"><h2 class="pb-mine-logo" id="pl-me-h">Своё</h2><p class="pb-mine-d" data-o="meIntro">Укажи даты: появятся твои счётчики и сравнение со средним по воеводству.</p><p class="pb-mine-p">Хранится только в этом браузере. <br>Даже ужонд не узнает.</p></div>' +
           '<div class="pl-mine">' +
@@ -931,7 +932,6 @@
           '<div class="pl-eyebrow">Что где</div><ul class="pb-about-l">' + SECTIONS.filter(function (x) { return x.k !== 'me'; }).map(function (x) {
             return '<li><a href="' + hrefOf(x) + '">' + svgi(x.ic, 20) + '<span><b>' + x.n + '</b><small>' + SDESC[x.k] + '</small></span></a></li>';
           }).join('') + '</ul></div>' +
-        '<div class="pl-next pb-next" aria-live="polite"><div class="pl-eyebrow">Твои следующие шаги</div><ul data-o="next"></ul></div>' +
       '</div>' +
       '<div class="pb-counts">' +
         '<div class="pl-counts" data-fitcells="150">' +
@@ -2104,11 +2104,34 @@
     if (t === 't') return S.trips.some(function (x) { return x.from && x.to; });
     return false;
   }
+  /* One primary action per stage, plus one stable random context hint under the home hero. */
+  var HOME_HINTS = [
+    {t:'Не тяни с документами, подавайся сразу',h:'#pl-legal',when:function(){return ['arrive','vnzh','pmzh'].indexOf(S.stage)>=0;}},
+    {t:'Проверь окончание паспорта',h:'#pl-legal',when:function(){var d=parseD(S.f.passExp);return !d || days(today(),d)<=365;}},
+    {t:'Что там по аренде?',h:'#pl-home'},
+    {t:'Что там по процентам на ипотеку?',h:'#pl-home'},
+    {t:'Уже получил PIT-11? Проверь налоги',h:'#pl-money',when:function(){var m=today().getMonth();return m>=1&&m<=3;}},
+    {t:'Карта побыту не вечная. Проверь срок',h:'#pl-legal',when:function(){return ['vnzh','pmzhw','pmzh','pass'].indexOf(S.stage)>=0;}},
+    {t:'Пять лет в Польше? Посчитай путь к rezydentowi UE',h:'#pl-legal',when:function(){var d=parseD(S.f.since);return d&&days(d,today())>=1460;}},
+    {t:'Твои выезды тоже считаются',h:'#pl-legal',when:function(){return ['vnzh','pmzhw','pmzh','pass'].indexOf(S.stage)>=0;}},
+    {t:'Не забудь про OC и регистрацию машины',h:'#pl-auto'},
+    {t:'Кому положено 800+?',h:'#pl-kids'},
+    {t:'Загляни в новости легализации',h:'#pl-news'},
+    {t:'Банк не хочет открывать счёт? Сравни варианты',h:'#pl-bank'},
+    {t:'Сколько дадут на квартиру?',h:'#pl-home'},
+    {t:'Паспорт истёк? Проверь dokument podróży',h:'#pl-by',when:function(){var d=parseD(S.f.passExp);return d&&days(today(),d)<0;}},
+    {t:'Готовишься к гражданству? Проверь B1 и бумаги',h:'#pl-legal',when:function(){return ['pmzh','pass'].indexOf(S.stage)>=0;}}
+  ];
+  var homeHint = -1;
   function updateNext() {
-    var st = STAGES.filter(function (s) { return s.id === S.stage; })[0] || STAGES[0];
-    var left = st.next.filter(function (n) { return !stepDone(n[2]); });
-    out('next', left.length ? left.map(function (n) { return '<li>' + ms('arrow_outward') + '<span>' + n[0] + ' · <a href="' + linkOf(n[1]) + '">к разделу</a></span></li>'; }).join('')
-      : '<li>' + ms('check') + '<span>На этом этапе всё сделано. Сменишь этап сверху, будут новые шаги.</span></li>');
+    var st = STAGES.filter(function(s){return s.id===S.stage;})[0] || STAGES[0];
+    var action = st.next.filter(function(n){return !stepDone(n[2]);})[0];
+    if (!action) action = st.next[0];
+    out('heroNext', '<span class="pl-eyebrow">Твой следующий шаг</span> <a href="' + linkOf(action[1]) + '">' + action[0] + '</a>');
+    var choices = HOME_HINTS.filter(function(x){return !x.when||x.when();});
+    if (homeHint < 0 || choices.indexOf(HOME_HINTS[homeHint]) < 0) homeHint = HOME_HINTS.indexOf(choices[Math.floor(Math.random()*choices.length)]);
+    var q=HOME_HINTS[homeHint];
+    out('heroQuote', '<span aria-hidden="true">«</span><a href="' + linkOf(q.h) + '">' + q.t + '</a><span aria-hidden="true">»</span>');
   }
 
   /* one waiting counter: days from filing to decision (or to today), compared with the regional average or the legal term */
@@ -2141,6 +2164,7 @@
         '<div><div class="pl-big" style="color:var(--red)">' + (toPass > 0 ? n0(toPass) : '0') + '</div><div class="pl-lab">' + dWord(Math.max(0, toPass)) + ' до паспорта обычным путём</div><div class="pl-sub">Если всё пойдёт по плану. Ха</div></div>';
     }
     out('me', html);
+    updateNext();
     var intro = $('[data-o="meIntro"]'); if (intro) intro.hidden = !!html;
     var home = $('.pb-home'); if (home) home.classList.toggle('is-filled', !!html);
   }
@@ -2878,7 +2902,7 @@
     S.stage = id; S.stageSet = true; S.legal = { arrive: 'vnzh', wait: 'vnzh', vnzh: 'pmzh', pmzhw: 'pmzh', pmzh: 'paszport', pass: 'paszport', citizen: 'paszport' }[id] || S.legal; save();
     var st = STAGE_LBL[id], sel = $('[data-stage-sel]'), pill = sel && sel.parentNode;
     if (pill) { var first = pill.firstChild; while (first && first !== sel && first.tagName !== 'svg') { var nx = first.nextSibling; pill.removeChild(first); first = nx; } pill.insertAdjacentHTML('afterbegin', '<span>' + st[0] + '</span><b class="pb-tag">' + st[1] + '</b>'); var ph = sel.querySelector('option[disabled]'); if (ph) sel.removeChild(ph); }
-    updateStage(); applyTabs(); updatePath(); updateProgress(); updateMine(); updateMe(); updateInvite(); fitCounts();
+    updateStage(); applyTabs(); updatePath(); updateProgress(); updateMine(); updateMe(); updateNext(); updateInvite(); fitCounts();
   }
 
   function setStatus(key) {
