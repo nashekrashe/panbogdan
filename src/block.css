@@ -1489,11 +1489,16 @@ html.pb-nwp-on{overflow:hidden}
 }
 @media(max-width:900px){#pl-me .pb-home{grid-template-areas:"hero" "card";grid-template-rows:none}}
 
-/* Currency hint: separate the dotted underline from large numerals. */
+/* Currency hint: a light dotted row with independent spacing below large numerals. */
 .pl-big .pb-usd-price,
 .pb-stat .pl-big .pb-usd-price,
 .pb-hero .pl-big .pb-usd-price{
-  text-decoration-color:#E4E4E4;
-  text-underline-offset:.18em;
-  text-decoration-thickness:.095em;
+  text-decoration:none;
+  background-image:radial-gradient(circle,#ECECEC 3.5px,transparent 3.7px);
+  background-size:16px 8px;
+  background-repeat:repeat-x;
+  background-position:left bottom;
+  padding-bottom:.17em;
+  -webkit-box-decoration-break:clone;
+  box-decoration-break:clone;
 }
