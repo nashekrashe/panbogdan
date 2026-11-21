@@ -2596,7 +2596,10 @@
   }
   function refreshUsdPrices() {
     if (usdObserver) usdObserver.disconnect();
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), node, texts = [];
+    /* jsdom can finish its work with queued mutations after window.close(). */
+    var doc = root && root.ownerDocument, win = doc && doc.defaultView;
+    if (!win || !root.isConnected) return;
+    var walker = doc.createTreeWalker(root, win.NodeFilter.SHOW_TEXT, null), node, texts = [];
     while ((node = walker.nextNode())) if (/(zł|PLN)/i.test(node.nodeValue)) texts.push(node);
     texts.forEach(wrapPlnText);
     /* The value and "zł" are in separate cells in calculators and fact cards. */
@@ -2662,8 +2665,8 @@
       if (p) displayUsdPrice(p);
     });
     root.addEventListener('focusout', function (e) { if (e.target === usdHover) hideUsdPrice(); });
-    window.addEventListener('scroll', hideUsdPrice, {passive:true});
-    window.addEventListener('resize', hideUsdPrice);
+    window.addEventListener('scroll', function () { if (usdHover) displayUsdPrice(usdHover); }, {passive:true});
+    window.addEventListener('resize', function () { if (usdHover) displayUsdPrice(usdHover); });
   }
   function render() {
     closeCal(); hideUsdPrice();
