@@ -2131,8 +2131,30 @@
     var choices = HOME_HINTS.filter(function(x){return !x.when||x.when();});
     if (homeHint < 0 || choices.indexOf(HOME_HINTS[homeHint]) < 0) homeHint = HOME_HINTS.indexOf(choices[Math.floor(Math.random()*choices.length)]);
     var q=HOME_HINTS[homeHint];
-    out('heroQuote', '<span aria-hidden="true">«</span><a href="' + linkOf(q.h) + '">' + q.t + '</a><span aria-hidden="true">»</span>');
+    out('heroQuote', '<div class="pb-quote-inner"><span class="pb-quote-mark" aria-hidden="true">“</span><a class="pb-quote-copy" href="' + linkOf(q.h) + '">' + esc(q.t) + '</a><span class="pb-quote-credit">Пан Богдан</span></div>');
+    fitHeroQuote();
   }
+
+  /* Fit all context hints to the hero width without clipping or breaking the grid.
+     Reserve space via CSS min-height; shrink text only when it exceeds the quote budget. */
+  function fitHeroQuote() {
+    var box = $('.pb-hero-quote'), copy = box && box.querySelector('.pb-quote-copy');
+    if (!copy || !box.clientWidth) return;
+    var narrow = box.clientWidth < 290, maxHeight = narrow ? 154 : 176;
+    var size = narrow ? 34 : 40;
+    copy.style.fontSize = size + 'px';
+    while (size > 18 && (copy.scrollHeight > maxHeight || copy.scrollWidth > copy.clientWidth + 1)) {
+      size -= 1; copy.style.fontSize = size + 'px';
+    }
+    /* If translations or enlarged accessibility fonts need more room, CSS min-height may grow;
+       the entire text remains visible instead of being truncated. */
+  }
+  var quoteResizeFrame = 0;
+  window.addEventListener('resize', function () {
+    if (quoteResizeFrame) cancelAnimationFrame(quoteResizeFrame);
+    quoteResizeFrame = requestAnimationFrame(function () { quoteResizeFrame = 0; fitHeroQuote(); });
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeroQuote);
 
   /* one waiting counter: days from filing to decision (or to today), compared with the regional average or the legal term */
   function waitCard(what, f, g, avg, ref, regional) {
@@ -2751,6 +2773,7 @@
     renderTrips(); updateBinds(); updateGeo(); updateStage(); updatePath(); updateProgress(); updateMine(); updateMe(); updateFuel(); spy(); fitPhrases(); loadPayCheck();
     if (rendered) { show({ k: activeNow || 'me' }, false); window.scrollTo(0, y); } else { route(false); if (activeNow === 'me') countUp(); }
     refreshUsdPrices();
+    fitHeroQuote();
     rendered = 1;
   }
 
