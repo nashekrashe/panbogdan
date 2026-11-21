@@ -1766,18 +1766,95 @@
       '</section>';
   }
 
+  /* Auto procedure checklists, sourced from Gov.pl / KAS on 21.11.2026. Optional items are marked explicitly. */
+  var AUTO_LICENSE_DOCS = [
+    'Заявление wniosek o wymianę zagranicznego prawa jazdy.',
+    'Актуальное фото для prawa jazdy, 35 × 45 мм.',
+    'Паспорт или другой документ личности и документ, подтверждающий право пребывания в Польше.',
+    'Документ, подтверждающий адрес проживания или zameldowanie. Если meldunek нет, уточни альтернативу в ужонде.',
+    'Иностранное водительское удостоверение и его копия; оригинал понадобится при выдаче польских прав.',
+    'Присяжный перевод иностранного удостоверения, если требуется по его образцу и правилам ужонда.',
+    'Подтверждение оплаты 100 zł за изготовление польских прав.',
+    'Медицинское заключение, если срок иностранных прав истёк; для некоторых категорий также психологическое заключение.'
+  ];
+  var AUTO_LICENSE_STEPS = [
+    'Уточни, нужна ли замена: права ЕС обычно действуют без обмена; для прав вне ЕС проверь срок пребывания и соответствие международной конвенции.',
+    'Собери документы, фото, копии и при необходимости перевод; уточни подтверждение права пребывания.',
+    'Подай заявление в starostwo или wydział komunikacji города на правах повята по месту проживания.',
+    'При нестандартном образце прав уточни, нужен ли теоретический экзамен в WORD (через PKK).',
+    'Оплати изготовление, проверь статус в info-car.pl и отдай иностранные права при получении польских.'
+  ];
+  var AUTO_BUY_STEPS = [
+    'До оплаты проверь VIN, историю, пробег и данные продавца через historiapojazdu.gov.pl; осмотри машину на диагностике.',
+    'Сверь продавца с собственником в dowód rejestracyjny. Если владельцев было несколько, проверь цепочку договоров и отсутствие залога.',
+    'Подпиши umowa kupna-sprzedaży (или получи faktura VAT/VAT-marża). Укажи стороны, дату, цену, VIN, регистрационный номер, пробег и дефекты.',
+    'Получи от продавца ключи, dowód rejestracyjny, действующую информацию о OC и все документы автомобиля; проверь срок technicznego.',
+    'Проверь страхование OC без разрыва, рассчитай PCC при частной продаже и подай заявление на регистрацию в срок.'
+  ];
+  var AUTO_REG_STEPS = [
+    'Определи сценарий: новый из польского салона регистрируется до выезда; купленный в Польше подержанный обычно требует заявления в течение 30 дней.',
+    'Обеспечь OC, проверь действительность техосмотра для подержанной машины; при ввозе сначала урегулируй налоги и таможню.',
+    'Собери заявление и документы собственности, документы автомобиля, подходящие справки и квитанции.',
+    'Подай wniosek o rejestrację в wydział komunikacji по месту проживания; при нескольких владельцах нужны все или доверенность.',
+    'Получи временную регистрацию и номера при необходимости; затем забери постоянный dowód rejestracyjny.'
+  ];
+  var AUTO_REG_DOCS = [
+    'Заполненное заявление wniosek o rejestrację pojazdu.',
+    'Паспорт или другой документ личности; доверенность, если документы подаёт представитель.',
+    'Договор покупки / faktura VAT / faktura VAT-marża; при цепочке продаж приложи предыдущие документы собственности.',
+    'Для подержанного зарегистрированного авто: dowód rejestracyjny, старые номера (если применимо).',
+    'Для подержанного авто: действующий техосмотр в dowód или справка о положительном badanie techniczne, если нужен новый.',
+    'Для нового авто: świadectwo zgodności (CoC) и данные для регистрации, предоставляемые производителем/салоном.',
+    'Подтверждения госпошлин/сборов за регистрацию; OC должно действовать.',
+    'Для ввезённого авто: подтверждение akcyza или освобождения, иностранные документы/переводы, таможенная декларация из-за пределов ЕС по ситуации.'
+  ];
+  function autoDocRows(prefix, docs) {
+    return '<div class="pl-checks pl-docs pb-auto-docs">' + docs.map(function (t, i) {
+      var key = prefix + i;
+      var box = '<input type="checkbox" data-check="' + key + '"' + (S.checks[key] ? ' checked' : '') + '>';
+      return docRow({k:'file'}, t, box, key);
+    }).join('') + '</div>';
+  }
+  function autoSteps(prefix, steps) {
+    return '<div class="pb-auto-steps">' + checks(steps.map(function (t, i) {
+      return [prefix + i, '<b>' + (i + 1) + '.</b> ' + t];
+    })) + '</div>';
+  }
   function rAutoFormalities() {
-    return '<section class="pb-guide" data-share="kupno-sprzedaz-i-rejestracja-auta"><h3 class="pl-h3">Покупка, продажа и регистрация авто</h3>' +
-      '<div class="pb-guide-grid">' +
-      '<article class="pb-guide-card" data-share="rejestracja-samochodu"><span class="pb-guide-code">30 дней</span><h4>Купил: поставь на учёт</h4>' +
-      '<p>С 2024 года покупатель подаёт wniosek o rejestrację в wydział komunikacji по месту проживания. Возьми договор или фактуру, dowód rejestracyjny, старые номера (если есть), OC и документы по ситуации. При замене обычных номеров: 80 zł за таблички, 66,50 zł за dowód и 13,50 zł за временное разрешение, обычно 160 zł суммарно.</p></article>' +
-      '<article class="pb-guide-card" data-share="sprzedaz-samochodu"><span class="pb-guide-code">30 / 14 дней</span><h4>Продал: сообщи вовремя</h4>' +
-      '<p>За 30 дней уведомь starostę о продаже (zgłoszenie zbycia). В течение 14 дней сообщи страховщику OC. Покупатель должен проверить непрерывность OC и при обычной покупке у частного лица без VAT: PCC 2% и PCC-3, как правило, в течение 14 дней, если нет освобождения.</p></article>' +
-      '<article class="pb-guide-card" data-share="zolte-tablice"><span class="pb-guide-code">ŻÓŁTE</span><h4>Жёлтые номера: zabytkowy</h4>' +
-      '<p>Это не просто старый автомобиль. Нужна историческая ценность, подтверждённая wpisem do rejestru или wojewódzkiej ewidencji zabytków, либо инвентарём музея, документация и отдельный техосмотр. Возрастные критерии и оригинальность оценивает консерватор воеводства; в ряде регионов правила ужесточили в 2026 году. Проверь требования именно своего WUOZ.</p></article>' +
+    return '<section class="pb-guide pb-auto-buy" data-share="kupno-sprzedaz-i-rejestracja-auta">' +
+      '<h3 class="pl-h3">Покупка, продажа и регистрация авто</h3>' +
+      '<p class="pl-lead">В Польше налоги зависят от продавца, фактуры и того, была ли машина уже зарегистрирована здесь. Новая из салона, подержанная у частника и привезённая из ЕС облагаются по-разному.</p>' +
+      '<h4 class="pb-guide-sub">Налоги при покупке в Польше</h4>' +
+      '<div class="pb-guide-grid pb-auto-tax-grid">' +
+        '<article class="pb-guide-card"><span class="pb-guide-code">23% VAT</span><h4>Новая из салона</h4>' +
+          '<p>Обычно стандартный VAT уже включён в цену с фактуры салона. Отдельный PCC 2% покупатель не платит. Акциз, если он применим, обычно учитывается в цепочке поставки; уточни документы у продавца. Перед первой поездкой нужны регистрация и OC.</p></article>' +
+        '<article class="pb-guide-card"><span class="pb-guide-code">2% PCC</span><h4>Подержанная у частного лица</h4>' +
+          '<p>При обычной продаже между частными лицами в Польше подай PCC-3 и оплати 2% рыночной стоимости за 14 дней. Если стоимость не превышает 1 000 zł, есть освобождение. Сниженная цена в договоре сама по себе не уменьшает рыночную базу.</p></article>' +
+        '<article class="pb-guide-card"><span class="pb-guide-code">0 PCC</span><h4>Подержанная у дилера</h4>' +
+          '<p>Когда продажа облагается VAT или освобождена от него по правилам VAT, PCC обычно нет, в том числе при соответствующей faktura VAT-marża. Проверь тип фактуры, а не только возраст машины.</p></article>' +
       '</div>' +
-      '<p class="pl-note">Если машина уже зарегистрирована в Польше и номера читаемые и соответствуют правилам, их можно сохранить. Для ввезённых машин, лизинга и наследства нужны дополнительные процедуры.</p>' +
-      srcLine([['https://www.gov.pl/web/gov/zarejestruj-pojazd','Gov.pl: регистрация авто'],['https://www.gov.pl/web/gov/zglos-zbycie-lub-nabycie-pojazdu-na-przyklad-sprzedaz-kupno-darowizne','Gov.pl: сообщение о продаже'],['https://rf.gov.pl/oc-komunikacyjne-5-wskazowek-dla-zbywcy-pojazdu/','Rzecznik Finansowy: OC при продаже, 2026'],['https://podatki.gov.pl/podatki-osobiste/pcc/stawki-i-limity','podatki.gov.pl: PCC'],['https://www.gov.pl/web/wuoz-w-lublinie/pojazdy','WUOZ: жёлтые номера и региональные правила, 2026']]) + '</section>';
+      '<p class="pl-note pb-auto-import-note"><b>Импорт:</b> при первом ввозе и регистрации легкового автомобиля может возникать akcyza, в стандартном случае 3,1% для двигателя до 2 000 см³ и 18,6% для большего, с исключениями и льготами для отдельных типов. Из-за пределов ЕС возможны также пошлина и импортный VAT. Это не ещё один PCC 2% за покупку машины в польском салоне.</p>' +
+      '<h4 class="pb-guide-sub">Как купить</h4>' +
+      autoSteps('auto-buy-step-', AUTO_BUY_STEPS) +
+      '<p class="pl-note">Проверка истории бесплатна: ' + link('https://www.gov.pl/web/gov/sprawdz-historie-pojazdu','Historia Pojazdu') + '. Нужны VIN, номер регистрации и дата первой регистрации. Независимая диагностика дополняет данные реестра.</p>' +
+      '<details class="pl-tool pb-fold pb-auto-register" id="pl-d-auto-reg" data-share="rejestracja-samochodu">' +
+        '<summary class="pb-fold-h">' + svg18('file',24) + '<span class="t">Регистрация автомобиля<small>Сроки, порядок и документы для нового и подержанного</small></span>' + foldToggle() + '</summary>' +
+        '<div class="pb-fold-b">' +
+          '<p class="pl-note">Подержанный автомобиль, купленный в Польше: заявление обычно в течение 30 календарных дней. Новый автомобиль нужно зарегистрировать до выезда на дорогу; салон может помочь с подачей. С 2026 года оформление через салон идёт через e-Doręczenia.</p>' +
+          '<div class="pb-auto-reg-cost"><b>Обычно 160 zł</b><span>С новыми обычными номерами: 80 zł таблички, 66,50 zł dowód и знаки легализации, 13,50 zł временное разрешение. С сохранёнными подходящими номерами расходы ниже.</span></div>' +
+          '<h4>Шаги регистрации</h4>' + autoSteps('auto-reg-step-', AUTO_REG_STEPS) +
+          '<h4>Документы</h4>' + autoDocRows('auto-reg-doc-', AUTO_REG_DOCS) +
+          '<p class="pl-note">Точный комплект зависит от типа машины и ужонда. Выделенные условия «для нового», «для подержанного» и «для ввезённого» не нужно собирать одновременно. Чеклист сохраняется только в твоём браузере.</p>' +
+        '</div></details>' +
+      '<div class="pb-guide-grid pb-auto-other-grid">' +
+        '<article class="pb-guide-card" data-share="sprzedaz-samochodu"><span class="pb-guide-code">30 / 14</span><h4>Продал машину</h4>' +
+          '<p>В течение 30 дней уведомь starostę (zgłoszenie zbycia). За 14 дней сообщи страховщику OC и передай покупателю информацию о полисе. Храни договор и подтверждение уведомления.</p></article>' +
+        '<article class="pb-guide-card" data-share="zolte-tablice"><span class="pb-guide-code">ŻÓŁTE</span><h4>Жёлтые номера</h4>' +
+          '<p>Для zabytkowy недостаточно возраста машины. Нужна историческая ценность, включение в реестр или воеводскую ewidencję либо соответствующий музейный статус, документация и специальный техосмотр. Условия оценивает региональный консерватор.</p></article>' +
+      '</div>' +
+      srcLine([['https://www.gov.pl/web/gov/zarejestruj-pojazd','Gov.pl: документы, сроки и регистрация'],['https://www.gov.pl/web/gov/zarejestruj-pojazd-za-posrednictwem-salonu-sprzedazy','Gov.pl: регистрация через салон, 2026'],['https://www.gov.pl/web/gov/sprawdz-historie-pojazdu','Gov.pl: Historia Pojazdu'],['https://podatki.gov.pl/en/vehicles-in-eu','KAS: PCC и акциз'],['https://podatki.gov.pl/podatki-firmowe/vat/stawki-i-limity','KAS: VAT 23%'],['https://podatki.gov.pl/akcyza/stawki-podatkowe','KAS: ставки акциза'],['https://www.gov.pl/web/gov/zglos-zbycie-lub-nabycie-pojazdu-na-przyklad-sprzedaz-kupno-darowizne','Gov.pl: продажа'],['https://www.gov.pl/web/wuoz-w-lublinie/pojazdy','WUOZ: исторические номера']]) +
+      '<p class="pl-note">Источники проверены 21.11.2026. Отдельные правила для импорта, гибридов, наследства и лизинга отличаются.</p>' +
+    '</section>';
   }
 
   function rAuto() {
@@ -1800,13 +1877,21 @@
         ['swap_horiz', 'Авто на беларуских номерах', 'Санкции ЕС с 1.07.2024', ['Легковые авто на беларуских номерах нельзя ввозить в ЕС (регламент 2024/1865). Для личного автомобиля возможен въезд по исключению при соблюдении условий, включая присутствие владельца и отсутствие коммерческого использования. Уполномоченные органы могут разрешить въезд, это не автоматическое право.', 'Литва, Латвия и Эстония применяют запрет жёстче, проверь маршрут заранее.'], 'https://www.gov.pl/web/kas/nowe-zasady-przywozu-samochodow-osobowych-zarejestrowanych-na-bialorusi', 'gov.pl/web/kas'],
         ['shield', 'Przegląd и OC', 'Обязательное', ['OC обязательно с первого дня. Без него штрафы неприятно круглые.', 'Техосмотр легковой машины: у новой первый до 3 лет с первой регистрации, второй до 5 лет, дальше каждый год.'], 'https://lexlege.pl/prawo-o-ruchu-drogowym/art-81/', 'art. 81 PoRD']
       ].map(function (a, i) {
-        var details = '<details id="pl-d-au' + i + '" data-share="' + ['wymiana-prawa-jazdy','auto-na-bialoruskich-numerach','oc-i-przeglad'][i] + '"><summary>' + ms(a[0], 'lead-ico') + '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more', 'chev') + '</summary><div class="body">' + a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('') + (a[4] ? '<p class="pl-note">Источник: ' + link(a[4], a[5]) + '</p>' : '') + '</div></details>';
+        var body = a[3].map(function (p) { return '<p>' + p + '</p>'; }).join('');
+        if (!i) body += '<h4 class="pb-auto-doc-h">Шаги обмена</h4>' + autoSteps('auto-license-step-', AUTO_LICENSE_STEPS) +
+          '<h4 class="pb-auto-doc-h">Документы</h4>' + autoDocRows('auto-license-doc-', AUTO_LICENSE_DOCS) +
+          '<p class="pl-note">По Gov.pl изготовление прав стоит 100 zł. При нестандартном образце удостоверения может потребоваться теория в WORD, при подходящих документах нет. Уточни у своего wydział komunikacji, нужен ли перевод.</p>';
+        body += (a[4] ? '<p class="pl-note">Источник: ' + link(a[4],a[5]) + (i ? '' : ', ' + link('https://samorzad.gov.pl/web/powiat-bialostocki/18-wymiana-prawa-jazdy-wydanego-za-granica','powiat: перевод и ПКК')) + '. Проверено 21.11.2026.</p>' : '');
+        var details = '<details id="pl-d-au' + i + '" data-share="' + ['wymiana-prawa-jazdy','auto-na-bialoruskich-numerach','oc-i-przeglad'][i] + '"><summary>' + ms(a[0], 'lead-ico') +
+          '<span class="t">' + a[1] + '<small>' + a[2] + '</small></span>' + ms('expand_more','chev') + '</summary><div class="body">' + body + '</div></details>';
         if (i) return details;
-        return '<div class="pb-auto-license" role="group" aria-label="Обмен прав">' +
-          '<div class="pl-step pb-auto-license-step"><label class="pl-chk pl-check pb-auto-license-check" title="Обменял права: +2% к прогрессу">' +
-            '<input type="checkbox" data-auto-license="swapped" aria-label="Обменял водительские права"' + (S.checks.auto_license_swapped ? ' checked' : '') + '></label>' + details + '</div>' +
-          '<label class="pl-check pb-auto-license-none"><input type="checkbox" data-auto-license="absent"' + (S.checks.auto_license_absent ? ' checked' : '') + '>' +
-            '<span>У меня нет прав (и водительских тоже) <small>+2% к прогрессу</small></span></label></div>';
+        return '<div class="pb-auto-license">' + details +
+          '<div class="pb-auto-license-choices" role="group" aria-label="Статус водительских прав">' +
+            '<label class="pl-check pb-auto-choice"><input type="checkbox" data-auto-license="swapped"' + (S.checks.auto_license_swapped ? ' checked' : '') + '>' +
+              '<span>Обменял права<small>+2% к прогрессу</small></span></label>' +
+            '<label class="pl-check pb-auto-choice"><input type="checkbox" data-auto-license="absent"' + (S.checks.auto_license_absent ? ' checked' : '') + '>' +
+              '<span>Нет прав<small>+2% к прогрессу</small></span></label>' +
+          '</div></div>';
       }).join('') + '</div>' + rAutoFormalities() + '</section>';
   }
 

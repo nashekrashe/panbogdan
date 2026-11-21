@@ -1402,13 +1402,40 @@ html.pb-nwp-on{overflow:hidden}
 .pb-permit-docs .pl-doc-key .pl-doc-t{overflow-wrap:anywhere}
 @media(max-width:480px){.pb-mort-foreign{padding:12px 14px}.pb-home-permit .pb-fold-h{padding:16px}.pb-home-permit .pb-fold-b{padding:0 16px 20px}}
 
-/* Optional driver's licence milestone in Auto: one completion path or not-applicable. */
+
+/* Auto: two equal licence outcomes under the accordion heading, not in it. */
 .pb-auto-license{border-bottom:1px solid var(--line)}
-.pb-auto-license .pb-auto-license-step details{border-bottom:0}
-.pb-auto-license-check.pl-chk{cursor:pointer;margin-top:6px}
-.pb-auto-license-check.pl-check{padding:0;align-items:center}
-.pb-auto-license-check input{margin:0}
-.pb-auto-license-none{padding:0 0 13px 40px;gap:9px;font-size:13px;color:var(--mut)}
-.pb-auto-license-none input{width:16px;height:16px;flex-basis:16px;margin-top:1px}
-.pb-auto-license-none small{color:var(--red);font-weight:650;white-space:nowrap}
-@media(max-width:420px){.pb-auto-license-none{padding-left:31px}.pb-auto-license-none small{white-space:normal}}
+.pb-auto-license>details{border-bottom:0}
+.pb-auto-license-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 0 16px 38px}
+.pb-auto-choice{min-width:0;display:flex;align-items:flex-start;gap:9px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+.pb-auto-choice input{margin-top:2px}
+.pb-auto-choice span{min-width:0;font-size:13px;font-weight:600}
+.pb-auto-choice small{display:block;color:var(--red);font-size:11px;font-weight:600;margin-top:3px}
+.pb-auto-doc-h{font-size:16px;font-weight:700;margin:12px 0 4px}
+.pb-auto-license .body{max-width:none}
+.pb-auto-steps .pl-check{gap:8px;font-size:13px;line-height:1.45}
+.pb-auto-steps .pl-check span>b{color:var(--red);margin-right:4px}
+.pb-auto-steps .pl-checks{gap:5px}
+.pb-auto-steps .pl-check input{margin-top:2px}
+.pb-auto-docs{gap:7px}
+.pb-auto-docs .pl-doc-key{min-width:0}
+.pb-auto-docs .pl-doc-t{overflow-wrap:anywhere}
+.pb-auto-buy .pb-guide-sub{font-size:18px;font-weight:700;margin:30px 0 12px}
+.pb-auto-tax-grid{margin-top:10px}
+.pb-auto-buy .pb-auto-import-note{margin-top:12px;margin-bottom:10px}
+.pb-auto-register{margin-top:32px;padding:0}
+.pb-auto-register .pb-fold-b{gap:16px;min-width:0}
+.pb-auto-register .pb-fold-b>h4{font-size:16px;font-weight:700;margin:10px 0 0}
+.pb-auto-register .pb-fold-b>.pl-note{margin:0}
+.pb-auto-register .pb-fold-b>.pb-auto-docs{gap:7px}
+.pb-auto-reg-cost{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.pb-auto-reg-cost b{white-space:nowrap;font-size:19px;color:var(--red)}
+.pb-auto-reg-cost span{flex:1 1 230px;line-height:1.5;font-size:13px}
+.pb-auto-other-grid{margin-top:26px}
+@media(max-width:460px){
+ .pb-auto-license-choices{padding-left:0;gap:8px}
+ .pb-auto-choice{padding:10px;gap:7px}
+ .pb-auto-choice span{font-size:12px}
+ .pb-auto-register .pb-fold-h{padding:14px}
+ .pb-auto-register .pb-fold-b{padding:0 14px 20px}
+}
